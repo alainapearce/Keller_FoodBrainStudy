@@ -1,0 +1,83 @@
+{
+    "groups": [
+        {
+            "name": "Group_00001",
+            "procs": [
+                0,
+                1,
+                2
+            ],
+            "total": 3
+        },
+        {
+            "name": "Group_00002",
+            "procs": [
+                3,
+                4,
+                5
+            ],
+            "total": 3
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 1,
+            "value": 1
+        },
+        {
+            "source": 1,
+            "target": 2,
+            "value": 1
+        },
+        {
+            "source": 3,
+            "target": 4,
+            "value": 1
+        },
+        {
+            "source": 4,
+            "target": 5,
+            "value": 1
+        }
+    ],
+    "maxN": 3,
+    "nodes": [
+        {
+            "group": 1,
+            "name": "0_selectID",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpz6i25z9s/sst/_session_id_1/selectID/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpz6i25z9s/sst/_session_id_1/selectID/result_selectID.pklz"
+        },
+        {
+            "group": 1,
+            "name": "1_summaryData",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpcmrnhbus/sst/_session_id_1/summaryData/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpcmrnhbus/sst/_session_id_1/summaryData/result_summaryData.pklz"
+        },
+        {
+            "group": 1,
+            "name": "2_spaceDatabase",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpj1c0zpt6/sst/_session_id_1/spaceDatabase/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpj1c0zpt6/sst/_session_id_1/spaceDatabase/result_spaceDatabase.pklz"
+        },
+        {
+            "group": 2,
+            "name": "3_selectID",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzrrrzmo8/sst/_session_id_2/selectID/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzrrrzmo8/sst/_session_id_2/selectID/result_selectID.pklz"
+        },
+        {
+            "group": 2,
+            "name": "4_summaryData",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpjaxse1ih/sst/_session_id_2/summaryData/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpjaxse1ih/sst/_session_id_2/summaryData/result_summaryData.pklz"
+        },
+        {
+            "group": 2,
+            "name": "5_spaceDatabase",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpbnqf3ji0/sst/_session_id_2/spaceDatabase/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpbnqf3ji0/sst/_session_id_2/spaceDatabase/result_spaceDatabase.pklz"
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+{
+    "groups": [
+        {
+            "name": "Group_00001",
+            "procs": [
+                0
+            ],
+            "total": 1
+        },
+        {
+            "name": "Group_00002",
+            "procs": [
+                1
+            ],
+            "total": 1
+        }
+    ],
+    "links": [],
+    "maxN": 1,
+    "nodes": [
+        {
+            "group": 1,
+            "name": "0_selectID",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzg1efe1z/SpaceGame/_session_id_1/selectID/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzg1efe1z/SpaceGame/_session_id_1/selectID/result_selectID.pklz"
+        },
+        {
+            "group": 2,
+            "name": "1_selectID",
+            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmp5mb9pa19/SpaceGame/_session_id_2/selectID/_report/report.rst",
+            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmp5mb9pa19/SpaceGame/_session_id_2/selectID/result_selectID.pklz"
+        }
+    ]
+}

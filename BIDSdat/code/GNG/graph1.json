@@ -1,0 +1,46 @@
+{
+    "groups": [
+        {
+            "name": "Group_00001",
+            "procs": [
+                0,
+                1,
+                2
+            ],
+            "total": 3
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 1,
+            "value": 1
+        },
+        {
+            "source": 1,
+            "target": 2,
+            "value": 1
+        }
+    ],
+    "maxN": 3,
+    "nodes": [
+        {
+            "group": 1,
+            "name": "0_selectfiles",
+            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpgnmcmygo/GNG/selectfiles/_report/report.rst",
+            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpgnmcmygo/GNG/selectfiles/result_selectfiles.pklz"
+        },
+        {
+            "group": 1,
+            "name": "1_summaryData",
+            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpnk1bxf16/GNG/summaryData/_report/report.rst",
+            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpnk1bxf16/GNG/summaryData/result_summaryData.pklz"
+        },
+        {
+            "group": 1,
+            "name": "2_gngDatabase",
+            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp8i2kdijk/GNG/gngDatabase/_report/report.rst",
+            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp8i2kdijk/GNG/gngDatabase/result_gngDatabase.pklz"
+        }
+    ]
+}
