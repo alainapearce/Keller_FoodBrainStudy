@@ -1,0 +1,289 @@
+{
+    "Go-NoGo Task": {
+        "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949a93/",
+        "DatasetType": "raw"
+    },
+  "experiment_name": {
+    "Description": "Name of the experiment used to generate the data file"
+  },
+  "sub": {
+    "Description": "subject number assigned at runtime"
+  },
+  "ses": {
+    "Description": "session number assigned at runtime"
+  },
+  "clock_information": {
+    "Description": "clock information"
+  },
+  "data_file_basename": {
+    "Description": "basename of data output from E-prime. Format is ExperimentName-Subject-Session"
+  },
+  "display_refresh_rate": {
+    "Description": "display refresh rate"
+  },
+  "experiment_version": {
+    "Description": "Version of the experiment used to generate the data file"
+  },
+  "group": {
+    "Description": "Group number. As part of this experiment, no Group is assigned at runtime, so defaults to 1"
+  },
+  "random_seed": {
+    "Description": "Auto-generated random seed used for randomization"
+  },
+  "runtime_capabilities": {
+    "Description": "E-Prime runtime capabilities"
+  },
+  "runtime_version": {
+    "Description": "E-run (E-prime application) version used to run experiment"
+  },
+  "runtime_version_expected": {
+    "Description": "E-run (E-prime application) version expected to run experiment"
+  },
+  "session_date": {
+    "Description": "Date of experiment; based on the computer experiment is run from",
+    "Units": "DD/MM/YY"
+  },
+  "session_start_date_time_utc": {
+    "Description": "Date and time of experiment in Coordinated Universal Time (UTC) ",
+    "Units": "DD/MM/YY HH:MM:SS AM/PM"
+  },
+  "session_time": {
+    "Description": "Time of experiment; based on the computer experiment is run from",
+    "Units":"HH:MM:SS in military time"
+  },
+  "studio_version": {
+    "Description": "E-Studio (E-prime application) version"
+  },
+  "block": {
+    "Description": "Block number. Equal to BlockList if experiment only contained task blocks (true when ExperimentName = Go No-Go Zoo_pseudorand)"
+  },
+  "block_list": {
+    "Description": "BlockList ID being run. Each ID corresponds to a block procedure (task block) that contains: intro, trail procedure (40 gonogo samples), and outro. Will be equal to BlockList.Sample if BlockList selection was not randomized",
+    "Levels": {
+      "1": "ID 1 (corresponds to Block1 procedure)",
+      "2": "ID 2 (corresponds to Block2 procedure)",
+      "3": "ID 3 (corresponds to Block3 procedure)",
+      "4": "ID 4 (corresponds to Block4 procedure)",
+      "5": "ID 5 (corresponds to Block5 procedure)"
+    }
+  },
+  "block_list_cycle": {
+    "Description": "Cycle number of BlockList, which contains 5 block procedures (task blocks). Task was programmed to have 1 cycle",
+    "Levels": {
+      "1": "First cycle"
+    }
+  },
+  "block_list_sample": {
+    "Description": "Order BlockList block procedure (task block) was presentated",
+    "Levels":{
+      "1": "first task block presented",
+      "2": "second task block presented",
+      "3": "third task block presented",
+      "4": "fourth task block presented",
+      "5": "fifth task block presented"
+    }
+  },
+  "order": {
+    "Description": "Attribute that indicates the order BlockList block procedure (block procedure) order"
+  },
+  "procedure_block": {
+    "Description": "Name of Procedure at the block level",
+    "Levels": {
+      "Block1": "A procedure with Intro, Trial1 (a list of 40 gonogo samples), OutBlock1",
+      "Block2": "A procedure with Intro, Trial2 (a list of 40 gonogo samples), OutBlock2",
+      "Block3": "A procedure with Intro, Trial3 (a list of 40 gonogo samples), OutBlock3",
+      "Block4": "A procedure with Intro, Trial4 (a list of 40 gonogo samples), OutBlock4",
+      "Block5": "A procedure with Intro, Trial5 (a list of 40 gonogo samples), OutBlock5"
+    }
+  },
+  "running_block": {
+    "Description": "Name of list being run",
+    "Levels": {
+      "BlockList": "A list that contains 5 task procedure blocks (Block1, Block2, Block3, Block4, Block5)"
+    }
+  },
+  "trial": {
+    "Description": "Trial number within the corresponding Procedure[Block] (e.g., 1 = first trial presented during the corresponding task block). Range: 1-40 "
+  },
+  "ca": {
+    "Description": "correct response to trial",
+    "Levels":{
+      "{SPACE}": "Correct response is SPACE",
+      "": "Correct responses is no response"
+    }
+  },
+  "compatibility": {
+    "Description": "stimulus type",
+    "Levels": {
+      "Go": "Go stimulus",
+      "NoGo": "NoGo stimulus"
+    }
+  },
+  "gonogo": {
+    "Description": "stimulus type",
+    "Levels": {
+      "101": "Go stimulus",
+      "102": "NoGo stimulus"
+    }
+  },
+  "image": {
+    "Description": "stimulus type",
+    "Levels": {
+      "Go": "Go stimulus",
+      "NoGo": "NoGo stimulus"
+    }
+  },
+  "imagecode": {
+    "Description": "number associated with image file presented (s1)"
+  },
+  "procedure_trial": {
+    "Description": "Name of procedure at the trial level",
+    "Levels": {
+      "TrialProc2": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)",
+      "TrialProc3": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)",
+      "TrialProc4": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)",
+      "TrialProc5": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)",
+      "TrialProc6": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)"
+    }
+  },
+  "respond_acc": {
+    "Description": "Indicates whether Respond.RESP was equal to Respond.CRESP",
+    "Levels": {
+      "0": "Respond.RESP did not = Respond.CRESP",
+      "1": "Respond.RESP = Respond.CRESP"
+    }
+  },
+  "respond_cresp": {
+    "Description": "Correct response for 'Respond' screen. The same as Stim.CRESP ",
+    "Levels":{
+        "{SPACE}": "correct response is SPACE",
+        "": "correct responses is no response"
+    }
+  },
+  "respond_resp": {
+    "Description": "Actual response made during response screen (blank screen that follows s1 presentation)",
+    "Levels":{
+      "{SPACE}": "spacebar was hit",
+      "": "no response was made"
+    }
+  },
+  "respond_rt": {
+    "Description": "Timestamp of the Respond.RESP from the time that response screen was displayed (750ms after presentation of s1). Value of 0 indicates no response occured during response screen",
+    "Units":"milliseconds"
+  },
+  "respond_rt_time": {
+    "Description": "Timestamp of the response from the time that the experiment started",
+    "Units":"milliseconds"
+  },
+  "running_trial": {
+    "Description": "Name of list being run",
+    "Levels": {
+      "Trial1": "A list of 40 gonogo samples (trials)",
+      "Trial2": "A list of 40 gonogo samples (trials)",
+      "Trial3": "A list of 40 gonogo samples (trials)",
+      "Trial4": "A list of 40 gonogo samples (trials)",
+      "Trial5": "A list of 40 gonogo samples (trials)"
+    }
+  },
+  "s1": {
+    "Description": "name of bitmap image file displayed. These image files contain animal pictures"
+  },
+  "stim_acc": {
+    "Description": "Indicates whether Stim.RESP was equal to Stim.CRESP",
+    "Levels":{
+      "0": "Stim.RESP did not = Stim.CRESP",
+      "1": "Stim.RESP = Stim.CRESP"
+    }
+  },
+  "stim_cresp": {
+    "Description": "Correct response to stimulus",
+    "Levels":{
+      "{SPACE}": "correct response is {SPACE}",
+      "": "correct response is no response"
+    }
+  },
+  "stim_resp": {
+    "Description": "Actual response made during presentation of Stim screen (screen presenting s1)",
+    "Levels":{
+      "{SPACE}": "spacebar was hit",
+      "": "no response was made"
+    }
+  },
+  "stim_rt": {
+    "Description": "Timestamp of the Stim.RESP from the time that the stimulus (s1) was displayed (reaction time to stimulus). Value of 0 indicates no response occured during stimulus presentation",
+    "Units": "milliseconds"
+  },
+  "stim_rt_time": {
+    "Description": "Timestamp of the response from the time that the experiment started",
+    "Units": "milliseconds"
+  },
+  "target": {
+    "Description": "Stimulus image presented. Equal to s1"
+  },
+  "trial1": {
+    "Description": "ID of sample from Trail1 (range: 1-40). Will be equal to Trial1.Sample if sample selection was not randomized"
+  },
+  "trial1_cycle": {
+    "Description": "Cycle number of Trial1 (1 cycle = 40 samples). Task was programmed for 1 cycle",
+    "Levels":{
+      "1":"The first cycle",
+      "":"Not Trial1"
+    }
+  },
+  "trial1_sample": {
+    "Description": "Order sample (image) was presented within Trial1 (range: 1-40). For example, 1 = first sample presented, 5 = fifth sample presented."
+  },
+  "trial2": {
+    "Description": "ID of sample from Trail2 (range: 1-40). Will be equal to Trial2.Sample if sample selection was not randomized"
+  },
+  "trial2_cycle": {
+    "Description": "Cycle number of Trial2 (1 cycle = 40 samples). Task was programmed for 1 cycle",
+    "Levels": {
+      "1": "The first cycle",
+      "": "Not Trial2"
+    }
+  },
+  "trial2_sample": {
+    "Description": "Order sample (image) was presented within Trial2 (range: 1-40). For example, 1 = first sample presented, 5 = fifth sample presented."
+  },
+  "trial3": {
+    "Description": "ID of sample from Trail3 (range: 1-40). Will be equal to Trial3.Sample if sample selection was not randomized"
+  },
+  "trial3_cycle": {
+    "Description": "Cycle number of Trial3 (1 cycle = 40 samples). Task was programmed for 1 cycle",
+    "Levels": {
+      "1": "The first cycle",
+      "": "Not Trial3"
+    }
+  },
+  "trial3_sample": {
+    "Description": "Order sample (image) was presented within Trial3 (range: 1-40). For example, 1 = first sample presented, 5 = fifth sample presented."
+  },
+  "trial4": {
+    "Description": "ID of sample from Trail4 (range: 1-40). Will be equal to Trial4.Sample if sample selection was not randomized"
+  },
+  "trial4_cycle": {
+    "Description": "Cycle number of Trial4 (1 cycle = 40 samples). Task was programmed for 1 cycle",
+    "Levels": {
+      "1": "The first cycle",
+      "": "Not Trial4"
+    }
+  },
+  "trial4_sample": {
+    "Description": "Order sample (image) was presented within Trial4 (range: 1-40). For example, 1 = first sample presented, 5 = fifth sample presented."
+  },
+  "trial5": {
+    "Description": "ID of sample from Trail5 (range: 1-40). Will be equal to Trial5.Sample if sample selection was not randomized"
+  },
+  "trial5_cycle": {
+    "Description": "Cycle number of Trial5 (1 cycle = 40 samples). Task was programmed for 1 cycle",
+    "Levels": {
+      "1": "The first cycle",
+      "": "Not Trial5"
+    }
+  },
+  "trial5_sample": {
+    "Description": "Order sample (image) was presented within Trial5 (range: 1-40). For example, 1 = first sample presented, 5 = fifth sample presented."
+  }
+}

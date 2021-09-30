@@ -1,0 +1,29 @@
+# Below is an example participants.json file from https://bids-specification.readthedocs.io/\
+
+{
+    "age": {
+        "Description": "age of the participant",
+        "Units": "years"
+    },
+    "sex": {
+        "Description": "sex of the participant as reported by the participant",
+        "Levels": {
+            "M": "male",
+            "F": "female"
+        }
+    },
+    "handedness": {
+        "Description": "handedness of the participant as reported by the participant",
+        "Levels": {
+            "left": "left",
+            "right": "right"
+        }
+    },
+    "group": {
+        "Description": "experimental group the participant belonged to",
+        "Levels": {
+            "read": "participants who read an inspirational text before the experiment",
+            "write": "participants who wrote an inspirational text before the experiment"
+        }
+    }
+}

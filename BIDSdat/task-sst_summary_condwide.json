@@ -1,0 +1,270 @@
+{
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "all_racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) across all trials",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+          }
+    },
+    "all_n_stop_trials": {
+      "Description": "number of stop trials across all trials"
+    },
+    "all_n_go_trials": {
+      "Description": "number of go trials across all trials"
+    },
+    "all_go_rt": {
+      "Description": "average reaction time across all go trials where rt > 0",
+      "Units": "ms"
+    },
+    "all_n_go_cor": {
+      "Description": "number of correct responses (left/right) across all go trials"
+    },
+    "all_go_cor_rt": {
+      "Description": "average reaction time across all correct go trials",
+      "Units": "ms"
+    },
+    "all_n_go_error": {
+      "Description": "number of errors (left/right) across all go trials"
+    },
+    "all_go_error_rt": {
+      "Description": "average go reaction time on across all go trials with error",
+      "Units": "ms"
+    },
+    "all_n_go_miss": {
+      "Description": "number of missed go responses across all go trials"
+    },
+    "all_stop_prob_resp": {
+      "Description": "probability of responding on stop trials across all trials - p(resp|stop signal)"
+    },
+    "all_us_rt": {
+      "Description": "average reaction time on unsuccessful stop trials across all trials",
+      "Units": "ms"
+    },
+    "all_ssd": {
+      "Description": "average stop-signal delay across all stop trials",
+      "Units": "ms"
+    },
+    "all_ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean rt to go trials - mean ssd) across all trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "all_ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) across all trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "h_ed_racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) for high engery dense trials",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+          }
+    },
+    "h_ed_n_stop_trials": {
+      "Description": "number of stop high engery dense trials"
+    },
+    "h_ed_n_go_trials": {
+      "Description": "number of go high engery dense trials"
+    },
+    "h_ed_go_rt": {
+      "Description": "average reaction time for high engery dense go trials where rt > 0",
+      "Units": "ms"
+    },
+    "h_ed_n_go_cor": {
+      "Description": "number of correct responses (left/right) for high engery dense go trials"
+    },
+    "h_ed_go_cor_rt": {
+      "Description": "average reaction time for correct high engery dense go trials",
+      "Units": "ms"
+    },
+    "h_ed_n_go_error": {
+      "Description": "number of errors (left/right) for high engery dense go trials"
+    },
+    "h_ed_go_error_rt": {
+      "Description": "average go reaction time on for high engery dense go trials with error ",
+      "Units": "ms"
+    },
+    "h_ed_n_go_miss": {
+      "Description": "number of missed responses for high engery dense go trials"
+    },
+    "h_ed_stop_prob_resp": {
+      "Description": "probability of responding on stop trials for high engery dense trials - p(resp|stop signal)"
+    },
+    "h_ed_us_rt": {
+      "Description": "average reaction time on unsucessful stop trials for high engery dense trials",
+      "Units": "ms"
+    },
+    "h_ed_ssd": {
+      "Description": "average stop-signal delay for high engery dense trials",
+      "Units": "ms"
+    },
+    "h_ed_ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean go rt - mean ssd) for high engery dense trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "h_ed_ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) for high engery dense trials (collapsed across portion size). Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "l_ed_racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) for low engery dense trials",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+          }
+    },
+    "l_ed_n_stop_trials": {
+      "Description": "number of stop low engery dense trials"
+    },
+    "l_ed_n_go_trials": {
+      "Description": "number of go low engery dense trials"
+    },
+    "l_ed_go_rt": {
+      "Description": "average reaction time for low engery dense go trials where rt > 0",
+      "Units": "ms"
+    },
+    "l_ed_n_go_cor": {
+      "Description": "number of correct responses (left/right) for low engery dense go trials"
+    },
+    "l_ed_go_cor_rt": {
+      "Description": "average reaction time for correct low engery dense go trials",
+      "Units": "ms"
+    },
+    "l_ed_n_go_error": {
+      "Description": "number of errors (left/right) for low engery dense go trials"
+    },
+    "l_ed_go_error_rt": {
+      "Description": "average go reaction time on for low engery dense go trials with error ",
+      "Units": "ms"
+    },
+    "l_ed_n_go_miss": {
+      "Description": "number of missed responses for low engery dense go trials"
+    },
+    "l_ed_stop_prob_resp": {
+      "Description": "probability of responding on stop trials for low engery dense trials - p(resp|stop signal)"
+    },
+    "l_ed_us_rt": {
+      "Description": "average reaction time on unsucessful stop trials for low engery dense trials",
+      "Units": "ms"
+    },
+    "l_ed_ssd": {
+      "Description": "average stop-signal delay for low engery dense trials",
+      "Units": "ms"
+    },
+    "l_ed_ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean go rt - mean ssd) for low engery dense trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "l_ed_ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) for low engery dense trials (collapsed across portion size). Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "l_port_racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) for large portion size trials",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+          }
+    },
+    "l_port_n_stop_trials": {
+      "Description": "number of stop large portion size trials"
+    },
+    "l_port_n_go_trials": {
+      "Description": "number of go large portion size trials"
+    },
+    "l_port_go_rt": {
+      "Description": "average go reaction time for large portion size trials where rt > 0",
+      "Units": "ms"
+    },
+    "l_port_n_go_cor": {
+      "Description": "number of correct responses (left/right) for large portion size go trials"
+    },
+    "l_port_go_cor_rt": {
+      "Description": "average reaction time for correct large portion size go trials",
+      "Units": "ms"
+    },
+    "l_port_n_go_error": {
+      "Description": "number of errors (left/right) for large portion size go trials"
+    },
+    "l_port_go_error_rt": {
+      "Description": "average go reaction time on for large portion size go trials with error ",
+      "Units": "ms"
+    },
+    "l_port_n_go_miss": {
+      "Description": "number of missed responses for large portion size go trials"
+    },
+    "l_port_stop_prob_resp": {
+      "Description": "probability of responding on stop trials for large portion size trials - p(resp|stop signal)"
+    },
+    "l_ed_us_rt": {
+      "Description": "average reaction time on unsucessful stop trials for large portion size trials",
+      "Units": "ms"
+    },
+    "l_port_ssd": {
+      "Description": "average stop-signal delay for large portion size trials",
+      "Units": "ms"
+    },
+    "l_port_ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean go rt - mean ssd) for large portion size trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "l_port_ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) for large portion size trials (collapsed across portion size). Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "s_port_racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) for small portion size trials",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+          }
+    },
+    "s_port_n_stop_trials": {
+      "Description": "number of stop small portion size trials"
+    },
+    "s_port_n_go_trials": {
+      "Description": "number of go small portion size trials"
+    },
+    "s_port_go_rt": {
+      "Description": "average go reaction time for small portion size trials where rt > 0",
+      "Units": "ms"
+    },
+    "s_port_n_go_cor": {
+      "Description": "number of correct responses (left/right) for small portion size go trials"
+    },
+    "s_port_go_cor_rt": {
+      "Description": "average reaction time for correct small portion size go trials",
+      "Units": "ms"
+    },
+    "s_port_n_go_error": {
+      "Description": "number of errors (left/right) for small portion size go trials"
+    },
+    "s_port_go_error_rt": {
+      "Description": "average go reaction time on for small portion size go trials with error ",
+      "Units": "ms"
+    },
+    "s_port_n_go_miss": {
+      "Description": "number of missed responses for small portion size go trials"
+    },
+    "s_port_stop_prob_resp": {
+      "Description": "probability of responding on stop trials for small portion size trials - p(resp|stop signal)"
+    },
+    "s_ed_us_rt": {
+      "Description": "average reaction time on unsucessful stop trials for small portion size trials",
+      "Units": "ms"
+    },
+    "s_port_ssd": {
+      "Description": "average stop-signal delay for small portion size trials",
+      "Units": "ms"
+    },
+    "s_port_ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean go rt - mean ssd) for small portion size trials. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "s_port_ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) for small portion size trials (collapsed across portion size). Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    }
+}

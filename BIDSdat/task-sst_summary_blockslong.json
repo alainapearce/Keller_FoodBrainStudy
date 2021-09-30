@@ -1,0 +1,75 @@
+{
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "block": {
+      "Description": "Block number for the task - the number does corresponds to order",
+      "Levels": {
+          "1": "block 1",
+          "2": "block 2",
+          "3": "block 3",
+          "4": "block 4",
+      }
+    },
+    "condition": {
+      "Description": "Condition for each block",
+      "Levels": {
+          "hED_lPort": "high energy dense, large portion food stimuli",
+          "hED_sPort": "high energy dense, small portion food stimuli",
+          "lED_lPort": "low energy dense, large portion food stimuli",
+          "lED_sPort": "low energy dense, small portion food stimuli"
+      }
+    },
+    "racehorse_check": {
+      "Description": "check of the racehorse assumption for the Stop-Signal Task (mean go reaction time > mean reaction time during unsuccessful stops) for given block",
+      "Levels": {
+          "1": "met assumption/passed",
+          "0": "did not meet assumption/failed"
+        }
+    },
+    "n_stop_trials": {
+      "Description": "number of stop trials for given block",
+    },
+    "n_go_trials": {
+      "Description": "number of go trials for given block"
+    },
+    "go_rt": {
+      "Description": "average go reaction time for given block",
+      "Units": "ms"
+    },
+    "n_go_cor": {
+      "Description": "number of correct responses (left/right) for given block"
+    },
+    "go_cor_rt": {
+      "Description": "average reaction time for given block",
+      "Units": "ms"
+    },
+    "n_go_error": {
+      "Description": "number of errors (left/right) for given block"
+    },
+    "go_error_rt": {
+      "Description": "average go reaction time on trials with errors for given block",
+      "Units": "ms"
+    },
+    "n_go_miss": {
+      "Description": "number of missed go trial responses for given block"
+    },
+    "stop_prob_resp": {
+      "Description": "probability of responding on stop trials for given block - p(resp|stop signal)"
+    },
+    "us_rt": {
+      "Description": "average reaction time on unsucessful stop trials for given block",
+      "Units": "ms"
+    },
+    "ssd": {
+      "Description": "average stop-signal delay for given block",
+      "Units": "ms"
+    },
+    "ssrt_mean": {
+      "Description": "stop-signal reaction time calculated using the mean method (mean go rt - mean ssd) for given block. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+    },
+    "ssrt_int": {
+      "Description": "stop-signal reaction time calculated using the integration method (nth rt - mean ssd) for given block. Only calcualted if racehorse assumption is met",
+      "Units": "ms"
+}

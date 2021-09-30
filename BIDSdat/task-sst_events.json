@@ -1,0 +1,92 @@
+{
+    "Stop-Signal Task": {
+        "Description": "Stop-Signal Task which used food sitimuli that varied in energy density and portion size",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_56a9123fe580f/",
+        "DatasetType": "raw"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "block": {
+      "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4"
+    },
+    "block_cond": {
+      "Description": "Condition for each trial",
+      "Levels": {
+          "hED_lPort": "high energy dense, large portion food stimuli",
+          "hED_sPort": "high energy dense, small portion food stimuli",
+          "lED_lPort": "low energy dense, large portion food stimuli",
+          "lED_sPort": "low energy dense, small portion food stimuli"
+      }
+    },
+    "food_cond": {
+      "Description": "Indicates engery density condition for trial",
+      "Levels": {
+          "hED": "high energy dense",
+          "lED": "low energy dense"
+      }
+    },
+    "port_cond": {
+      "Description": "Indicates portion size condition for trial",
+      "Levels": {
+          "lPort": "large portion size",
+          "sPort": "small portion size"
+      }
+    },
+    "stim": {
+      "Description": "Indicates the location of the napkin, which is the go signal",
+      "Levels": {
+          "1": "left response correct",
+          "2": "right response correct"
+      }
+    },
+    "signal": {
+      "Description": "Indicates stop trials",
+      "Levels": {
+          "0": "go trial",
+          "1": "stop trial"
+      }
+    },
+    "reqSSD": {
+      "Description": "The intended stop signal delay time",
+      "Units": "ms"
+    },
+    "correct": {
+      "Description": "Indicates the accuracy of the response",
+      "Levels": {
+          "1": "missed response or time out",
+          "2": "incorrect arrow pressed (left/right) on go trial",
+          "3": "failure to stop",
+          "4": "corret stop or correct go"
+      }
+    },
+    "resp1": {
+      "Description": "Initial/first response",
+      "Levels": {
+          "1": "Left response",
+          "2": "Right response"
+      }
+    },
+    "resp2": {
+      "Description": "Collects response of accidental/slipped second response",
+      "Levels": {
+          "1": "Left response",
+          "2": "Right response"
+      }
+    },
+    "rt1": {
+      "Description": "Reaction time of initial response",
+      "Units": "ms"
+    },
+    "rt2": {
+      "Description": "Reaction time of secondary response",
+      "Units": "ms"
+    },
+    "trueSSD": {
+      "Description": "Stop signal delay of presended stop signal",
+      "Units": "ms"
+    },
+    "stimName": {
+      "Description": "stimuli name"
+    }
+}

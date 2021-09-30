@@ -1,0 +1,152 @@
+{
+    "experiment_name": {
+      "Description":{
+    },
+    "sub": {
+      "Description":{
+    },
+    "ses": {
+      "Description":{
+    },
+    "clock_information": {
+      "Description":{
+    },
+    "data_file_basename": {
+      "Description":{
+    },
+    "display_refresh_rate": {
+      "Description":{
+    },
+    "experiment_version": {
+      "Description":{
+    },
+    "get_ready_device": {
+      "Description":
+    },
+    "group": {
+      "Description":{
+    },
+    "instructions_device": {
+      "Description":
+    },
+    "random_seed": {
+      "Description":
+    },
+    "runtime_capabilities": {
+      "Description":
+    },
+    "runtime_version": {
+      "Description":
+    },
+    "runtime_version_expected": {
+      "Description":
+    },
+    "session_date": {
+      "Description":
+    },
+    "session_start_date_time_utc": {
+      "Description":
+    },
+    "session_time": {
+      "Description":
+    },
+    "studio_version": {
+      "Description":
+    },
+    "block": {
+      "Description":
+    },
+    "b0_stim_device": {
+      "Description":
+    },
+    "break_text_device": {
+      "Description":
+    },
+    "get_ready_device": {
+      "Description":
+    },
+    "list1": {
+      "Description":
+    },
+    "list1_cycle": {
+      "Description":
+    },
+    "list1_sample": {
+      "Description":
+    },
+    "procedure_block": {
+      "Description":
+    },
+    "running_block": {
+      "Description":
+    },
+    "trial": {
+      "Description":
+    },
+    "b0_list1": {
+      "Description":
+    },
+    "b0_list1_cycle": {
+      "Description":
+    },
+    "b0_list1_sample": {
+      "Description":
+    },
+    "b0_list2": {
+      "Description":
+    },
+    "b0_list2_cycle": {
+      "Description":
+    },
+    "b0_list2_sample": {
+      "Description":
+    },
+    "b0_stim": {
+      "Description":
+    },
+    "b0_stim_acc": {
+      "Description":
+    },
+    "b0_stim_cresp": {
+      "Description":
+    },
+    "b0_stim_device": {
+      "Description":
+    },
+    "b0_stim_duration_error": {
+      "Description":
+    },
+    "b0_stim_onset_delay": {
+      "Description":
+    },
+    "b0_stim_onset_time": {
+      "Description":
+    },
+    "b0_stim_onset_to_onset_time": {
+      "Description":
+    },
+    "b0_stim_resp": {
+      "Description":""
+    },
+    "b0_stim_rt": {
+      "Description":""
+    },
+    "b0_stim_rt_time": {
+      "Description":""
+    },
+    "condition": {
+      "Description":""
+    },
+    "correct": {
+      "Description":
+    },
+    "font": {
+      "Description":
+    },
+    "procedure_trial": {
+      "Description":
+    },
+    "running_trial": {
+      "Description":
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "Name": "Food and Brain Study",
+    "BIDSVersion": "",
+    "DatasetType": "raw",
+    "License": "CC0",
+    "Authors": [
+      "",
+      ""
+    ],
+    "Acknowledgements": "",
+    "HowToAcknowledge": "Please cite this paper: ",
+    "Funding": [
+      "NIDDK",
+      ""
+    ],
+    "EthicsApprovals": [
+      ""
+    ],
+    "ReferencesAndLinks": [
+      "",
+      ""
+    ],
+    "DatasetDOI": "",
+    "HEDVersion": ""
+  }
