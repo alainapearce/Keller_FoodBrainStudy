@@ -105,7 +105,7 @@ base_directory = Path(os.getcwd())
 #set specific paths
 bids_source_path = Path(base_directory).joinpath('BIDSdat/sourcedata')
 bids_raw_path = Path(base_directory).joinpath('BIDSdat/raw_data')
-gng_raw_path = Path(base_directory).joinpath('GNG_Raw')
+gng_raw_path = Path(base_directory).joinpath('untouchedRaw/GNG_Raw')
 
 #get list of raw GNG files
 #Note: these are text files exported from the corresponding edat file

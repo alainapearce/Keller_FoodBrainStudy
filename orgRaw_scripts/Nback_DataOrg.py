@@ -106,7 +106,7 @@ base_directory = Path(os.getcwd())
 #set specific paths
 bids_source_path = Path(base_directory).joinpath('BIDSdat/sourcedata')
 bids_raw_path = Path(base_directory).joinpath('BIDSdat/raw_data')
-nback_raw_path = Path(base_directory).joinpath('Nback_Raw')
+nback_raw_path = Path(base_directory).joinpath('untouchedRaw/Nback_Raw')
 
 #get list of raw Nback files
 nback_raw_files = list(Path(nback_raw_path).rglob('NBack*.txt'))

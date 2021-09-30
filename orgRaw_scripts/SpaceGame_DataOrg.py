@@ -93,7 +93,7 @@ base_directory = Path(os.getcwd())
 #set specific paths
 bids_source_path = Path(base_directory).joinpath('BIDSdat/sourcedata')
 bids_raw_path = Path(base_directory).joinpath('BIDSdat/raw_data')
-space_raw_path = Path(base_directory).joinpath('SpaceGame_Raw')
+space_raw_path = Path(base_directory).joinpath('untouchedRaw/SpaceGame_Raw')
 
 #get list of raw SpaceGame files
 space_raw_files = list(Path(space_raw_path).rglob('mbmfNovelStakes_*.mat'))

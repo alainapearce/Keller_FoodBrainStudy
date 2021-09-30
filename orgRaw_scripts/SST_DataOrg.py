@@ -54,7 +54,7 @@ base_directory = Path(os.getcwd())
 #set specific paths
 bids_source_path = Path(base_directory).joinpath('BIDSdat/sourcedata')
 bids_raw_path = Path(base_directory).joinpath('BIDSdat/raw_data')
-sst_raw_path = Path(base_directory).joinpath('SST_Raw')
+sst_raw_path = Path(base_directory).joinpath('untouchedRaw/SST_Raw')
 
 #get list of raw SST files
 sst_raw_files = list(Path(sst_raw_path).rglob('stop-*.txt'))
