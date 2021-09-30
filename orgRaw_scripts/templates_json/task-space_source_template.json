@@ -1,0 +1,242 @@
+{
+    "Space Game Task": {
+        "Description": "The Space Game is a 2-Stage Reinforcement Learning/Reward-Related Decision Making Task",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
+        "DatasetType": "source"
+    },
+    "data": {
+      "subID": {
+          "Description": "subject id"
+          },
+      "subNum": {
+          "Description": "session number"
+      },
+      "dataFileName": {
+          "Description": "source datafile name"
+      },
+      "rews": {
+          "Description": "a 100x2 matrix where column 1 is rawdata column 'rewards1' and column 2 is rawdata column 'rewards2"
+      },
+      "practice": {
+          "rews": {
+              "Description": "a 25x2 matrix of possible rewards based on stage 1 choice"
+          },
+          "practiceRews": {
+              "Description": "rewards for practice trials"
+          },
+          "s": {
+              "Description": "a 25x2 matrix indicating the state for both stages of the task. Column 1 is rawdata column 'state_earth'; column 2 is rawdata column 'state_planet'"
+          },
+          "stimuli": {
+              "Description": "a 25x2 matrix indicating the stimuli during stage 1 (earth) of the task. Column 1 is left rocket stimuli; column 2 is right rocket stimuli"
+          },"choice": {
+              "Description": "a 25x1 matrix with sub choice for stage 1 of each trail"
+          },
+          "rt": {
+              "Description": "a 25x2 matrix with reaction time data for each stage of the task. Column 1 is earth rt; column 2 planet rt"
+          },
+          "points": {
+              "Description": "a 25x1 matrix with points earned during second stage of each trial"
+          }
+      },
+      "block": {
+          "Description": "a 100x1 matrix indicating task block"
+          },
+      "s": {
+          "Description": "a 100x2 matrix indicating the state for both stages of the task. Column 1 is rawdata column 'state_earth'; column 2 is rawdata column 'state_planet'"
+      },
+      "stimuli": {
+          "Description": "a 100x2 matrix indicating the stimuli during stage 1 (earth) of the task. Column 1 is rawdata column 'stim_left'; column 2 is rawdata column 'stim_right'"
+      },
+      "stake": {
+          "Description": "a 100x1 matrix indicating the stake of the task - always 0 for this version. Other task vesions can have a point multiplier here"
+      },
+      "choice": {
+          "Description": "a 100x1 matrix with sub choice for stage 1 of each trail"
+      },
+      "rt": {
+          "Description": "a 100x2 matrix with reaction time data for each stage of the task. Column 1 is rawdata column 'rt_earth'; column 2 is rawdata column 'rt_planet'"
+      },
+      "score": {
+          "Description": "a 100x1 matrix with running total score at each trial"
+      },
+      "points": {
+          "Description": "a 100x1 matrix with points earned during second stage of each trial"
+      },
+      "timeout": {
+          "Description": "a 100x2 matrix indicating if sub timedout at each stage of the task. Column1 is rawdata column 'timeout_earth'; column 2 is rawdata column "
+      },
+      "currentScore": {
+          "Description": "final score"
+      },
+      "pms": {
+          "mon": {
+              "Description": "task setting"
+          },
+          "backgroundColor": {
+              "Description": "background color designation"
+          },
+          "testSize1": {
+              "Description": "text size for general instruction"
+          },
+          "scoreTextSize": {
+              "Description": "text size for score reporting"
+          },
+          "timeoutTextSize": {
+              "Description": "text size to show timeout messgae"
+          },
+          "textColor": {
+              "Description": "text color"
+          },
+          "colors": {
+              "Description": "colors to select from"
+          },
+          "rocketOrder": {
+              "Description": "labes for rockets - will be randomized in task"
+          },
+          "purpleOrder": {
+              "Description": "order of rewards for purple planet"
+          },
+          "redOrder": {
+              "Description": "order of rewards for red planet"
+          },
+          "nrTrialsPerBlock": {
+              "Description": "trials per block"
+          },
+          "nrBlocks": {
+              "Description": "number of blocks"
+          },
+          "nrTrials": {
+              "Description": "number of trials"
+          },
+          "nrPracticeTrials": {
+              "Description": "number of practice trials"
+          },
+          "rocketThreshold": {
+              "Description": "number correct rockets to start practice trials"
+          },
+          "bounds": {
+              "Description": "bounds on reward value per trial"
+          },
+          "sd": {
+              "Description": ""
+          },
+          "screenKey": {
+              "Description": ""
+          },
+          "leftKey": {
+              "Description": "key to selct left rocket in stage 1"
+          },
+          "rightKey": {
+              "Description": "key to select right rocket in stage 1"
+          },
+          "selectKey": {
+              "Description": "key to press in stage 2"
+          },
+          "escKey": {
+              "Description": "key to quit task"
+          },
+          "forwardKey": {
+              "Description": "key to advance instructions"
+          },
+          "backwardKey": {
+              "Description": "key to go back a screen during instructions"
+          },
+          "startingTime": {
+              "Description": ""
+          },
+          "endingTime":  {
+              "Description": ""
+          },
+          "stakeTime":  {
+              "Description": "duration to display stake"
+          },
+          "counterTime":  {
+              "Description": ""
+          },
+          "totalRewardTime":  {
+              "Description": "duration to display total reward"
+          },
+          "timeoutTime":  {
+              "Description": "duration to respond before timeout"
+          },
+          "timeoutFeedbackTime":  {
+              "Description": "duration to display timeout feedback screen"
+          },
+          "wid":  {
+              "Description": ""
+          },
+          "wRect":  {
+              "Description": ""
+          },
+          "origin":  {
+              "Description": "[0,0] point I beleive"
+          },
+          "practice":  {
+              "Description": "indicate practice trial or not"
+          },
+          "noStakeCue":  {
+              "Description": "indicate stake cue or not"
+          },
+          "rocketFileNames":  {
+              "Description": "filenames corresponding to the the rocketOrder"
+          },
+          "rocketTextures":  {
+              "Description": "image/display setting number for each rocket stimuli"
+          },
+          "stakeCueName":  {
+              "Description": "file name for stake cue"
+          },
+          "stakeCueTexture":  {
+              "Description": "image/display setting number to stake cue"
+          },
+          "planetFileNames":  {
+              "Description": "file names for planets"
+          },
+          "planetTextures":  {
+              "Description": "image/display setting number for each planet"
+          },
+          "rectFileNames":  {
+              "Description": "file names for the rectangles around aliens at each planet"
+          },
+          "rectTextures":  {
+              "Description": "image/display setting number for rectangle"
+          },
+          "alienFileNames":  {
+              "Description": "file names for aliens"
+          },
+          "alienTextures":  {
+              "Description": "image/display setting number for aliens"
+          },
+          "alienFileNames_happy":  {
+              "Description": "file names for happy aliens"
+          },
+          "alienTextures_happy":  {
+              "Description": "image/display setting number for happy aliens"
+          },
+          "treasureTexture":  {
+              "Description": "image/display setting number for treasure"
+          },
+          "antimatterTexture":  {
+              "Description": "image/display setting number for antimatter"
+          },
+          "norewardTexture":  {
+              "Description": "image/display setting number for no reward"
+          },
+          "examplePlanetsTexture": {
+              "Description": "image/display setting number for instructions example planets "
+          },
+          "exampleLotsOfTreasureTexture": {
+              "Description": "image/display setting number for instructions example of lots of treasure"
+          },
+          "exampleLittleTreasureTexture": {
+              "Description": "image/display setting number for instructions example of little treasure"
+          },
+          "exampleStakesTreasure": {
+              "Description": "image/display setting number for instructions example of stakes"
+          },
+          "example5xTexture": {
+              "Description": "image/display setting number for instructions example of 5x bonus"
+          }
+      }
+    }

@@ -1,0 +1,70 @@
+##Group analyses was processed on 01-28-20
+## Job started: Tue Jan 28 12:00:01 EST 2020
+
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2017 The MathWorks, Inc.
+                   R2017b (9.3.0.713579) 64-bit (glnxa64)
+                             September 14, 2017
+
+ 
+To get started, type one of these: helpwin, helpdesk, or demo.
+For product information, visit www.mathworks.com.
+ 
+Fitting model 1
+Subject 93
+no latents
+Fitting model 2
+Subject 93
+no latents
+Fitting model 3
+Subject 93
+no latents
+Fitting model 4
+Subject 93
+no latents
+Fitting model 5
+Subject 93
+no latents
+Fitting model 6
+Subject 93
+no latents
+Fitting model 7
+Subject 93
+no latents
+Fitting model 8
+Subject 93
+no latents
+Fitting model 9
+Subject 93
+no latents
+Fitting model 10
+Subject 93
+no latents
+Fitting model 11
+Subject 93
+no latents
+Fitting model 12
+Subject 93
+no latents
+Fitting model 1
+Fitting model 2
+Fitting model 3
+Fitting model 4
+Fitting model 5
+Fitting model 6
+Fitting model 7
+Fitting model 8
+Fitting model 9
+Fitting model 10
+Fitting model 11
+Fitting model 12
+
+ans = 
+
+  struct with fields:
+
+    session: [1x2 struct]
+
+
+## Job Ended: Tue Jan 28 12:03:49 EST 2020

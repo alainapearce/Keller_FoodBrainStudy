@@ -1,0 +1,217 @@
+{
+    "Go-NoGo Task": {
+        "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
+        "DatasetType": "source"
+    },
+    "ExperimentName": {
+      "Description": "Name of the experiment used to generate the data file"
+    },
+    "Subject": {
+      "Description": "subject number assigned at runtime"
+    },
+    "Session": {
+      "Description": "session number assigned at runtime"
+    },
+    "Clock.Information": {
+      "Description": "clock information"
+    },
+    "DataFile.Basename": {
+      "Description": "basename of data output from E-prime. Format is ExperimentName-Subject-Session"
+    },
+    "Display.RefreshRate": {
+      "Description": "display refresh rate"
+    },
+    "ExperimentVersion": {
+      "Description": "Version of the experiment used to generate the data file"
+    },
+    "Group": {
+      "Description": "Group number. As part of this experiment, no Group is assigned at runtime, so defaults to 1"
+    },
+    "RandomSeed": {
+      "Description": "Auto-generated random seed used for randomization"
+    },
+    "RuntimeCapabilities": {
+      "Description": "E-Prime runtime capabilities"
+    },
+    "RuntimeVersion": {
+      "Description": "E-run (E-prime application) version used to run experiment"
+    },
+    "RuntimeVersionExpected": {
+      "Description": "E-run (E-prime application) version expected to run experiment"
+    },
+    "SessionDate": {
+      "Description": "Date of experiment; based on the computer experiment is run from",
+      "Units": "DD/MM/YY"
+    },
+    "SessionStartDateTimeUtc": {
+      "Description": "Date and time of experiment in Coordinated Universal Time (UTC) ",
+      "Units": "DD/MM/YY HH:MM:SS AM/PM"
+    },
+    "SessionTime": {
+      "Description": "Time of experiment; based on the computer experiment is run from",
+      "Units":"HH:MM:SS in military time"
+    },
+    "StudioVersion": {
+      "Description": "E-Studio (E-prime application) version"
+    },
+    "Block": {
+      "Description": "Block number. Equal to BlockList if experiment only contained task blocks (true when ExperimentName = Go No-Go Zoo_pseudorand)"
+    },
+    "Prac": {
+      "Description": "Prac ID being run. ID corresponds to a practice block procedure. Only 1 practice block procedure in this experiment",
+      "Levels": {
+             "1": "Prac ID 1",
+              "": "Not running Prac"
+      }
+    },
+    "Prac.Cycle": {
+      "Description": "Cycle number of Prac list (1 cycle = 1 PracticeProc). Task was programmed for 1 cycle",
+      "Levels": {
+          "1": "Prac cycle 1",
+           "": "Not running Prac"
+      }
+    },
+    "Prac.Sample": {
+      "Description": "Order Prac sample (1 practice procedure block) was presented within Prac. Only 1 practice procedure block is presented",
+      "Levels": {
+          "1": "First practice procedure block",
+           "": "Not running Prac"
+          }
+    },
+    "Procedure[Block]": {
+      "Description": "Name of Procedure at the block level",
+      "Levels": {
+       "PracticeProc":"A procedure with Welcome2 screen, OrangFam1 screen, PracticeReady screen, Practice (a list of 12 gonogo samples), PracticeOut screen, ZooMap1 screen"
+      }
+    },
+    "Running[Block]": {
+      "Description": "Name of list being run",
+      "Levels": {
+        "Prac": "A list that contains 1 practice procedure block (PracticeProc)"
+      }
+    },
+    "Trial": {
+      "Description": "Trial number within the corresponding Procedure[Block] (e.g., 1 = first trial presented during the corresponding task block). Range: 1-12"
+    },
+    "CA": {
+      "Description": "correct response to trial",
+      "Levels":{
+        "{SPACE}": "Correct response is SPACE",
+        "": "Correct responses is no response"
+      }
+    },
+    "compatibility": {
+      "Description": "stimulus type",
+      "Levels": {
+        "Go": "Go stimulus",
+        "NoGo": "NoGo stimulus"
+      }
+    },
+    "gonogo": {
+      "Description": "stimulus type",
+      "Levels": {
+        "101": "Go stimulus",
+        "102": "NoGo stimulus"
+      }
+    },
+    "image": {
+      "Description": "stimulus type",
+      "Levels": {
+        "Go": "Go stimulus",
+        "NoGo": "NoGo stimulus"
+      }
+    },
+    "imagecode": {
+      "Description": "number associated with image file presented (s1)"
+    },
+    "Practice": {
+        "Description": "ID of sample (image) from Practice (range: 1-12). Will be equal to Practice.Sample if sample selection was not randomized"
+      },
+    "Practice.Cycle": {
+        "Description": "Cycle number of Practice list (1 cycle = 12 samples). Task was programmed for 1 cycle",
+        "Levels": {
+          "1": "The first cycle",
+          "": "Not running Practice"
+        }
+      },
+    "Practice.Sample": {
+        "Description": "Order sample (image) was presented within Practice (range: 1-12). For example, 1 = first sample presented, 5 = fifth sample presented."
+      },
+    "Procedure[Trial]": {
+      "Description": "Name of procedure at the trial level",
+      "Levels": {
+        "TrialProc": "Procedure containing a fixation (300ms), stimulus screen presenting s1 (750ms), and response screen (500ms)"
+      }
+    },
+    "Respond.ACC": {
+      "Description": "Indicates whether Respond.RESP was equal to Respond.CRESP",
+      "Levels": {
+        "0": "Respond.RESP did not = Respond.CRESP",
+        "1": "Respond.RESP = Respond.CRESP"
+      }
+    },
+    "Respond.CRESP": {
+      "Description": "Correct response for 'Respond' screen. The same as Stim.CRESP ",
+      "Levels":{
+          "{SPACE}": "correct response is SPACE",
+          "": "correct responses is no response"
+      }
+    },
+    "Respond.RESP": {
+      "Description": "Actual response made during response screen (blank screen that follows s1 presentation)",
+      "Levels":{
+        "{SPACE}": "spacebar was hit",
+        "": "no response was made"
+      }
+    },
+    "Respond.RT": {
+        "Description": "Timestamp of the Respond.RESP from the time that response screen was displayed (750ms after presentation of s1). Value of 0 indicates no response occured during response screen",
+        "Units":"milliseconds"
+    },
+    "Respond.RTTime": {
+      "Description": "Timestamp of the response from the time that the experiment started",
+      "Units":"milliseconds"
+    },
+    "Running[Trial]": {
+      "Description": "Name of list being run",
+      "Levels": {
+        "Practice": "A list of 12 gogono samples (trials)"
+      }
+    },
+    "s1": {
+      "Description": "name of bitmap image file displayed. These image files contain animal pictures"
+    },
+    "Stim.ACC": {
+      "Description": "Indicates whether Stim.RESP was equal to Stim.CRESP",
+      "Levels":{
+        "0": "Stim.RESP did not = Stim.CRESP",
+        "1": "Stim.RESP = Stim.CRESP"
+      }
+    },
+    "Stim.CRESP": {
+      "Description": "Correct response to stimulus",
+      "Levels":{
+        "{SPACE}": "correct response is {SPACE}",
+        "": "correct response is no response"
+      }
+    },
+    "Stim.RESP": {
+      "Description": "Actual response made during presentation of Stim screen (screen presenting s1)",
+      "Levels":{
+        "{SPACE}": "spacebar was hit",
+        "": "no response was made"
+      }
+    },
+    "Stim.RT": {
+      "Description": "Timestamp of the Stim.RESP from the time that the stimulus (s1) was displayed (reaction time to stimulus). Value of 0 indicates no response occured during stimulus presentation",
+      "Units": "milliseconds"
+    },
+    "Stim.RTTime": {
+      "Description": "Timestamp of the response from the time that the experiment started",
+      "Units": "milliseconds"
+    },
+    "Target": {
+      "Description": "Stimulus image presented. Equal to s1"
+    }
+}

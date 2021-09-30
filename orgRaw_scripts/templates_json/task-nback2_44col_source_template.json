@@ -1,0 +1,211 @@
+{
+    "N-Back Task": {
+        "Description": "The N-Back Task measures working memory ability - these data are for the condition 2-back",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949bcd/",
+        "DatasetType": "source"
+    },
+    "ExperimentName": {
+        "Description": "Name of the experiment used to generate the data file"
+    },
+    "Subject": {
+        "Description": "Subject number entered by experimenter"
+    },
+    "Session": {
+        "Description": "Session number entered by experimenter"
+    },
+    "Clock.Information": {
+        "Description": "Clock information"
+    },
+    "DataFile.Basename": {
+        "Description": "Name of data output from E-prime"
+    },
+    "Display.RefreshRate": {
+        "Description": "Display refresh rate"
+    },
+    "ExperimentVersion": {
+        "Description": "Version of the task used to generate the data file"
+    },
+    "Group": {
+        "Description": "Group number (only 1 group)"
+    },
+    "RandomSeed": {
+        "Description": "Auto-generated random seed used for randomization"
+    },
+    "RuntimeCapabilities": {
+        "Description": "E-Prime runtime capabilities"
+    },
+    "RuntimeVersion": {
+        "Description": "E-run version used to run experiment"
+    },
+    "RuntimeVersionExpected": {
+        "Description": "E-run version expected to run experiment"
+    },
+    "SessionDate": {
+        "Description": "Date of experiment; based on the computer",
+        "Units": "DD/MM/YY"
+    },
+    "SessionStartDateTimeUtc": {
+        "Description": "Date and time of experiment in Coordinated Universal Time (UTC) ",
+        "Units": "DD/MM/YY HH:MM:SS AM/PM"
+    },
+    "SessionTime": {
+        "Description": "Time of task based on the computer",
+        "Units": "HH:MM:SS in military time"
+    },
+    "StudioVersion": {
+        "Description": "E-Studio version"
+    },
+    "Block": {
+        "Description": "Block number."
+    },
+    "List1": {
+        "Description": "Order of procedures presentated",
+        "Levels":{
+            "1": "block 1 of nback task",
+            "2": "break screen option",
+            "3": "get ready screen",
+            "4": "focus screen",
+            "5": "block 2 of nback task"
+        }
+    },
+    "List1.Cycle": {
+        "Description": "Cycle number of task",
+        "Levels": {
+            "1": "First cycle"
+        }
+    },
+    "List1.Sample": {
+        "Description": "Order procedures presentated",
+        "Levels":{
+            "1": "Block 1 of task",
+            "2": "Break screen",
+            "3": "Get ready screen",
+            "4": "Focus screen",
+            "5": "Block 2 of task"
+        }
+    },
+    "Procedure[Block]": {
+        "Description": "2-back block number",
+        "Levels":{
+            "B2BlockProc": "Block 1 of task",
+            "Break": "Break screen",
+            "GetReadyProc": "Get ready screen",
+            "FocusProc": "Focus screen",
+            "B2Block2Proc": "Block 2 of task"
+        }
+    },
+    "Running[Block]": {
+        "Description": "Name of list of trial types",
+        "Levels":{
+            "List1": "Single list of trial (i.e., procedure) types"
+        }
+    },
+    "Trial": {
+        "Description": "Trial number within the corresponding Procedure[Block]"
+    },
+    "B2List1": {
+        "Description": "Trial list for the first block of the task"
+    },
+    "B2List1.Cylce": {
+        "Description": "Cycle list for the first block of the task",
+        "Levels": {
+            "1": "First cycle"
+        }
+    },
+    "B2List1.Sample": {
+        "Description": "Sample list for the first block of the task"
+    },
+    "B2List2": {
+        "Description": "Trial list for the second block of the task"
+    },
+    "B2List2.Cylce": {
+        "Description": "Cycle list for the second block of the task",
+        "Levels": {
+            "1": "First cycle"
+        }
+    },
+    "B2List2.Sample": {
+        "Description": "Sample list for the second block of the task"
+    },
+    "B2Stim": {
+        "Description": "Stimulus letter for each trial"
+    },
+    "B2Stim.ACC": {
+        "Description": "Accuracy of participant response for each trial",
+        "Levels": {
+            "0": "incorrect response",
+            "1": "correct response"
+        }
+    },
+    "B2Stim.CRESP": {
+        "Description": "Correct response for the each trial",
+        "Levels":{
+            "{SPACE}": "Correct response is Spacebar",
+            "": "Correct response is no response"
+        }
+    },
+    "B2Stim.DurationError": {
+        "Description": "Difference in stimuli duration and the intended duration - when the event is terminated by a response, a value of - 99999 is used (i.e., since the duration error cannot be computed in that sutation)",
+        "Units": "ms"
+    },
+    "B2Stim.OnsetDelay": {
+        "Description": "Time from stimuli onset time and the expected/target onset time",
+        "Units": "ms"
+    },
+    "B2Stim.OnsetTime": {
+        "Description": "Time from start of task to stimuli presentation",
+        "Units": "ms"
+    },
+    "B2Stim.OnsetToOnsetTime": {
+        "Description": "Time from the current trial and the next trial's stimulis OnsetTime",
+      "Units": "ms"
+    },
+    "B2Stim.RESP": {
+        "Description": "Response to stimuli for each trial",
+        "Levels":{
+            "{SPACE}": "Responsed with Spacebar",
+            "": "No response"
+        },
+    },
+    "B2Stim.RT": {
+        "Description": "Response time to stimuli for each trial",
+        "Units": "ms"
+    },
+    "B2Stim.RTTime": {
+        "Description": "Time from start of task to response for each trial",
+        "Units": "ms"
+    },
+    "Condition": {
+        "Description": "Condition type of the presented stimulus",
+        "Levels":{
+            "Fill": "The presented stimulus meets the criteria for 2-back response (i.e., current stimui matches stimuli presented two trials previously)",
+            "Target": "The presented stimulus meets the criteria for a 2-back response (i.e., current stimui does NOT match stimuli presented two trials previously)",
+            "": "The presented stimulus is not a letter"
+        }
+    },
+    "correct": {
+        "Description": "Correct response for the each trial",
+        "Levels":{
+            "{SPACE}": "Correct response is Spacebar"
+            "": "Correct response is no response",
+        }
+    },
+    "Font": {
+        "Description": "Font size of stimuli"
+    },
+    "Procedure[Trial]": {
+        "Description": "Eprime Procedure associated with trial",
+        "Levels":{
+            "B2TrialProc": "Procedure for presenting 2-back stimuli",
+            "": "no procedure associted with trial"
+        }
+    },
+    "Running[Trial]": {
+        "Description": "Name of list of corresponding to procedure trail",
+        "Levels":{
+            "B2List1": "List containing stimuli for first block",
+            "B2List2": "List containing stimuli for second block"
+            "": "No list",
+        }
+    }
+}

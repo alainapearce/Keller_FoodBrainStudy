@@ -1,0 +1,327 @@
+{
+    "Go-NoGo Task": {
+        "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949a93/",
+        "DatasetType": "source"
+    },
+    "ExperimentName": {
+        "Description": "Name of the experiment used to generate the data file"
+    },
+    "Subject": {
+        "Description": "Subject number entered by experimenter"
+    },
+    "Session": {
+        "Description": "Session number entered by experimenter"
+    },
+    "Clock.Information": {
+        "Description": "Clock information"
+    },
+    "DataFile.Basename": {
+        "Description": "Name of data output from E-prime"
+    },
+    "Display.RefreshRate": {
+        "Description": "Display refresh rate"
+    },
+    "ExperimentVersion": {
+        "Description": "Version of the task used to generate the data file"
+    },
+    "Group": {
+        "Description": "Group number (only 1 group)"
+    },
+    "RandomSeed": {
+        "Description": "Auto-generated random seed used for randomization"
+    },
+    "RuntimeCapabilities": {
+        "Description": "E-Prime runtime capabilities"
+    },
+    "RuntimeVersion": {
+        "Description": "E-run version used to run experiment"
+    },
+    "RuntimeVersionExpected": {
+        "Description": "E-run version expected to run experiment"
+    },
+    "SessionDate": {
+        "Description": "Date of experiment; based on the computer",
+        "Units": "DD/MM/YY"
+    },
+    "SessionStartDateTimeUtc": {
+        "Description": "Date and time of experiment in Coordinated Universal Time (UTC) ",
+        "Units": "DD/MM/YY HH:MM:SS AM/PM"
+    },
+    "SessionTime": {
+        "Description": "Time of task based on the computer",
+        "Units": "HH:MM:SS in military time"
+    },
+    "StudioVersion": {
+        "Description": "E-Studio version"
+    },
+    "Block": {
+        "Description": "Block number"
+    },
+    "BlockList": {
+        "Description": "Order of procedures presentated",
+        "Levels": {
+            "1": "Block 1 procedure",
+            "2": "Block 2 procedure",
+            "3": "Block 3 procedure",
+            "4": "Block 4 procedure",
+            "5": "Block 5 procedure",
+            "": "Non-experimental block"
+        }
+    },
+    "BlockList.Cycle": {
+        "Description": "Cycle number",
+        "Levels": {
+            "1": "First cycle of BlockList",
+            "": "Non-experimental block"
+        }
+    },
+    "BlockList.Sample": {
+        "Description": "Order of procedures presentated",
+        "Levels":{
+            "1": "Block 1 procedure",
+            "2": "Block 2 procedure",
+            "3": "Block 3 procedure",
+            "4": "Block 4 procedure",
+            "5": "Block 5 procedure",
+        }
+    },
+    "order": {
+        "Description": "Order of block procedures"
+    },
+    "Prac": {
+        "Description": "Prac block",
+        "Levels": {
+               "1": "Prac block",
+                "": "Not running Prac"
+        },
+    "Prac.Cycle": {
+        "Description": "Cycle number of practice block",
+        "Levels": {
+            "1": "Prac cycle 1",
+             "": "Not running Prac"
+        }
+    },
+    "Prac.Sample": {
+        "Description": "Order practice procedure blocks",
+        "Levels": {
+            "1": "First practice procedure block",
+             "": "Not running practice block"
+            }
+       },
+    "Procedure[Block]": {
+        "Description": "Name of block for block procedures, which present an introduction, the block trials, and an exist screen ('OutBlock')",
+        "Levels": {
+          "Block1": "Block 1 procedure",
+          "Block2": "Block 2 procedure",
+          "Block3": "Block 3 procedure",
+          "Block4": "Block 4 procedure",
+          "Block5": "Block 5 procedure"
+      }
+    },
+    "Running[Block]": {
+        "Description": "Name of procedure list",
+        "Levels": {
+            "Prac": "Procedure list for procedure block",
+            "BlockList": "Procedure list for experimental blocks"
+        }
+    },
+    "Trial": {
+        "Description": "Trial number for current procedure block"
+    },
+    "CA": {
+        "Description": "Correct response for each trial",
+        "Levels":{
+            "{SPACE}": "Correct response is SPACE",
+            "": "Correct responses is no response"
+        }
+    },
+    "compatibility": {
+        "Description": "Stimulus type",
+        "Levels": {
+            "Go": "Go stimulus",
+            "NoGo": "NoGo stimulus"
+        }
+    },
+    "gonogo": {
+        "Description": "Stimulus type",
+        "Levels": {
+            "101": "Go stimulus",
+            "102": "NoGo stimulus"
+        }
+    },
+    "image": {
+        "Description": "Stimulus type",
+        "Levels": {
+            "Go": "Go stimulus",
+            "NoGo": "NoGo stimulus"
+        }
+    },
+    "imagecode": {
+        "Description": "number associated with image file presented"
+    },
+    "Practice": {
+        "Description": "stimuli number presented during practice procedure"
+    },
+    "Practice.Cycle": {
+        "Description": "Cycle number for practice procedure",
+        "Levels": {
+          "1": "The first cycle",
+          "": "Not running Practice"
+        }
+    },
+    "Practice.Sample": {
+        "Description": "Order of stimuli presented in practice procedure"
+    },
+    "Procedure[Trial]": {
+        "Description": "Name of trial procedrure, each of which present a fixation (300ms), a stimulus screen (750ms), and then a response screen (500ms)",
+        "Levels": {
+        "TrialProc": "Practice block trial procedure",
+        "TrialProc2": "Block 1 trial procedure",
+        "TrialProc3": "Block 2 trial procedure",
+        "TrialProc4": "Block 3 trial procedure",
+        "TrialProc5": "Block 4 trial procedure",
+        "TrialProc6": "Block 5 trial procedure"
+        }
+    },
+    "Respond.ACC": {
+        "Description": "Accuracy of participant response during the blank response screen (responses allowed after stimuli leaves screen)",
+        "Levels": {
+            "0": "Incorrect response",
+            "1": "Correct response"
+        }
+    },
+    "Respond.CRESP": {
+        "Description": "Correct response for trial",
+        "Levels":{
+            "{SPACE}": "correct response is SPACE",
+            "": "correct responses is no response"
+        }
+    },
+    "Respond.RESP": {
+        "Description": "Participant response made during blank screen that follows stimuli presentation (responses allowed after stimuli leaves screen)",
+        "Levels":{
+            "{SPACE}": "spacebar",
+            "": "no response was made"
+        }
+    },
+    "Respond.RT": {
+        "Description": "Time from presetnation of blank response screen to participant response (responses allowed after stimuli leaves screen)",
+        "Units": "ms"
+    },
+    "Respond.RTTime": {
+        "Description": "Time from start of task to participant response during the blank response screen (responses allowed after stimuli leaves screen)",
+        "Units": "ms"
+    },
+    "Running[Trial]": {
+        "Description": "Procedure trial list",
+        "Levels": {
+            "Practice": "Practice trial list",
+            "Trial1": "Block 1 trial list",
+            "Trial2": "Block 2 trial list",
+            "Trial3": "Block 3 trial list",
+            "Trial4": "Block 4 trial list",
+            "Trial5": "Block 5 trial list"
+        }
+    },
+    "s1": {
+      "Description": "Name of image file displayed"
+    },
+    "Stim.ACC": {
+        "Description": "Accuracy of participant response during the stimuli presentation",
+        "Levels":{
+            "0": "Incorrect response",
+            "1": "Correct response"
+        }
+    },
+    "Stim.CRESP": {
+        "Description": "Correct response for trial",
+        "Levels":{
+            "{SPACE}": "Correct response is {SPACE}",
+            "": "Correct response is no response"
+        }
+    },
+    "Stim.RESP": {
+        "Description": "Participant response during stimuli presentation",
+        "Levels":{
+            "{SPACE}": "spacebar",
+            "": "no response was made"
+        }
+    },
+    "Stim.RT": {
+        "Description": "Time from stimulus presentation to participant response",
+        "Units": "ms"
+    },
+    "Stim.RTTime": {
+        "Description": "Time from start of task to participant response during stimuli presentation",
+        "Units": "ms"
+    },
+    "Target": {
+        "Description": "Stimulus image presented"
+    },
+    "Trial1": {
+        "Description": "Trial number for block 1"
+    },
+    "Trial1.Cycle": {
+        "Description": "Cycle number of block 1 trials",
+        "Levels":{
+            "1": "The first cycle",
+            "": "Not block 1 trial"
+        }
+    },
+    "Trial1.Sample": {
+      "Description": "Order of stimuli presented in block 1"
+    },
+    "Trial2": {
+        "Description": "Trial number for block 2"
+    },
+    "Trial2.Cycle": {
+        "Description": "Cycle number of block 2 trials",
+        "Levels":{
+            "1": "The first cycle",
+            "": "Not block 2 trial"
+        }
+    },
+    "Trial2.Sample": {
+      "Description": "Order of stimuli presented in block 2"
+    },
+    "Trial3": {
+        "Description": "Trial number for block 3"
+    },
+    "Trial3.Cycle": {
+        "Description": "Cycle number of block 3 trials",
+        "Levels":{
+            "1": "The first cycle",
+            "": "Not block 3 trial"
+        }
+    },
+    "Trial3.Sample": {
+      "Description": "Order of stimuli presented in block 3"
+    },
+    "Trial4": {
+        "Description": "Trial number for block 4"
+    },
+    "Trial4.Cycle": {
+        "Description": "Cycle number of block 4 trials",
+        "Levels":{
+            "1": "The first cycle",
+            "": "Not block 4 trial"
+        }
+    },
+    "Trial4.Sample": {
+      "Description": "Order of stimuli presented in block 4"
+    },
+    "Trial5": {
+        "Description": "Trial number for block 5"
+    },
+    "Trial1.Cycle": {
+        "Description": "Cycle number of block 5 trials",
+        "Levels":{
+            "1": "The first cycle",
+            "": "Not block 5 trial"
+        }
+    },
+    "Trial5.Sample": {
+      "Description": "Order of stimuli presented in block 5"
+    },
+}
