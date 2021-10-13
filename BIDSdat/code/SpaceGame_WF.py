@@ -295,17 +295,13 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
             Space_sum_ses2_wide = Space_sum_ses1_dat.pivot(columns='block', index='sub', values=columnnames[3:16])
             Space_sum_ses2_wide.columns = ['_'.join(col) for col in Space_sum_ses2_wide.columns.reorder_levels(order=[1, 0])]
 
-            #add session
-            Space_sum_ses1_wide['ses'] = Space_sum_ses1_dat.loc[0, 'ses']
-            Space_sum_ses2_wide['ses'] = Space_sum_ses2_dat.loc[0, 'ses']
-
             #make the sub index into a dataset column
             Space_sum_ses1_wide = Space_sum_ses1_wide.reset_index(level = 0)
             Space_sum_ses2_wide = Space_sum_ses2_wide.reset_index(level = 0)
 
             #add session
-            Space_sum_ses1_wide['ses'] = Space_sum_ses1_dat.iloc[0, 1]
-            Space_sum_ses2_wide['ses'] = Space_sum_ses1_dat.iloc[0, 1]
+            Space_sum_ses1_wide.insert(1, 'ses', 1)
+            Space_sum_ses2_wide.insert(1, 'ses', 2)
 
             #concatonate databases
             Space_summary_wide = pd.concat([Space_sum_ses1_wide,Space_sum_ses2_wide],ignore_index=True)
@@ -319,7 +315,7 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
             Space_summary_wide = Space_summary_wide.reset_index(level = 0)
 
             #add session
-            Space_summary_wide['ses'] = Space_summary_dat.iloc[0, 1]
+            Space_summary_wide.insert(1, 'ses', db_sessions[0])
 
         #re-order columns
         columnnames_reorder = ['sub', 'ses', 'all_earth_rt_mean', 'all_earth_rt_median', 'all_earth_n_miss',
@@ -359,25 +355,47 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
         #if overwriting participants
         if overwrite_flag == True:
             #function to drop rows based on values
-            def filter_rows_by_values(df, col, values):
-                return df[df[col].isin(values) == False]
+            def filter_rows_by_values(df, sub_values, sesnum):
+                #fileter based on sub and ses
+                return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
 
-            #get list of subs to filter in wide and long data
-            wide_sub_list = list(Space_summary_wide['sub'].unique())
-            block_sub_list = list(Space_summary_blocks['sub'].unique())
+            #filter out/remove exisiting subs to overwrit~
+            if len(db_sessions) > 1:
+                #get list of subs by ses to filter in wide and long data
+                wide_sub_list = Space_summary_wide.groupby('ses')['sub'].unique()
+                long_sub_list = Space_summary_blocks.groupby('ses')['sub'].unique()
 
-            #filter out/remove exisiting subs to overwrite
-            Space_database_wide = filter_rows_by_values(Space_database_wide, 'sub', wide_sub_list)
-            Space_database_blocks = filter_rows_by_values(Space_database_blocks, 'sub', block_sub_list)
+                Space_database_ses1 = filter_rows_by_values(Space_database_wide, wide_sub_list[0], 1)
+                Space_database_ses2 = filter_rows_by_values(Space_database_wide, wide_sub_list[1], 2)
+
+                Space_database_ses1_long = filter_rows_by_values(Space_database_blocks, long_sub_list[0], 1)
+                Space_database_ses2_long = filter_rows_by_values(Space_database_blocks, long_sub_list[1], 2)
+
+                #concatonate databases
+                Space_database_wide = pd.concat([Space_database_ses1, Space_database_ses2],ignore_index=True)
+                Space_database_blocks = pd.concat([Space_database_ses1_long, Space_database_ses2_long],ignore_index=True)
+
+            else:
+                wide_sub_list = list(Space_summary_wide['sub'].unique())
+                long_sub_list = list(Space_summary_blocks['sub'].unique())
+
+                #filter by ses and sub
+                Space_database_ses = filter_rows_by_values(Space_database_wide, wide_sub_list, db_sessions[0])
+                Space_database_long_ses = filter_rows_by_values(Space_database_blocks, long_sub_list, db_sessions[0])
+
+                #concatonate with other session in full database
+                Space_database_wide = pd.concat([Space_database_wide[Space_database_wide['ses'] != db_sessions[0]], Space_database_ses],ignore_index=True)
+                Space_database_blocks = pd.concat([Space_database_blocks[Space_database_blocks['ses'] != db_sessions[0]], Space_database_long_ses],ignore_index=True)
+
         
         #add newly processed data
         Space_database_wide = Space_database_wide.append(Space_summary_wide)
         Space_database_blocks = Space_database_blocks.append(Space_summary_blocks)
 
         #sort to ensure in sub order
-        Space_database_wide = Space_database_wide.sort_values(by = ['sub', 'ses'])
-        Space_database_blocks = Space_database_blocks.sort_values(by = ['sub', 'ses', 'block'])
-
+        Space_database_wide = Space_database_wide.sort_values(by = ['ses', 'sub'])
+        Space_database_blocks = Space_database_blocks.sort_values(by = ['ses', 'sub', 'block'])
+        
         #write databases
         Space_database_wide.to_csv(str(Path(derivative_data_path).joinpath('task-space_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         Space_database_blocks.to_csv(str(Path(derivative_data_path).joinpath('task-space_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)

@@ -220,22 +220,22 @@ def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
     if isinstance(block_sumDat, Bunch):        
         #get output data from node
         np_allBlockDat = block_sumDat.summaryNback_dat
-
-        #convert np subarrays to pandas
-        def np2pds(t):
-            return [pd.DataFrame(sublist) for sublist in t]
-        
-        pandas_allBlockDat = np2pds(np_allBlockDat)
-
-        #combine datasets 
-        allBlockDat = pd.concat(pandas_allBlockDat)
         
     #if only 1 participant/dataset then it is a list    
     elif isinstance(block_sumDat, list):
         if len(block_sumDat) == 1:
-            allBlockDat = block_sumDat[0]
+            np_allBlockDat = block_sumDat[0]
         else:
-            allBlockDat = pd.concat(block_sumDat)
+            np_allBlockDat = block_sumDat
+    
+    #convert np subarrays to pandas
+    def np2pds(t):
+        return [pd.DataFrame(sublist) for sublist in t]
+        
+    pandas_allBlockDat = np2pds(np_allBlockDat)
+
+    #combine datasets 
+    allBlockDat = pd.concat(pandas_allBlockDat)
     
     #if a pandas dataframe
     if isinstance(allBlockDat, pd.DataFrame):
@@ -257,16 +257,22 @@ def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
         if len(db_sessions) > 1:
             allBlockDat_ses1_dat = allBlockDat.groupby('ses').get_group(1)
             allBlockDat_ses2_dat = allBlockDat.groupby('ses').get_group(2)
-        
+            
+            #make wide data set 
             allBlockDat_ses1_wide = allBlockDat_ses1_dat.pivot(columns='block', index='sub', values=col_names[3:19])
             allBlockDat_ses1_wide.columns = ['_'.join(col) for col in allBlockDat_ses1_wide.columns.reorder_levels(order=[1, 0])]
 
             allBlockDat_ses2_wide = allBlockDat_ses2_dat.pivot(columns='block', index='sub', values=col_names[3:19])
             allBlockDat_ses2_wide.columns = ['_'.join(col) for col in allBlockDat_ses2_wide.columns.reorder_levels(order=[1, 0])]
 
+            #make the sub index into a dataset column
+            allBlockDat_ses1_wide = allBlockDat_ses1_wide.reset_index(level = 0)
+            allBlockDat_ses2_wide = allBlockDat_ses2_wide.reset_index(level = 0)
+
             #add session
-            allBlockDat_ses1_wide['ses'] = allBlockDat_ses1_wide.iloc[0, 1]
-            allBlockDat_ses2_wide['ses'] = allBlockDat_ses2_wide.iloc[0, 1]
+            allBlockDat_ses1_wide.insert(1, 'ses', 1)
+            allBlockDat_ses1_wide.insert(1, 'ses', 2)
+
 
             #concatonate databases
             allBlockDat_wide = pd.concat([allBlockDat_ses1_wide, allBlockDat_ses2_wide],ignore_index=True)
@@ -280,11 +286,28 @@ def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
             allBlockDat_wide = allBlockDat_wide.reset_index(level = 0)
 
             #add session
-            allBlockDat_wide['ses'] = allBlockDat_wide.iloc[0, 1]
+            allBlockDat_wide.insert(1, 'ses', db_sessions[0])
 
         #re-order columns
-        #columnnames_reorder =
-    
+        columnnames_reorder = ['sub', 'ses', 
+         'b0_n_targets', 'b0_n_fill', 'b0_n_trials', 'b0_n_acc','b0_p_acc',
+         'b0_n_target_hit','b0_p_target_hit', 'b0_n_target_miss',
+         'b0_p_target_miss','b0_n_fill_corr','b0_p_fill_corr',
+         'b0_n_fill_fa', 'b0_p_fill_fa','b0_p_target_ba',
+         'b0_rt_mean_target_hit','b0_rt_med_target_hit',
+         'b1_n_targets', 'b1_n_fill', 'b1_n_trials', 'b1_n_acc','b1_p_acc',
+         'b1_n_target_hit','b1_p_target_hit','b1_n_target_miss',
+         'b1_p_target_miss', 'b1_n_fill_corr','b1_p_fill_corr',
+         'b1_n_fill_fa','b1_p_fill_fa','b1_p_target_ba',
+         'b1_rt_mean_target_hit','b1_rt_med_target_hit',
+         'b2_n_targets', 'b2_n_fill', 'b2_n_trials', 'b2_n_acc','b2_p_acc',
+         'b2_n_target_hit','b2_p_target_hit', 'b2_n_target_miss',
+         'b2_p_target_miss','b2_n_fill_corr','b2_p_fill_corr',
+         'b2_n_fill_fa','b2_p_fill_fa','b2_p_target_ba',
+         'b2_rt_mean_target_hit','b2_rt_med_target_hit']
+           
+        allBlockDat_wide = allBlockDat_wide.reindex(columns=columnnames_reorder)
+
         ## load databases
         #derivative data path
         derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
@@ -296,24 +319,45 @@ def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
         #if overwriting participants
         if overwrite_flag == True:
             #function to drop rows based on values
-            def filter_rows_by_values(df, col, values):
-                return df[df[col].isin(values) == False]
+            def filter_rows_by_values(df, sub_values, sesnum):
+                #fileter based on sub and ses
+                return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
 
-            #get list of subs to filter in wide and long data
-            wide_sub_list = list(allBlockDat_wide['sub'].unique())
-            block_sub_list = list(allBlockDat['sub'].unique())
+            #filter out/remove exisiting subs to overwrit~
+            if len(db_sessions) > 1:
+                #get list of subs by ses to filter in wide and long data
+                wide_sub_list = allBlockDat_wide.groupby('ses')['sub'].unique()
+                long_sub_list = allBlockDat.groupby('ses')['sub'].unique()
 
-            #filter out/remove exisiting subs to overwrite
-            Nback_database = filter_rows_by_values(Nback_database, 'sub', wide_sub_list)
-            Nback_database_long = filter_rows_by_values(Nback_database_long, 'sub', block_sub_list)
-        
+                Nback_database_ses1 = filter_rows_by_values(Nback_database, wide_sub_list[0], 1)
+                Nback_database_ses2 = filter_rows_by_values(Nback_database, wide_sub_list[1], 2)
+
+                Nback_database_ses1_long = filter_rows_by_values(Nback_database_long, long_sub_list[0], 1)
+                Nback_database_ses2_long = filter_rows_by_values(Nback_database_long, long_sub_list[1], 2)
+
+                #concatonate databases
+                Nback_database = pd.concat([Nback_database_ses1, Nback_database_ses2],ignore_index=True)
+                Nback_database_long = pd.concat([Nback_database_ses1_long, Nback_database_ses2_long],ignore_index=True)
+
+            else:
+                wide_sub_list = list(allBlockDat_wide['sub'].unique())
+                long_sub_list = list(allBlockDat['sub'].unique())
+
+                #filter by ses and sub
+                Nback_database_ses = filter_rows_by_values(Nback_database, wide_sub_list, db_sessions[0])
+                Nback_database_long_ses = filter_rows_by_values(Nback_database_long, long_sub_list, db_sessions[0])
+
+                #concatonate with other session in full database
+                Nback_database = pd.concat([Nback_database[Nback_database['ses'] != db_sessions[0]], Nback_database_ses],ignore_index=True)
+                Nback_database_long = pd.concat([Nback_database_long[Nback_database_long['ses'] != db_sessions[0]], Nback_database_long_ses],ignore_index=True)
+
         #add newly processed data
         Nback_database = Nback_database.append(allBlockDat_wide)
         Nback_database_long = Nback_database_long.append(allBlockDat)
 
         #sort to ensure in sub order
-        Nback_database = Nback_database_long.sort_values(by = ['sub', 'ses'])
-        Nback_database_long = Nback_database_long.sort_values(by = ['sub', 'ses', 'block'])
+        Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
+        Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
 
         #write databases
         Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
@@ -474,10 +518,6 @@ concat_saveDat = Node(Function(input_names = ['block_sumDat', 'overwrite_flag', 
 concat_saveDat.inputs.overwrite_flag = dat_overwrite
 concat_saveDat.inputs.bids_dir = str(base_directory)
 
-res = Nback_WF.run()
-
 Nback_WF.connect(sumResults, "summaryNback_dat", concat_saveDat, "block_sumDat")
 
 res = Nback_WF.run()
-
-

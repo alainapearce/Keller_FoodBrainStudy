@@ -14,33 +14,17 @@
         "size": 1
     },
     {
-        "group": 1,
-        "imports": [
-            "1_summaryData"
-        ],
-        "name": "2_concatBlocksLong",
-        "size": 1
-    },
-    {
         "group": 2,
         "imports": [],
-        "name": "3_selectID",
+        "name": "2_selectID",
         "size": 1
     },
     {
         "group": 2,
         "imports": [
-            "3_selectID"
+            "2_selectID"
         ],
-        "name": "4_summaryData",
-        "size": 1
-    },
-    {
-        "group": 2,
-        "imports": [
-            "4_summaryData"
-        ],
-        "name": "5_concatBlocksLong",
+        "name": "3_summaryData",
         "size": 1
     }
 ]

@@ -55,18 +55,11 @@ args=parser.parse_args()
 ####                                                                      ####
 ##############################################################################
 
-# Set file for troubleshooting function:
-# GNG_file = Path('/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-002/ses-1/beh/sub-002_ses-1_task-gng_events.tsv')
-# GNG_data = pd.read_csv(str(GNG_file), sep = '\t', encoding = 'utf-8-sig', engine='python') 
-
-
-
 ## GNG summary data function
 def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
     
-        
     ###################################################################
     ####                   Sub-function script                     ####
     
@@ -87,7 +80,6 @@ def summaryGNG(GNG_file):
         GNG_data.loc[GNG_data.stim_resp == '{SPACE}', 'trial_rt'] = GNG_data.stim_rt
         GNG_data.loc[GNG_data.respond_resp == '{SPACE}', 'trial_rt'] = GNG_data.respond_rt + 750
 
-
         ##Create new accuracy variable "Acc_Resp" that indicates a 1 when the columns 'CorrectResp' and 'RESP' match
         #initialize empty columns for accuracy variable
         GNG_data["trial_acc"] = np.nan
@@ -99,7 +91,6 @@ def summaryGNG(GNG_file):
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
         
         return(GNG_data)
-    
     
     def summary_stats(GNG_data):
         
@@ -114,7 +105,6 @@ def summaryGNG(GNG_file):
         # Accuracy
         nAcc = GNG_data['trial_acc'].value_counts()["1"]
         pAcc = nAcc/len(GNG_data)
-
 
         # Go Hits/Misses
         nGo_Hit = (Go_data.trial_acc == '1').sum()
@@ -223,7 +213,6 @@ def summaryGNG(GNG_file):
     else:
          overall_summary_data = 'no files'
             
-
     return overall_summary_data
 
 ## summary data function
@@ -292,7 +281,6 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
         
         GNG_summary_wide = GNG_summary_wide.reindex(columns=columnnames_reorder)
     
-    
         #get indiviudal blocks subset
         GNG_summary_blocks = GNG_summary_dat[GNG_summary_dat.block.isin(['b1', 'b2', 'b3', 'b4', 'b5'])] 
     
@@ -303,7 +291,6 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
         #load databases
         GNG_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t') 
         GNG_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t')
-
 
         #if overwriting participants
         if overwrite_flag == True:
@@ -319,7 +306,6 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
             GNG_database = filter_rows_by_values(GNG_database, 'sub', wide_sub_list)
             GNG_database_long = filter_rows_by_values(GNG_database_long, 'sub', long_sub_list)
 
-
         #add newly processed data
         GNG_database = GNG_database.append(GNG_summary_wide)
         GNG_database_long = GNG_database_long.append(GNG_summary_blocks)
@@ -328,13 +314,11 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
         GNG_database.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         GNG_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
-    
     else:
         print('No raw data files that need to be processed')
         GNG_database = np.nan
         GNG_database_long = np.nan
         
-    
     return GNG_database, GNG_database_long
 
 ##############################################################################
@@ -385,7 +369,8 @@ if args.parIDs is not None and len(args.parIDs) >= 1:
         
     #check if any files to process
     if subject_list is None:
-        sys.exit('No Files found for participants' + args.parIDs)      
+        sys.exit('No Files found for participants' + args.parIDs)   
+
 else:
     #no participants entered - find all files for session
     gng_raw_files = list(Path(raw_data_path).rglob('sub-*/ses-1/beh/*gng*.tsv'))
@@ -398,7 +383,6 @@ else:
     #set is finding only unique values
     subject_list = list(set([item[4:7] for item in gng_raw_subs]))   
 
-
 # move back to script directory
 os.chdir(script_path)
 
@@ -407,7 +391,6 @@ GNG_WF = Workflow('GNG')
 
 #summary data - define earlier than use so can connect to workflow based
 #on user input arguments
-
 sumResults = MapNode(Function(input_names = ['GNG_file', 'session_id'],
                            output_names = ['summaryGNG_dat'],
                            function = summaryGNG),
@@ -457,7 +440,6 @@ if args.overwrite is None:
 
 #overwrite option specified     
 else:
-
     # select files Node 
     template_path = Path('sub-%s/ses-1/beh/*task-gng*.tsv')
     selectfiles = Node(DataGrabber(infields=['subject_ids'],
