@@ -1,0 +1,76 @@
+{
+    "N-Back Task": {
+        "Description": "The verbal N-Back Task measures working memory ability",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949bcd",
+        "DatasetType": "derivitive - summary data produced by code/Nback_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "ses": {
+        "Description": "Session completed",
+        "Levels": {
+            "1": "visit 3 of baseline visits",
+            "2": "visit 7 at 1-year follow-up"
+        }
+    },
+    "block": {
+        "Description": "Block number for the task - the number does corresponds to order",
+        "Levels": {
+            "b0": "0-back condition",
+            "b1": "1-back condition",
+            "b2": "2-back condition",
+        }
+    },
+    "n_targets": {
+        "Description": "number of target trials"
+    },
+    "n_fill": {
+        "Description": "number of filler/non-target trials"
+    },
+    "n_trials": {
+        "Description": "number of trials"
+    },
+    "n_acc": {
+        "Description": "total accuracy: for correct responses and correct rejections"
+    },
+    "p_acc": {
+        "Description": "percent accuracy: for correctresponses and correct rejections"
+    },
+    "n_target_hit": {
+        "Description": "total correct responses to targets"
+    },
+    "p_target_hit": {
+        "Description": "percent correct responses to targets"
+    },
+    "n_target_miss": {
+        "Description": "total missed responses to targets"
+    },
+    "p_target_miss": {
+        "Description": "percent missed responses to targets"
+    },
+    "n_fill_corr": {
+        "Description": "total correct no-responses to filler/non-target trials"
+    },
+    "p_fill_corr": {
+        "Description": "percent correct no-responses to filler/non-target trials"
+    },
+    "n_fill_fa": {
+        "Description": "total incorrect responses (false alarms) to filler/non-target trials"
+    },
+    "p_fill_fa": {
+        "Description": "percent incorrect responses (false alarms) to filler/non-target trials"
+    },
+    "p_target_ba": {
+        "Description": "ballanced accuracy ((percent hits + percent correct no response)/2)"
+    },
+    "rt_mean_target_hit": {
+        "Description": "average reaction time across all correct target responses (i.e., hits)",
+        "Units": "ms"
+    },
+    "rt_med_target_hit": {
+        "Description": "median reaction time across all correct target responses (i.e., hits)",
+        "Units": "ms"
+    }
+}
+

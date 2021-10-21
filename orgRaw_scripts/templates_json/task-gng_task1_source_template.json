@@ -83,7 +83,7 @@
             "2": "Block 2 procedure",
             "3": "Block 3 procedure",
             "4": "Block 4 procedure",
-            "5": "Block 5 procedure",
+            "5": "Block 5 procedure"
         }
     },
     "order": {
@@ -94,7 +94,8 @@
         "Levels": {
                "1": "Prac block",
                 "": "Not running Prac"
-        },
+        }
+    },
     "Prac.Cycle": {
         "Description": "Cycle number of practice block",
         "Levels": {
@@ -176,12 +177,12 @@
     "Procedure[Trial]": {
         "Description": "Name of trial procedrure, each of which present a fixation (300ms), a stimulus screen (750ms), and then a response screen (500ms)",
         "Levels": {
-        "TrialProc": "Practice block trial procedure",
-        "TrialProc2": "Block 1 trial procedure",
-        "TrialProc3": "Block 2 trial procedure",
-        "TrialProc4": "Block 3 trial procedure",
-        "TrialProc5": "Block 4 trial procedure",
-        "TrialProc6": "Block 5 trial procedure"
+            "TrialProc": "Practice block trial procedure",
+            "TrialProc2": "Block 1 trial procedure",
+            "TrialProc3": "Block 2 trial procedure",
+            "TrialProc4": "Block 3 trial procedure",
+            "TrialProc5": "Block 4 trial procedure",
+            "TrialProc6": "Block 5 trial procedure"
         }
     },
     "Respond.ACC": {
@@ -314,7 +315,7 @@
     "Trial5": {
         "Description": "Trial number for block 5"
     },
-    "Trial1.Cycle": {
+    "Trial5.Cycle": {
         "Description": "Cycle number of block 5 trials",
         "Levels":{
             "1": "The first cycle",
@@ -323,5 +324,5 @@
     },
     "Trial5.Sample": {
       "Description": "Order of stimuli presented in block 5"
-    },
+    }
 }

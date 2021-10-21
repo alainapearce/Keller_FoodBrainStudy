@@ -65,6 +65,7 @@ def summaryGNG(GNG_file):
     
     #need to write sub-functions (e.g., getGNGtrialAcc) WITHIN the function that is called by the node (e.g., summaryGNG)
     #just like you need to re-import libraries
+    
     def getGNGtrialAcc(GNG_data):
         #Make 2 new variables:
         #trial_resp: indicate if response made during trial (stim or response screen)
@@ -102,8 +103,12 @@ def summaryGNG(GNG_file):
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
         
-        # Accuracy
-        nAcc = GNG_data['trial_acc'].value_counts()["1"]
+        # Accuracy - here *check par 51
+        if 1 in GNG_data.trial_acc:
+            nAcc = GNG_data['trial_acc'].value_counts()["1"]
+        else: 
+            nAcc = 0
+
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -142,8 +147,11 @@ def summaryGNG(GNG_file):
     ####                Primary function script                    ####
     
     if isinstance(GNG_file, str):
-        #if only 1 file, will be string and we want an array
-        GNG_file = [GNG_file]
+        if '.tsv' in GNG_file:
+            #if only 1 file, will be string and we want an array
+            GNG_file = [GNG_file]
+        else:
+            GNG_file = []
         
     if len(GNG_file) > 0:
     
@@ -310,6 +318,10 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
         GNG_database = GNG_database.append(GNG_summary_wide)
         GNG_database_long = GNG_database_long.append(GNG_summary_blocks)
 
+        #round to 3 decimal points
+        GNG_database = GNG_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        GNG_database_long = GNG_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
         #write databases
         GNG_database.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         GNG_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
@@ -387,11 +399,11 @@ else:
 os.chdir(script_path)
 
 #build workflow
-GNG_WF = Workflow('GNG')
+GNG_WF = Workflow('GNG', base_dir = str(script_path))
 
 #summary data - define earlier than use so can connect to workflow based
 #on user input arguments
-sumResults = MapNode(Function(input_names = ['GNG_file', 'session_id'],
+sumResults = MapNode(Function(input_names = ['GNG_file'],
                            output_names = ['summaryGNG_dat'],
                            function = summaryGNG),
                      iterfield = ['GNG_file'],

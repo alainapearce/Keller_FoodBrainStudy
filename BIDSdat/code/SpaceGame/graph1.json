@@ -3,32 +3,57 @@
         {
             "name": "Group_00001",
             "procs": [
-                0
+                0,
+                1
             ],
-            "total": 1
+            "total": 2
         },
         {
             "name": "Group_00002",
             "procs": [
-                1
+                2,
+                3
             ],
-            "total": 1
+            "total": 2
         }
     ],
-    "links": [],
-    "maxN": 1,
+    "links": [
+        {
+            "source": 0,
+            "target": 1,
+            "value": 1
+        },
+        {
+            "source": 2,
+            "target": 3,
+            "value": 1
+        }
+    ],
+    "maxN": 2,
     "nodes": [
         {
             "group": 1,
             "name": "0_selectID",
-            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzg1efe1z/SpaceGame/_session_id_1/selectID/_report/report.rst",
-            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmpzg1efe1z/SpaceGame/_session_id_1/selectID/result_selectID.pklz"
+            "report": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpt558yt1b/SpaceGame/_session_id_1/selectID/_report/report.rst",
+            "result": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpt558yt1b/SpaceGame/_session_id_1/selectID/result_selectID.pklz"
+        },
+        {
+            "group": 1,
+            "name": "1_summaryData",
+            "report": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpk0qs5n0g/SpaceGame/_session_id_1/summaryData/_report/report.rst",
+            "result": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpk0qs5n0g/SpaceGame/_session_id_1/summaryData/result_summaryData.pklz"
         },
         {
             "group": 2,
-            "name": "1_selectID",
-            "report": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmp5mb9pa19/SpaceGame/_session_id_2/selectID/_report/report.rst",
-            "result": "/private/var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/tmp5mb9pa19/SpaceGame/_session_id_2/selectID/result_selectID.pklz"
+            "name": "2_selectID",
+            "report": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpwl81mkp_/SpaceGame/_session_id_2/selectID/_report/report.rst",
+            "result": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpwl81mkp_/SpaceGame/_session_id_2/selectID/result_selectID.pklz"
+        },
+        {
+            "group": 2,
+            "name": "3_summaryData",
+            "report": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpadtrespc/SpaceGame/_session_id_2/summaryData/_report/report.rst",
+            "result": "/private/var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/tmpadtrespc/SpaceGame/_session_id_2/summaryData/result_summaryData.pklz"
         }
     ]
 }

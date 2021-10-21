@@ -1,0 +1,159 @@
+{
+    "Space Game Task": {
+        "Description": "The Space Game is a 2-Stage Reinforcement Learning/Reward-Related Decision Making Task",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
+        "DatasetType": "derivative - trial level data prepared for use in decision-making modeling produced by code/SpaceGame_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "ses": {
+        "Description": "Session completed",
+        "Levels": {
+            "1": "visit 6 of baseline visits"
+            "2": "visit 7 at 1-year follow-up"
+        }
+    }
+    "block": {
+        "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4"
+    },
+    "trial": {
+        "Description": "trial number"
+    },
+    "timeout_earth": {
+        "Description": "Indicates if participant timedout before responding during stage 1 - selecting a rocket",
+        "Levels": {
+            "0": "did not timeout",
+            "1": "did timeout"
+        }
+    },
+    "timeout_planet": {
+        "Description": "Indicates if participant timedout before responding during stage 2 - pressing SPACE bar to get treasure from alien",
+        "Levels": {
+            "0": "did not timeout",
+            "1": "did timeout"
+        }
+    },
+    "state_earth": {
+        "Description": "Indicates the state the earth is in for each trial (specific pairings of rockets)",
+        "Levels": {
+            "1": "state 1"
+            "2": "state 2"
+        }
+    },
+    "state_planet": {
+        "Description": "Indicates the state the planet is in for each trial (reward state - high or low)",
+        "Levels": {
+            "1": "state 1"
+            "2": "state 2"
+        }
+    },
+    "stim_left": {
+        "Description": "Indicates which rocket was presented during stage 1 (earth) on the left side of screen",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
+    },
+    "stim_right": {
+        "Description": "Indicates which rocket was presented during stage 1 (earth) on the right side of screen",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
+    },
+    "rt_earth": {
+        "Description": "Reaction time of response during stage 1 - rocket choice. Note: a value of -1 indicates the response window was missed",
+        "Units": "ms"
+    },
+    "rt_planet": {
+        "Description": "Reaction time of response during stage 2 - asking alien for treasure. Note: a value of -1 indicates the response window was missed",
+        "Units": "ms"
+    },
+    "choice_earth": {
+        "Description": "choice made during stage 1 - rocket choice",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
+    },
+    "response": {
+        "Description": "participant response during stage 1 - rocket choice",
+        "Levels": {
+            "1": "left rocket",
+            "2": "right rocket"
+        }
+    },
+    "points":{
+        "Description": "points earned that trial"
+    },
+    "win": {
+        "Description": "idicates if points were wond on that trial",
+        "Levels": {
+            "0": "no pionts won",
+            "1": "points won"
+        }
+    },
+    "stake": {
+        "Description": "the stake for the trial - no relevant for this task as all stakes were removed"
+    },
+    "score": {
+        "Description": "running tally of points/total score after each trial"
+    },
+    "rewards1": {
+        "Description": "possible reward for the left rocket choice"
+    },
+    "rewards2": {
+        "Description": "possible reward for the right rocket choice"
+    },
+    "missed_earth": {
+        "Description": "indicates if response window was missed for stage 1 - rocket choice",
+        "Levels": {
+            "0": "not missed",
+            "1": "missed"
+        }
+    },
+    "missed_planet": {
+        "Description": "indicates if response window was missed for stage 2 - asking alien for treasure",
+        "Levels": {
+            "0": "not missed",
+            "1": "missed"
+        }
+    },
+    "prev_state_earth": {
+        "Description": "Indicates the state the earth was in for the previous trial (specific pairings of rockets)",
+        "Levels": {
+            "0": "first trial so no previous state"
+            "1": "state 1"
+            "2": "state 2"
+        }
+    },
+    "prev_state_planet": {
+        "Description": "Indicates the state the planet was in for the previous trial (reward state - high or low)",
+        "Levels": {
+            "0": "first trial so no previous state"
+            "1": "state 1"
+            "2": "state 2"
+        }
+    },
+    "same_earth": {
+        "Description": "whether the current trial state for earth is different from previous trial's earth state"
+        "Levels": {
+            "0": "different from previous trial state"
+            "1": "same as previous trial state state"
+        }
+    },
+    "same_planet": {
+        "Description": "whether the current trial state for planet is different from previous trial's plant state"
+        "Levels": {
+            "0": "different from previous trial state"
+            "1": "same as previous trial state state"
+        }
+    }
+}

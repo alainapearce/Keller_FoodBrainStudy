@@ -1,0 +1,70 @@
+{
+    "Space Game": {
+        "Description": "The Space Game is a 2-stage reward-related decision making task adapted for children",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
+        "DatasetType": "derivitive - summary data produced by code/SpaceGame_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "ses": {
+        "Description": "Session completed",
+        "Levels": {
+            "1": "visit 3 of baseline visits",
+            "2": "visit 7 at 1-year follow-up"
+        }
+    },
+    "block": {
+        "Description": "Block number for the task with a rest between each block during task",
+        "Levels": {
+            "b1": "block 1",
+            "b2": "block 2",
+            "b3": "block 3",
+            "b4": "block 4"
+        }
+    },
+    "earth_rt_mean": {
+        "Description": "mean reaction time for the earth stage - selection of rockets",
+        "Units": "ms"
+    },
+    "earth_rt_median": {
+        "Description": "median reaction time for the earth stage - selection of rockets",
+        "Units": "ms"
+    },
+    "earth_n_miss": {
+        "Description": "number of trials where the participant timed out before responding on the earth stage"
+    },
+    "earth_p_miss": {
+        "Description": "percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "planet_rt_mean": {
+        "Description": "mean reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "planet_rt_median": {
+        "Description": "median reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "planet_n_miss": {
+        "Description": "number of trials where the participant timed out before responding on the planet stage"
+    },
+    "planet_p_miss": {
+        "Description": "percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "reward_rate": {
+        "Description": "average points earned per trial"
+    },
+    "avg_reward": {
+        "Description": "average points available to earn each trial"
+    },
+    "reward_rate_corrected": {
+        "Description": "difference between average points earned per trial and the average reward available per trial"
+    },
+    "prob_sameplanet_earthsame": {
+        "Description": "probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "prob_sameplanet_earthdiff": {
+        "Description": "probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    }
+}
+

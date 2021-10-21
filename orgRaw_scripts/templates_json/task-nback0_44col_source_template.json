@@ -26,7 +26,7 @@
         "Description": "Version of the task used to generate the data file"
     },
     "Group": {
-        "Description": "Group number (only 1 group)"
+        "Description": "Group number. As part of this experiment, no Group is assigned at runtime, so defaults to 1"
     },
     "RandomSeed": {
         "Description": "Auto-generated random seed used for randomization"
@@ -56,85 +56,85 @@
         "Description": "E-Studio version"
     },
     "Block": {
-        "Description": "Block number."
+        "Description": "Block number"
     },
     "List1": {
-        "Description": "Order of procedures presentated",
+        "Description": "ID of list1 procedure being run. Will be equal to list1_sample because list1 procedure orders were not randomized",
         "Levels":{
-            "1": "block 1 of nback task",
-            "2": "break screen option",
-            "3": "get ready screen",
-            "4": "focus screen",
-            "5": "block 2 of nback task"
+            "1": "ID 1, corresponds to B0BlockProc( block 1 of nback task)",
+            "2": "ID 2, corresponds to Break (break screen option)",
+            "3": "ID 3, corresponds to GetReadyProc (get ready screen)",
+            "4": "ID 4, corresponds to FocusProc (focus screen)",
+            "5": "ID 5, corresponds to B0Block2Proc (block 2 of nback task)"
         }
     },
     "List1.Cycle": {
-        "Description": "Cycle number of task",
+        "Description": "Cycle number of list1 (which contains B0BlockProc, Break, GetReadyProc, FocusProc, B0Block2Proc). Task was programmed to have 1 cycle",
         "Levels": {
             "1": "First cycle"
         }
     },
     "List1.Sample": {
-        "Description": "Order procedures presentated",
+        "Description": "Order procedure was presentated",
         "Levels":{
-            "1": "Block 1 of task",
-            "2": "Break screen",
-            "3": "Get ready screen",
-            "4": "Focus screen",
-            "5": "Block 2 of task"
+            "1": "1st procedure - Block 1 of task",
+            "2": "2nd procedure - Break screen",
+            "3": "3rd procedure - Get ready screen",
+            "4": "4th procedure - Focus screen",
+            "5": "5th procedure - Block 2 of task"
         }
     },
     "Procedure[Block]": {
-        "Description": "0-back block number",
+        "Description": "Name of procedure being run",
         "Levels":{
-            "B0BlockProc": "Block 1 of task",
+            "B0BlockProc": "Block 1 of task (contains 30 stimulus presentations)",
             "Break": "Break screen",
             "GetReadyProc": "Get ready screen",
             "FocusProc": "Focus screen",
-            "B0Block2Proc": "Block 2 of task"
+            "B0Block2Proc": "Block 2 of task (contains 30 stimulus presentations)"
         }
     },
     "Running[Block]": {
-        "Description": "Name of list of trial types",
+        "Description": "Name of list being run",
         "Levels":{
-            "List1": "Single list of trial (i.e., procedure) types"
+            "List1": "A list that contains 5 procedure blocks (B0BlockProc, Break, GetReadyProc, FocusProc, B0Block2Proc)"
         }
     },
     "Trial": {
-        "Description": "Trial number within the corresponding Procedure[Block]"
+        "Description": "Stimulus number being presented from the corresponding procedure_block (range: 1-30)"
     },
     "B0List1": {
-        "Description": "Trial list for the first block of the task"
+        "Description": "ID of stimulus (letter) being presented from b0_list1. Will be equal to b0_list1_sample since stimulus order was not randomized"
     },
     "B0List1.Cylce": {
-        "Description": "Cycle list for the first block of the task",
+        "Description": "Cycle number for the first block of the task. Task was programmed for 1 cycle",
         "Levels": {
             "1": "First cycle"
         }
     },
     "B0List1.Sample": {
-        "Description": "Sample list for the first block of the task"
+        "Description": "Order stimulus (letter) was presented within Block 1 (range: 1-30). For example, 1 = first letter presented, 5 = fifth letter presented."
     },
     "B0List2": {
-        "Description": "Trial list for the second block of the task"
+        "Description": "ID of stimulus (letter) being presented from b0_list2. Will be equal to b0_list2_sample since trial order was not randomized"
     },
     "B0List2.Cylce": {
-        "Description": "Cycle list for the second block of the task",
+        "Description": "Cycle number for the second block of the task. Task was programmed for 1 cycle",
         "Levels": {
             "1": "First cycle"
         }
     },
     "B0List2.Sample": {
-        "Description": "Sample list for the second block of the task"
+        "Description": "Order stimulus (letter) was presented within Block 2 (range: 1-30). For example, 1 = first letter presented, 5 = fifth letter presented."
     },
     "B0Stim": {
-      " Description": "Stimulus letter for each trial"
+        "Description": "Stimulus letter presented for each trial"
     },
     "B0Stim.ACC": {
-        "Description": "Accuracy of participant response for each trial",
+        "Description": "Accuracy of participant response for target (!) trials. Does not reflect overall accuracy!",
         "Levels": {
-            "0": "incorrect response",
-            "1": "correct response"
+            "0": "indicates no response was made for a target letter (an incorrect response) OR no response was made for a fill letter (correct response)",
+            "1": "correct response (indicates {SPACE} hit for target letter)"
         }
     },
     "B0Stim.CRESP": {
@@ -178,7 +178,7 @@
     "Condition": {
         "Description": "Condition type of the presented stimulus",
         "Levels":{
-            "Fill": "The presented stimulus meets the criteria for 0-Back response (i.e., not 'X')",
+            "Fill": "The presented stimulus does not meet the criteria for 0-Back response (i.e., not 'X')",
             "Target": "The presented stimulus meets the criteria for a 0-Back response (i.e., 'X')",
             "": "The presented stimulus is not a letter"
         }
@@ -186,8 +186,8 @@
     "correct": {
         "Description": "Correct response for the each trial",
         "Levels":{
-            "{SPACE}": "Correct response is Spacebar"
-            "": "Correct response is no response",
+            "{SPACE}": "Correct response is Spacebar",
+            "": "Correct response is no response"
         }
     },
     "Font": {
@@ -204,8 +204,8 @@
         "Description": "Name of list of corresponding to procedure trail",
         "Levels":{
             "B0List1": "List containing stimuli for first block",
-            "B0List2": "List containing stimuli for second block"
-            "": "No list",
+            "B0List2": "List containing stimuli for second block",
+            "": "No list"
         }
     }
 }

@@ -1,0 +1,232 @@
+{
+    "Space Game": {
+        "Description": "The Space Game is a 2-stage reward-related decision making task adapted for children",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
+        "DatasetType": "derivitive - summary data produced by code/SpaceGame_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "ses": {
+        "Description": "Session completed",
+        "Levels": {
+            "1": "visit 3 of baseline visits",
+            "2": "visit 7 at 1-year follow-up"
+        }
+    },
+    "all_earth_rt_mean": {
+        "Description": "mean reaction time across all trials for the earth stage - selection of rockets",
+        "Units": "ms"
+    },
+    "all_earth_rt_median": {
+        "Description": "median reaction time across all trials for the earth stage - selection of rockets",
+        "Units": "ms"
+    },
+    "all_earth_n_miss": {
+        "Description": "number of trials where the participant timed out before responding on the earth stage"
+    },
+    "all_earth_p_miss": {
+        "Description": "percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "all_planet_rt_mean": {
+        "Description": "mean reaction time across all trials for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "all_planet_rt_median": {
+        "Description": "median reaction time across all trials for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "all_planet_n_miss": {
+        "Description": "number of trials where the participant timed out before responding on the planet stage"
+    },
+    "all_planet_p_miss": {
+        "Description": "percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "all_reward_rate": {
+        "Description": "average points earned per trial"
+    },
+    "all_avg_reward": {
+        "Description": "average points available to earn each trial"
+    },
+    "all_reward_rate_corrected": {
+        "Description": "difference between average points earned per trial and the average reward available per trial"
+    },
+    "all_prob_sameplanet_earthsame": {
+        "Description": "probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "all_prob_sameplanet_earthdiff": {
+        "Description": "probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    },
+    "b1_earth_rt_mean": {
+        "Description": "block 1 only - mean reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b1_earth_rt_median": {
+        "Description": "block 1 only - median reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b1_earth_n_miss": {
+        "Description": "block 1 only - number of trials where the participant timed out before responding on the earth stage"
+    },
+    "b1_earth_p_miss": {
+        "Description": "block 1 only - percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "b1_planet_rt_mean": {
+        "Description": "block 1 only - mean reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b1_planet_rt_median": {
+        "Description": "block 1 only - median reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b1_planet_n_miss": {
+        "Description": "block 1 only - number of trials where the participant timed out before responding on the planet stage"
+    },
+    "b1_planet_p_miss": {
+        "Description": "block 1 only - percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "b1_reward_rate": {
+        "Description": "block 1 only - average points earned per trial"
+    },
+    "b1_avg_reward": {
+        "Description": "block 1 only - average points available to earn each trial"
+    },
+    "b1_reward_rate_corrected": {
+        "Description": "block 1 only - difference between average points earned per trial and the average reward available per trial"
+    },
+    "b1_prob_sameplanet_earthsame": {
+        "Description": "block 1 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "b1_prob_sameplanet_earthdiff": {
+        "Description": "block 1 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    },
+    "b2_earth_rt_mean": {
+        "Description": "block 2 only - mean reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b2_earth_rt_median": {
+        "Description": "block 2 only - median reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b2_earth_n_miss": {
+        "Description": "block 2 only - number of trials where the participant timed out before responding on the earth stage"
+    },
+    "b2_earth_p_miss": {
+        "Description": "block 2 only - percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "b2_planet_rt_mean": {
+        "Description": "block 2 only - mean reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b2_planet_rt_median": {
+        "Description": "block 2 only - median reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b2_planet_n_miss": {
+        "Description": "block 2 only - number of trials where the participant timed out before responding on the planet stage"
+    },
+    "b2_planet_p_miss": {
+        "Description": "block 2 only - percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "b2_reward_rate": {
+        "Description": "block 2 only - average points earned per trial"
+    },
+    "b2_avg_reward": {
+        "Description": "block 2 only - average points available to earn each trial"
+    },
+    "b2_reward_rate_corrected": {
+        "Description": "block 2 only - difference between average points earned per trial and the average reward available per trial"
+    },
+    "b2_prob_sameplanet_earthsame": {
+        "Description": "block 2 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "b2_prob_sameplanet_earthdiff": {
+        "Description": "block 2 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    },
+    "b3_earth_rt_mean": {
+        "Description": "block 3 only - mean reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b3_earth_rt_median": {
+        "Description": "block 3 only - median reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b3_earth_n_miss": {
+        "Description": "block 3 only - number of trials where the participant timed out before responding on the earth stage"
+    },
+    "b3_earth_p_miss": {
+        "Description": "block 3 only - percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "b3_planet_rt_mean": {
+        "Description": "block 3 only - mean reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b3_planet_rt_median": {
+        "Description": "block 3 only - median reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b3_planet_n_miss": {
+        "Description": "block 3 only - number of trials where the participant timed out before responding on the planet stage"
+    },
+    "b3_planet_p_miss": {
+        "Description": "block 3 only - percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "b3_reward_rate": {
+        "Description": "block 3 only - average points earned per trial"
+    },
+    "b3_avg_reward": {
+        "Description": "block 3 only - average points available to earn each trial"
+    },
+    "b3_reward_rate_corrected": {
+        "Description": "block 3 only - difference between average points earned per trial and the average reward available per trial"
+    },
+    "b3_prob_sameplanet_earthsame": {
+        "Description": "block 3 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "b3_prob_sameplanet_earthdiff": {
+        "Description": "block 3 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    },
+    "b4_earth_rt_mean": {
+        "Description": "block 4 only - mean reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b4_earth_rt_median": {
+        "Description": "block 4 only - median reaction time for the earth stage (selection of rockets)",
+        "Units": "ms"
+    },
+    "b4_earth_n_miss": {
+        "Description": "block 4 only - number of trials where the participant timed out before responding on the earth stage"
+    },
+    "b4_earth_p_miss": {
+        "Description": "block 4 only - percent of trials where the participant timed out before responding on the earth stage"
+    }
+    "b4_planet_rt_mean": {
+        "Description": "block 4 only - mean reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b4_planet_rt_median": {
+        "Description": "block 4 only - median reaction time for the planet stage - asking for space gold",
+        "Units": "ms"
+    },
+    "b4_planet_n_miss": {
+        "Description": "block 4 only - number of trials where the participant timed out before responding on the planet stage"
+    },
+    "b4_planet_p_miss": {
+        "Description": "block 4 only - percent of trials where the participant timed out before responding on the planet stage"
+    }
+    "b4_reward_rate": {
+        "Description": "block 4 only - average points earned per trial"
+    },
+    "b4_avg_reward": {
+        "Description": "block 4 only - average points available to earn each trial"
+    },
+    "b4_reward_rate_corrected": {
+        "Description": "block 4 only - difference between average points earned per trial and the average reward available per trial"
+    },
+    "b4_prob_sameplanet_earthsame": {
+        "Description": "block 4 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the same as previous trial"
+    },
+    "b4_prob_sameplanet_earthdiff": {
+        "Description": "block 4 only - probability of choosing the same planet given the earth stage (rocketship pairing) is the different from the previous trial"
+    }
+}

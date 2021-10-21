@@ -1,0 +1,24 @@
+[
+    {
+        "group": 1,
+        "imports": [],
+        "name": "0_selectfiles",
+        "size": 1
+    },
+    {
+        "group": 1,
+        "imports": [
+            "0_selectfiles"
+        ],
+        "name": "1_summaryData",
+        "size": 1
+    },
+    {
+        "group": 1,
+        "imports": [
+            "1_summaryData"
+        ],
+        "name": "2_sstDatabase",
+        "size": 1
+    }
+]

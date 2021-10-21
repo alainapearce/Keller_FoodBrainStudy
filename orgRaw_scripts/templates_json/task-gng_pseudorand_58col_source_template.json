@@ -75,7 +75,7 @@
         }
     },
     "BlockList.Sample": {
-        Description": "Order of procedures presentated",
+        "Description": "Order of procedures presentated",
         "Levels": {
             "1": "Block 1 procedure",
             "2": "Block 2 procedure",
@@ -138,7 +138,7 @@
         "Description": "number associated with image file presented"
     },
     "Procedure[Trial]": {
-      "Name of trial procedrure, each of which present a fixation (300ms), a stimulus screen (750ms), and then a response screen (500ms)
+        "Description": "Name of trial procedrure, each of which present a fixation (300ms), a stimulus screen (750ms), and then a response screen (500ms)",
       "Levels": {
           "TrialProc": "Practice block trial procedure",
           "TrialProc2": "Block 1 trial procedure",
@@ -234,7 +234,7 @@
     },
     "Trial1.Sample": {
         "Description": "Order of stimuli presented"
-    }
+    },
     "Trial2": {
         "Description": "Trial number for block 2"
     },
@@ -251,7 +251,7 @@
     "Trial3": {
         "Description": "Trial number for block 3"
     },
-    "Trial1.Cycle": {
+    "Trial3.Cycle": {
         "Description": "Cycle number of block 3 trials",
         "Levels":{
             "1": "The first cycle",
@@ -286,5 +286,5 @@
     },
     "Trial5.Sample": {
       "Description": "Order of stimuli presented in block 5"
-    },
+    }
 }

@@ -1,0 +1,1273 @@
+sub-048_ses-1 has no edat file in NbackRaw for block0
+sub-048 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block0
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block0
+sub-030 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block0
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block2
+sub-021 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block1
+sub-084 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block0
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block1
+sub-003 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block2
+sub-038 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block2
+sub-080 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block0
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block0
+sub-036 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block2
+sub-084 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block1
+sub-021 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block1
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block1
+sub-038 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block0
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block2
+sub-003 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block0
+sub-055 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block0
+sub-095 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block0
+sub-009 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block0
+sub-071 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block1
+sub-078 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block0
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block0
+sub-052 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block2
+sub-020 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block2
+sub-098 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block2
+sub-058 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block2
+sub-039 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block2
+sub-081 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block1
+sub-002 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block1
+sub-019 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block0
+sub-033 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block0
+sub-076 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block2
+sub-041 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block0
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block0
+sub-074 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block2
+sub-043 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block0
+sub-089 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block2
+sub-083 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block0
+sub-049 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block0
+sub-090 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block1
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block1
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block0
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block0
+sub-069 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block0
+sub-054 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block0
+sub-037 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block1
+sub-083 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block0
+sub-070 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block2
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block1
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block1
+sub-020 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block2
+sub-078 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block1
+sub-058 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block2
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block0
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block1
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block1
+sub-039 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block1
+sub-041 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block2
+sub-019 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block0
+sub-096 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block2
+sub-090 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block1
+sub-070 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block2
+sub-049 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block0
+sub-083 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block1
+sub-054 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block1
+sub-037 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block1
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block1
+sub-069 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block2
+sub-089 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block2
+sub-074 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block2
+sub-031 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block0
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block1
+sub-096 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block2
+sub-076 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block2
+sub-033 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block0
+sub-041 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block0
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block0
+sub-039 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block1
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block0
+sub-058 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block0
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block2
+sub-052 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block0
+sub-020 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block1
+sub-033 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block1
+sub-076 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block2
+sub-096 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block0
+sub-019 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block0
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block2
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block1
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block1
+sub-052 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block0
+sub-078 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block2
+sub-070 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block0
+sub-047 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block1
+sub-090 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block2
+sub-037 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block1
+sub-049 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block1
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block1
+sub-074 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block1
+sub-089 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block2
+sub-069 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block2
+sub-094 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block1
+sub-057 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block0
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block0
+sub-038 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block2
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block0
+sub-021 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block1
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block1
+sub-036 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block2
+sub-093 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block1
+sub-071 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block2
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block1
+sub-009 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block2
+sub-030 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block2
+sub-075 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block1
+sub-095 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block1
+sub-055 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block2
+sub-048 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block2
+sub-071 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block0
+sub-018 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block2
+sub-009 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block1
+sub-051 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block2
+sub-095 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block1
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block1
+sub-030 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block1
+sub-048 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block2
+sub-055 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block2
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block0
+sub-003 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block0
+sub-018 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block1
+sub-077 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block0
+sub-084 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block1
+sub-093 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block2
+sub-036 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block2
+sub-073 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block0
+sub-048 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block0
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block0
+sub-030 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block0
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block2
+sub-021 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block1
+sub-084 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block0
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block1
+sub-003 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block2
+sub-038 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block2
+sub-080 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block0
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block0
+sub-036 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block2
+sub-084 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block1
+sub-021 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block1
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block1
+sub-038 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block0
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block2
+sub-003 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block0
+sub-055 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block0
+sub-095 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block0
+sub-009 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block0
+sub-071 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block1
+sub-078 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block0
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block0
+sub-052 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block2
+sub-020 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block2
+sub-098 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block2
+sub-058 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block2
+sub-039 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block2
+sub-081 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block1
+sub-002 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block1
+sub-019 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block0
+sub-033 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block0
+sub-076 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block2
+sub-041 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block0
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block0
+sub-074 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block2
+sub-043 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block0
+sub-089 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block2
+sub-083 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block0
+sub-049 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block0
+sub-090 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block1
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block1
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block0
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block0
+sub-069 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block0
+sub-054 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block0
+sub-037 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block1
+sub-083 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block0
+sub-070 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block2
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block1
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block1
+sub-020 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block2
+sub-078 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block1
+sub-058 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block2
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block0
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block1
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block1
+sub-039 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block1
+sub-041 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block2
+sub-019 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block0
+sub-096 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block2
+sub-090 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block1
+sub-070 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block2
+sub-049 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block0
+sub-083 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block1
+sub-054 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block1
+sub-037 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block1
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block1
+sub-069 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block2
+sub-089 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block2
+sub-074 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block2
+sub-031 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block0
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block1
+sub-096 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block2
+sub-076 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block2
+sub-033 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block0
+sub-041 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block0
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block0
+sub-039 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block1
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block0
+sub-058 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block0
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block2
+sub-052 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block0
+sub-020 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block1
+sub-033 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block1
+sub-076 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block2
+sub-096 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block0
+sub-019 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block0
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block2
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block1
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block1
+sub-052 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block0
+sub-078 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block2
+sub-070 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block0
+sub-047 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block1
+sub-090 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block2
+sub-037 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block1
+sub-049 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block1
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block1
+sub-074 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block1
+sub-089 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block2
+sub-069 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block2
+sub-094 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block1
+sub-057 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block0
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block0
+sub-038 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block2
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block0
+sub-021 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block1
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block1
+sub-036 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block2
+sub-093 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block1
+sub-071 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block2
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block1
+sub-009 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block2
+sub-030 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block2
+sub-075 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block1
+sub-095 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block1
+sub-055 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block2
+sub-048 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block2
+sub-071 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block0
+sub-018 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block2
+sub-009 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block1
+sub-051 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block2
+sub-095 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block1
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block1
+sub-030 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block1
+sub-048 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block2
+sub-055 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block2
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block0
+sub-003 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block0
+sub-018 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block1
+sub-077 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block0
+sub-084 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block1
+sub-093 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block2
+sub-036 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block2
+sub-073 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block0
+sub-048 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block0
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block0
+sub-030 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block0
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093_ses-1 has no edat file in NbackRaw for block0
+sub-093 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block2
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block2
+sub-021 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block1
+sub-084 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block0
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block2
+sub-023 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block2
+sub-040 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005_ses-1 has no edat file in NbackRaw for block2
+sub-005 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block1
+sub-018 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block1
+sub-003 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block2
+sub-038 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block2
+sub-080 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block0
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block0
+sub-036 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block2
+sub-084 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block1
+sub-021 has no practice files
+sub-018_ses-1 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005_ses-1 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block1
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block1
+sub-038 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block0
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block2
+sub-003 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block0
+sub-055 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block0
+sub-095 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block1
+sub-007 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block0
+sub-009 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block2
+sub-018 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block1
+sub-040 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block1
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block1
+sub-023 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block0
+sub-071 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block1
+sub-078 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block0
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block0
+sub-052 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block2
+sub-020 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block2
+sub-098 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block2
+sub-058 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block2
+sub-039 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block2
+sub-081 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block1
+sub-002 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block1
+sub-019 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block0
+sub-033 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block0
+sub-076 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block2
+sub-041 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block0
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block0
+sub-074 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006_ses-1 has no edat file in NbackRaw for block2
+sub-006 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block2
+sub-043 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block0
+sub-089 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block2
+sub-083 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block0
+sub-049 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026_ses-1 has no edat file in NbackRaw for block1
+sub-026 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block0
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block0
+sub-090 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block1
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block2
+sub-022 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block1
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006_ses-1 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block0
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block0
+sub-069 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block0
+sub-054 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026_ses-1 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block0
+sub-037 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block1
+sub-083 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block0
+sub-070 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block2
+sub-047 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block1
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006_ses-2 has no edat file in NbackRaw for block1
+sub-006 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block1
+sub-020 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block2
+sub-078 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block2
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block0
+sub-011 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block1
+sub-058 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block2
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block0
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block0
+sub-035 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block1
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block1
+sub-039 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block1
+sub-022 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block1
+sub-041 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block2
+sub-019 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block0
+sub-096 has no practice files
+sub-022_ses-1 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block2
+sub-090 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block1
+sub-070 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block2
+sub-049 has no practice files
+sub-083_ses-1 has no edat file in NbackRaw for block0
+sub-083 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block1
+sub-054 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block1
+sub-037 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block1
+sub-094 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block1
+sub-069 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block2
+sub-089 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block2
+sub-074 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block2
+sub-031 has no practice files
+sub-043_ses-1 has no edat file in NbackRaw for block0
+sub-043 has no practice files
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006_ses-1 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block1
+sub-096 has no practice files
+sub-022_ses-2 has no edat file in NbackRaw for block0
+sub-022 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block2
+sub-076 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block2
+sub-033 has no practice files
+sub-041_ses-1 has no edat file in NbackRaw for block0
+sub-041 has no practice files
+sub-081_ses-1 has no edat file in NbackRaw for block0
+sub-081 has no practice files
+sub-039_ses-1 has no edat file in NbackRaw for block0
+sub-039 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block2
+sub-028 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block1
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block1
+sub-035 has no practice files
+sub-058_ses-1 has no edat file in NbackRaw for block0
+sub-058 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block1
+sub-011 has no practice files
+sub-098_ses-1 has no edat file in NbackRaw for block0
+sub-098 has no practice files
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006_ses-2 has no edat file in NbackRaw for block0
+sub-006 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block2
+sub-052 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017_ses-1 has no edat file in NbackRaw for block2
+sub-017 has no practice files
+sub-020_ses-1 has no edat file in NbackRaw for block0
+sub-020 has no practice files
+sub-033_ses-1 has no edat file in NbackRaw for block1
+sub-033 has no practice files
+sub-076_ses-1 has no edat file in NbackRaw for block1
+sub-076 has no practice files
+sub-096_ses-1 has no edat file in NbackRaw for block2
+sub-096 has no practice files
+sub-019_ses-1 has no edat file in NbackRaw for block0
+sub-019 has no practice files
+sub-002_ses-2 has no edat file in NbackRaw for block0
+sub-002 has no practice files
+sub-056_ses-1 has no edat file in NbackRaw for block2
+sub-056 has no practice files
+sub-035_ses-2 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-028_ses-2 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-026_ses-2 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-011_ses-2 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-017_ses-1 has no edat file in NbackRaw for block1
+sub-017 has no practice files
+sub-052_ses-1 has no edat file in NbackRaw for block1
+sub-052 has no practice files
+sub-078_ses-1 has no edat file in NbackRaw for block0
+sub-078 has no practice files
+sub-070_ses-1 has no edat file in NbackRaw for block2
+sub-070 has no practice files
+sub-035_ses-1 has no edat file in NbackRaw for block2
+sub-035 has no practice files
+sub-047_ses-1 has no edat file in NbackRaw for block0
+sub-047 has no practice files
+sub-028_ses-1 has no edat file in NbackRaw for block1
+sub-028 has no practice files
+sub-090_ses-1 has no edat file in NbackRaw for block1
+sub-090 has no practice files
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054_ses-1 has no edat file in NbackRaw for block2
+sub-054 has no practice files
+sub-011_ses-1 has no edat file in NbackRaw for block2
+sub-011 has no practice files
+sub-037_ses-2 has no edat file in NbackRaw for block2
+sub-037 has no practice files
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026_ses-1 has no edat file in NbackRaw for block0
+sub-026 has no practice files
+sub-049_ses-1 has no edat file in NbackRaw for block1
+sub-049 has no practice files
+sub-031_ses-1 has no edat file in NbackRaw for block1
+sub-031 has no practice files
+sub-074_ses-1 has no edat file in NbackRaw for block1
+sub-074 has no practice files
+sub-089_ses-1 has no edat file in NbackRaw for block1
+sub-089 has no practice files
+sub-069_ses-1 has no edat file in NbackRaw for block2
+sub-069 has no practice files
+sub-094_ses-1 has no edat file in NbackRaw for block2
+sub-094 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block1
+sub-057 has no practice files
+sub-080_ses-1 has no edat file in NbackRaw for block0
+sub-080 has no practice files
+sub-038_ses-1 has no edat file in NbackRaw for block0
+sub-038 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block2
+sub-077 has no practice files
+sub-023_ses-2 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005_ses-1 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-040_ses-1 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-007_ses-2 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-021_ses-1 has no edat file in NbackRaw for block0
+sub-021 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block1
+sub-073 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block1
+sub-036 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block2
+sub-093 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block1
+sub-071 has no practice files
+sub-040_ses-2 has no edat file in NbackRaw for block0
+sub-040 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block2
+sub-051 has no practice files
+sub-005_ses-2 has no edat file in NbackRaw for block0
+sub-005 has no practice files
+sub-023_ses-1 has no edat file in NbackRaw for block0
+sub-023 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block1
+sub-009 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block2
+sub-030 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block2
+sub-075 has no practice files
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007_ses-1 has no edat file in NbackRaw for block0
+sub-007 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block1
+sub-095 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block1
+sub-055 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block2
+sub-048 has no practice files
+sub-071_ses-1 has no edat file in NbackRaw for block2
+sub-071 has no practice files
+sub-018_ses-2 has no edat file in NbackRaw for block0
+sub-018 has no practice files
+sub-009_ses-1 has no edat file in NbackRaw for block2
+sub-009 has no practice files
+sub-051_ses-1 has no edat file in NbackRaw for block1
+sub-051 has no practice files
+sub-095_ses-1 has no edat file in NbackRaw for block2
+sub-095 has no practice files
+sub-075_ses-1 has no edat file in NbackRaw for block1
+sub-075 has no practice files
+sub-030_ses-1 has no edat file in NbackRaw for block1
+sub-030 has no practice files
+sub-048_ses-1 has no edat file in NbackRaw for block1
+sub-048 has no practice files
+sub-055_ses-1 has no edat file in NbackRaw for block2
+sub-055 has no practice files
+sub-057_ses-1 has no edat file in NbackRaw for block2
+sub-057 has no practice files
+sub-003_ses-2 has no edat file in NbackRaw for block0
+sub-003 has no practice files
+sub-077_ses-1 has no edat file in NbackRaw for block1
+sub-077 has no practice files
+sub-084_ses-1 has no edat file in NbackRaw for block0
+sub-084 has no practice files
+sub-093_ses-1 has no edat file in NbackRaw for block1
+sub-093 has no practice files
+sub-036_ses-1 has no edat file in NbackRaw for block2
+sub-036 has no practice files
+sub-073_ses-1 has no edat file in NbackRaw for block2
+sub-073 has no practice files

@@ -1,4 +1,9 @@
 {
+  "Go-NoGo Task": {
+    "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+    "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949a93/",
+    "DatasetType": "source"
+    },
     "ExperimentName": {
       "Description": "Name of the experiment used to generate the data file"
     },

@@ -1,0 +1,769 @@
+[
+    [
+        "Nback_file",
+        [
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-038/ses-1/beh/sub-038_ses-1_task-nback0_events.tsv",
+                    "56f89c0d74d4243f45cda57f756bc911"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-038/ses-1/beh/sub-038_ses-1_task-nback1_events.tsv",
+                    "958db16c31459b871a67f5a9122d0498"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-038/ses-1/beh/sub-038_ses-1_task-nback2_events.tsv",
+                    "984ae555feb8e31e2d982b9b98243bb9"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-022/ses-1/beh/sub-022_ses-1_task-nback0_events.tsv",
+                    "34293d39d399da837f99030a863e83f4"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-022/ses-1/beh/sub-022_ses-1_task-nback1_events.tsv",
+                    "a5fc488547394d8141f795c28b20606b"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-022/ses-1/beh/sub-022_ses-1_task-nback2_events.tsv",
+                    "36b4ca7984820da06949cd1402fffeca"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-057/ses-1/beh/sub-057_ses-1_task-nback0_events.tsv",
+                    "313e6bd2cb76747725e9558c7d47aa7c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-057/ses-1/beh/sub-057_ses-1_task-nback1_events.tsv",
+                    "b6199dc58c43ee2b7f07742780b5cabd"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-057/ses-1/beh/sub-057_ses-1_task-nback2_events.tsv",
+                    "6eca6f750046a706c258848e9d8bf7e8"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-055/ses-1/beh/sub-055_ses-1_task-nback0_events.tsv",
+                    "91b393f619e5d28ce34ff9b862f1ee89"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-055/ses-1/beh/sub-055_ses-1_task-nback1_events.tsv",
+                    "fea93d30716ed25346961229ab19e3e1"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-055/ses-1/beh/sub-055_ses-1_task-nback2_events.tsv",
+                    "fec155d311b60b7ca2aadcc61b5a8b1b"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-017/ses-1/beh/sub-017_ses-1_task-nback0_events.tsv",
+                    "50e81946d45bd947e9ce663b9d5a2694"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-017/ses-1/beh/sub-017_ses-1_task-nback1_events.tsv",
+                    "a671ae6503360452f310256042da3d63"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-017/ses-1/beh/sub-017_ses-1_task-nback2_events.tsv",
+                    "0580f3bb27502ace6cbaf943f8759535"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-018/ses-1/beh/sub-018_ses-1_task-nback1_events.tsv",
+                    "56bc6de1d7c36f50ba9233f7fc87e125"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-018/ses-1/beh/sub-018_ses-1_task-nback2_events.tsv",
+                    "233c3c6774534cce62127e4a3911d076"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-041/ses-1/beh/sub-041_ses-1_task-nback0_events.tsv",
+                    "118b2a6b9104cec523f195c1429462f7"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-041/ses-1/beh/sub-041_ses-1_task-nback1_events.tsv",
+                    "a77eb3e28dedf1aca1444c44d910f747"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-041/ses-1/beh/sub-041_ses-1_task-nback2_events.tsv",
+                    "5baae311e17f47b7b7a7bdb932726692"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-051/ses-1/beh/sub-051_ses-1_task-nback0_events.tsv",
+                    "204c17bc3dd1162bc3523f66433ceaef"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-051/ses-1/beh/sub-051_ses-1_task-nback1_events.tsv",
+                    "ade6340142f325c79046d92e23d8f71a"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-051/ses-1/beh/sub-051_ses-1_task-nback2_events.tsv",
+                    "fd5bd4d4dc497cb6cebfedac56736b07"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-074/ses-1/beh/sub-074_ses-1_task-nback0_events.tsv",
+                    "aebdfa20e2f3c2bd97a7516acbeb4846"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-074/ses-1/beh/sub-074_ses-1_task-nback1_events.tsv",
+                    "e98642851c12f8e00b91245d626d6c9b"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-074/ses-1/beh/sub-074_ses-1_task-nback2_events.tsv",
+                    "170547a4861bf67cbd5cc758c19c4006"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-011/ses-1/beh/sub-011_ses-1_task-nback0_events.tsv",
+                    "1d24c5b53822480e02eaaa2fb12701a1"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-011/ses-1/beh/sub-011_ses-1_task-nback1_events.tsv",
+                    "95bfa2af1fb9215361da93f8ad2f8310"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-011/ses-1/beh/sub-011_ses-1_task-nback2_events.tsv",
+                    "4163e678f28008c3be416f3eeedcbb8c"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-049/ses-1/beh/sub-049_ses-1_task-nback0_events.tsv",
+                    "9c45d19df48764c437b4eae0f2d9ddae"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-049/ses-1/beh/sub-049_ses-1_task-nback1_events.tsv",
+                    "e025cdc0d80679b0af9f26a667ed450e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-049/ses-1/beh/sub-049_ses-1_task-nback2_events.tsv",
+                    "1205914f05b98129b23a83d7178f2525"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-056/ses-1/beh/sub-056_ses-1_task-nback0_events.tsv",
+                    "49e7249f55d3d1c48f226368372e491a"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-056/ses-1/beh/sub-056_ses-1_task-nback1_events.tsv",
+                    "ee304e0e1ba8d3752eb4aeba210079c8"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-056/ses-1/beh/sub-056_ses-1_task-nback2_events.tsv",
+                    "307762efc324cce865ad49e785d8d8ea"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-078/ses-1/beh/sub-078_ses-1_task-nback0_events.tsv",
+                    "47a6e11e687f4b5108a91e0c191aab0e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-078/ses-1/beh/sub-078_ses-1_task-nback1_events.tsv",
+                    "02e29632b14c3aeea51d449e088e803e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-078/ses-1/beh/sub-078_ses-1_task-nback2_events.tsv",
+                    "e647c9ba7bbc65cd8ddebb2bf11ed91d"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-nback0_events.tsv",
+                    "6ca04296e52c64c9831bb09c46c33f49"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-nback1_events.tsv",
+                    "8fe521edb6d6a8502803e83da1cb0e0d"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-nback2_events.tsv",
+                    "72cac64e17655ccdb88f01ab29f93b02"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-033/ses-1/beh/sub-033_ses-1_task-nback0_events.tsv",
+                    "6f7bc7f4da7b1a91dd2322bc680cb66c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-033/ses-1/beh/sub-033_ses-1_task-nback1_events.tsv",
+                    "4dcdc6e6f21314a8e633734ef30ee026"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-033/ses-1/beh/sub-033_ses-1_task-nback2_events.tsv",
+                    "c455776c2e07cef0f1b47bab9a1c20b7"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-083/ses-1/beh/sub-083_ses-1_task-nback0_events.tsv",
+                    "2736d9a7b6276f588ef186aeade49b30"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-083/ses-1/beh/sub-083_ses-1_task-nback1_events.tsv",
+                    "48530bf3b5cf75be249b7c4e98a86abc"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-083/ses-1/beh/sub-083_ses-1_task-nback2_events.tsv",
+                    "d4d0df0af9bcfd4c8e9a31076356f75c"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-096/ses-1/beh/sub-096_ses-1_task-nback0_events.tsv",
+                    "5340afe881d8e128995eab69c0da82f1"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-096/ses-1/beh/sub-096_ses-1_task-nback1_events.tsv",
+                    "eff7e05dad90af98ab18bf8fb69a3767"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-096/ses-1/beh/sub-096_ses-1_task-nback2_events.tsv",
+                    "e8e8cf3d786414328a24f6e97a7d3854"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-005/ses-1/beh/sub-005_ses-1_task-nback0_events.tsv",
+                    "f25019d23bd7a99a70fc7951815e99d6"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-005/ses-1/beh/sub-005_ses-1_task-nback1_events.tsv",
+                    "692e553bcba4455aa5e6899525ed0d50"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-005/ses-1/beh/sub-005_ses-1_task-nback2_events.tsv",
+                    "a16b2f3c83fec121d915a34b93aa0851"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-043/ses-1/beh/sub-043_ses-1_task-nback0_events.tsv",
+                    "0cb8378240739d3ad89b3cd0424d05c5"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-043/ses-1/beh/sub-043_ses-1_task-nback1_events.tsv",
+                    "05f167a46f7f939f64dacf6f53533650"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-043/ses-1/beh/sub-043_ses-1_task-nback2_events.tsv",
+                    "8b33be790064110e30dacbe2c26d0c43"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-076/ses-1/beh/sub-076_ses-1_task-nback0_events.tsv",
+                    "e99014dc4ba6e711a5abc52be67ff958"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-076/ses-1/beh/sub-076_ses-1_task-nback1_events.tsv",
+                    "dab0f483a86112db3f2b86e8ed15fc98"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-076/ses-1/beh/sub-076_ses-1_task-nback2_events.tsv",
+                    "e2e2257200271cac78c965483e46066b"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-090/ses-1/beh/sub-090_ses-1_task-nback0_events.tsv",
+                    "775d46b3133f9eabccf3ed4d3315eafa"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-090/ses-1/beh/sub-090_ses-1_task-nback1_events.tsv",
+                    "332d21b2bf7135b87ebcf37385a549a0"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-090/ses-1/beh/sub-090_ses-1_task-nback2_events.tsv",
+                    "ee7b0959a660a639570a60a40a73c43d"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-094/ses-1/beh/sub-094_ses-1_task-nback0_events.tsv",
+                    "928699347a8ea0adfb624aa7da03ae5c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-094/ses-1/beh/sub-094_ses-1_task-nback1_events.tsv",
+                    "009c424b213b9a9f24e125a7eedfc703"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-094/ses-1/beh/sub-094_ses-1_task-nback2_events.tsv",
+                    "5d2cfa901c3516686584daa739158032"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-084/ses-1/beh/sub-084_ses-1_task-nback0_events.tsv",
+                    "9606b0cf99918fd168c1e31dc0416367"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-084/ses-1/beh/sub-084_ses-1_task-nback1_events.tsv",
+                    "a74eb68ed14090f57778c2779124b788"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-084/ses-1/beh/sub-084_ses-1_task-nback2_events.tsv",
+                    "4b0b54d446eaff518c26bab336f9af21"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-007/ses-1/beh/sub-007_ses-1_task-nback0_events.tsv",
+                    "5f77641c3e016be2bbfcd539c85a7d4a"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-007/ses-1/beh/sub-007_ses-1_task-nback1_events.tsv",
+                    "c9c3af80626dc824608730c460bc57ba"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-007/ses-1/beh/sub-007_ses-1_task-nback2_events.tsv",
+                    "5fd1e88efebd8907bbbf2e3ac4ac0893"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-047/ses-1/beh/sub-047_ses-1_task-nback0_events.tsv",
+                    "1a4540e360abb46a40c938c9d56db3d2"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-047/ses-1/beh/sub-047_ses-1_task-nback1_events.tsv",
+                    "a33eb7240f1e586ada2797622b1dd768"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-047/ses-1/beh/sub-047_ses-1_task-nback2_events.tsv",
+                    "d65c1c0fab020ef1888a29a789d1aa34"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-1/beh/sub-020_ses-1_task-nback0_events.tsv",
+                    "91ef88e9e223ba81e0c36490a01234c9"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-1/beh/sub-020_ses-1_task-nback1_events.tsv",
+                    "5d5d0ddb73760956440f484c719e535f"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-1/beh/sub-020_ses-1_task-nback2_events.tsv",
+                    "c996b2e163c9ba47fc60a9ea851e6e1c"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-071/ses-1/beh/sub-071_ses-1_task-nback0_events.tsv",
+                    "fee72f1d1ad1a31431e29dfdd29d448a"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-071/ses-1/beh/sub-071_ses-1_task-nback1_events.tsv",
+                    "6c17ee702cc226d8d1101d405c6171cc"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-071/ses-1/beh/sub-071_ses-1_task-nback2_events.tsv",
+                    "02a24f90710cbf2def5aab48ebb674d3"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-077/ses-1/beh/sub-077_ses-1_task-nback0_events.tsv",
+                    "e9fd680b5c347a80d148dd492331f1e9"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-077/ses-1/beh/sub-077_ses-1_task-nback1_events.tsv",
+                    "b414d6f8efbf7fd37171d481e93663e6"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-077/ses-1/beh/sub-077_ses-1_task-nback2_events.tsv",
+                    "4e8965b54728666ba9f2241b3ab157bb"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-006/ses-1/beh/sub-006_ses-1_task-nback0_events.tsv",
+                    "5debec8c788c4a9339a5a7c83fb0eeda"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-006/ses-1/beh/sub-006_ses-1_task-nback1_events.tsv",
+                    "a027faf7bb0d1aa9edcc25de7b57548c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-006/ses-1/beh/sub-006_ses-1_task-nback2_events.tsv",
+                    "6663659a5ea5f1ed1b419e225387b6cb"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-075/ses-1/beh/sub-075_ses-1_task-nback0_events.tsv",
+                    "08dfe941cc0b43dc853e30c92f9d035c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-075/ses-1/beh/sub-075_ses-1_task-nback1_events.tsv",
+                    "fa4e1661c96738f3dda523e6c7ec340e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-075/ses-1/beh/sub-075_ses-1_task-nback2_events.tsv",
+                    "0592c984da2f43fb6c034bf849ad73b3"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-023/ses-1/beh/sub-023_ses-1_task-nback0_events.tsv",
+                    "afc7fcef0ddcb37811bbb81831a783d3"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-023/ses-1/beh/sub-023_ses-1_task-nback1_events.tsv",
+                    "7a6235d9ba76b41bef5d918ee9c24455"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-023/ses-1/beh/sub-023_ses-1_task-nback2_events.tsv",
+                    "60fcf2c1eb92b8e36d05928903b4de6d"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-nback0_events.tsv",
+                    "7c7417f86c7e122ada9bec2c8c287d91"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-nback1_events.tsv",
+                    "fa2de4052ba35898814dd7ce7b9cb2a3"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-nback2_events.tsv",
+                    "5d567a3e0b3c05839c4f5c7a106a6627"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-098/ses-1/beh/sub-098_ses-1_task-nback0_events.tsv",
+                    "b93ed1e0b5a513bb931b7b321e93e760"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-098/ses-1/beh/sub-098_ses-1_task-nback1_events.tsv",
+                    "8ef9e686bb451a0ddc55addbd049bd4b"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-098/ses-1/beh/sub-098_ses-1_task-nback2_events.tsv",
+                    "312ba30c9466ff7598052b59a62720ee"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-069/ses-1/beh/sub-069_ses-1_task-nback0_events.tsv",
+                    "7e5fb88af50c75d2d24fd1c718bf344d"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-069/ses-1/beh/sub-069_ses-1_task-nback1_events.tsv",
+                    "e009ab89ededd566b6542f31db6fa539"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-069/ses-1/beh/sub-069_ses-1_task-nback2_events.tsv",
+                    "3090aff3c5d17693167e123e2be094f3"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-021/ses-1/beh/sub-021_ses-1_task-nback0_events.tsv",
+                    "1b3b9feb39e5b75f30bf9b6fdef64bc6"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-021/ses-1/beh/sub-021_ses-1_task-nback1_events.tsv",
+                    "5f5be4341871ea3e3334c3207af25951"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-021/ses-1/beh/sub-021_ses-1_task-nback2_events.tsv",
+                    "522d802509ffd3b4c9f06179fdc6ed71"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-058/ses-1/beh/sub-058_ses-1_task-nback0_events.tsv",
+                    "9202cb5cae8f95b54175132c893e0e38"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-058/ses-1/beh/sub-058_ses-1_task-nback1_events.tsv",
+                    "c5068f05ac1214ec8bafc864d0713877"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-058/ses-1/beh/sub-058_ses-1_task-nback2_events.tsv",
+                    "9b872bcc66e668c115908ac2412579a1"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-nback0_events.tsv",
+                    "df939c38e61a8ae416ac5bdc6abd1858"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-nback1_events.tsv",
+                    "1caaeb7f16acfda6630e30e9851459e6"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-nback2_events.tsv",
+                    "39ff3a58a82ac63b31ab8869d5ccd5e8"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-089/ses-1/beh/sub-089_ses-1_task-nback0_events.tsv",
+                    "d799ed059c83a084b37be45f1c1d22cb"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-089/ses-1/beh/sub-089_ses-1_task-nback1_events.tsv",
+                    "188762099d5653c99909eb9514f2d291"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-089/ses-1/beh/sub-089_ses-1_task-nback2_events.tsv",
+                    "48e09118541bca28ed6ecee48ed04990"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-nback0_events.tsv",
+                    "97a928addf479ff02ff69be7fead4b47"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-nback1_events.tsv",
+                    "938bbf2320970168a495e1387130774d"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-nback2_events.tsv",
+                    "80054f65a4af02ec44083be8a62822f3"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-1/beh/sub-080_ses-1_task-nback0_events.tsv",
+                    "d6f9f0765fc505846ba44a316919d43e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-1/beh/sub-080_ses-1_task-nback1_events.tsv",
+                    "99f6ae3ceb255d82fcf3f4373404d2ba"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-1/beh/sub-080_ses-1_task-nback2_events.tsv",
+                    "36c95191de750159156984f827ba4570"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-009/ses-1/beh/sub-009_ses-1_task-nback0_events.tsv",
+                    "363a15c5b872db1de726d73c3d858949"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-009/ses-1/beh/sub-009_ses-1_task-nback1_events.tsv",
+                    "99cde20362f77cf1078dfcbc5bcada48"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-009/ses-1/beh/sub-009_ses-1_task-nback2_events.tsv",
+                    "c8fadbd650e7bbc2ee59822308bbc423"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-073/ses-1/beh/sub-073_ses-1_task-nback0_events.tsv",
+                    "913c4dddcb7c16ff6655569750af1712"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-073/ses-1/beh/sub-073_ses-1_task-nback1_events.tsv",
+                    "c600372001d55e6ef3a852715fa3ca3c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-073/ses-1/beh/sub-073_ses-1_task-nback2_events.tsv",
+                    "380e6484fb00ddef7828597d61326a8a"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-095/ses-1/beh/sub-095_ses-1_task-nback0_events.tsv",
+                    "d328c7bc61c40a129fe40e747b5632d0"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-095/ses-1/beh/sub-095_ses-1_task-nback1_events.tsv",
+                    "7a5811beb5caf7bc1733fa98cb796827"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-095/ses-1/beh/sub-095_ses-1_task-nback2_events.tsv",
+                    "d79c89e38a2bfd5d89ec2be5e7dba2da"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback0_events.tsv",
+                    "67d012e8f57e533fbaea87bfeea1d7e4"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback1_events.tsv",
+                    "f94c2303d6e05106543476d283bd81dc"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback2_events.tsv",
+                    "ef381712b948e85ad8b6de6efb545617"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-nback0_events.tsv",
+                    "9476845eb0d02af5de632ede7f93f59c"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-nback1_events.tsv",
+                    "3f7593ec4a15f610b3058b72fab68599"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-nback2_events.tsv",
+                    "b78b06fa18fe63dd80cd57a5d7d8c9b4"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-093/ses-1/beh/sub-093_ses-1_task-nback0_events.tsv",
+                    "73e330ecf27e81bd3ccc3bcb69685d95"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-093/ses-1/beh/sub-093_ses-1_task-nback1_events.tsv",
+                    "c2793ff26ab673b3a82660ac3622d928"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-093/ses-1/beh/sub-093_ses-1_task-nback2_events.tsv",
+                    "a0bb78faf5ef0be902865b5ead3ef356"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-039/ses-1/beh/sub-039_ses-1_task-nback0_events.tsv",
+                    "f1f3511ef04e2c5b8ed884b8e7f2e851"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-039/ses-1/beh/sub-039_ses-1_task-nback1_events.tsv",
+                    "b7a16d476fe0162f0b5e0e5129ad3e0f"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-039/ses-1/beh/sub-039_ses-1_task-nback2_events.tsv",
+                    "748b61181bc0eab281fc2f63cd2feca4"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-052/ses-1/beh/sub-052_ses-1_task-nback0_events.tsv",
+                    "fc60a8ea29d057f3052f34a2f47441f0"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-052/ses-1/beh/sub-052_ses-1_task-nback1_events.tsv",
+                    "6ccb763a82d823b3a8a8a2e5ea30d9ae"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-052/ses-1/beh/sub-052_ses-1_task-nback2_events.tsv",
+                    "ee433596773483c975d03cb308c619f2"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-048/ses-1/beh/sub-048_ses-1_task-nback0_events.tsv",
+                    "8c72262e53dd8be895350319128af0c0"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-048/ses-1/beh/sub-048_ses-1_task-nback1_events.tsv",
+                    "e99333f5d004e7f4882054d76b56af49"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-048/ses-1/beh/sub-048_ses-1_task-nback2_events.tsv",
+                    "51a660674989089d499ea475b0359bd4"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-054/ses-1/beh/sub-054_ses-1_task-nback0_events.tsv",
+                    "952392b1748325f33ec5b3a399ac218b"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-054/ses-1/beh/sub-054_ses-1_task-nback1_events.tsv",
+                    "4cc7ef4d7785f1f6b9a2a0f449d15469"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-054/ses-1/beh/sub-054_ses-1_task-nback2_events.tsv",
+                    "771ec360bed31f1635146d0790c54b45"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-019/ses-1/beh/sub-019_ses-1_task-nback0_events.tsv",
+                    "5a19ca98d0e942f43c2a2f827421cd29"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-019/ses-1/beh/sub-019_ses-1_task-nback1_events.tsv",
+                    "0e1af4abe8af7c62bb7551fe89bce487"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-019/ses-1/beh/sub-019_ses-1_task-nback2_events.tsv",
+                    "df7bedee8208d437f85ff665819b343e"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-040/ses-1/beh/sub-040_ses-1_task-nback0_events.tsv",
+                    "12b965e0eef214e5df2ffbc99a1f351e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-040/ses-1/beh/sub-040_ses-1_task-nback1_events.tsv",
+                    "bcbe9b77f1bebf31d96bbea3c7ee83be"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-040/ses-1/beh/sub-040_ses-1_task-nback2_events.tsv",
+                    "995ced05eb73e506a519701af4285c57"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-081/ses-1/beh/sub-081_ses-1_task-nback0_events.tsv",
+                    "42da429f0b06f727681958ea9bdb0ef2"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-081/ses-1/beh/sub-081_ses-1_task-nback1_events.tsv",
+                    "47dc275f5f7efd084284154c67196873"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-081/ses-1/beh/sub-081_ses-1_task-nback2_events.tsv",
+                    "c9870772cdbf025e13ddcaa383a1cc14"
+                ]
+            ],
+            [
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-035/ses-1/beh/sub-035_ses-1_task-nback0_events.tsv",
+                    "3030b56577e7b8e543ff8d287c533b6e"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-035/ses-1/beh/sub-035_ses-1_task-nback1_events.tsv",
+                    "a90543a1a2b3cfb24a15a89b59391efb"
+                ],
+                [
+                    "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-035/ses-1/beh/sub-035_ses-1_task-nback2_events.tsv",
+                    "cb5cb6b782b277db5e2fd78e1c9098b4"
+                ]
+            ]
+        ]
+    ],
+    [
+        "function_str",
+        "def summaryNback(Nback_file):\n    import numpy as np\n    import pandas as pd\n    from collections.abc import Iterable\n\n    #check if str\n    if isinstance(Nback_file, str):\n\n        #check to see if it is filepath str or 'No subfiles' message\n        if '.tsv' in Nback_file:\n            #if only 1 file, will be string and we want an array\n            Nback_file = [Nback_file]\n        else:\n            Nback_file = []\n\n    if len(Nback_file) > 0:\n\n        #loop counter\n        count = 1\n\n        for file in Nback_file:\n\n            #load data - loop throgh participant blockfiles\n            Nback_ProcData = pd.read_csv(str(file), sep = '\\t', encoding = 'utf-8-sig', engine='python') \n\n            #make Acc_Resp column\n            Nback_ProcData.fillna('', inplace=True)\n\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b0_', '')\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b1_', '')\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b2_', '')\n\n            Nback_ProcData['acc_resp'] = np.where(Nback_ProcData['correct'] == Nback_ProcData['stim_resp'], 1, 0)\n\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B0BlockProc','B0Block2Proc'],'b0')\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B1BlockProc','B1Block2Proc'],'b1')\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B2BlockProc','B2Block2Proc'],'b2')\n\n            #get target and fill datasets\n            Nback_Target = Nback_ProcData.groupby('condition').get_group('Target')\n            Nback_Fill = Nback_ProcData.groupby('condition').get_group('Fill')\n\n            #trial counts\n            nTarget = Nback_Target.shape[0]\n            nFill = Nback_Fill.shape[0]\n            nTrials = nTarget + nFill\n\n            #Accuracy\n            nAcc = Nback_Target['acc_resp'].sum(axis = 0) + Nback_Fill['acc_resp'].sum(axis = 0)\n            pAcc = (nAcc/nTrials)*100\n\n            #Go Hits/Misses \n            nTarget_Hit = Nback_Target['acc_resp'].sum(axis = 0)\n            pTarget_Hit = (nTarget_Hit/nTarget)*100\n\n            nTarget_Miss = nTarget - nTarget_Hit\n            pTarget_Miss = (nTarget_Miss/nTarget)*100\n\n            #NoGo Commissions (False Alarms)\n            nFill_Corr = Nback_Fill['acc_resp'].sum(axis = 0)\n            pFill_Corr = (nFill_Corr/nFill)*100\n\n            nFill_FA = nFill - nFill_Corr\n            pFill_FA = (nFill_FA/nFill)*100\n\n            #Ballanced Acc\n            pTarget_BA = (pTarget_Hit + pFill_Corr)/2\n\n            #mean and median RT\n            Nback_Target_correct = Nback_Target.groupby('acc_resp').get_group(1)\n\n            RTmeanTarget_Hit = Nback_Target_correct['stim_rt'].mean(axis = 0)\n            RTmedTarget_Hit = Nback_Target_correct['stim_rt'].median(axis = 0)\n\n            summaryNback_dat = [Nback_ProcData['sub'][0], Nback_ProcData['ses'][0], Nback_ProcData['procedure_block'][0], nTarget, nFill, nTrials, nAcc, pAcc, nTarget_Hit, pTarget_Hit, nTarget_Miss, pTarget_Miss, nFill_Corr, pFill_Corr, nFill_FA, pFill_FA, pTarget_BA, RTmeanTarget_Hit, RTmedTarget_Hit]\n\n            if count == 1:\n                summaryNback_list = summaryNback_dat\n                count = count + 1\n            else:\n                summaryNback_list = np.row_stack((summaryNback_list, summaryNback_dat))\n                count = count + 1\n\n    else:\n        summaryNback_list = 'no files'\n\n    return summaryNback_list\n"
+    ],
+    [
+        "needed_outputs",
+        [
+            "summaryNback_dat"
+        ]
+    ]
+]

@@ -1,6 +1,7 @@
-    "Stop-Signal Task": {
-        "Description": "Stop-Signal Task which used food sitimuli that varied in energy density and portion size",
-        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_56a9123fe580f/",
+{
+    "Space Game": {
+        "Description": "The Space Game is a 2-stage reward-related decision making task adapted for children",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/trm_5667451917a34/",
         "DatasetType": "raw"
     },
     "sub": {
@@ -14,80 +15,80 @@
         }
     }
     "block": {
-      "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4"{
+        "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4",
     },
     "trial": {
-      "Description": "trial number",
+        "Description": "trial number",
     },
     "timeout_earth": {
-      "Description": "Indicates if participant timedout before responding during stage 1 - selecting a rocket",
-      "Levels": {
-          "0": "did not timeout",
-          "1": "did timeout"
-      }
+        "Description": "Indicates if participant timedout before responding during stage 1 - selecting a rocket",
+        "Levels": {
+            "0": "did not timeout",
+            "1": "did timeout"
+        }
     },
     "timeout_planet": {
-      "Description": "Indicates if participant timedout before responding during stage 2 - pressing SPACE bar to get treasure from alien",
-      "Levels": {
-          "0": "did not timeout",
-          "1": "did timeout"
-      }
+        "Description": "Indicates if participant timedout before responding during stage 2 - pressing SPACE bar to get treasure from alien",
+        "Levels": {
+            "0": "did not timeout",
+            "1": "did timeout"
+        }
     },
     "state_earth": {
-      "Description": "Indicates the state the earth is in for each trial (specific pairings of rockets)",
-      "Levels": {
-          "1": "state 1"
-          "2": "state 2"
-      }
+        "Description": "Indicates the state the earth is in for each trial (specific pairings of rockets)",
+        "Levels": {
+            "1": "state 1"
+            "2": "state 2"
+        }
     },
     "state_planet": {
-      "Description": "Indicates the state the planet is in for each trial (reward state - high or low)",
-      "Levels": {
-          "1": "state 1"
-          "2": "state 2"
-      }
+        "Description": "Indicates the state the planet is in for each trial (reward state - high or low)",
+        "Levels": {
+            "1": "state 1"
+            "2": "state 2"
+        }
     },
     "stim_left": {
-      "Description": "Indicates which rocket was presented during stage 1 (earth) on the left side of screen",
-      "Levels": {
-          "1": "rocket 1",
-          "2": "rocket 2",
-          "3": "rocket 3",
-          "4": "rocket 4"
-      }
+        "Description": "Indicates which rocket was presented during stage 1 (earth) on the left side of screen",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
     },
     "stim_right": {
-      "Description": "Indicates which rocket was presented during stage 1 (earth) on the right side of screen",
-      "Levels": {
-          "1": "rocket 1",
-          "2": "rocket 2",
-          "3": "rocket 3",
-          "4": "rocket 4"
-      }
-    },
+        "Description": "Indicates which rocket was presented during stage 1 (earth) on the right side of screen",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
     },
     "rt_earth": {
-      "Description": "Reaction time of response during stage 1 - rocket choice",
-      "Units": "ms"
+        "Description": "Reaction time of response during stage 1 - rocket choice. Note: a value of -1 indicates the response window was missed",
+        "Units": "ms"
     },
     "rt_planet": {
-      "Description": "Reaction time of response during stage 2 - asking alien for treasure",
-      "Units": "ms"
+        "Description": "Reaction time of response during stage 2 - asking alien for treasure. Note: a value of -1 indicates the response window was missed",
+        "Units": "ms"
     },
     "choice_earth": {
-      "Description": "choice made during stage 1 - rocket choice",
-      "Levels": {
-          "1": "rocket 1",
-          "2": "rocket 2",
-          "3": "rocket 3",
-          "4": "rocket 4"
+        "Description": "choice made during stage 1 - rocket choice",
+        "Levels": {
+            "1": "rocket 1",
+            "2": "rocket 2",
+            "3": "rocket 3",
+            "4": "rocket 4"
+        }
     },
     "response": {
-      "Description": "participant response during stage 1 - rocket choice",
-      "Levels": {
-          "1": "left rocket",
-          "2": "right rocket"
-      }
+        "Description": "participant response during stage 1 - rocket choice",
+        "Levels": {
+            "1": "left rocket",
+            "2": "right rocket"
+        }
     },
     "points":{
         "Description": "points earned that trial"

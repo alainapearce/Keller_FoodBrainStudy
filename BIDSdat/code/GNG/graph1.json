@@ -27,20 +27,20 @@
         {
             "group": 1,
             "name": "0_selectfiles",
-            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpgnmcmygo/GNG/selectfiles/_report/report.rst",
-            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpgnmcmygo/GNG/selectfiles/result_selectfiles.pklz"
+            "report": "/selectfiles/_report/report.rst",
+            "result": "/selectfiles/result_selectfiles.pklz"
         },
         {
             "group": 1,
             "name": "1_summaryData",
-            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpnk1bxf16/GNG/summaryData/_report/report.rst",
-            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmpnk1bxf16/GNG/summaryData/result_summaryData.pklz"
+            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp326_tjmp/GNG/summaryData/_report/report.rst",
+            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp326_tjmp/GNG/summaryData/result_summaryData.pklz"
         },
         {
             "group": 1,
             "name": "2_gngDatabase",
-            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp8i2kdijk/GNG/gngDatabase/_report/report.rst",
-            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp8i2kdijk/GNG/gngDatabase/result_gngDatabase.pklz"
+            "report": "/gngDatabase/_report/report.rst",
+            "result": "/gngDatabase/result_gngDatabase.pklz"
         }
     ]
 }

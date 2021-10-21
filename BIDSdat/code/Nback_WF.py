@@ -359,6 +359,10 @@ def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
         Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
         Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
 
+        #round to 3 decimal points
+        Nback_database = Nback_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        Nback_database_long = Nback_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
         #write databases
         Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         Nback_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
@@ -462,7 +466,7 @@ else:
 os.chdir(script_path)
 
 #build workflow
-Nback_WF = Workflow('Nback')
+Nback_WF = Workflow('Nback', base_dir = str(script_path))
 
 #summary data - define earlier than use so can connect to workflow based
 #on user input arguments

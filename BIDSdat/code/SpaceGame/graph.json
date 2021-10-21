@@ -6,9 +6,25 @@
         "size": 1
     },
     {
+        "group": 1,
+        "imports": [
+            "0_selectID"
+        ],
+        "name": "1_summaryData",
+        "size": 1
+    },
+    {
         "group": 2,
         "imports": [],
-        "name": "1_selectID",
+        "name": "2_selectID",
+        "size": 1
+    },
+    {
+        "group": 2,
+        "imports": [
+            "2_selectID"
+        ],
+        "name": "3_summaryData",
         "size": 1
     }
 ]

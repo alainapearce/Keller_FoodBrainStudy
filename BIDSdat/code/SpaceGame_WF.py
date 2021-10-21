@@ -127,9 +127,11 @@ def checkData(subject_list, session_id, base_directory, dat_overwrite):
     return sub_files
 
 ## summary data function
-def summarySpace(Space_file):
+def summarySpace(Space_file, base_directory):
     import numpy as np
     import pandas as pd
+    import scipy.io as sio
+    from pathlib import Path
     
     ###################################################################
     ####                   Sub-function script                     ####
@@ -165,26 +167,15 @@ def summarySpace(Space_file):
         #corrected reward rate
         reward_rate_corrected = reward_rate - avg_reward
 
-        #get previous trial data
-        Space_data['prev_state_earth'] = Space_data['state_earth'].shift(1)
-        Space_data['prev_state_earth'] = np.where(np.isnan(Space_data['prev_state_earth']), 0, Space_data['prev_state_earth'])
-
-        Space_data['prev_state_planet'] = Space_data['state_planet'].shift(1)
-        Space_data['prev_state_planet'] = np.where(np.isnan(Space_data['prev_state_planet']), 0, Space_data['prev_state_planet'])
-
-        Space_data['same_earth'] = np.where(Space_data['state_earth'] == Space_data['prev_state_earth'], 1, 0)
-        Space_data['same_planet'] = np.where(Space_data['state_planet'] == Space_data['prev_state_planet'], 1, 0)
-
         #stay probabilities (always won previously as no negatives) for if
         #earth state is same or different
-        
         prob_sameplanet_earthsame = Space_data.loc[(Space_data['same_earth'] == 1) & (Space_data['missed_earth'] == 0) & (Space_data['missed_planet'] == 0), 'same_planet'].mean(axis = 0)
         prob_sameplanet_earthdif = Space_data.loc[(Space_data['same_earth'] == 0) & (Space_data['missed_earth'] == 0) & (Space_data['missed_planet'] == 0), 'same_planet'].mean(axis = 0)
 
         summary_results = [earthRT_mean, earthRT_median, earth_n_miss, earth_p_miss, planetRT_mean, planetRT_median, 
                             planet_n_miss, planet_p_miss, reward_rate, avg_reward, reward_rate_corrected, 
                             prob_sameplanet_earthsame, prob_sameplanet_earthdif]
-        
+
         return(summary_results)
 
     ###################################################################
@@ -215,8 +206,18 @@ def summarySpace(Space_file):
 
         for file in Space_file:
 
-            #load data - loop throgh participant blockfiles
+            #load data 
             Space_ProcData = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python') 
+
+            #add previous trial data
+            Space_ProcData['prev_state_earth'] = Space_ProcData['state_earth'].shift(1)
+            Space_ProcData['prev_state_earth'] = np.where(np.isnan(Space_ProcData['prev_state_earth']), 0, Space_ProcData['prev_state_earth'])
+
+            Space_ProcData['prev_state_planet'] = Space_ProcData['state_planet'].shift(1)
+            Space_ProcData['prev_state_planet'] = np.where(np.isnan(Space_ProcData['prev_state_planet']), 0, Space_ProcData['prev_state_planet'])
+
+            Space_ProcData['same_earth'] = np.where(Space_ProcData['state_earth'] == Space_ProcData['prev_state_earth'], 1, 0)
+            Space_ProcData['same_planet'] = np.where(Space_ProcData['state_planet'] == Space_ProcData['prev_state_planet'], 1, 0)
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(Space_ProcData)
@@ -225,16 +226,36 @@ def summarySpace(Space_file):
             all_trials_stat.insert(2, 'all')
             
             if count == 0:
-                #make dataset
+                #make summary dataset
                 overall_summary_data = pd.DataFrame(all_trials_stat).T
                 overall_summary_data.columns = colnames
+
+                #make group_trailsdat dataset
+                space_group_trialsdat = Space_ProcData
             else:
+                #add to summary dataset
                 overall_summary_data.loc[len(overall_summary_data)] = all_trials_stat
             
+                #add to group_trailsdat dataset
+                space_group_trialsdat = Space_ProcData
+                space_group_trialsdat = pd.concat([space_group_trialsdat, Space_ProcData],ignore_index=True)
+
             # summary stats - by block 
             for b in np.unique(Space_ProcData['block']):
-                
+                #get block data
                 block_data = Space_ProcData.loc[Space_ProcData['block'] == b]
+
+                #re-do previous trial data base on just current block
+                block_data['prev_state_earth'] = block_data['state_earth'].shift(1)
+                block_data['prev_state_earth'] = np.where(np.isnan(block_data['prev_state_earth']), 0, block_data['prev_state_earth'])
+
+                block_data['prev_state_planet'] = block_data['state_planet'].shift(1)
+                block_data['prev_state_planet'] = np.where(np.isnan(block_data['prev_state_planet']), 0, block_data['prev_state_planet'])
+
+                block_data['same_earth'] = np.where(block_data['state_earth'] == block_data['prev_state_earth'], 1, 0)
+                block_data['same_planet'] = np.where(block_data['state_planet'] == block_data['prev_state_planet'], 1, 0)
+
+                #get summary results
                 block_trials_stat = summary_stats(block_data)
                 block_trials_stat.insert(0, Space_ProcData.loc[0, 'sub'])
                 block_trials_stat.insert(1, Space_ProcData.loc[0, 'ses'])
@@ -251,15 +272,24 @@ def summarySpace(Space_file):
     else:
          overall_summary_data = 'no files'
             
-    return overall_summary_data
+    return overall_summary_data, space_group_trialsdat
 
 ## summary data function
-def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
+def updateDatabase_save(Space_summary_dat, Space_group_trialdat, overwrite_flag, bids_dir):
     import pandas as pd
     import numpy as np
     from pathlib import Path
     from nipype.interfaces.base import Bunch
-    
+
+    #derivative data path
+    derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
+
+    #function to drop rows based on values
+    def filter_rows_by_values(df, sub_values, sesnum):
+        #filter based on sub and ses
+        return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
+
+    #### Summary Data ####
     #get a Bunch object if more than 1 participant 
     if isinstance(Space_summary_dat, Bunch):        
         #get output data from node
@@ -292,7 +322,7 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
             Space_sum_ses1_wide = Space_sum_ses1_dat.pivot(columns='block', index='sub', values=columnnames[3:16])
             Space_sum_ses1_wide.columns = ['_'.join(col) for col in Space_sum_ses1_wide.columns.reorder_levels(order=[1, 0])]
 
-            Space_sum_ses2_wide = Space_sum_ses1_dat.pivot(columns='block', index='sub', values=columnnames[3:16])
+            Space_sum_ses2_wide = Space_sum_ses2_dat.pivot(columns='block', index='sub', values=columnnames[3:16])
             Space_sum_ses2_wide.columns = ['_'.join(col) for col in Space_sum_ses2_wide.columns.reorder_levels(order=[1, 0])]
 
             #make the sub index into a dataset column
@@ -344,21 +374,12 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
         #get blocks subset
         Space_summary_blocks = Space_summary_dat[Space_summary_dat.block.isin(['b1', 'b2', 'b3', 'b4'])] 
     
-        ## load databases
-        #derivative data path
-        derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
-
         #load databases
         Space_database_wide = pd.read_csv(str(Path(derivative_data_path).joinpath('task-space_summary.tsv')), sep = '\t') 
         Space_database_blocks = pd.read_csv(str(Path(derivative_data_path).joinpath('task-space_summary_long.tsv')), sep = '\t')
 
         #if overwriting participants
         if overwrite_flag == True:
-            #function to drop rows based on values
-            def filter_rows_by_values(df, sub_values, sesnum):
-                #fileter based on sub and ses
-                return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
-
             #filter out/remove exisiting subs to overwrit~
             if len(db_sessions) > 1:
                 #get list of subs by ses to filter in wide and long data
@@ -396,6 +417,10 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
         Space_database_wide = Space_database_wide.sort_values(by = ['ses', 'sub'])
         Space_database_blocks = Space_database_blocks.sort_values(by = ['ses', 'sub', 'block'])
         
+        #round to 3 decimal points
+        Space_database_wide = Space_database_wide.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        Space_database_blocks = Space_database_blocks.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        
         #write databases
         Space_database_wide.to_csv(str(Path(derivative_data_path).joinpath('task-space_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         Space_database_blocks.to_csv(str(Path(derivative_data_path).joinpath('task-space_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
@@ -404,9 +429,72 @@ def updateDatabase_save(Space_summary_dat, overwrite_flag, bids_dir):
         print('No raw data files that need to be processed')
         Space_database_wide = np.nan
         Space_database_blocks = np.nan
+
+    #### Group trial data ####
+
+    #get a Bunch object if more than 1 participant 
+    if isinstance(Space_group_trialdat, Bunch):        
+        #get output data from node
+        Space_group_trialdatlist = Space_group_trialdat.group_trialdat
         
+        #combine datasets 
+        Space_groupdat = pd.concat(Space_group_trialdatlist)
+        
+    #if only 1 participant/dataset then it is a list    
+    elif isinstance(Space_group_trialdat, list):
+        if len(Space_group_trialdat) == 1:
+            Space_groupdat = Space_group_trialdat[0]
+        else:
+            Space_groupdat = pd.concat(Space_group_trialdat)
+
+    #if a pandas dataframe
+    if isinstance(Space_groupdat, pd.DataFrame):
+       
+        #get session subsets
+        db_group_sessions = Space_groupdat.ses.unique()
+
+        #load databases
+        Space_groupdat_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-space_groupdata.tsv')), sep = '\t') 
+
+        #if overwriting participants
+        if overwrite_flag == True:
+            #filter out/remove exisiting subs to overwrit~
+            if len(db_group_sessions) > 1:
+                #get list of subs by ses to filter in wide and long data
+                dat_sub_list = Space_groupdat.groupby('ses')['sub'].unique()
+
+                Space_groupdat_ses1 = filter_rows_by_values(Space_groupdat_database, dat_sub_list[0], 1)
+                Space_groupdat_ses2 = filter_rows_by_values(Space_groupdat_database, dat_sub_list[1], 2)
+
+                #concatonate databases
+                Space_groupdat_database = pd.concat([Space_groupdat_ses1, Space_groupdat_ses2],ignore_index=True)
+
+            else:
+                dat_sub_list = list(Space_groupdat['sub'].unique())
+
+                #filter by ses and sub
+                Space_groupdat_ses = filter_rows_by_values(Space_groupdat_database, dat_sub_list, db_group_sessions[0])
+
+                #concatonate with other session in full database
+                Space_groupdat_database = pd.concat([Space_groupdat_database[Space_groupdat_database['ses'] != db_group_sessions[0]], Space_groupdat_ses],ignore_index=True)
+
+        #add newly processed data
+        Space_groupdat_database = Space_groupdat_database.append(Space_groupdat)
+
+        #sort to ensure in sub order
+        Space_groupdat_database = Space_groupdat_database.sort_values(by = ['sub', 'ses'])
+
+        #round to 3 decimal points
+        Space_groupdat_database = Space_groupdat_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        
+        #write databases
+        Space_groupdat_database.to_csv(str(Path(derivative_data_path).joinpath('task-space_groupdata.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
     
-    return Space_database_wide, Space_database_blocks
+    else:
+        print('No raw trial data files that need to be processed')
+        Space_groupdat = np.nan
+    
+    return Space_database_wide, Space_database_blocks, Space_groupdat
 
 ##############################################################################
 ####                                                                      ####
@@ -507,16 +595,17 @@ else:
 os.chdir(script_path)
 
 #build workflow
-Space_WF = Workflow('SpaceGame')
+Space_WF = Workflow('SpaceGame', base_dir = str(script_path))
 
 #summary data - define earlier than use so can connect to workflow based
 #on user input arguments
 
-sumResults = MapNode(Function(input_names = ['Space_file'],
-                           output_names = ['summarySpace_dat'],
+sumResults = MapNode(Function(input_names = ['Space_file', 'base_directory'],
+                           output_names = ['summarySpace_dat', 'group_trialdat'],
                            function = summarySpace),
                      iterfield = ['Space_file'],
                      name = 'summaryData')
+sumResults.inputs.base_directory = base_directory
 
 # get subject ids that need to be procssed
 if args.session is None:
@@ -557,14 +646,16 @@ else:
     Space_WF.connect(selectIDNode, "sub_files", sumResults, "Space_file")
 
 #concatonate blocks and update/save database
-database_saveDat = Node(Function(input_names = ['Space_summary_dat', 'overwrite_flag', 'bids_dir'],
-                           output_names = ['Space_database_cond', 'Space_database_blocks'],
+database_saveDat = Node(Function(input_names = ['Space_summary_dat', 'Space_group_trialdat', 'overwrite_flag', 'bids_dir'],
+                           output_names = ['Space_database_cond', 'Space_database_blocks', 'Space_grouptrial_database'],
                            function = updateDatabase_save),
                      name = 'spaceDatabase')
 database_saveDat.inputs.overwrite_flag = dat_overwrite
 database_saveDat.inputs.bids_dir = str(base_directory)
 
 Space_WF.connect(sumResults, "summarySpace_dat", database_saveDat, "Space_summary_dat")
+Space_WF.connect(sumResults, "group_trialdat", database_saveDat, "Space_group_trialdat")
+
 
 res = Space_WF.run()
 

@@ -330,7 +330,6 @@ def summarySST(SST_file):
                     #append new rows
                     overall_summary_data.loc[len(overall_summary_data)] = hED_sPort_stat
             
-                
                 #low ED, large portion
                 elif b_data['block_cond'].str.contains('lED_lPort').any():
                 
@@ -429,7 +428,6 @@ def updateDatabase_save(SST_summary_dat, overwrite_flag, bids_dir):
         
         SST_summary_wide = SST_summary_wide.reindex(columns=columnnames_reorder)
     
-    
         #get blocks subset
         SST_summary_blocks = SST_summary_dat[SST_summary_dat.condition.isin(['hED_lPort', 'hED_sPort', 'lED_lPort', 'lED_sPort'])] 
     
@@ -463,6 +461,10 @@ def updateDatabase_save(SST_summary_dat, overwrite_flag, bids_dir):
         SST_database_cond = SST_database_cond.sort_values(by = 'sub')
         SST_database_blocks = SST_database_blocks.sort_values(by = ['sub', 'block'])
 
+        #round to 3 decimal points
+        SST_database_cond = SST_database_cond.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+        SST_database_blocks = SST_database_blocks.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
         #write databases
         SST_database_cond.to_csv(str(Path(derivative_data_path).joinpath('task-sst_summary_condwide.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
         SST_database_blocks.to_csv(str(Path(derivative_data_path).joinpath('task-sst_summary_blockslong.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
@@ -472,7 +474,6 @@ def updateDatabase_save(SST_summary_dat, overwrite_flag, bids_dir):
         SST_database_cond = np.nan
         SST_database_blocks = np.nan
         
-    
     return SST_database_cond, SST_database_blocks
 
 ##############################################################################
@@ -537,10 +538,10 @@ else:
     subject_list = list(set([item[4:7] for item in sst_raw_subs]))   
 
 # move back to script directory
-os.chdir(script_path)
+os.chdir(str(script_path))
 
 #build workflow
-SST_WF = Workflow('SST')
+SST_WF = Workflow('SST', base_dir = str(script_path))
 
 #summary data - define earlier than use so can connect to workflow based
 #on user input arguments

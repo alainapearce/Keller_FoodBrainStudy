@@ -254,7 +254,7 @@ for filepath in gng_raw_files:
         #open error file and append error message
         log_error(practice_err)
     
-    # copy practice files and corresponding json into source data
+    # copy practice files into source data
     else:
         for practicefile in gng_practice_files:
             copy2(practicefile, Path(beh_source_bids_path))
