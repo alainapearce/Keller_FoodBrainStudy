@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-018/ses-1/beh/sub-018_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -184,7 +184,7 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-018/ses-1/beh/sub-018_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -358,77 +358,59 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  36   all  150    50  175  0.875     147        3         28       22      0.98      0.02       0.56     0.44    447.55102    418.863636       434.0        392.0
-1  36    b1   30    10   37  0.925      30        0          7        3       1.0       0.0        0.7      0.3        441.6    335.333333       430.5        317.0
-2  36    b2   30    10    0    0.0      30        0          6        4       1.0       0.0        0.6      0.4   459.066667        340.25       420.0        351.0
-3  36    b3   30    10    0    0.0      30        0          6        4       1.0       0.0        0.6      0.4   463.133333         486.0       443.5        490.5
-4  36    b4   30    10    0    0.0      29        1          5        5  0.966667  0.033333        0.5      0.5   432.517241         351.4       427.0        371.0
-5  36    b5   30    10    0    0.0      28        2          4        6  0.933333  0.066667        0.4      0.6   440.464286         524.5       432.0        478.0
+* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit  ... pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
+0  18   all  150    50  184   0.92     150  ...      0.0       0.68     0.32   486.053333       397.375       480.0        397.5
+1  18    b1   30    10   37  0.925      30  ...      0.0        0.7      0.3   509.366667         390.0       504.0        409.0
+2  18    b2   30    10    0    0.0      30  ...      0.0        0.8      0.2   466.866667         311.5       423.5        311.5
+3  18    b3   30    10    0    0.0      30  ...      0.0        0.8      0.2        472.0         387.0       458.5        387.0
+4  18    b4   30    10    0    0.0      30  ...      0.0        0.4      0.6        474.4         376.5       483.0        388.0
+5  18    b5   30    10    0    0.0      30  ...      0.0        0.7      0.3   507.633333    510.666667       525.5        488.0
+
+[6 rows x 18 columns]
 
 
 Runtime info
 ------------
 
 
-* duration : 0.142249
-* hostname : H8-NTR-GCH12202
-* prev_wd : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* working_dir : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData4
+* duration : 0.207655
+* hostname : ND-NTR-FCH12085
+* prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
+* working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData4
 
 
 Environment
 ~~~~~~~~~~~
 
 
+* CLICOLOR : 1
 * CONDA_DEFAULT_ENV : base
-* CONDA_EXE : /Users/baf44/opt/anaconda3/bin/conda
-* CONDA_PREFIX : /Users/baf44/opt/anaconda3
+* CONDA_EXE : /Users/azp271/opt/anaconda3/bin/conda
+* CONDA_PREFIX : /Users/azp271/opt/anaconda3
 * CONDA_PROMPT_MODIFIER : (base) 
-* CONDA_PYTHON_EXE : /Users/baf44/opt/anaconda3/bin/python
+* CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.HNyHFHddaJ/org.xquartz:0
-* FIX_VERTEX_AREA : 
-* FMRI_ANALYSIS_DIR : /Users/baf44/freesurfer/fsfast
-* FREESURFER : /Users/baf44/freesurfer
-* FREESURFER_HOME : /Users/baf44/freesurfer
-* FSFAST_HOME : /Users/baf44/freesurfer/fsfast
-* FSF_OUTPUT_FORMAT : nii.gz
-* FS_OVERRIDE : 0
-* FUNCTIONALS_DIR : /Users/baf44/freesurfer/sessions
-* HOME : /Users/baf44
-* HOMEBREW_CELLAR : /opt/homebrew/Cellar
-* HOMEBREW_PREFIX : /opt/homebrew
-* HOMEBREW_REPOSITORY : /opt/homebrew
-* HOMEBREW_SHELLENV_PREFIX : /opt/homebrew
-* INFOPATH : /opt/homebrew/share/info:
+* DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
+* HOME : /Users/azp271
 * LANG : en_US.UTF-8
-* LOCAL_DIR : /Users/baf44/freesurfer/local
-* LOGNAME : baf44
-* MANPATH : /opt/homebrew/share/man:
-* MINC_BIN_DIR : /Users/baf44/freesurfer/mni/bin
-* MINC_LIB_DIR : /Users/baf44/freesurfer/mni/lib
-* MNI_DATAPATH : /Users/baf44/freesurfer/mni/data
-* MNI_DIR : /Users/baf44/freesurfer/mni
-* MNI_PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* OLDPWD : /Users/baf44
-* OS : Darwin
-* PATH : /Users/baf44/opt/anaconda3/bin:/Users/baf44/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/baf44/freesurfer/bin:/Users/baf44/freesurfer/fsfast/bin:/Users/baf44/freesurfer/mni/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/baf44/abin
-* PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* PWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
+* LOGNAME : azp271
+* LSCOLORS : ExFxBxDxCxegedabagacad
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin
+* PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
+* PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
 * SHLVL : 1
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.IGHDFDpBhr/Listeners
-* SUBJECTS_DIR : /Users/baf44/freesurfer/subjects
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
 * TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : E284AFD2-CB89-4563-819F-34ED4239660B
-* TMPDIR : /var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/
-* USER : baf44
+* TERM_SESSION_ID : A30D2AAF-B645-4A29-9775-89587571A8F8
+* TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
+* USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
-* _ : ./GNG_WF.py
+* _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
 * __CFBundleIdentifier : com.apple.Terminal

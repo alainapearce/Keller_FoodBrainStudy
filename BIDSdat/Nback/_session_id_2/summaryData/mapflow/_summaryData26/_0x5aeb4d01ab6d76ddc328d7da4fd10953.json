@@ -1,0 +1,29 @@
+[
+    [
+        "Nback_file",
+        [
+            [
+                "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-2/beh/sub-080_ses-2_task-nback0_events.tsv",
+                "ae5ca4509c40752971f327af763d13d8"
+            ],
+            [
+                "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-2/beh/sub-080_ses-2_task-nback1_events.tsv",
+                "004fbb1486ea317aab361ff12690c676"
+            ],
+            [
+                "/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-080/ses-2/beh/sub-080_ses-2_task-nback2_events.tsv",
+                "c53f7eaf0af89969af522381b534a0c5"
+            ]
+        ]
+    ],
+    [
+        "function_str",
+        "def summaryNback(Nback_file):\n    import numpy as np\n    import pandas as pd\n    from collections.abc import Iterable\n\n    #check if str\n    if isinstance(Nback_file, str):\n\n        #check to see if it is filepath str or 'No subfiles' message\n        if '.tsv' in Nback_file:\n            #if only 1 file, will be string and we want an array\n            Nback_file = [Nback_file]\n        else:\n            Nback_file = []\n\n    if len(Nback_file) > 0:\n\n        #loop counter\n        count = 1\n\n        for file in Nback_file:\n\n            #load data - loop throgh participant blockfiles\n            Nback_ProcData = pd.read_csv(str(file), sep = '\\t', encoding = 'utf-8-sig', engine='python') \n\n            #make Acc_Resp column\n            Nback_ProcData.fillna('', inplace=True)\n\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b0_', '')\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b1_', '')\n            Nback_ProcData.columns = Nback_ProcData.columns.str.replace('b2_', '')\n\n            Nback_ProcData['acc_resp'] = np.where(Nback_ProcData['correct'] == Nback_ProcData['stim_resp'], 1, 0)\n\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B0BlockProc','B0Block2Proc'],'b0')\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B1BlockProc','B1Block2Proc'],'b1')\n            Nback_ProcData['procedure_block'] = Nback_ProcData['procedure_block'].replace(['B2BlockProc','B2Block2Proc'],'b2')\n\n            #get target and fill datasets\n            Nback_Target = Nback_ProcData.groupby('condition').get_group('Target')\n            Nback_Fill = Nback_ProcData.groupby('condition').get_group('Fill')\n\n            #trial counts\n            nTarget = Nback_Target.shape[0]\n            nFill = Nback_Fill.shape[0]\n            nTrials = nTarget + nFill\n\n            #Accuracy\n            nAcc = Nback_Target['acc_resp'].sum(axis = 0) + Nback_Fill['acc_resp'].sum(axis = 0)\n            pAcc = (nAcc/nTrials)*100\n\n            #Go Hits/Misses \n            nTarget_Hit = Nback_Target['acc_resp'].sum(axis = 0)\n            pTarget_Hit = (nTarget_Hit/nTarget)*100\n\n            nTarget_Miss = nTarget - nTarget_Hit\n            pTarget_Miss = (nTarget_Miss/nTarget)*100\n\n            #NoGo Commissions (False Alarms)\n            nFill_Corr = Nback_Fill['acc_resp'].sum(axis = 0)\n            pFill_Corr = (nFill_Corr/nFill)*100\n\n            nFill_FA = nFill - nFill_Corr\n            pFill_FA = (nFill_FA/nFill)*100\n\n            #Ballanced Acc\n            pTarget_BA = (pTarget_Hit + pFill_Corr)/2\n\n            #mean and median RT\n            Nback_Target_correct = Nback_Target.groupby('acc_resp').get_group(1)\n\n            RTmeanTarget_Hit = Nback_Target_correct['stim_rt'].mean(axis = 0)\n            RTmedTarget_Hit = Nback_Target_correct['stim_rt'].median(axis = 0)\n\n            summaryNback_dat = [Nback_ProcData['sub'][0], Nback_ProcData['ses'][0], Nback_ProcData['procedure_block'][0], nTarget, nFill, nTrials, nAcc, pAcc, nTarget_Hit, pTarget_Hit, nTarget_Miss, pTarget_Miss, nFill_Corr, pFill_Corr, nFill_FA, pFill_FA, pTarget_BA, RTmeanTarget_Hit, RTmedTarget_Hit]\n\n            if count == 1:\n                summaryNback_list = summaryNback_dat\n                count = count + 1\n            else:\n                summaryNback_list = np.row_stack((summaryNback_list, summaryNback_dat))\n                count = count + 1\n\n    else:\n        summaryNback_list = 'no files'\n\n    return summaryNback_list\n"
+    ],
+    [
+        "needed_outputs",
+        [
+            "summaryNback_dat"
+        ]
+    ]
+]

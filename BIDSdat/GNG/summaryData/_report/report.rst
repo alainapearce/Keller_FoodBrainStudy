@@ -10,10 +10,11 @@ Original Inputs
 ---------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-033/ses-1/beh/sub-033_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-034/ses-1/beh/sub-034_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-035/ses-1/beh/sub-035_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -58,12 +59,8 @@ Original Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -87,16 +84,67 @@ Original Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -131,7 +179,9 @@ Original Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -184,10 +234,11 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-033/ses-1/beh/sub-033_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-034/ses-1/beh/sub-034_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-035/ses-1/beh/sub-035_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-036/ses-1/beh/sub-036_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -232,12 +283,8 @@ Execution Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -261,16 +308,67 @@ Execution Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -305,7 +403,9 @@ Execution Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -358,37 +458,31 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat : [  sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  31   all  150    50  175  0.875     146        4         29       21  0.973333  0.026667       0.58     0.42   483.438356     434.52381       476.5        341.0
-1  31    b1   30    10   37  0.925      30        0          7        3       1.0       0.0        0.7      0.3   507.233333    312.666667       498.5        300.0
-2  31    b2   30    10    0    0.0      28        2          3        7  0.933333  0.066667        0.3      0.7   488.964286    498.857143       506.5        333.0
-3  31    b3   30    10    0    0.0      28        2          6        4  0.933333  0.066667        0.6      0.4   442.678571        374.25       435.5        327.0
-4  31    b4   30    10    0    0.0      30        0          5        5       1.0       0.0        0.5      0.5   518.033333         476.6       504.5        382.0
-5  31    b5   30    10    0    0.0      30        0          8        2       1.0       0.0        0.8      0.2   457.933333         407.5       449.0        407.5,   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  33   all  150    50  178   0.89     146        4         32       18  0.973333  0.026667       0.64     0.36   649.671233         481.5       646.5        493.5
-1  33    b1   30    10   35  0.875      28        2          7        3  0.933333  0.066667        0.7      0.3   636.178571    513.333333       646.5        518.0
-2  33    b2   30    10    0    0.0      30        0          9        1       1.0       0.0        0.9      0.1   686.333333         454.0       676.0        454.0
-3  33    b3   30    10    0    0.0      29        1          7        3  0.966667  0.033333        0.7      0.3   648.724138    545.333333       606.0        538.0
-4  33    b4   30    10    0    0.0      30        0          4        6       1.0       0.0        0.4      0.6   672.366667    440.833333       660.0        425.0
-5  33    b5   30    10    0    0.0      29        1          5        5  0.966667  0.033333        0.5      0.5   602.241379         478.4       577.0        542.0,   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  34   all  150    50  179  0.895     146        4         33       17  0.973333  0.026667       0.66     0.34   538.780822    462.941176       530.0        457.0
-1  34    b1   30    10   34   0.85      29        1          5        5  0.966667  0.033333        0.5      0.5   522.862069         428.0       509.0        414.0
-2  34    b2   30    10    0    0.0      29        1          7        3  0.966667  0.033333        0.7      0.3   558.551724    545.666667       549.0        497.0
-3  34    b3   30    10    0    0.0      30        0          7        3       1.0       0.0        0.7      0.3   528.433333    381.333333       498.0        370.0
-4  34    b4   30    10    0    0.0      29        1          7        3  0.966667  0.033333        0.7      0.3   561.034483    481.666667       549.0        491.0
-5  34    b5   30    10    0    0.0      29        1          7        3  0.966667  0.033333        0.7      0.3    523.37931    501.333333       513.0        520.0,   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  35   all  150    50  179  0.895     143        7         36       14  0.953333  0.046667       0.72     0.28   606.265734    514.642857       581.0        511.5
-1  35    b1   30    10   38   0.95      29        1          9        1  0.966667  0.033333        0.9      0.1   578.758621         470.0       580.0        470.0
-2  35    b2   30    10    0    0.0      27        3          6        4       0.9       0.1        0.6      0.4   598.777778         511.0       589.0        518.0
-3  35    b3   30    10    0    0.0      29        1          7        3  0.966667  0.033333        0.7      0.3   599.034483    555.666667       581.0        510.0
-4  35    b4   30    10    0    0.0      28        2          7        3  0.933333  0.066667        0.7      0.3   643.321429    540.666667       630.0        519.0
-5  35    b5   30    10    0    0.0      30        0          7        3       1.0       0.0        0.7      0.3        612.0    467.333333       558.5        493.0,   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  36   all  150    50  175  0.875     147        3         28       22      0.98      0.02       0.56     0.44    447.55102    418.863636       434.0        392.0
-1  36    b1   30    10   37  0.925      30        0          7        3       1.0       0.0        0.7      0.3        441.6    335.333333       430.5        317.0
-2  36    b2   30    10    0    0.0      30        0          6        4       1.0       0.0        0.6      0.4   459.066667        340.25       420.0        351.0
-3  36    b3   30    10    0    0.0      30        0          6        4       1.0       0.0        0.6      0.4   463.133333         486.0       443.5        490.5
-4  36    b4   30    10    0    0.0      29        1          5        5  0.966667  0.033333        0.5      0.5   432.517241         351.4       427.0        371.0
-5  36    b5   30    10    0    0.0      28        2          4        6  0.933333  0.066667        0.4      0.6   440.464286         524.5       432.0        478.0]
+* summaryGNG_dat : [  sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA pGo_Hit pGo_Miss  ...  z_Hit_mm   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0  26   all  150    50  191  0.955     150        0         41        9     1.0      0.0  ...  2.713052 -0.915365  2.715253 -0.891709   3.628417   3.606962   0.953833   0.952259  0.898843  0.911772     -0.955974     -0.957382
+1  26    b1   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+2  26    b2   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+3  26    b3   30    10   40    1.0      30        0         10        0     1.0      0.0  ...  2.128045 -1.644854  2.141198 -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
+4  26    b4   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+5  26    b5   30    10   37  0.925      30        0          7        3     1.0      0.0  ...  2.128045 -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+
+[6 rows x 32 columns],   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  ...   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0  28   all  150    50  177  0.885     147        3         30       20      0.98  ... -0.253347  1.992123 -0.248275   2.307096   2.240398   0.889626   0.887436  0.900201  0.871924     -0.848998      -0.82784
+1  28    b1   30    10   35  0.875      30        0          5        5       1.0  ...       0.0  2.141198       0.0   2.128045   2.141198   0.864548   0.864886  1.064023  1.070599     -0.876955     -0.880626
+2  28    b2   30    10   36    0.9      29        1          7        3  0.966667  ... -0.524401  1.660698 -0.472789   2.358315   2.133487   0.910509   0.898668  0.654757  0.593954     -0.733945     -0.649826
+3  28    b3   30    10   38   0.95      30        0          8        2       1.0  ... -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+4  28    b4   30    10   35  0.875      29        1          6        4  0.966667  ... -0.253347  1.660698 -0.229884   2.087262   1.890582   0.882663   0.872056  0.790284  0.715407     -0.763265     -0.679995
+5  28    b5   30    10   33  0.825      29        1          4        6  0.966667  ...  0.253347  1.660698  0.229884   1.580568   1.430813   0.823994   0.815191  1.043631  0.945291     -0.763265     -0.679995
+
+[6 rows x 32 columns],   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  ...   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0  30   all  150    50  183  0.915     144        6         39       11      0.96  ... -0.772193  1.716379 -0.753782   2.522879    2.47016   0.929888   0.927197  0.489246  0.481299     -0.634286     -0.618293
+1  30    b1   30    10   37  0.925      30        0          7        3       1.0  ... -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+2  30    b2   30    10   38   0.95      28        2         10        0  0.933333  ... -1.644854  1.400745 -1.690622    3.14594   3.091367   0.969063   0.966518 -0.071884 -0.144938      0.134177      0.261662
+3  30    b3   30    10   37  0.925      28        2          9        1  0.933333  ... -1.281552  1.400745 -1.096804   2.782638   2.497549   0.954696   0.939574  0.109767  0.151971     -0.182482     -0.227331
+4  30    b4   30    10   33  0.825      28        2          5        5  0.933333  ...       0.0  1.400745       0.0   1.501086   1.400745   0.832738   0.823713  0.750543  0.700373     -0.601423     -0.542536
+5  30    b5   30    10   38   0.95      30        0          8        2       1.0  ... -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+
+[6 rows x 32 columns]]
 
 
 Subnode reports
@@ -398,6 +492,4 @@ Subnode reports
  subnode 0 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0/_report/report.rst
  subnode 1 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData1/_report/report.rst
  subnode 2 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData2/_report/report.rst
- subnode 3 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData3/_report/report.rst
- subnode 4 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData4/_report/report.rst
 

@@ -10,10 +10,11 @@ Original Inputs
 ---------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-051/ses-1/beh/sub-051_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-002/ses-1/beh/sub-002_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -58,12 +59,8 @@ Original Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -87,16 +84,66 @@ Original Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -131,7 +178,9 @@ Original Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -184,10 +233,11 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-051/ses-1/beh/sub-051_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-002/ses-1/beh/sub-002_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -232,12 +282,8 @@ Execution Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -261,16 +307,66 @@ Execution Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -305,7 +401,9 @@ Execution Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -358,13 +456,15 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat : [  sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  51   all  150    50    2   0.01       2      148          0       50  0.013333  0.986667        0.0      1.0        708.0         624.7       708.0        587.0
-1  51    b1   30    10    1  0.025       1       29          0       10  0.033333  0.966667        0.0      1.0        948.0         633.1       948.0        626.0
-2  51    b2   30    10    0    0.0       0       30          0       10       0.0       1.0        0.0      1.0         <NA>         630.9        <NA>        576.0
-3  51    b3   30    10    0    0.0       0       30          0       10       0.0       1.0        0.0      1.0         <NA>         668.6        <NA>        618.5
-4  51    b4   30    10    0    0.0       0       30          0       10       0.0       1.0        0.0      1.0         <NA>         580.0        <NA>        537.5
-5  51    b5   30    10    0    0.0       1       29          0       10  0.033333  0.966667        0.0      1.0        468.0         610.9       468.0        634.5]
+* summaryGNG_dat : [  sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr  ...   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0   2   all  150    50  189  0.945     149        1         40  ... -0.820792   3.316361   3.149632   0.947581   0.944886  0.816559  0.754024     -0.920512     -0.886516
+1   2    b1   30    10   37  0.925      30        0          7  ... -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+2   2    b2   30    10   40    1.0      30        0         10  ... -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
+3   2    b3   30    10   36    0.9      29        1          7  ... -0.472789   2.358315   2.133487   0.910509   0.898668  0.654757  0.593954     -0.733945     -0.649826
+4   2    b4   30    10   39  0.975      30        0          9  ... -1.096804   3.409597   3.238002   0.969947   0.960681  0.423247  0.522197     -0.691906     -0.762508
+5   2    b5   30    10   37  0.925      30        0          7  ... -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+
+[6 rows x 32 columns]]
 
 
 Subnode reports

@@ -10,10 +10,11 @@ Original Inputs
 ---------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-gng_events.tsv
+* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -58,12 +59,8 @@ Original Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -87,16 +84,67 @@ Original Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -131,7 +179,9 @@ Original Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -184,10 +234,11 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-031/ses-1/beh/sub-031_ses-1_task-gng_events.tsv
+* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
+    from scipy.stats import norm
 
     ###################################################################
     ####                   Sub-function script                     ####
@@ -232,12 +283,8 @@ Execution Inputs
         nGo = len(Go_data)
         nNoGo = len(NoGo_data)
 
-        # Accuracy - here *check par 51
-        if 1 in GNG_data.trial_acc:
-            nAcc = GNG_data['trial_acc'].value_counts()["1"]
-        else: 
-            nAcc = 0
-
+        # Accuracy
+        nAcc = GNG_data[GNG_data.trial_acc == '1'].shape[0]
         pAcc = nAcc/len(GNG_data)
 
         # Go Hits/Misses
@@ -261,16 +308,67 @@ Execution Inputs
         RTmeanNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].mean()
         RTmedNoGo_FA = NoGo_data.loc[(NoGo_data['trial_acc']=="0"), 'trial_rt'].median()
 
+        ####  Compute signal detection theory metrics ####
+        #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
+        z_Hit = norm.ppf(pGo_Hit)
+        z_FA = norm.ppf(pNoGo_FA)
+
+        #do Macmillian adjustments for extreme values: if hit rate = 1, new hit
+        #rate = (nGo - 0.5)/nGo; if false alarm rate = 0, new false alarm rate
+        #= 0.5/nNoGo. If no extreme value, then just save standard calculation
+        #for z in that place
+
+        if pGo_Hit == 1:
+            pHit_mm = (nGo - 0.5)/nGo
+            z_Hit_mm = norm.ppf(pHit_mm)
+        else:
+            pHit_mm = pGo_Hit
+            z_Hit_mm = norm.ppf(pHit_mm)
+
+        if pNoGo_FA == 0:
+            pFA_mm = 0.5/nNoGo
+            z_FA_mm = norm.ppf(pFA_mm)
+        else:
+            pFA_mm = pNoGo_FA
+            z_FA_mm = norm.ppf(pFA_mm)
+
+        #do loglinear adjustments: add 0.5 to NUMBER of hits and FA and add 1
+        #to number of Go and NoGo trials. Then caluculate z off of new hit and
+        #FA rates
+        nHit_ll = nGo_Hit + 0.5
+        nGo_ll = nGo + 1
+        nFA_ll = nNoGo_FA + 0.5
+        nNoGo_ll = nNoGo + 1
+        pHit_ll = nHit_ll/nGo_ll
+        pFA_ll = nFA_ll/nNoGo_ll
+        z_Hit_ll = norm.ppf(pHit_ll)
+        z_FA_ll = norm.ppf(pFA_ll)
+
+        #calculate sensory sensitivity d'
+        d_prime_mm = z_Hit_mm - z_FA_mm
+        d_prime_ll = z_Hit_ll - z_FA_ll
+
+        #calculate nonparametric sensory sensitivity A':
+        #0.5+[sign(H-FA)*((H-FA)^2 + |H-FA|)/(4*max(H, FA) - 4*H*FA))
+        A_prime_mm = 0.5 + np.sign(pHit_mm-pFA_mm)*(((pHit_mm-pFA_mm)**2+abs(pHit_mm - pFA_mm))/(4*max(pHit_mm, pFA_mm) - 4*pHit_mm*pFA_mm))
+        A_prime_ll = 0.5 + np.sign(pHit_ll-pFA_ll)*(((pHit_ll-pFA_ll)**2+abs(pHit_ll - pFA_ll))/(4*max(pHit_ll, pFA_ll) - 4*pHit_ll*pFA_ll))
+
+        #calculate c (criterion)
+        c_mm = (norm.ppf(pHit_mm) + norm.ppf(pFA_mm))/2
+        c_ll = (norm.ppf(pHit_ll) + norm.ppf(pFA_ll))/2
+
+        #calculate Grier's Beta--beta", a nonparametric response bias
+        Grier_beta_mm = np.sign(pHit_mm-pFA_mm)*((pHit_mm*(1-pHit_mm)-pFA_mm*(1-pFA_mm))/(pHit_mm*(1-pHit_mm)+pFA_mm*(1-pFA_mm)))
+        Grier_beta_ll = np.sign(pHit_ll-pFA_ll)*((pHit_ll*(1-pHit_ll)-pFA_ll*(1-pFA_ll))/(pHit_ll*(1-pHit_ll)+pFA_ll*(1-pFA_ll)))
+
         #combine into array    
         summary_results = [nGo, nNoGo, nAcc, pAcc, nGo_Hit, nGo_Miss, nNoGo_Corr, nNoGo_FA, pGo_Hit, 
-                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA]
+                           pGo_Miss, pNoGo_Corr, pNoGo_FA, RTmeanGo_Hit, RTmeanNoGo_FA, RTmedGo_Hit, RTmedNoGo_FA,
+                           z_Hit, z_FA, z_Hit_mm, z_FA_mm, z_Hit_ll, z_FA_ll, d_prime_mm, d_prime_ll, A_prime_mm,
+                           A_prime_ll, c_mm, c_ll, Grier_beta_mm, Grier_beta_ll]
 
         return(summary_results)
-
-    ## DDM
-    #RT data at different quantils # this is a separate database thats output.
-    # Can always skip this for now, and make note to make DDM function
-    # SDT = signal detection theory. google norminv, it gives z-score. should be able to ask for norminv in python
 
     ###################################################################
     ####                Primary function script                    ####
@@ -305,7 +403,9 @@ Execution Inputs
             # Set column names
             colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
                         'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA']
+                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
+                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
+                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -358,20 +458,22 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  pGo_Miss pNoGo_Corr pNoGo_FA RTmeanGo_Hit RTmeanNoGo_FA RTmedGo_Hit RTmedNoGo_FA
-0  31   all  150    50  175  0.875     146        4         29       21  0.973333  0.026667       0.58     0.42   483.438356     434.52381       476.5        341.0
-1  31    b1   30    10   37  0.925      30        0          7        3       1.0       0.0        0.7      0.3   507.233333    312.666667       498.5        300.0
-2  31    b2   30    10    0    0.0      28        2          3        7  0.933333  0.066667        0.3      0.7   488.964286    498.857143       506.5        333.0
-3  31    b3   30    10    0    0.0      28        2          6        4  0.933333  0.066667        0.6      0.4   442.678571        374.25       435.5        327.0
-4  31    b4   30    10    0    0.0      30        0          5        5       1.0       0.0        0.5      0.5   518.033333         476.6       504.5        382.0
-5  31    b5   30    10    0    0.0      30        0          8        2       1.0       0.0        0.8      0.2   457.933333         407.5       449.0        407.5
+* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA pGo_Hit pGo_Miss  ...  z_Hit_mm   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0  26   all  150    50  191  0.955     150        0         41        9     1.0      0.0  ...  2.713052 -0.915365  2.715253 -0.891709   3.628417   3.606962   0.953833   0.952259  0.898843  0.911772     -0.955974     -0.957382
+1  26    b1   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+2  26    b2   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+3  26    b3   30    10   40    1.0      30        0         10        0     1.0      0.0  ...  2.128045 -1.644854  2.141198 -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
+4  26    b4   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+5  26    b5   30    10   37  0.925      30        0          7        3     1.0      0.0  ...  2.128045 -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+
+[6 rows x 32 columns]
 
 
 Runtime info
 ------------
 
 
-* duration : 0.130361
+* duration : 0.190912
 * hostname : H8-NTR-GCH12202
 * prev_wd : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0
@@ -387,7 +489,7 @@ Environment
 * CONDA_PROMPT_MODIFIER : (base) 
 * CONDA_PYTHON_EXE : /Users/baf44/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.HNyHFHddaJ/org.xquartz:0
+* DISPLAY : /private/tmp/com.apple.launchd.cocWWLGA0Z/org.xquartz:0
 * FIX_VERTEX_AREA : 
 * FMRI_ANALYSIS_DIR : /Users/baf44/freesurfer/fsfast
 * FREESURFER : /Users/baf44/freesurfer
@@ -405,25 +507,27 @@ Environment
 * LANG : en_US.UTF-8
 * LOCAL_DIR : /Users/baf44/freesurfer/local
 * LOGNAME : baf44
+* LaunchInstanceID : DF683324-4730-42C2-BFF3-FE6A6C2C2D9E
 * MANPATH : /opt/homebrew/share/man:
 * MINC_BIN_DIR : /Users/baf44/freesurfer/mni/bin
 * MINC_LIB_DIR : /Users/baf44/freesurfer/mni/lib
 * MNI_DATAPATH : /Users/baf44/freesurfer/mni/data
 * MNI_DIR : /Users/baf44/freesurfer/mni
 * MNI_PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* OLDPWD : /Users/baf44
+* OLDPWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data
 * OS : Darwin
 * PATH : /Users/baf44/opt/anaconda3/bin:/Users/baf44/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/baf44/freesurfer/bin:/Users/baf44/freesurfer/fsfast/bin:/Users/baf44/freesurfer/mni/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/baf44/abin
 * PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * PWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
+* SECURITYSESSIONID : 186a5
 * SHELL : /bin/bash
 * SHLVL : 1
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.IGHDFDpBhr/Listeners
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.K6iD4B8TJB/Listeners
 * SUBJECTS_DIR : /Users/baf44/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
 * TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : E284AFD2-CB89-4563-819F-34ED4239660B
+* TERM_SESSION_ID : DEB3169F-06AD-466E-9DE9-29C66603AEC1
 * TMPDIR : /var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/
 * USER : baf44
 * XPC_FLAGS : 0x0

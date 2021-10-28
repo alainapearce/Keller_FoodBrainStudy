@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback2_events.tsv']
+* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback2_events.tsv']
 * function_str : def summaryNback(Nback_file):
     import numpy as np
     import pandas as pd
@@ -105,7 +105,7 @@ Execution Inputs
 ----------------
 
 
-* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-070/ses-1/beh/sub-070_ses-1_task-nback2_events.tsv']
+* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-117/ses-1/beh/sub-117_ses-1_task-nback2_events.tsv']
 * function_str : def summaryNback(Nback_file):
     import numpy as np
     import pandas as pd
@@ -200,21 +200,21 @@ Execution Outputs
 -----------------
 
 
-* summaryNback_dat : [['70' '1' 'b0' '16' '44' '60' '59' '98.33333333333333' '16' '100.0' '0'
+* summaryNback_dat : [['117' '1' 'b0' '16' '44' '60' '59' '98.33333333333333' '16' '100.0' '0'
   '0.0' '43' '97.72727272727273' '1' '2.272727272727273'
-  '98.86363636363637' '581.75' '570.0']
- ['70' '1' 'b1' '16' '44' '60' '59' '98.33333333333333' '16' '100.0' '0'
-  '0.0' '43' '97.72727272727273' '1' '2.272727272727273'
-  '98.86363636363637' '581.4375' '578.0']
- ['70' '1' 'b2' '16' '44' '60' '52' '86.66666666666667' '8' '50.0' '8'
-  '50.0' '44' '100.0' '0' '0.0' '75.0' '573.375' '481.5']]
+  '98.86363636363637' '575.5625' '594.5']
+ ['117' '1' 'b1' '16' '44' '60' '59' '98.33333333333333' '15' '93.75' '1'
+  '6.25' '44' '100.0' '0' '0.0' '96.875' '782.2' '772.0']
+ ['117' '1' 'b2' '16' '44' '60' '55' '91.66666666666666' '13' '81.25' '3'
+  '18.75' '42' '95.45454545454545' '2' '4.545454545454546'
+  '88.35227272727272' '753.0769230769231' '709.0']]
 
 
 Runtime info
 ------------
 
 
-* duration : 0.061018
+* duration : 0.057204
 * hostname : ND-NTR-FCH12085
 * prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/Nback/_session_id_1/summaryData/mapflow/_summaryData43
@@ -232,22 +232,21 @@ Environment
 * CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
 * DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
-* DYLD_LIBRARY_PATH : /opt/X11/lib/flat_namespace:/opt/X11/lib/flat_namespace
 * HOME : /Users/azp271
 * LANG : en_US.UTF-8
 * LOGNAME : azp271
 * LSCOLORS : ExFxBxDxCxegedabagacad
-* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin
 * PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
 * PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
-* SHLVL : 2
+* SHLVL : 1
 * SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
 * TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : 216F9EAF-B278-47F3-8606-A712F9800D89
+* TERM_SESSION_ID : A30D2AAF-B645-4A29-9775-89587571A8F8
 * TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
 * USER : azp271
 * XPC_FLAGS : 0x0

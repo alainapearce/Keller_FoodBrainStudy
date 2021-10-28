@@ -33,8 +33,8 @@
         {
             "group": 1,
             "name": "1_summaryData",
-            "report": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp326_tjmp/GNG/summaryData/_report/report.rst",
-            "result": "/private/var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/tmp326_tjmp/GNG/summaryData/result_summaryData.pklz"
+            "report": "/summaryData/_report/report.rst",
+            "result": "/summaryData/result_summaryData.pklz"
         },
         {
             "group": 1,
