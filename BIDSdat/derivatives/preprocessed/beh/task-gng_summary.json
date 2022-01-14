@@ -1,0 +1,340 @@
+{
+    "Go-NoGo Task": {
+        "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949a93/",
+        "DatasetType": "derivitive - summary data produced by code/GNG_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "all_nGo": {
+        "Description": "Number of Go trials across all blocks"
+    },
+    "all_nNoGo": {
+        "Description": "Number of NoGo trials across all blocks"
+    },
+    "all_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across all blocks"
+    },
+    "all_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across all blocks"
+    },
+    "all_nGo_Hit": {
+        "Description": "Number of correct Go responses (hits) across all blocks"
+    },
+    "all_nGo_Miss": {
+        "Description": "Number of incorrect Go responses (misses) across all blocks"
+    },
+    "all_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across all blocks"
+    },
+    "all_nNoGo_FA": {
+        "Description": "Number of incorrect NoGo responses (false alarms) across all blocks"
+    },
+    "all_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across all blocks"
+    },
+    "all_pGo_Miss": {
+        "Description": "Percent miss for Go trials across all blocks"
+    },
+    "all_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across all blocks"
+    },
+    "all_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across all blocks"
+    },
+    "all_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across all blocks"
+    },
+    "all_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for incorrect NoGo responses (false alarms) across all blocks"
+    },
+    "all_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses (hits) across all blocks"
+    },
+    "all_RTmedNoGo_FA": {
+        "Description": "Median reaction time for incorrect NoGo responses (false alarms) across all blocks"
+    },
+    "all_z_Hit": {
+        "Description": "z-score for Go hit percentage across all blocks (pGo_Hit)"
+    },
+    "all_z_FA": {
+        "Description": "z-score for false alarm percentage across all blocks (pNoGo_FA)"
+    },
+    "all_z_Hit_mm": {
+        "Description": "z-score for Go hit percentage across all blocks, following Macmillian adjustments for extreme values (i.e., Hit rate == 1)"
+    },
+    "all_z_FA_mm": {
+        "Description": "z-score for false alarm percentage across all blocks, following Macmillian adjustments for extreme values (i.e., False alarm rate == 0)"
+    },
+    "all_z_Hit_ll": {
+        "Description": "z-score for Go hit percentage across all blocks, following loglinear adjustments"
+    },
+    "all_z_FA_ll": {
+        "Description": "z-score for false alarm percentage across all blocks, following loglinear adjustments"
+    },
+    "all_d_prime_mm": {
+        "Description": "d': measure of sensory sensitivity across all blocks, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "all_d_prime_ll": {
+        "Description": "d': measure of sensory sensitivity across all blocks, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "all_A_prime_mm": {
+        "Description": "A': nonparametric measure of sensory sensitivity across all blocks, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "all_A_prime_ll": {
+        "Description": "A': nonparametric measure of sensory sensitivity across all blocks, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "all_c_mm": {
+        "Description": "c, measure of bias across all blocks, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "all_c_ll": {
+        "Description": "c, measure of bias across all blocks, calculated with calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "all_Grier_beta_mm": {
+        "Description": "Grier's beta, a nonparametric measure of response bias across all blocks, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "all_Grier_beta_ll": {
+        "Description": "Grier's beta, a nonparametric measure of response bias across all blocks, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "b1_nGo": {
+        "Description": "Number of Go trials across block 1"
+    },
+    "b1_nNoGo": {
+        "Description": "Number of NoGo trials across block 1"
+    },
+    "b1_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across block 1"
+    },
+    "b1_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across block 1"
+    },
+    "b1_nGo_Hit": {
+        "Description": "Number of correct Go responses across block 1"
+    },
+    "b1_nGo_Miss": {
+        "Description": "Number of missed Go responses across block 1"
+    },
+    "b1_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across block 1"
+    },
+    "b1_nNoGo_FA": {
+        "Description": "Number of false alarms for NoGo trials across block 1"
+    },
+    "b1_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across block 1"
+    },
+    "b1_pGo_Miss": {
+        "Description": "Percent miss for Go trials across block 1"
+    },
+    "b1_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across block 1"
+    },
+    "b1_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across block 1"
+    },
+    "b1_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across block 1"
+    },
+    "b1_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for false alarm NoGo responses across block 1"
+    },
+    "b1_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses across block 1"
+    },
+    "b1_RTmedNoGo_FA": {
+        "Description": "Median reaction time for false alarm NoGo responses across block 1"
+    },
+    "b2_nGo": {
+        "Description": "Number of Go trials across block 2"
+    },
+    "b2_nNoGo": {
+        "Description": "Number of NoGo trials across block 2"
+    },
+    "b2_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across block 2"
+    },
+    "b2_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across block 2"
+    },
+    "b2_nGo_Hit": {
+        "Description": "Number of correct Go responses across block 2"
+    },
+    "b2_nGo_Miss": {
+        "Description": "Number of missed Go responses across block 2"
+    },
+    "b2_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across block 2"
+    },
+    "b2_nNoGo_FA": {
+        "Description": "Number of false alarms for NoGo trials across block 2"
+    },
+    "b2_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across block 2"
+    },
+    "b2_pGo_Miss": {
+        "Description": "Percent miss for Go trials across block 2"
+    },
+    "b2_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across block 2"
+    },
+    "b2_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across block 2"
+    },
+    "b2_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across block 2"
+    },
+    "b2_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for false alarm NoGo responses across block 2"
+    },
+    "b2_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses across block 2"
+    },
+    "b2_RTmedNoGo_FA": {
+        "Description": "Median reaction time for false alarm NoGo responses across block 2"
+    },
+    "b3_nGo": {
+        "Description": "Number of Go trials across block 3"
+    },
+    "b3_nNoGo": {
+        "Description": "Number of NoGo trials across block 3"
+    },
+    "b3_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across block 3"
+    },
+    "b3_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across block 3"
+    },
+    "b3_nGo_Hit": {
+        "Description": "Number of correct Go responses across block 3"
+    },
+    "b3_nGo_Miss": {
+        "Description": "Number of missed Go responses across block 3"
+    },
+    "b3_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across block 3"
+    },
+    "b3_nNoGo_FA": {
+        "Description": "Number of false alarms for NoGo trials across block 3"
+    },
+    "b3_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across block 3"
+    },
+    "b3_pGo_Miss": {
+        "Description": "Percent miss for Go trials across block 3"
+    },
+    "b3_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across block 3"
+    },
+    "b3_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across block 3"
+    },
+    "b3_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across block 3"
+    },
+    "b3_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for false alarm NoGo responses across block 3"
+    },
+    "b3_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses across block 3"
+    },
+    "b3_RTmedNoGo_FA": {
+        "Description": "Median reaction time for false alarm NoGo responses across block 3"
+    },
+    "b4_nGo": {
+        "Description": "Number of Go trials across block 4"
+    },
+    "b4_nNoGo": {
+        "Description": "Number of NoGo trials across block 4"
+    },
+    "b4_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across block 4"
+    },
+    "b4_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across block 4"
+    },
+    "b4_nGo_Hit": {
+        "Description": "Number of correct Go responses across block 4"
+    },
+    "b4_nGo_Miss": {
+        "Description": "Number of missed Go responses across block 4"
+    },
+    "b4_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across block 4"
+    },
+    "b4_nNoGo_FA": {
+        "Description": "Number of false alarms for NoGo trials across block 4"
+    },
+    "b4_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across block 4"
+    },
+    "b4_pGo_Miss": {
+        "Description": "Percent miss for Go trials across block 4"
+    },
+    "b4_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across block 4"
+    },
+    "b4_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across block 4"
+    },
+    "b4_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across block 4"
+    },
+    "b4_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for false alarm NoGo responses across block 4"
+    },
+    "b4_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses across block 4"
+    },
+    "b4_RTmedNoGo_FA": {
+        "Description": "Median reaction time for false alarm NoGo responses across block 4"
+    },
+    "b5_nGo": {
+        "Description": "Number of Go trials across block 5"
+    },
+    "b5_nNoGo": {
+        "Description": "Number of NoGo trials across block 5"
+    },
+    "b5_nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials) across block 5"
+    },
+    "b5_pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials) across block 5"
+    },
+    "b5_nGo_Hit": {
+        "Description": "Number of correct Go responses across block 5"
+    },
+    "b5_nGo_Miss": {
+        "Description": "Number of missed Go responses across block 5"
+    },
+    "b5_nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses across block 5"
+    },
+    "b5_nNoGo_FA": {
+        "Description": "Number of false alarms for NoGo trials across block 5"
+    },
+    "b5_pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials across block 5"
+    },
+    "b5_pGo_Miss": {
+        "Description": "Percent miss for Go trials across block 5"
+    },
+    "b5_pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials across block 5"
+    },
+    "b5_pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials across block 5"
+    },
+    "b5_RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses across block 5"
+    },
+    "b5_RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for false alarm NoGo responses across block 5"
+    },
+    "b5_RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses across block 5"
+    },
+    "b5_RTmedNoGo_FA": {
+        "Description": "Median reaction time for false alarm NoGo responses across block 5"
+    }
+}

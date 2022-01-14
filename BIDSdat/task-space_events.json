@@ -10,15 +10,15 @@
     "ses": {
         "Description": "Session completed",
         "Levels": {
-            "1": "visit 6 of baseline visits"
+            "1": "visit 6 of baseline visits",
             "2": "visit 7 at 1-year follow-up"
         }
-    }
+    },
     "block": {
-        "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4",
+        "Description": "Block number for the task - the number does not correspond to conditions so should always follow sequence 1, 2, 3, 4"
     },
     "trial": {
-        "Description": "trial number",
+        "Description": "trial number"
     },
     "timeout_earth": {
         "Description": "Indicates if participant timedout before responding during stage 1 - selecting a rocket",
@@ -37,14 +37,14 @@
     "state_earth": {
         "Description": "Indicates the state the earth is in for each trial (specific pairings of rockets)",
         "Levels": {
-            "1": "state 1"
+            "1": "state 1",
             "2": "state 2"
         }
     },
     "state_planet": {
         "Description": "Indicates the state the planet is in for each trial (reward state - high or low)",
         "Levels": {
-            "1": "state 1"
+            "1": "state 1",
             "2": "state 2"
         }
     },

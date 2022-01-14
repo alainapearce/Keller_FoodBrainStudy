@@ -12,13 +12,5 @@
         ],
         "name": "1_summaryData",
         "size": 1
-    },
-    {
-        "group": 1,
-        "imports": [
-            "1_summaryData"
-        ],
-        "name": "2_gngDatabase",
-        "size": 1
     }
 ]

@@ -1,0 +1,110 @@
+{
+    "Go-NoGo Task": {
+        "Description": "The Go-NoGo Task measures ability to inhibit a motor response",
+        "TermURL": "https://www.cognitiveatlas.org/task/id/tsk_4a57abb949a93/",
+        "DatasetType": "derivitive - summary data produced by code/GNG_WF.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "block": {
+        "Description": "block that values are being computed for",
+        "Levels": {
+            "b1": "block 1",
+            "b2": "block 2",
+            "b3": "block 3",
+            "b4": "block 4",
+            "b5": "block 5"
+        }
+    },
+    "nGo": {
+        "Description": "Number of Go trials"
+    },
+    "nNoGo": {
+        "Description": "Number of NoGo trials"
+    },
+    "nAcc": {
+        "Description": "Number of accurate responses (for Go and NoGo trials)"
+    },
+    "pAcc": {
+        "Description": "Percent accuracy (for Go and NoGo trials)"
+    },
+    "nGo_Hit": {
+        "Description": "Number of correct Go responses (hits)"
+    },
+    "nGo_Miss": {
+        "Description": "Number of incorrect Go responses (misses)"
+    },
+    "nNoGo_Corr": {
+        "Description": "Number of correct NoGo responses"
+    },
+    "nNoGo_FA": {
+        "Description": "Number of incorrect NoGo responses (false alarms)"
+    },
+    "pGo_Hit": {
+        "Description": "Percent correct responses (Hits) for Go trials"
+    },
+    "pGo_Miss": {
+        "Description": "Percent miss for Go trials"
+    },
+    "pNoGo_Corr": {
+        "Description": "Percent correct responses for NoGo trials"
+    },
+    "pNoGo_FA": {
+        "Description": "Percent false alarms for NoGo trials"
+    },
+    "RTmeanGo_Hit": {
+        "Description": "Mean reaction time for correct Go responses"
+    },
+    "RTmeanNoGo_FA": {
+        "Description": "Mean reaction time for incorrect NoGo responses (false alarms)"
+    },
+    "RTmedGo_Hit": {
+        "Description": "Median reaction time for correct Go responses (hits)"
+    },
+    "RTmedNoGo_FA": {
+        "Description": "Median reaction time for incorrect NoGo responses (false alarms)"
+    },
+    "z_Hit": {
+        "Description": "z-score for Go hit percentage (pGo_Hit)"
+    },
+    "z_FA": {
+        "Description": "z-score for false alarm percentage (pNoGo_FA)"
+    },
+    "z_Hit_mm": {
+        "Description": "z-score for Go hit percentage, following Macmillian adjustments for extreme values (i.e., Hit rate == 1)"
+    },
+    "z_FA_mm": {
+        "Description": "z-score for false alarm percentage, following Macmillian adjustments for extreme values (i.e., False alarm rate == 0)"
+    },
+    "z_Hit_ll": {
+        "Description": "z-score for Go hit percentage, following loglinear adjustments"
+    },
+    "z_FA_ll": {
+        "Description": "z-score for false alarm percentage, following loglinear adjustments"
+    },
+    "d_prime_mm": {
+        "Description": "d': measure of sensory sensitivity, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "d_prime_ll": {
+        "Description": "d': measure of sensory sensitivity, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "A_prime_mm": {
+        "Description": "A': nonparametric measure of sensory sensitivity, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "A_prime_ll": {
+        "Description": "A': nonparametric measure of sensory sensitivity, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "c_mm": {
+        "Description": "c, measure of bias, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "c_ll": {
+        "Description": "c, measure of bias, calculated with calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    },
+    "Grier_beta_mm": {
+        "Description": "Grier's beta, a nonparametric measure of response bias, calculated with Macmillian adjusted values (z_Hit_mm and z_FA_mm)"
+    },
+    "Grier_beta_ll": {
+        "Description": "Grier's beta, a nonparametric measure of response bias, calculated with loglinear adjusted values (z_Hit_ll and z_FA_ll)"
+    }
+}

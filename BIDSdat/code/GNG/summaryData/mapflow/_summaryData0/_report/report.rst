@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-002/ses-1/beh/sub-002_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-011/ses-1/beh/sub-011_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -44,7 +44,7 @@ Original Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -86,6 +86,7 @@ Original Inputs
 
         ####  Compute signal detection theory metrics ####
         #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
         z_Hit = norm.ppf(pGo_Hit)
         z_FA = norm.ppf(pNoGo_FA)
 
@@ -176,11 +177,7 @@ Original Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -233,7 +230,7 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-002/ses-1/beh/sub-002_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-011/ses-1/beh/sub-011_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -267,7 +264,7 @@ Execution Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -309,6 +306,7 @@ Execution Inputs
 
         ####  Compute signal detection theory metrics ####
         #get z-score for hit and false alarm rates
+        #add adjustments for extreme values because norm.ppf of 0/1 is -inf/inf
         z_Hit = norm.ppf(pGo_Hit)
         z_FA = norm.ppf(pNoGo_FA)
 
@@ -399,11 +397,7 @@ Execution Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -456,13 +450,13 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr  ...   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
-0   2   all  150    50  189  0.945     149        1         40  ... -0.820792   3.316361   3.149632   0.947581   0.944886  0.816559  0.754024     -0.920512     -0.886516
-1   2    b1   30    10   37  0.925      30        0          7  ... -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
-2   2    b2   30    10   40    1.0      30        0         10  ... -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
-3   2    b3   30    10   36    0.9      29        1          7  ... -0.472789   2.358315   2.133487   0.910509   0.898668  0.654757  0.593954     -0.733945     -0.649826
-4   2    b4   30    10   39  0.975      30        0          9  ... -1.096804   3.409597   3.238002   0.969947   0.960681  0.423247  0.522197     -0.691906     -0.762508
-5   2    b5   30    10   37  0.925      30        0          7  ... -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit  ... d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
+0  11   all  150    50  190   0.95     148  ...    3.09814   0.955491   0.952665  0.610952  0.581647     -0.821687     -0.790139
+1  11    b1   30    10   39  0.975      30  ...      3.238   0.969947   0.960681  0.423247  0.522197     -0.691906     -0.762508
+2  11    b2   30    10   38   0.95      29  ...     2.7575   0.964879   0.950169  0.276182  0.281947     -0.472727      -0.43783
+3  11    b3   30    10   37  0.925      30  ...    2.61399   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+4  11    b4   30    10   38   0.95      30  ...    2.88906   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+5  11    b5   30    10   38   0.95      29  ...     2.7575   0.964879   0.950169  0.276182  0.281947     -0.472727      -0.43783
 
 [6 rows x 32 columns]
 
@@ -471,77 +465,81 @@ Runtime info
 ------------
 
 
-* duration : 0.519617
-* hostname : H8-NTR-GCH12202
-* prev_wd : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
-* working_dir : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code/GNG/summaryData/mapflow/_summaryData0
+* duration : 5.931137
+* hostname : nut-azp271-10239
+* prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
+* working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code/GNG/summaryData/mapflow/_summaryData0
 
 
 Environment
 ~~~~~~~~~~~
 
 
+* CLICOLOR : 1
 * COLORTERM : truecolor
-* COMMAND_MODE : unix2003
 * CONDA_DEFAULT_ENV : base
-* CONDA_EXE : /Users/baf44/opt/anaconda3/bin/conda
-* CONDA_PREFIX : /Users/baf44/opt/anaconda3
+* CONDA_EXE : /Users/azp271/opt/anaconda3/bin/conda
+* CONDA_PREFIX : /Users/azp271/opt/anaconda3
 * CONDA_PROMPT_MODIFIER : (base) 
-* CONDA_PYTHON_EXE : /Users/baf44/opt/anaconda3/bin/python
+* CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.cocWWLGA0Z/org.xquartz:0
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
 * FIX_VERTEX_AREA : 
-* FMRI_ANALYSIS_DIR : /Users/baf44/freesurfer/fsfast
-* FREESURFER : /Users/baf44/freesurfer
-* FREESURFER_HOME : /Users/baf44/freesurfer
-* FSFAST_HOME : /Users/baf44/freesurfer/fsfast
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
 * FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
 * FS_OVERRIDE : 0
-* FUNCTIONALS_DIR : /Users/baf44/freesurfer/sessions
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
 * GIT_ASKPASS : /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
-* HOME : /Users/baf44
-* HOMEBREW_CELLAR : /opt/homebrew/Cellar
-* HOMEBREW_PREFIX : /opt/homebrew
-* HOMEBREW_REPOSITORY : /opt/homebrew
-* HOMEBREW_SHELLENV_PREFIX : /opt/homebrew
-* INFOPATH : /opt/homebrew/share/info:
+* HOME : /Users/azp271
 * LANG : en_US.UTF-8
-* LOCAL_DIR : /Users/baf44/freesurfer/local
-* LOGNAME : baf44
-* LaunchInstanceID : DF683324-4730-42C2-BFF3-FE6A6C2C2D9E
-* MANPATH : /usr/share/man:/usr/local/share/man:/opt/X11/share/man:/opt/homebrew/share/man
-* MINC_BIN_DIR : /Users/baf44/freesurfer/mni/bin
-* MINC_LIB_DIR : /Users/baf44/freesurfer/mni/lib
-* MNI_DATAPATH : /Users/baf44/freesurfer/mni/data
-* MNI_DIR : /Users/baf44/freesurfer/mni
-* MNI_PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* OLDPWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
+* LOCAL_DIR : /Applications/freesurfer/local
+* LOGNAME : azp271
+* LSCOLORS : ExFxBxDxCxegedabagacad
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * ORIGINAL_XDG_CURRENT_DESKTOP : undefined
 * OS : Darwin
-* PATH : /Users/baf44/freesurfer/bin:/Users/baf44/freesurfer/fsfast/bin:/Users/baf44/freesurfer/mni/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/baf44/opt/anaconda3/bin:/Users/baf44/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/baf44/freesurfer/bin:/Users/baf44/freesurfer/fsfast/bin:/Users/baf44/freesurfer/mni/bin:/Users/baf44/abin:/Users/baf44/abin
-* PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* PWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
+* PATH : /Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin:/Users/azp271/dcm2niix/build/bin:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6:/Users/azp271/abin:/Applications/CMake.app/Contents/bin:/Users/azp271/dcm2niix/build/bin:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
+* PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * PYDEVD_USE_FRAME_EVAL : NO
 * PYTHONIOENCODING : UTF-8
 * PYTHONUNBUFFERED : 1
-* SECURITYSESSIONID : 186a5
 * SHELL : /bin/bash
 * SHLVL : 2
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.K6iD4B8TJB/Listeners
-* SUBJECTS_DIR : /Users/baf44/freesurfer/subjects
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : vscode
-* TERM_PROGRAM_VERSION : 1.61.1
-* TMPDIR : /var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/
-* USER : baf44
+* TERM_PROGRAM_VERSION : 1.63.2
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
+* USER : azp271
+* VSCODE_GIT_ASKPASS_EXTRA_ARGS : --ms-enable-electron-run-as-node
 * VSCODE_GIT_ASKPASS_MAIN : /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
-* VSCODE_GIT_ASKPASS_NODE : /Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)
-* VSCODE_GIT_IPC_HANDLE : /var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/vscode-git-ff1f1ca801.sock
+* VSCODE_GIT_ASKPASS_NODE : /Applications/Visual Studio Code.app/Contents/MacOS/Electron
+* VSCODE_GIT_IPC_HANDLE : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/vscode-git-13de00805e.sock
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
 * _ : /usr/bin/env
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.microsoft.VSCode
 * __CF_USER_TEXT_ENCODING : 0x1F6:0x0:0x0
 

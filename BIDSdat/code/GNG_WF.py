@@ -91,7 +91,7 @@ def summaryGNG(GNG_file):
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
         
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
         
         return(GNG_data)
@@ -224,11 +224,7 @@ def summaryGNG(GNG_file):
             GNG_data = getGNGtrialAcc(GNG_data)
             
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -282,127 +278,98 @@ def updateDatabase_save(GNG_summary_dat, overwrite_flag, bids_dir):
     from pathlib import Path
     from nipype.interfaces.base import Bunch
     
-    #get a Bunch object if more than 1 participant 
-    if isinstance(GNG_summary_dat, Bunch):        
-        #get output data from node
-        GNG_summary_datlist = GNG_summary_dat.summaryGNG_dat
-        
-        #combine datasets 
-        GNG_summary_dat = pd.concat(GNG_summary_datlist)
-        
-    #if only 1 participant/dataset then it is a list    
-    elif isinstance(GNG_summary_dat, list):
-        if len(GNG_summary_dat) == 1:
-            GNG_summary_dat = GNG_summary_dat[0]
-        else:
-            GNG_summary_dat = pd.concat(GNG_summary_dat)
-
-    #if a pandas dataframe
-    if isinstance(GNG_summary_dat, pd.DataFrame):
-        
-        #get column names
-        columnnames = GNG_summary_dat.columns
-       
-        #get condition subset (overall and each block)
-        #GNG_summary_dat['block'] = GNG_summary_dat['block'].astype(str)
-        GNG_summary_conditions = GNG_summary_dat[GNG_summary_dat.block.isin(['all', 'b1', 'b2', 'b3', 'b4', 'b5'])]
-
-        #make wide data set (for every variable, a column for overall and each block)
-        GNG_summary_wide = GNG_summary_conditions.pivot(columns='block', index='sub', values=columnnames[2:])        
-        GNG_summary_wide.columns = ['_'.join(col) for col in GNG_summary_wide.columns.reorder_levels(order=[1, 0])]
-        
-        #remove SDT variables by block from wide dataset
-        block_sdt_vars =    ['b1_z_Hit', 'b1_z_FA', 'b1_z_Hit_mm', 'b1_z_FA_mm', 'b1_z_Hit_ll', 'b1_z_FA_ll', 'b1_d_prime_mm', 
-                            'b1_d_prime_ll', 'b1_A_prime_mm', 'b1_A_prime_ll', 'b1_c_mm', 'b1_c_ll', 'b1_Grier_beta_mm', 'b1_Grier_beta_ll',
-
-                            'b2_z_Hit', 'b2_z_FA', 'b2_z_Hit_mm', 'b2_z_FA_mm', 'b2_z_Hit_ll', 'b2_z_FA_ll', 'b2_d_prime_mm', 
-                            'b2_d_prime_ll', 'b2_A_prime_mm', 'b2_A_prime_ll', 'b2_c_mm', 'b2_c_ll', 'b2_Grier_beta_mm', 'b2_Grier_beta_ll',
-
-                            'b3_z_Hit', 'b3_z_FA', 'b3_z_Hit_mm', 'b3_z_FA_mm', 'b3_z_Hit_ll', 'b3_z_FA_ll', 'b3_d_prime_mm', 
-                            'b3_d_prime_ll', 'b3_A_prime_mm', 'b3_A_prime_ll', 'b3_c_mm', 'b3_c_ll', 'b3_Grier_beta_mm', 'b3_Grier_beta_ll',
-
-                            'b4_z_Hit', 'b4_z_FA', 'b4_z_Hit_mm', 'b4_z_FA_mm', 'b4_z_Hit_ll', 'b4_z_FA_ll', 'b4_d_prime_mm', 
-                            'b4_d_prime_ll', 'b4_A_prime_mm', 'b4_A_prime_ll', 'b4_c_mm', 'b4_c_ll', 'b4_Grier_beta_mm', 'b4_Grier_beta_ll',
-                            
-                            'b5_z_Hit', 'b5_z_FA', 'b5_z_Hit_mm', 'b5_z_FA_mm', 'b5_z_Hit_ll', 'b5_z_FA_ll', 'b5_d_prime_mm', 
-                            'b5_d_prime_ll', 'b5_A_prime_mm', 'b5_A_prime_ll', 'b5_c_mm', 'b5_c_ll', 'b5_Grier_beta_mm', 'b5_Grier_beta_ll']
-
-        GNG_summary_wide = GNG_summary_wide.drop(columns=block_sdt_vars)
-
-        #make the sub index into a dataset column
-        GNG_summary_wide = GNG_summary_wide.reset_index(level = 0)
-        
-        #re-order columns
-        columnnames_reorder = ['sub', 'all_nGo', 'all_nNoGo', 'all_nAcc', 'all_pAcc', 'all_nGo_Hit', 'all_nGo_Miss', 'all_nNoGo_Corr', 
-                              'all_nNoGo_FA', 'all_pGo_Hit', 'all_pGo_Miss', 'all_pNoGo_Corr', 'all_pNoGo_FA', 'all_RTmeanGo_Hit', 
-                              'all_RTmeanNoGo_FA', 'all_RTmedGo_Hit', 'all_RTmedNoGo_FA',
-        
-                              'all_z_Hit', 'all_z_FA', 'all_z_Hit_mm', 'all_z_FA_mm', 'all_z_Hit_ll', 'all_z_FA_ll', 'all_d_prime_mm', 
-                              'all_d_prime_ll', 'all_A_prime_mm', 'all_A_prime_ll', 'all_c_mm', 'all_c_ll', 'all_Grier_beta_mm', 'all_Grier_beta_ll',
-
-                              'b1_nGo', 'b1_nNoGo', 'b1_nAcc', 'b1_pAcc', 'b1_nGo_Hit', 'b1_nGo_Miss', 'b1_nNoGo_Corr', 
-                              'b1_nNoGo_FA', 'b1_pGo_Hit', 'b1_pGo_Miss', 'b1_pNoGo_Corr', 'b1_pNoGo_FA', 'b1_RTmeanGo_Hit', 
-                              'b1_RTmeanNoGo_FA', 'b1_RTmedGo_Hit', 'b1_RTmedNoGo_FA',
-
-                              'b2_nGo', 'b2_nNoGo', 'b2_nAcc', 'b2_pAcc', 'b2_nGo_Hit', 'b2_nGo_Miss', 'b2_nNoGo_Corr', 
-                              'b2_nNoGo_FA', 'b2_pGo_Hit', 'b2_pGo_Miss', 'b2_pNoGo_Corr', 'b2_pNoGo_FA', 'b2_RTmeanGo_Hit', 
-                              'b2_RTmeanNoGo_FA', 'b2_RTmedGo_Hit', 'b2_RTmedNoGo_FA',
-
-                              'b3_nGo', 'b3_nNoGo', 'b3_nAcc', 'b3_pAcc', 'b3_nGo_Hit', 'b3_nGo_Miss', 'b3_nNoGo_Corr', 
-                              'b3_nNoGo_FA', 'b3_pGo_Hit', 'b3_pGo_Miss', 'b3_pNoGo_Corr', 'b3_pNoGo_FA', 'b3_RTmeanGo_Hit', 
-                              'b3_RTmeanNoGo_FA', 'b3_RTmedGo_Hit', 'b3_RTmedNoGo_FA',
-        
-                              'b4_nGo', 'b4_nNoGo', 'b4_nAcc', 'b4_pAcc', 'b4_nGo_Hit', 'b4_nGo_Miss', 'b4_nNoGo_Corr', 
-                              'b4_nNoGo_FA', 'b4_pGo_Hit', 'b4_pGo_Miss', 'b4_pNoGo_Corr', 'b4_pNoGo_FA', 'b4_RTmeanGo_Hit', 
-                              'b4_RTmeanNoGo_FA', 'b4_RTmedGo_Hit', 'b4_RTmedNoGo_FA',
-
-                              'b5_nGo', 'b5_nNoGo', 'b5_nAcc', 'b5_pAcc', 'b5_nGo_Hit', 'b5_nGo_Miss', 'b5_nNoGo_Corr', 
-                              'b5_nNoGo_FA', 'b5_pGo_Hit', 'b5_pGo_Miss', 'b5_pNoGo_Corr', 'b5_pNoGo_FA', 'b5_RTmeanGo_Hit', 
-                              'b5_RTmeanNoGo_FA', 'b5_RTmedGo_Hit', 'b5_RTmedNoGo_FA']
-        
-        GNG_summary_wide = GNG_summary_wide.reindex(columns=columnnames_reorder)
-    
-        #get indiviudal blocks subset
-        GNG_summary_blocks = GNG_summary_dat[GNG_summary_dat.block.isin(['b1', 'b2', 'b3', 'b4', 'b5'])] 
-    
-        ## load databases
-        #derivative data path
-        derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
-
-        #load databases
-        GNG_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t') 
-        GNG_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t')
-
-        #if overwriting participants
-        if overwrite_flag == True:
-            #function to drop rows based on values
-            def filter_rows_by_values(df, col, values):
-                return df[df[col].isin(values) == False]
-
-            #get list of subs to filter in wide and long data
-            wide_sub_list = list(GNG_summary_wide['sub'].unique())
-            long_sub_list = list(GNG_summary_blocks['sub'].unique())
-
-            #filter out/remove exisiting subs to overwrite
-            GNG_database = filter_rows_by_values(GNG_database, 'sub', wide_sub_list)
-            GNG_database_long = filter_rows_by_values(GNG_database_long, 'sub', long_sub_list)
-
-        #add newly processed data
-        GNG_database = GNG_database.append(GNG_summary_wide)
-        GNG_database_long = GNG_database_long.append(GNG_summary_blocks)
-
-        #round to 3 decimal points
-        GNG_database = GNG_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
-        GNG_database_long = GNG_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
-
-        #write databases
-        GNG_database.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
-        GNG_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-
+    #check to see if it is filepath str or 'no files' message
+    if isinstance(GNG_summary_dat[0], str):
+                
+        print('******** No new data to be processed ********')
+                
+        GNG_database = 'no new data files'
+        GNG_database_long = 'no new data files'
+     
     else:
-        print('No raw data files that need to be processed')
-        GNG_database = np.nan
-        GNG_database_long = np.nan
+        #get a Bunch object if more than 1 participant
+        if isinstance(GNG_summary_dat, Bunch):
+            #get output data from node
+            GNG_summary_datlist = GNG_summary_dat.summaryGNG_dat
+        
+            #combine datasets
+            GNG_summary_dat = pd.concat(GNG_summary_datlist)
+        
+        #if only 1 participant/dataset then it is a list
+        elif isinstance(GNG_summary_dat, list):
+            if len(GNG_summary_dat) == 1:
+                GNG_summary_dat = GNG_summary_dat[0]
+            else:
+                GNG_summary_dat = pd.concat(GNG_summary_dat)
+
+        #if a pandas dataframe
+        if isinstance(GNG_summary_dat, pd.DataFrame):
+        
+            #get column names
+            columnnames = GNG_summary_dat.columns
+       
+            #get condition subset (overall and each block)
+            #GNG_summary_dat['block'] = GNG_summary_dat['block'].astype(str)
+            GNG_summary_conditions = GNG_summary_dat[GNG_summary_dat.block.isin(['all', 'b1', 'b2', 'b3', 'b4', 'b5'])]
+
+            #make wide data set (for every variable, a column for overall and each block)
+            GNG_summary_wide = GNG_summary_conditions.pivot(columns='block', index='sub', values=columnnames[2:])
+            GNG_summary_wide.columns = ['_'.join(col) for col in GNG_summary_wide.columns.reorder_levels(order=[1, 0])]
+        
+            #remove SDT variables by block from wide dataset
+            block_sdt_vars =    ['b1_z_Hit', 'b1_z_FA', 'b1_z_Hit_mm', 'b1_z_FA_mm', 'b1_z_Hit_ll', 'b1_z_FA_ll', 'b1_d_prime_mm',  'b1_d_prime_ll', 'b1_A_prime_mm', 'b1_A_prime_ll', 'b1_c_mm', 'b1_c_ll', 'b1_Grier_beta_mm', 'b1_Grier_beta_ll', 'b2_z_Hit', 'b2_z_FA', 'b2_z_Hit_mm', 'b2_z_FA_mm', 'b2_z_Hit_ll', 'b2_z_FA_ll', 'b2_d_prime_mm',  'b2_d_prime_ll', 'b2_A_prime_mm', 'b2_A_prime_ll', 'b2_c_mm', 'b2_c_ll', 'b2_Grier_beta_mm', 'b2_Grier_beta_ll', 'b3_z_Hit', 'b3_z_FA', 'b3_z_Hit_mm', 'b3_z_FA_mm', 'b3_z_Hit_ll', 'b3_z_FA_ll', 'b3_d_prime_mm',  'b3_d_prime_ll', 'b3_A_prime_mm', 'b3_A_prime_ll', 'b3_c_mm', 'b3_c_ll', 'b3_Grier_beta_mm', 'b3_Grier_beta_ll', 'b4_z_Hit', 'b4_z_FA', 'b4_z_Hit_mm', 'b4_z_FA_mm', 'b4_z_Hit_ll', 'b4_z_FA_ll', 'b4_d_prime_mm',  'b4_d_prime_ll', 'b4_A_prime_mm', 'b4_A_prime_ll', 'b4_c_mm', 'b4_c_ll', 'b4_Grier_beta_mm', 'b4_Grier_beta_ll', 'b5_z_Hit', 'b5_z_FA', 'b5_z_Hit_mm', 'b5_z_FA_mm', 'b5_z_Hit_ll', 'b5_z_FA_ll', 'b5_d_prime_mm',  'b5_d_prime_ll', 'b5_A_prime_mm', 'b5_A_prime_ll', 'b5_c_mm', 'b5_c_ll', 'b5_Grier_beta_mm', 'b5_Grier_beta_ll']
+
+            GNG_summary_wide = GNG_summary_wide.drop(columns=block_sdt_vars)
+
+            #make the sub index into a dataset column
+            GNG_summary_wide = GNG_summary_wide.reset_index(level = 0)
+        
+            #re-order columns
+            columnnames_reorder = ['sub', 'all_nGo', 'all_nNoGo', 'all_nAcc', 'all_pAcc', 'all_nGo_Hit', 'all_nGo_Miss', 'all_nNoGo_Corr',  'all_nNoGo_FA', 'all_pGo_Hit', 'all_pGo_Miss', 'all_pNoGo_Corr', 'all_pNoGo_FA', 'all_RTmeanGo_Hit',  'all_RTmeanNoGo_FA', 'all_RTmedGo_Hit', 'all_RTmedNoGo_FA', 'all_z_Hit', 'all_z_FA', 'all_z_Hit_mm', 'all_z_FA_mm', 'all_z_Hit_ll', 'all_z_FA_ll', 'all_d_prime_mm',  'all_d_prime_ll', 'all_A_prime_mm', 'all_A_prime_ll', 'all_c_mm', 'all_c_ll', 'all_Grier_beta_mm', 'all_Grier_beta_ll', 'b1_nGo', 'b1_nNoGo', 'b1_nAcc', 'b1_pAcc', 'b1_nGo_Hit', 'b1_nGo_Miss', 'b1_nNoGo_Corr',  'b1_nNoGo_FA', 'b1_pGo_Hit', 'b1_pGo_Miss', 'b1_pNoGo_Corr', 'b1_pNoGo_FA', 'b1_RTmeanGo_Hit',  'b1_RTmeanNoGo_FA', 'b1_RTmedGo_Hit', 'b1_RTmedNoGo_FA', 'b2_nGo', 'b2_nNoGo', 'b2_nAcc', 'b2_pAcc', 'b2_nGo_Hit', 'b2_nGo_Miss', 'b2_nNoGo_Corr',  'b2_nNoGo_FA', 'b2_pGo_Hit', 'b2_pGo_Miss', 'b2_pNoGo_Corr', 'b2_pNoGo_FA', 'b2_RTmeanGo_Hit',  'b2_RTmeanNoGo_FA', 'b2_RTmedGo_Hit', 'b2_RTmedNoGo_FA', 'b3_nGo', 'b3_nNoGo', 'b3_nAcc', 'b3_pAcc', 'b3_nGo_Hit', 'b3_nGo_Miss', 'b3_nNoGo_Corr',  'b3_nNoGo_FA', 'b3_pGo_Hit', 'b3_pGo_Miss', 'b3_pNoGo_Corr', 'b3_pNoGo_FA', 'b3_RTmeanGo_Hit',  'b3_RTmeanNoGo_FA', 'b3_RTmedGo_Hit', 'b3_RTmedNoGo_FA', 'b4_nGo', 'b4_nNoGo', 'b4_nAcc', 'b4_pAcc', 'b4_nGo_Hit', 'b4_nGo_Miss', 'b4_nNoGo_Corr',  'b4_nNoGo_FA', 'b4_pGo_Hit', 'b4_pGo_Miss', 'b4_pNoGo_Corr', 'b4_pNoGo_FA', 'b4_RTmeanGo_Hit',  'b4_RTmeanNoGo_FA', 'b4_RTmedGo_Hit', 'b4_RTmedNoGo_FA', 'b5_nGo', 'b5_nNoGo', 'b5_nAcc', 'b5_pAcc', 'b5_nGo_Hit', 'b5_nGo_Miss', 'b5_nNoGo_Corr',  'b5_nNoGo_FA', 'b5_pGo_Hit', 'b5_pGo_Miss', 'b5_pNoGo_Corr', 'b5_pNoGo_FA', 'b5_RTmeanGo_Hit',  'b5_RTmeanNoGo_FA', 'b5_RTmedGo_Hit', 'b5_RTmedNoGo_FA']
+        
+            GNG_summary_wide = GNG_summary_wide.reindex(columns=columnnames_reorder)
+    
+            #get indiviudal blocks subset
+            GNG_summary_blocks = GNG_summary_dat[GNG_summary_dat.block.isin(['b1', 'b2', 'b3', 'b4', 'b5'])]
+    
+            ## load databases
+            #derivative data path
+            derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
+
+            #load databases
+            GNG_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t')
+            GNG_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t')
+
+            #if overwriting participants
+            if overwrite_flag == True:
+                #function to drop rows based on values
+                def filter_rows_by_values(df, col, values):
+                    return df[df[col].isin(values) == False]
+
+                #get list of subs to filter in wide and long data
+                wide_sub_list = list(GNG_summary_wide['sub'].unique())
+                long_sub_list = list(GNG_summary_blocks['sub'].unique())
+
+                #filter out/remove exisiting subs to overwrite
+                GNG_database = filter_rows_by_values(GNG_database, 'sub', wide_sub_list)
+                GNG_database_long = filter_rows_by_values(GNG_database_long, 'sub', long_sub_list)
+
+            #add newly processed data
+            GNG_database = GNG_database.append(GNG_summary_wide)
+            GNG_database_long = GNG_database_long.append(GNG_summary_blocks)
+
+            #round to 3 decimal points
+            GNG_database = GNG_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+            GNG_database_long = GNG_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
+            #write databases
+            GNG_database.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+            GNG_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-gng_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+
+        else:
+            print('******** No new data to be processed ********')
+            GNG_database = 'no new data files'
+            GNG_database_long = 'no new data files'
         
     return GNG_database, GNG_database_long
 
@@ -496,13 +463,18 @@ if args.overwrite is None:
     subs_exist_str = [str(item).zfill(3) for item in subs_exist]
     
     #compare subject_list to subs_exist
-    for sub in subject_list:
-        if sub in subs_exist_str:
-            
-            #remove sub if in list that exists in database already
-            print('Skipping sub-' + str(sub) + ' - Exists in database already.')
-            subject_list.remove(sub)
-        
+
+    #get intersection
+    match_subs = list(set.intersection(set(subject_list), set(subs_exist_str)))
+    
+    #report
+    for sub in match_subs:
+        #remove sub if in list that exists in database already
+        print('Skipping sub-' + str(sub) + ' - Exists in database already.')
+    
+    #get subject_list 
+    subject_list = list(set(subject_list) -  set(match_subs))
+
     #node to get list of ids to process - selectfiles
     if len(subject_list) > 0:
                 
@@ -545,6 +517,8 @@ if args.overwrite is None:
     dat_overwrite = False
 else:
     dat_overwrite = True
+
+res = GNG_WF.run()
 
 database_saveDat = Node(Function(input_names = ['GNG_summary_dat', 'overwrite_flag', 'bids_dir'],
                            output_names = ['GNG_database', 'GNG_database_wide'],

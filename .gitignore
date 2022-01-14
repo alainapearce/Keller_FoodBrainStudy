@@ -1,20 +1,18 @@
 /Actigraph
 /BIDSdat/sourcedata
 /BIDSdat/raw_data
-/Covid19SurveyPDFs
-/DataDoubleCheck
 /DXA
+/Intake_Sheets
 /Interoception
 /NoldusVideo
-/Post-Visit_Checklists
-/QualityControl
-/QualtricsData_PDFs
-/SPSSDatabases
 /untouchedRaw
-/zKaraworkfolderdata
+/WASI
+/zOldProtocol-DoNotUse
 
- 
+zBIDSorgStatus.xlsx
+
 *.pklz
 *.pbs
 *.pptx
 *.Rproj.user
+.Rproj.user

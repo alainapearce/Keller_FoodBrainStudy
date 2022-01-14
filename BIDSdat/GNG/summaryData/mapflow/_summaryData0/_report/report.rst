@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-113/ses-1/beh/sub-113_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -44,7 +44,7 @@ Original Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -177,11 +177,7 @@ Original Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -234,7 +230,7 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv
+* GNG_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-113/ses-1/beh/sub-113_ses-1_task-gng_events.tsv
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -268,7 +264,7 @@ Execution Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -401,11 +397,7 @@ Execution Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -458,13 +450,13 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat :   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA pGo_Hit pGo_Miss  ...  z_Hit_mm   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
-0  26   all  150    50  191  0.955     150        0         41        9     1.0      0.0  ...  2.713052 -0.915365  2.715253 -0.891709   3.628417   3.606962   0.953833   0.952259  0.898843  0.911772     -0.955974     -0.957382
-1  26    b1   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-2  26    b2   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-3  26    b3   30    10   40    1.0      30        0         10        0     1.0      0.0  ...  2.128045 -1.644854  2.141198 -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
-4  26    b4   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-5  26    b5   30    10   37  0.925      30        0          7        3     1.0      0.0  ...  2.128045 -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
+* summaryGNG_dat :    sub block  nGo nNoGo nAcc  ... A_prime_ll     c_mm     c_ll Grier_beta_mm Grier_beta_ll
+0  113   all  150    50  166  ...   0.827762  1.59038  1.58655     -0.969924     -0.970289
+1  113    b1   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
+2  113    b2   30    10   32  ...   0.785909  1.48483  1.44453     -0.814173     -0.834258
+3  113    b3   30    10   35  ...   0.864886  1.06402   1.0706     -0.876955     -0.880626
+4  113    b4   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
+5  113    b5   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
 
 [6 rows x 32 columns]
 
@@ -473,67 +465,72 @@ Runtime info
 ------------
 
 
-* duration : 0.190912
-* hostname : H8-NTR-GCH12202
-* prev_wd : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* working_dir : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0
+* duration : 0.699692
+* hostname : nut-azp271-10239
+* prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
+* working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0
 
 
 Environment
 ~~~~~~~~~~~
 
 
+* CLICOLOR : 1
 * CONDA_DEFAULT_ENV : base
-* CONDA_EXE : /Users/baf44/opt/anaconda3/bin/conda
-* CONDA_PREFIX : /Users/baf44/opt/anaconda3
+* CONDA_EXE : /Users/azp271/opt/anaconda3/bin/conda
+* CONDA_PREFIX : /Users/azp271/opt/anaconda3
 * CONDA_PROMPT_MODIFIER : (base) 
-* CONDA_PYTHON_EXE : /Users/baf44/opt/anaconda3/bin/python
+* CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.cocWWLGA0Z/org.xquartz:0
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
+* DYLD_LIBRARY_PATH : /Applications/freesurfer/lib/gcc/lib::/opt/X11/lib/flat_namespace
 * FIX_VERTEX_AREA : 
-* FMRI_ANALYSIS_DIR : /Users/baf44/freesurfer/fsfast
-* FREESURFER : /Users/baf44/freesurfer
-* FREESURFER_HOME : /Users/baf44/freesurfer
-* FSFAST_HOME : /Users/baf44/freesurfer/fsfast
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
 * FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
 * FS_OVERRIDE : 0
-* FUNCTIONALS_DIR : /Users/baf44/freesurfer/sessions
-* HOME : /Users/baf44
-* HOMEBREW_CELLAR : /opt/homebrew/Cellar
-* HOMEBREW_PREFIX : /opt/homebrew
-* HOMEBREW_REPOSITORY : /opt/homebrew
-* HOMEBREW_SHELLENV_PREFIX : /opt/homebrew
-* INFOPATH : /opt/homebrew/share/info:
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
+* HOME : /Users/azp271
 * LANG : en_US.UTF-8
-* LOCAL_DIR : /Users/baf44/freesurfer/local
-* LOGNAME : baf44
-* LaunchInstanceID : DF683324-4730-42C2-BFF3-FE6A6C2C2D9E
-* MANPATH : /opt/homebrew/share/man:
-* MINC_BIN_DIR : /Users/baf44/freesurfer/mni/bin
-* MINC_LIB_DIR : /Users/baf44/freesurfer/mni/lib
-* MNI_DATAPATH : /Users/baf44/freesurfer/mni/data
-* MNI_DIR : /Users/baf44/freesurfer/mni
-* MNI_PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* OLDPWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data
+* LOCAL_DIR : /Applications/freesurfer/local
+* LOGNAME : azp271
+* LSCOLORS : ExFxBxDxCxegedabagacad
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
 * OS : Darwin
-* PATH : /Users/baf44/opt/anaconda3/bin:/Users/baf44/opt/anaconda3/condabin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/baf44/freesurfer/bin:/Users/baf44/freesurfer/fsfast/bin:/Users/baf44/freesurfer/mni/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/baf44/abin
-* PERL5LIB : /Users/baf44/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
-* PWD : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
-* SECURITYSESSIONID : 186a5
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin/:/Users/azp271/dcm2niix/build/bin/:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6/
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
+* PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
 * SHLVL : 1
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.K6iD4B8TJB/Listeners
-* SUBJECTS_DIR : /Users/baf44/freesurfer/subjects
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
-* TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : DEB3169F-06AD-466E-9DE9-29C66603AEC1
-* TMPDIR : /var/folders/73/mkrc96td4nv8hyspvjhndxt40000gp/T/
-* USER : baf44
+* TERM_PROGRAM_VERSION : 433
+* TERM_SESSION_ID : 5D558CB1-2FBB-498C-9075-455C5F6CB8AA
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
+* USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
-* _ : ./GNG_WF.py
+* _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.apple.Terminal
 

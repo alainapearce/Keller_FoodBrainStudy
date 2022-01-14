@@ -57,7 +57,7 @@
         "Description": "ballanced accuracy ((percent hits + percent correct no response)/2) for the 0-back condition"
     },
     "b0_rt_mean_target_hit": {
-        "Description": "average reaction time across all correct target responses (i.e., hits) for the 0-back conditon"
+        "Description": "average reaction time across all correct target responses (i.e., hits) for the 0-back conditon",
         "Units": "ms"
     },
     "b0_rt_med_target_hit": {

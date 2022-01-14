@@ -1,0 +1,740 @@
+---
+title: "Food and Brain Study: Data Blitz 01-25-2020"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+header-includes:
+- \usepackage{fullpage}
+- \usepackage{graphicx}
+- \usepackage{subcaption}
+- \usepackage{float}
+- \usepackage{placeins}
+- \usepackage{caption}
+- \usepackage{mathtools}
+# - \usepackage{multirow}
+- \usepackage{amssymb}
+- \usepackage{amsmath}
+- \usepackage{bigstrut}
+- \usepackage{geometry}
+# - \usepackage{pdflscape}
+- \setlength{\parskip}{1em}
+geometry: margin=1.3cm
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(tidy = TRUE, tidy.opts = list(comment = FALSE), echo = TRUE, fig.width=6, fig.height=4, fig.path='figs/', echo=FALSE, warning=FALSE, message=FALSE, comment = NA)
+```
+
+<!-- load startup file and any extra packages -->
+```{r load, echo=FALSE, include=FALSE}
+library(knitr)
+library(kableExtra)
+library(stats)
+library(haven)
+library(kellertools)
+library(gtsummary)
+theme_gtsummary_compact()
+
+library(car)
+library(emmeans)
+library(reshape2)
+library(lme4)
+library(lmerTest)
+library(ggplot2)
+
+source('functions.R')
+```
+
+```{r load_scripts, echo=FALSE, results='asis'}
+source('setup_demo.R')
+source('setup_qs_cog_psych_soc.R')
+source('setup_qs_eat_beh.R')
+source('setup_dd.R')
+source('setup_gng.R')
+source('setup_nback.R')
+source('setup_sst.R')
+source('setup_space.R')
+```
+
+\clearpage
+
+# Participant Characteristics (Demographics Database)
+
+```{r demo_tab, echo=FALSE, results='asis'}
+as_kable_extra(demo_merge_tab, caption = 'Demographic Characteristics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = "PDS: Pubertal Development Scale") %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Food Insecurity
+
+```{r food_insecurity_tab, echo=FALSE, results='asis'}
+as_kable_extra(foodinsecurity_merge_tab, caption = 'Food Insecurity', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CCHIP: Community Childhood Hunger Identification Project", "HFIAS: Household Food Insecurity Access Scale", "HFSSM: Household Food Security Survey Module")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Parent/Child - Drugs and Alcohol
+
+```{r drug_alcohol_baseline_tab, echo=FALSE, results='asis'}
+as_kable_extra(parents_all_baseline_merge_tab, caption = 'Baseline: Child Attitudes and Parent Alcohol Use', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CTC: short & adapted Communities that Care", "AUDIT: Alcohol Use Disorders Identification Test")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+```{r drug_alcohol_followup_tab, echo=FALSE, results='asis'}
+as_kable_extra(parents_all_followup_merge_tab, caption = 'Follow-Up: Child Attitudes and Parent Alcohol Use', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CTC: short & adapted Communities that Care", "AUDIT: Alcohol Use Disorders Identification Test")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+\FloatBarrier
+\clearpage
+
+# Psychological Assessments (Cog-Psych-Soc Database)
+
+## Trait Anxiety: Revised Children's Manifest Anxiety Scale
+
+\FloatBarrier
+
+```{r anx_rcmas_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_anx_merge_tab, caption = "Trait Anxiety: Revised Children's Manifest Anxiety Scale", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Temperment: Children's Behavior Questionnaire
+
+\FloatBarrier
+
+```{r temperment_cbq_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_temp_merge_tab, caption = "Temperment: Children's Behavior Questionnaire", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Behaivoral Inhibition and Activation Systems
+
+\FloatBarrier
+
+```{r reward_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_reward_merge_tab, caption = "Behavioral Inhibition/Activation Systems", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("BIS/BAS: Behavioral Inhibition System/Beahvioral Appraoch System Quesstionnaire", "SPSRQ-34: Sensitivity to Punishment, Sensitivity to Reward Questionnaire - 34 Items", "SPSRQ-48: Sensitivity to Punishment, Sensitivity to Reward Questionnaire - 48 Items")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Everyday Behavioral/Adaptive Executive Functioning: BRIEF-2
+
+\FloatBarrier
+
+```{r brief2_v1_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_brief_merge_v1_tab, caption = "Baseline: Behavioral Rating Inventory of Executive Functions - 2", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r brief2_v7_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_brief_merge_v7_tab, caption = "Follow-Up: Behavioral Rating Inventory of Executive Functions - 2", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+# Food/Eating Behavior Assessments (Eat-Beh Database)
+
+## Family, Home, and Parenting
+
+\FloatBarrier
+
+```{r eat_fam_hom_v1_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_fam_home_merge_v1_tab, caption = "Baseline: Family, Home, and Parenting", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("FFBS: Family Food Beahvior Scale", "CFQ: Child Feeding Questionnaire")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r eat_fam_hom_v7_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_fam_home_merge_v7_tab, caption = "Follow-Up: Family, Home, and Parenting", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CFQ: Child Feeding Questionnaire")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Parent Portion Size Determination
+
+\FloatBarrier
+
+```{r eat_portions_v1_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_portions_merge_v1_tab, caption = "Baseline: Parent Portion Size Determination", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r eat_portions_v7_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_portions_merge_v7_tab, caption = "Follow-Up: Parent Portion Size Determination", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Kid Food Frequency
+
+\FloatBarrier
+
+```{r eat_kfq_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_kfq_merge_tab, caption = "Kid Food Frequence: Modal Frequency for each Food Category", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+```{r eat_kfq_tab_cont, echo=FALSE, results='asis'}
+as_kable_extra(qs_kfq_merge_tab_cont, caption = "Continued Kid Food Frequence: Modal Frequency for each Food Category", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Child Eating Behavior
+
+\FloatBarrier
+
+```{r eat_child_v1_tab, echo=FALSE, results='asis'}
+as_kable_extra(child_eatbeh_merge_v1_tab, caption = "Baseline: Child Eating Behavior", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("TESQE: Tempest Self-Regulation Questionnaire for Eating", "CEBQ: Children's Eating Behavior Questionnaire", "Lifestyle Behavior Checklist", "Delay of Gratificiation: adapted 'Marshmallow Test' with prefered candy")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r eat_child_v7_tab, echo=FALSE, results='asis'}
+as_kable_extra(child_eatbeh_merge_v7_tab, caption = "Follow-Up: Child Eating Behavior", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CEBQ: Children's Eating Behavior Questionnaire")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Child Body Image
+
+\FloatBarrier
+
+```{r child_bodyimage_tab, echo=FALSE, results='asis'}
+as_kable_extra(qs_body_img_merge_tab, caption = "Child Body Image", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("CWC: Child Weight Concerns", "CBIS: Children's Body Image Scale")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+## Parent Eating Behavior
+
+\FloatBarrier
+
+```{r eat_parent_tab, echo=FALSE, results='asis'}
+as_kable_extra(parent_eatbeh_merge_tab, caption = "Parent Eating Behavior", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("PWLB: Parent Weight-Loss Behaviors", "TFEQ: Three-Factor Eating Questionnaire")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+# Delay Discounting
+
+\FloatBarrier
+
+```{r dd_tab, echo=FALSE, results='asis'}
+as_kable_extra(dd_merge_tab, caption = "Delay Discounting", format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  footnote(general = c("^ Effective Dealy to reach 50% of Value - cannot be computed for Noise Model")) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+### Percent False Alarms: Mom Risk Status
+
+```{r dd_ed50_model_momrisk, echo=FALSE, results='hide'}
+dd_ed50_model_mom <- lm(dd_ed50 ~ sex + age_yr + risk_status_mom, data = r01_dd)
+dd_ed50_model_sesmom <- lm(dd_ed50 ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_dd)
+
+dd_ed50_mom_sum <- summary(dd_ed50_model_mom)
+dd_ed50_sesmom_sum <- summary(dd_ed50_model_mom)
+```
+
+```{r dd_auc_model_momrisk, echo=FALSE, results='hide'}
+dd_auc_model_mom <- lm(dd_mb_auc ~ sex + age_yr + risk_status_mom, data = r01_dd)
+dd_auc_model_sesmom <- lm(dd_mb_auc ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_dd)
+
+dd_auc_mom_sum <- summary(dd_auc_model_mom)
+dd_auc_sesmom_sum <- summary(dd_auc_model_mom)
+
+dd_auc10_model_mom <- lm(dd_mb_auc_log10 ~ sex + age_yr + risk_status_mom, data = r01_dd)
+dd_auc10_model_sesmom <- lm(dd_mb_auc_log10 ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_dd)
+
+dd_auc10_mom_sum <- summary(dd_auc10_model_mom)
+dd_auc10_sesmom_sum <- summary(dd_auc10_model_mom)
+```
+
+\FloatBarrier
+\clearpage
+
+# Cognitive Tasks
+
+## Go-NoGo
+
+```{r gng_tab, echo=FALSE, results='asis'}
+as_kable_extra(gng_merge_tab, caption = 'Go-NoGo Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+### Percent False Alarms: Mom Risk Status
+
+```{r gng_fa_model_momrisk, echo=FALSE, results='hide'}
+gng_fa_model_mom <- lm(all_pNoGo_FA ~ sex + age_yr + risk_status_mom, data = r01_gng)
+gng_fa_model_sesmom <- lm(all_pNoGo_FA ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
+
+gng_fa_mom_sum <- summary(gng_fa_model_mom)
+gng_fa_sesmom_sum <- summary(gng_fa_model_sesmom)
+
+r01_gng$fa_pred_mom <- predict(gng_fa_model_mom, type = 'response')
+```
+
+\FloatBarrier
+
+```{r gng_fa_regtab_momrisk, echo=FALSE, results='hide'}
+kable(gng_fa_model_mom$coefficients, "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r gng_fa_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 4}
+ggplot(r01_gng, aes(x=risk_status_mom, y=fa_pred_mom)) +
+  geom_violin(trim=FALSE, fill="cornflowerblue")+
+  labs(title="Go-NoGo", x="Risk Status (Mom BMI)", y = "Percent False Alarms - Adjusted for Sex and Age") +
+geom_boxplot(width=0.1) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+\clearpage
+
+### Percent Hits: Mom Risk Status
+
+```{r gng_hits_model_momrisk, echo=FALSE, results='hide'}
+gng_hits_model_mom <- lm(all_pGo_Hit ~ sex + age_yr + risk_status_mom, data = r01_gng)
+gng_hits_model_sesmom <- lm(all_pGo_Hit ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
+
+gng_hits_mom_sum <- summary(gng_hits_model_mom)
+gng_hits_sesmom_sum <- summary(gng_hits_model_sesmom)
+```
+
+\FloatBarrier
+
+```{r gng_hits_regtab_momrisk, echo=FALSE, results='hide'}
+kable(gng_hits_model_mom$coefficients, "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+\clearpage
+
+## N-Back
+
+```{r nback_merge_tab, echo=FALSE, results='asis'}
+as_kable_extra(nback_merge_tab, caption = 'N-Back Performance Summary: All Participants', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+```{r nback_momrisk_merge_tab, echo=FALSE, results='asis'}
+as_kable_extra(nback_momrisk_merge_tab, caption = 'N-Back Performance Summary: Mom Risk Status', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r nback_bothrisk_merge_tab, echo=FALSE, results='asis'}
+as_kable_extra(nback_bothrisk_merge_tab, caption = 'N-Back Performance Summary: Strict Risk Status', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+### Ballanced Accuracy: Mom Risk Status
+
+```{r nback1_balacc_model_momrisk, echo=FALSE, results='hide'}
+nback1_balacc_model_mom <- lm(p_target_ba ~ sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 1, ])
+nback1_balacc_model_sesmom <- lm(p_target_ba ~ mom_ed + income + sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 1, ])
+
+nback1_balacc_mom_sum <- summary(nback1_balacc_model_mom)
+nback1_balacc_sesmom_sum <- summary(nback1_balacc_model_sesmom)
+
+r01_nback1 <- r01_nback[r01_nback$ses == 1, ]
+r01_nback1$balacc_pred_mom <- predict(nback1_balacc_model_mom, type = 'response')
+
+r01_nback1_adjses <- r01_nback[r01_nback$ses == 1 & !is.na(r01_nback$income) & !is.na(r01_nback$mom_ed), ]
+r01_nback1_adjses$balacc_pred_mom <- predict(nback1_balacc_model_sesmom, type = 'response')
+```
+
+```{r nback2_balacc_model_momrisk, echo=FALSE, results='hide'}
+nback2_balacc_model_mom <- lm(p_target_ba ~ sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 2, ])
+nback2_balacc_model_sesmom <- lm(p_target_ba ~ mom_ed + income + sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 2, ])
+
+nback_balacc_mom_sum <- summary(nback2_balacc_model_mom)
+nback_balacc_sesmom_sum <- summary(nback2_balacc_model_sesmom)
+
+r01_nback2 <- r01_nback[r01_nback$ses == 2, ]
+r01_nback2$balacc_pred_mom <- predict(nback2_balacc_model_mom, type = 'response')
+```
+
+\FloatBarrier
+
+```{r nback_regtab_momrisk, echo=FALSE, results='asis'}
+kable(nback1_balacc_mom_sum$coefficients, "latex",  digits = 3, caption = 'N-Back Ballanced Accuracy - Risk x Block', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r nback1_fig_momrisk-block, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_nback1, aes(x=block, y=balacc_pred_mom, fill = risk_status_mom)) +
+  geom_violin(trim=FALSE)+
+  labs(title="Baseline N-Back: Block x Risk Status (Mom BMI)", x = "Block", y = "Ballanced Accuracy - Adjusted for Sex and Age") +
+  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9)) +
+  scale_fill_manual(values=c("cornflowerblue", "orange", "#56B4E9")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+
+```{r nback2_fig_momrisk-block, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_nback2, aes(x=block, y=balacc_pred_mom, fill = risk_status_mom)) +
+  geom_violin(trim=FALSE)+
+  labs(title="Follow-Up N-Back: Block x Risk Status (Mom BMI)", x = "Block", y = "Ballanced Accuracy - Adjusted for Sex and Age") +
+  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9)) +
+  scale_fill_manual(values=c("cornflowerblue", "orange", "#56B4E9")) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+\clearpage
+
+## Stop-Signal Task
+
+```{r sst_merge_tab, echo=FALSE, results='asis'}
+as_kable_extra(sst_all_merge_tab, caption = 'Stop-Signal Task Performance Summary: All Participants', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+### Stop Signal Delay: Mom Risk Status
+
+#### All Trials
+
+\FloatBarrier
+
+```{r sst_ssd_all_momrisk, echo=FALSE, results='hide'}
+sst_ssd_model_mom <- lm(all_ssd ~ sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+
+sst_ssd_model_sesmom <- lm(all_ssd ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+
+sst_ssd_mom_sum <- summary(sst_ssd_model_mom)
+sst_ssd_sesmom_sum <- summary(sst_ssd_model_sesmom)
+
+r01_sst_cond_rhgood <- r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ]
+r01_sst_cond_rhgood$ssd_pred_mom <- predict(sst_ssd_model_mom, type = 'response')
+
+r01_sst_cond_rhgood_adjses <- r01_sst_cond[r01_sst_cond$all_racehorse_check == 1 & !is.na(r01_sst_cond$income) & !is.na(r01_sst_cond$mom_ed), ]
+r01_sst_cond_rhgood_adjses$ssd_pred_mom <- predict(sst_ssd_model_sesmom, type = 'response')
+```
+
+
+```{r sst_ssd_allreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssd_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sst_ssd_all_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_sst_cond_rhgood, aes(x=risk_status_mom, y=ssd_pred_mom)) +
+  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  labs(title="Stop-Signal Task - All Trials", x = "Risk Status (Mom BMI)", y = "SSD - Adjusted for Sex and Age") +
+  geom_boxplot(width = 0.1, ) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+\clearpage
+
+#### Energy Density Trials
+
+\FloatBarrier
+
+```{r sst_ssd_ED_momrisk, echo=FALSE, results='hide'}
+sst_ssd_EDmodel <- lmer(ssd ~ sex + age_yr + order + ED + (1|sub), data = r01_sst_EDlong)
+sst_ssd_model_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
+
+sst_ssd_EDmodel_mom <- lmer(ssd ~ sex + age_yr + order + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
+
+sst_ssdED_mom_sum <- summary(sst_ssd_EDmodel_mom)
+sst_ssdED_sesmom_sum <- summary(sst_ssd_EDmodel_sesmom)
+```
+
+```{r sst_ssd_EDreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssdED_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD (integration) - Risk Status x ED', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+#### Portion Size Trials
+
+\FloatBarrier
+
+```{r sst_ssd_PS_momrisk, echo=FALSE, results='hide'}
+sst_ssd_PSmodel <- lmer(ssd ~ sex + age_yr + order + PS + (1|sub), data = r01_sst_PSlong)
+sst_ssd_model_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
+
+sst_ssd_PSmodel_mom <- lmer(ssd ~ sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
+sst_ssd_PSmodel_sesmom <- lmer(ssd ~ mom_ed + income + sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
+
+sst_ssdPS_mom_sum <- summary(sst_ssd_PSmodel_mom)
+sst_ssdPS_sesmom_sum <- summary(sst_ssd_PSmodel_sesmom)
+```
+
+```{r sst_ssd_PSreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssdPS_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD (integration) - Risk Status x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+<!-- #### Energy Denisy x Portion Size -->
+
+<!-- ```{r sst_ssd_ED-PS_momrisk, echo=FALSE, results='hide'} -->
+<!-- sst_ssd_EDxPSmodel <- lmer(ssd ~ sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
+<!-- sst_ssd_EDxPSmodel_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
+<!-- ``` -->
+
+### Stop Signal Reaction Time: Mom Risk Status
+
+#### All Trials
+
+\FloatBarrier
+
+```{r sst_ssrt_all_momrisk, echo=FALSE, results='hide'}
+sst_ssrt_model_mom <- lm(all_ssrt_int ~ sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+
+sst_ssrt_model_sesmom <- lm(all_ssrt_int ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+
+sst_ssrt_mom_sum <- summary(sst_ssrt_model_mom)
+sst_ssrt_sesmom_sum <- summary(sst_ssrt_model_sesmom)
+
+r01_sst_cond_rhgood$ssrt_pred_mom <- predict(sst_ssrt_model_mom, type = 'response')
+r01_sst_cond_rhgood_adjses$ssrt_pred_mom <- predict(sst_ssrt_model_sesmom, type = 'response')
+```
+
+```{r sst_ssrt_allreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssrt_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sst_ssrt_all_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_sst_cond_rhgood, aes(x=risk_status_mom, y=ssrt_pred_mom)) +
+  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  labs(title="Stop-Signal Task - All Trials", x = "Risk Status (Mom BMI)", y = "SSRT (integration) - Adjusted for Sex and Age") +
+  geom_boxplot(width = 0.1, ) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+\clearpage
+
+#### Energy Density Trials
+
+\FloatBarrier
+
+```{r sst_ssrt_ED_momrisk, echo=FALSE, results='hide'}
+sst_ssrt_EDmodel <- lmer(ssrt_int ~ sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
+sst_ssrt_model_ses <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
+
+sst_ssrt_EDmodel_mom <- lmer(ssrt_int ~ sex + age_yr + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
+sst_ssrt_EDmodel_sesmom <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
+
+sst_ssrtED_mom_sum <- summary(sst_ssrt_EDmodel_mom)
+sst_ssrtED_sesmom_sum <- summary(sst_ssrt_EDmodel_sesmom)
+```
+
+```{r sst_ssrt_EDreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssrtED_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status x ED', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+#### Portion Size Trials
+
+\FloatBarrier
+
+```{r sst_ssrt_PS_momrisk, echo=FALSE, results='hide'}
+sst_ssrt_PSmodel <- lmer(ssrt_int ~ sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
+sst_ssrt_model_ses <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
+
+sst_ssrt_PSmodel_mom <- lmer(ssrt_int ~ sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
+sst_ssrt_PSmodel_sesmom <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
+
+sst_ssrtPS_mom_sum <- summary(sst_ssrt_PSmodel_mom)
+sst_ssrtPS_sesmom_sum <- summary(sst_ssrt_PSmodel_sesmom)
+```
+
+```{r sst_ssrt_PSreg_momrisk, echo=FALSE, results='asis'}
+kable(sst_ssrtPS_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+<!-- #### Energy Denisy x Portion Size -->
+
+<!-- ```{r sst_ssrt_ED-PS_momrisk, echo=FALSE, results='hide'} -->
+<!-- sst_ssrt_EDxPSmodel <- lmer(ssrt_int ~ sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
+<!-- sst_ssrt_EDxPSmodel_ses <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
+<!-- ``` -->
+
+## Space Task
+
+\FloatBarrier
+
+```{r space_merge_tab_v1, echo=FALSE, results='asis'}
+as_kable_extra(space_merge_tab_v1, caption = 'Baseline: Space Task Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+
+```{r space_merge_tab_v7, echo=FALSE, results='asis'}
+as_kable_extra(space_merge_tab_v7, caption = 'Follow-Up: Space Task Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+```
+
+\FloatBarrier
+\clearpage
+
+### Decision Making: Mom Risk Status
+
+```{r space1_balacc_model_momrisk, echo=FALSE, results='hide'}
+space1_beta_model_mom <- lm(beta ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+space1_alpha_model_mom <- lm(alpha ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+space1_lambda_model_mom <- lm(lambda ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+space1_w_model_mom <- lm(w ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+space1_pi_model_mom <- lm(pi ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+space1_rho_model_mom <- lm(rho ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 1, ])
+
+space2_beta_model_mom <- lm(beta ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+space2_alpha_model_mom <- lm(alpha ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+space2_lambda_model_mom <- lm(lambda ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+space2_w_model_mom <- lm(w ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+space2_pi_model_mom <- lm(pi ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+space2_rho_model_mom <- lm(rho ~ sex + age_yr + risk_status_mom, data = r01_space[r01_space$ses == 2, ])
+
+#dont have enough repeats yet for this to be valid
+ses1_ids <- r01_space[r01_space$ses == 1, 'sub']
+ses2_ids <- r01_space[r01_space$ses == 2, 'sub']
+
+both_ses_ids <- ses1_ids[ses1_ids %in% ses2_ids]
+
+r01_space_bothses <- r01_space[r01_space$sub %in% both_ses_ids, ]
+
+space_wxses_model_mom <- lmer(w ~ sex + age_yr + risk_status_mom*ses + (1|sub), data = r01_space_bothses)
+
+space1_w_mom_sum <- summary(space1_w_model_mom)
+space1_rho_mom_sum <- summary(space1_rho_model_mom)
+
+r01_space1 <- r01_space[r01_space$ses == 1, ]
+r01_space1$w_pred_mom <- predict(space1_w_model_mom, type = 'response')
+r01_space1$rho_pred_mom <- predict(space1_rho_model_mom, type = 'response')
+```
+
+\FloatBarrier
+
+```{r space1_w_regtab_momrisk, echo=FALSE, results='asis'}
+kable(space1_w_mom_sum$coefficients, "latex",  digits = 3, caption = 'Baseline Space Task: Weighting Parameter - Mom Risk', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r space1_w_fig_momrisk-block, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_space1, aes(x=risk_status_mom, y=w_pred_mom)) +
+  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  labs(title="Baseline Space Task: Weighting Parameter", x = " Risk Status (Mom BMI)", y = "Weighting Parameter - Adjusted for Sex and Age \n more model free < more model based") +
+  geom_boxplot(width = 0.1) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```
+
+\FloatBarrier
+
+```{r space1_rho_regtab_momrisk, echo=FALSE, results='asis'}
+kable(space1_rho_mom_sum$coefficients, "latex",  digits = 3, caption = 'Baseline Space Task: Response/Motor Stickiness - Mom Risk', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r space1_fig_rho_momrisk-block, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+ggplot(r01_space1, aes(x=risk_status_mom, y=rho_pred_mom)) +
+  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  labs(title="Baseline Space Task: Response/Motor Stickiness", x = " Risk Status (Mom BMI)", y = "Response/Motor Stickiness - Adjusted for Sex and Age \n more switching < 0 < more perseverance") +
+  geom_boxplot(width = 0.1) +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```

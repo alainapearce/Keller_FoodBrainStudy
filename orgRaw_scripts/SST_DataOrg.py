@@ -44,7 +44,7 @@ def bidsformat_sst_raw(raw_filepath, subname):
 ##############################################################################
 
 # get script location
-script_path = Path(os.path.dirname(__file__))
+script_path = Path(__file__).parent.resolve()
 
 # change directory to base directory and get path
 os.chdir(script_path)

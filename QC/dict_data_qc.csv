@@ -1,0 +1,1188 @@
+"Variable / Field Name","Form Name","Section Header","Field Type","Field Label","Choices, Calculations, OR Slider Labels","Field Note","Text Validation Type OR Show Slider Number","Text Validation Min","Text Validation Max",Identifier?,"Branching Logic (Show field only if...)","Required Field?","Custom Alignment","Question Number (surveys only)","Matrix Group Name","Matrix Ranking?","Field Annotation"
+par_id,participant_overview,,text,"Participant ID",,,integer,,,,,,,,,," @CHARLIMIT=3 @DEFAULT='###'"
+ch_dob,participant_overview,"Demographic Characteristics",text,"Date of Birth",,MM-D-YYYY,date_mdy,,,y,,,,,,,"date of birth"
+sex,participant_overview,,radio,Sex,"0, Female | 1, Male",,,,,,,,,,,,"child sex"
+ch_height1,participant_overview,,text,"Child Height - 1st Measurement",,"height in cm",number,,,,,,,,,,"child height first measurement"
+ch_height2,participant_overview,,text,"Child Height - 2nd Measurement",,"height in cm",,,,,,,,,,,"child height second measurement"
+ch_height_avg,participant_overview,,calc,"Child Height - Avg","([ch_height1] + [ch_height2])/2",,,,,,,,,,,,"average of child height measurements"
+ch_weight1,participant_overview,,text,"Child Weight - 1st Measurement",,"weight in kg",number,,,,,,,,,,"child weight first measurement"
+ch_weight2,participant_overview,,text,"Child Weight - 2nd Measurement",,"weight in kg",number,,,,,,,,,,"child weight second measurement"
+ch_weight_avg,participant_overview,,calc,"Child Weight - Average","([ch_weight1] + [ch_weight2])/2",,,,,,,,,,,,"average child weight"
+ch_bmi,participant_overview,,calc,"Child Body Mass Index","round([ch_weight_avg]/(([ch_height_avg]/100)*([ch_height_avg]/100)), 2)",,,,,,,,,,,,"child BMI"
+ch_bmi_percentile,participant_overview,,text,"Child Body Mass Index Percentile",,,number,0,100,,,,,,,,"child BMI percentile"
+v1_date,participant_overview,,text,"Visit 1 Date",,,date_mdy,,,,,,,,,,"visit 1 date"
+v1_age,participant_overview,,calc,"Child Age at Visit 1","round(datediff([v1_date], [ch_dob], ""y""), 2)",,,,,,,,,,,,
+v1_child_risk,participant_overview,,radio,"Child Risk Status","0, Low Risk | 1, High Risk | 2, Excluded",,,,,,,,,,,,"child risk status based on mom and dad obesity status"
+v1_covid_protocol,participant_overview,,radio,"Visit 1 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,,,,,,,"whether covid protocols were used during data collection"
+v2_complete,participant_overview,,radio,"Visit 2 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 2 complete"
+v2_date,participant_overview,,text,"Visit 2 Date",,,date_mdy,,,,[v2_complete]='1',,,,,,
+v2_age,participant_overview,,calc,"Child Age at Visit 2","round(datediff([v2_date], [ch_dob], ""y""),2)",,,,,,[v2_complete]='1',,,,,,"child age at visit 2"
+v2_covid_protocol,participant_overview,,radio,"Visit 2 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v2_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 2"
+v3_complete,participant_overview,,radio,"Visit 3 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 3 complete"
+v3_date,participant_overview,,text,"Visit 3 Date",,,date_mdy,,,,[v3_complete]='1',,,,,,"visit 3 date"
+v3_age,participant_overview,,calc,"Child Age at Visit 3","round(datediff([v3_date], [ch_dob], ""y""),2)",,,,,,[v3_complete]='1',,,,,,"child age at visit 3"
+v3_covid_protocol,participant_overview,,radio,"Visit 3 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v3_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 3"
+v4_complete,participant_overview,,radio,"Visit 4 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 4 completed"
+v4_date,participant_overview,,text,"Visit 4 Date",,,date_mdy,,,,[v4_complete]='1',,,,,,"visit 4 date"
+v4_age,participant_overview,,calc,"Child Age at Visit 4","round(datediff([v4_date], [ch_dob], ""y""),2)",,,,,,[v4_complete]='1',,,,,,"child age at visit 4"
+v4_covid_protocol,participant_overview,,radio,"Visit 4 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v4_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 4"
+v5_complete,participant_overview,,radio,"Visit 5 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 5 complete"
+v5_date,participant_overview,,text,"Visit 5 Date",,,date_mdy,,,,[v5_complete]='1',,,,,,"visit 5 date"
+v5_age,participant_overview,,calc,"Child Age at Visit 5","round(datediff([v5_date], [ch_dob], ""y""),2)",,,,,,[v5_complete]='1',,,,,,"child age at visit 5"
+v5_covid_protocol,participant_overview,,radio,"Visit 5 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v5_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 5"
+v6_complete,participant_overview,,radio,"Visit 6 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 6 complete"
+v6_date,participant_overview,,text,"Visit 6 Date",,,date_mdy,,,,[v6_complete]='1',,,,,,"visit 6 date"
+v6_age,participant_overview,,calc,"Child Age at Visit 6","round(datediff([v6_date], [ch_dob], ""y""), 2)",,,,,,[v6_complete]='1',,,,,,"child age at visit 6"
+v6_covid_protocol,participant_overview,,radio,"Visit 6 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v6_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 6"
+v7_complete,participant_overview,,radio,"Visit 7 Completed","0, No | 1, Yes",,,,,,"[v1_child_risk]='0' or [v1_child_risk]='1'",,,,,,"visit 7 complete"
+v7_date,participant_overview,,text,"Visit 7 Date",,,date_mdy,,,,[v7_complete]='1',,,,,,"visit 7 date"
+v7_age,participant_overview,,calc,"Child Age at Visit 7","round(datediff([v7_date], [ch_dob], ""y""), 2)",,,,,,[v7_complete]='1',,,,,,"child age at visit 7"
+v7_ch_height1,participant_overview,,text,"Visit 7 Child Height - 1st Measurement",,"height in cm",number,,,,[v7_complete]='1',,,,,,"follow-up visit 7 child height first measurement"
+v7_ch_height2,participant_overview,,text,"Visit 7 Child Height - 2nd Measurement",,"height in cm",number,,,,[v7_complete]='1',,,,,,"follow-up visit 7 child height second measurement"
+v7_ch_height_avg,participant_overview,,calc,"Visit 7 Child Height - Avg","([v7_ch_height1] + [v7_ch_height2])/2",,,,,,[v7_complete]='1',,,,,,"follow-up visit 7 average of child height measurements"
+v7_ch_weight1,participant_overview,,text,"Visit 7 Child Weight - 1st Measurement",,"height in cm",number,,,,[v7_complete]='1',,,,,,"follow-up visit 7 child weight first measurement"
+v7_ch_weight2,participant_overview,,text,"Visit 7 Child Weight - 2nd Measurement",,"height in cm",number,,,,[v7_complete]='1',,,,,,"follow-up visit 7 child weight second measurement"
+v7_ch_weight_avg,participant_overview,,calc,"Visit 7 Child Weight - Avg","([v7_ch_weight1] + [v7_ch_weight2])/2",,,,,,[v7_complete]='1',,,,,,"follow-up visit 7 average of child height measurements"
+v7_ch_bmi,participant_overview,,calc,"Visit 7 Child Body Mass Index","round([v7_ch_weight_avg]/(([v7_ch_height_avg]/100)*([v7_ch_height_avg]/100)), 2)",,,,,,[v7_complete]='1',,,,,,"follow-up visit 7 child BMI"
+v7_ch_bmi_2,participant_overview,,text,"Visit 7 Child Body Mass Index Percentile",,,integer,0,100,,[v7_complete]='1',,,,,,"follow-up visit 7 child BMI percentile"
+v7_covid_protocol,participant_overview,,radio,"Visit 7 Used Protocol From:","0, Before COVID-19 | 1, After COVID-19",,,,,,[v7_complete]='1',,,,,,"whether covid protocols were used during data collection at visit 7"
+dexa_visit,dexa,,radio,"DEXA and height/weight completed at Visit:","0, Visit 1 | 1, Visit 7",,,,,,,y,,,,,
+dexa_age,dexa,,calc,"Age at [intake_meal:checked] Meal","if([dexa_visit] = '0', [baseline_arm_1][v1_age], [baseline_arm_1][v7_age])",,,,,,,,,,,,
+dexa_save,dexa,,yesno,"DEXA pdf saved to OneDrive?",,,,,,,,y,,,,,
+dexa_entered,dexa,,yesno,"DEXA values entered into [dexa_visit:checked] Qualtrics database?",,,,,,,,y,,,,,
+dexa_chw_entered,dexa,,yesno,"Child height and weight entered into [dexa_visit:checked] Child Qualtrics Database?",,,,,,,,y,,,,,
+dexa_phw_entered,dexa,,yesno,"Parent height and weight entered into [dexa_visit:checked] Parent Qualtrics Database?",,,,,,,,y,,,,,
+dexa_check_name,dexa,,text,"Data Check 1
+
+Meal intake values checked by:",,,,,,,"[dexa_entered]='1' AND [dexa_chw_entered]='1' AND [dexa_phw_entered]='1'",y,,,,,
+dexa_check_date,dexa,,text,Date:,,,date_mdy,,,,[dexa_check_name]<>'',y,,,,,
+dexa_error,dexa,,yesno,"Were there errors in the [dexa_visit:checked] DEXA Qulatrics database?",,,,,,,[dexa_check_name]<>'',y,,,,,
+dexa_error_cor,dexa,,yesno,"Errors for the [dexa_visit:checked] DEXA Qulatrics database were corrected?",,,,,,,[dexa_error]='1',y,,,,,
+dexa_chw_error,dexa,,yesno,"Were there child height or weight errors in the [dexa_visit:checked] Child Qulatrics database?",,,,,,,[dexa_check_name]<>'',y,,,,,
+dexa_chw_error_cor,dexa,,yesno,"Errors for child height and weight were corrected in [dexa_visit:checked] Child Qulatrics database?",,,,,,,[dexa_chw_error]='1',y,,,,,
+dexa_phw_error,dexa,,yesno,"Were there parent height or weight errors in the [dexa_visit:checked] Parent Qulatrics database?",,,,,,,[dexa_check_name]<>'',y,,,,,
+dexa_phw_error_cor,dexa,,yesno,"Errors for parent heights and weights were corrected in [dexa_visit:checked] Parent Qulatrics database?",,,,,,,[dexa_phw_error]='1',y,,,,,
+dexa_error_notes,dexa,,notes,"DEXA and height/weight entry errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to incomplete so others know that these data need to be checked again.**",,,,,,,"[dexa_error]='1' OR [dexa_chw_error]='1' OR [dexa_phw_error]='1'",y,,,,,
+dexa_unfinished_msg,dexa,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([dexa_error]='1' AND [dexa_error_cor]='0') OR ([dexa_chw_error]='1' AND [dexa_chw_error_cor]='0') OR ([dexa_phw_error]='1' AND [dexa_phw_error_cor]='0') OR ([dexa_error_notes]='' AND ([dexa_error]='1' OR [dexa_chw_error]='1' OR [dexa_phw_error]='1'))",y,,,,,
+dexa_check_name2,dexa,,text,"Data Check 2
+
+Meal intake values checked by:",,,,,,,"([dexa_error]='1' OR [dexa_chw_error]='1' OR [dexa_phw_error]='1') AND (([dexa_error]='1' AND [dexa_error_cor]<>'0') AND ([dexa_chw_error]='1' AND [dexa_chw_error_cor]<>'0') AND ([dexa_phw_error]='1' AND [dexa_phw_error_cor]<>'0') OR [dexa_error_notes]='')",y,,,,,
+dexa_check_date2,dexa,,text,Date:,,,date_mdy,,,,[dexa_check_name2]<>'',y,,,,,
+dexa_error2,dexa,,yesno,"Were there errors in the [dexa_visit:checked] DEXA Qulatrics database?",,,,,,,"[dexa_check_name2]<>'' AND [dexa_error]='1' AND [dexa_error_cor]='1'",,,,,,
+dexa_error_cor2,dexa,,yesno,"Errors for the [dexa_visit:checked] DEXA Qulatrics database were corrected?",,,,,,,[dexa_error2]='1',y,,,,,
+dexa_chw_error2,dexa,,yesno,"Were there child height and weight errors in the [dexa_visit:checked] Child Qulatrics database?",,,,,,,"[dexa_check_name2]<>'' AND [dexa_chw_error]='1' AND [dexa_chw_error_cor]='1'",,,,,,
+dexa_chw_error_cor2,dexa,,yesno,"Errors for the child height and weight were corrected in [dexa_visit:checked] Child Qulatrics database?",,,,,,,[dexa_chw_error2]='1',y,,,,,
+dexa_phw_error2,dexa,,yesno,"Were there parent height and weight errors in the [dexa_visit:checked] Parent Qulatrics database?",,,,,,,"[dexa_check_name2]<>'' AND [dexa_phw_error]='1' AND [dexa_phw_error_cor]='1'",,,,,,
+dexa_phw_error_cor2,dexa,,yesno,"Errors for the parent height and weight were corrected in [dexa_visit:checked] Parent Qulatrics database?",,,,,,,[dexa_phw_error2]='1',y,,,,,
+dexa_error_notes2,dexa,,notes,"DEXA and height/weight entry errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to incomplete so others know that these data need to be checked again.**",,,,,,,"[dexa_error2]='1' OR [dexa_chw_error2]='1' OR [dexa_phw_error2]='1'",y,,,,,
+dexa_unfinished_msg2,dexa,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([dexa_error2]='1' AND [dexa_error_cor2]='0') OR ([dexa_chw_error2]='1' AND [dexa_chw_error_cor2]='0') OR ([dexa_phw_error2]='1' AND [dexa_phw_error_cor2]='0') OR ([dexa_error_notes2]='' AND ([dexa_error2]='1' OR [dexa_chw_error2]='1' OR [dexa_phw_error2]='1'))",,,,,,
+dexa_check_name3,dexa,,text,"Data Check 3
+
+Meal intake values checked by:",,,,,,,"([dexa_error2]='1' OR [dexa_chw_error2]='1' OR [dexa_phw_error2]='1') AND (([dexa_error2]='1' AND [dexa_error_cor2]<>'0') AND ([dexa_chw_error2]='1' AND [dexa_chw_error_cor2]<>'0') AND ([dexa_phw_error2]='1' AND [dexa_phw_error_cor2]<>'0') OR [dexa_error_notes2]='')",y,,,,,
+dexa_check_date3,dexa,,text,Date:,,,date_mdy,,,,[dexa_check_name3]<>'',y,,,,,
+dexa_error3,dexa,,yesno,"Were there errors in the [dexa_visit:checked] DEXA Qulatrics database?",,,,,,,"[dexa_check_name3]<>'' AND [dexa_error2]='1' AND [dexa_error_cor2]='1'",y,,,,,
+dexa_error_cor3,dexa,,yesno,"Errors for the [dexa_visit:checked] DEXA Qulatrics database were corrected?",,,,,,,[dexa_error3]='1',y,,,,,
+dexa_chw_error3,dexa,,yesno,"Were there child height and weight errors in the [dexa_visit:checked] Child Qulatrics database?",,,,,,,"[dexa_check_name3]<>'' AND [dexa_chw_error2]='1' AND [dexa_chw_error_cor2]='1'",y,,,,,
+dexa_chw_error_cor3,dexa,,yesno,"Errors for the child height and weight were corrected in [dexa_visit:checked] Child Qulatrics database?",,,,,,,[dexa_chw_error3]='1',y,,,,,
+dexa_phw_error3,dexa,,yesno,"Were there parent height and weight errors in the [dexa_visit:checked] Parent Qulatrics database?",,,,,,,"[dexa_check_name3]<>'' AND [dexa_phw_error2]='1' AND [dexa_phw_error_cor2]='1'",y,,,,,
+dexa_phw_error_cor3,dexa,,yesno,"Errors for the parent height and weight were corrected in [dexa_visit:checked] Parent Qulatrics database?",,,,,,,[dexa_phw_error3]='1',y,,,,,
+dexa_error_notes3,dexa,,notes,"DEXA and height/weight entry errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to incomplete so others know that these data need to be checked again.**",,,,,,,"[dexa_error3]='1' OR [dexa_chw_error3]='1' OR [dexa_phw_error3]='1'",y,,,,,
+dexa_unfinished_msg3,dexa,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([dexa_error3]='1' AND [dexa_error_cor3]='0') OR ([dexa_chw_error3]='1' AND [dexa_chw_error_cor3]='0') OR ([dexa_phw_error3]='1' AND [dexa_phw_error_cor3]='0') OR ([dexa_error_notes3]='' AND ([dexa_error3]='1' OR [dexa_chw_error3]='1' OR [dexa_phw_error3]='1'))",,,,,,
+dexa_check_name4,dexa,,text,"Data Check 4
+
+Meal intake values checked by:",,,,,,,"([dexa_error3]='1' OR [dexa_chw_error3]='1' OR [dexa_phw_error3]='1') AND (([dexa_error3]='1' AND [dexa_error_cor3]<>'0') AND ([dexa_chw_error3]='1' AND [dexa_chw_error_cor3]<>'0') AND ([dexa_phw_error3]='1' AND [dexa_phw_error_cor3]<>'0') OR [dexa_error_notes3]='')",y,,,,,
+dexa_check_date4,dexa,,text,Date:,,,date_mdy,,,,[dexa_check_name4]<>'',y,,,,,
+dexa_error4,dexa,,yesno,"Were there errors in the [dexa_visit:checked] DEXA Qulatrics database?",,,,,,,"[dexa_check_name4]<>'' AND [dexa_error3]='1' AND [dexa_error_cor3]='1'",y,,,,,
+dexa_error_cor4,dexa,,yesno,"Errors for the [dexa_visit:checked] DEXA Qulatrics database were corrected?",,,,,,,[dexa_error4]='1',y,,,,,
+dexa_chw_error4,dexa,,yesno,"Were there child height and weight errors in the [dexa_visit:checked] Child Qulatrics database?",,,,,,,"[dexa_check_name4]<>'' AND [dexa_chw_error3]='1' AND [dexa_chw_error_cor3]='1'",y,,,,,
+dexa_chw_error_cor4,dexa,,yesno,"Errors for the child height and weight were corrected in [dexa_visit:checked] Child Qulatrics databases?",,,,,,,[dexa_chw_error4]='1',y,,,,,
+dexa_phw_error4,dexa,,yesno,"Were there parent height and weight errors in the [dexa_visit:checked] Parent Qulatrics database?",,,,,,,"[dexa_check_name4]<>'' AND [dexa_phw_error3]='1' AND [dexa_phw_error_cor3]='1'",y,,,,,
+dexa_phw_error_cor4,dexa,,yesno,"Errors for the parent height and weight were corrected in [dexa_visit:checked] Parent Qulatrics databases?",,,,,,,[dexa_phw_error4]='1',y,,,,,
+dexa_error_notes4,dexa,,notes,"DEXA and height/weight entry errors. Please list the intake values that were changed/updated.
+",,,,,,,"[dexa_error4]='1' OR [dexa_chw_error4]='1' OR [dexa_phw_error4]='1'",y,,,,,
+dexa_unfinished_msg4,dexa,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([dexa_error4]='1' AND [dexa_error_cor4]='0') OR ([dexa_chw_error4]='1' AND [dexa_chw_error_cor4]='0') OR ([dexa_phw_error4]='1' AND [dexa_phw_error_cor4]='0') OR ([dexa_error_notes4]='' AND ([dexa_error4]='1' OR [dexa_chw_error4]='1' OR [dexa_phw_error4]='1'))",,,,,,
+dexa_errors_email,dexa,,radio,"Email the Lead Data RA or graduate student for final checks since agreement has not yet been reached.
+
+Include the DEXA visit: [intake_visit:checked] [intake_meal:checked] 
+
+**Once email has been sent, mark form status as ""unverified"" so Lead RA and/or graduate student knows to check form**","0, Email not Sent | 1, Email Sent",,,,,,"([dexa_error4]='1' OR [dexa_chw_error4]='1' OR [dexa_phw_error4]='1') AND (([dexa_error4]='1' AND [dexa_error_cor4]<>'0') AND ([dexa_chw_error4]='1' AND [dexa_chw_error_cor4]<>'0') AND ([dexa_phw_error4]='1' AND [dexa_phw_error_cor4]<>'0') OR [dexa_error_notes4]='')",y,,,,,
+dexa_resolve,dexa,,yesno,"For Lead RA or graduate student ONLY:
+
+Have DEXA data issues been resolved?
+
+**if yes, mark form status as complete**",,,,,,,[dexa_errors_email]='1',y,,,,,
+dexa_form_complete,dexa,,yesno,"All Qualtrics data was correct (no errors found).
+
+Has form status been changed to ""complete""?",,,,,,,"([dexa_error]='0' OR [dexa_error2]='0' OR [dexa_error3]='0' OR [dexa_error4]='0') AND ([dexa_chw_error]='0' OR [dexa_chw_error2]='0' OR [dexa_chw_error3]='0' OR [dexa_chw_error4]='0') AND ([dexa_phw_error]='0' OR [dexa_phw_error2]='0' OR [dexa_phw_error3]='0' OR [dexa_phw_error4]='0')",y,,,,,
+intake_meal,intake,,radio,Meal,"0, Standard Meal (visits 1 or 7) | 1, Portion Size Meal (visits 2-5) | 2, Visit 6 Snack",,,,,,,,,,,,
+intake_meal_done,intake,,yesno,"Was meal completed?",,,,,,,,,,,,,
+intake_visit,intake,,radio,"[intake_meal:checked] Completed at Visit:","0, Visit 1 | 1, Visit 2 | 2, Visit 3 | 3, Visit 4 | 4, Visit 5 | 5, Visit 6 | 6, Visit 7",,,,,,[intake_meal_done]='1',y,,,,,
+intake_visit_age,intake,,calc,"Age at [intake_meal:checked] Meal","if([intake_visit] = '0', [baseline_arm_1][v1_age], if([intake_visit] = '1', [baseline_arm_1][v2_age], if([intake_visit] = '2', [baseline_arm_1][v3_age], if([intake_visit] = '3', [baseline_arm_1][v4_age], if([intake_visit] = '4', [baseline_arm_1][v5_age], if([intake_visit] = '5', [baseline_arm_1][v6_age], if([intake_visit] = '6', [baseline_arm_1][v7_age], 'NaN')))))))",,,,,,[intake_meal_done]='1',,,,,,
+intake_measure,intake,,yesno,"Was amount served/eaten measured at [intake_meal] for [intake_visit]?",,,,,,,[intake_meal_done]='1',,,,,,
+intake_entered,intake,,yesno,"Meal intake values have been entered in Qualtrics",,,,,,,[intake_measure]='1',y,,,,,
+intake_check_name,intake,,text,"Data Check 1
+
+Meal intake values checked by:",,,,,,,[intake_entered]='1',y,,,,,
+intake_check_date,intake,,text,Date:,,,date_mdy,,,,[intake_entered]='1',y,,,,,
+intake_errors,intake,,yesno,"Were there intake value errors for the [intake_meal:checked] in the [intake_visit:checked] Child Qulatrics database?
+
+Examples of common errors include: 
+-wrong value entered
+-amount consumed was calculated incorrectly
+-missing data was not indicated using 'NA'. All missing data MUST be marked with 'NA'.
+-typos such as a letter or multiple periods/decimal points
+-commas used instead of periods for the decimal point",,,,,,,[intake_entered]='1',y,,,,,
+intake_errors_cor,intake,,yesno,"Intake errors for the [intake_meal:checked] were corrected in the [intake_visit:checked] Child Qualtrics Database:",,,,,,,[intake_errors]='1',y,,,,,
+intake_errors2,intake,,yesno,"Were there intake value errors for the [intake_meal:checked] in the [intake_visit:checked] Child Qulatrics database?
+
+Examples of common errors include: 
+-wrong value entered
+-amount consumed was calculated incorrectly
+-missing data was not indicated using 'NA'. All missing data MUST be marked with 'NA'.
+-typos such as a letter or multiple periods/decimal points
+-commas used instead of periods for the decimal point",,,,,,,"[intake_check_name2]<>'' AND [intake_errors]='1'",y,,,,,
+intake_error_notes,intake,,notes,"Meal intake errors. Please list the intake items that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[intake_errors]='1',y,,,,,
+intake_unfinished_msg,intake,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([intake_errors]='1' AND [intake_errors_cor]='0') OR ([intake_errors]='1' AND [intake_error_notes]='')",,,,,,
+intake_check_name2,intake,,text,"Data Check 2
+
+Meal intake values checked by:",,,,,,,"[intake_errors]='1' AND [intake_errors_cor]='1' AND [intake_error_notes]<>''",y,,,,,
+intake_check_date2,intake,,text,Date:,,,date_mdy,,,,[intake_check_name2]<>'',y,,,,,
+intake_errors_cor2,intake,,yesno,"Intake errors for the [intake_meal:checked] were corrected in the [intake_visit:checked] Child Qualtrics Database:",,,,,,,[intake_errors2]='1',y,,,,,
+intake_error_notes_2,intake,,notes,"Meal intake errors. Please list the intake items that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[intake_errors2]='1',y,,,,,
+intake_unfinished_msg2,intake,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([intake_errors2]='1' AND [intake_errors_cor2]='0') OR ([intake_errors2]='1' AND [intake_error_notes2]='')",,,,,,
+intake_check_name3,intake,,text,"Data Check 3
+
+Meal intake values checked by:",,,,,,,"[intake_errors2]='1' AND [intake_errors_cor2]='1' AND [intake_error_notes2]<>''",y,,,,,
+intake_check_date3,intake,,text,Date:,,,date_mdy,,,,[intake_check_name3]<>'',y,,,,,
+intake_errors3,intake,,yesno,"Were there intake value errors for the [intake_meal:checked] in the [intake_visit:checked] Child Qulatrics database?
+
+Examples of common errors include: 
+-wrong value entered
+-amount consumed was calculated incorrectly
+-missing data was not indicated using 'NA'. All missing data MUST be marked with 'NA'.
+-typos such as a letter or multiple periods/decimal points
+-commas used instead of periods for the decimal point",,,,,,,"[intake_check_name3]<>'' AND [intake_errors2]='1'",y,,,,,
+intake_errors_cor3,intake,,yesno,"Intake errors for the [intake_meal:checked] were corrected in the [intake_visit:checked] Child Qualtrics Database:",,,,,,,[intake_errors2]='1',y,,,,,
+intake_error_notes3,intake,,notes,"Meal intake errors. Please list the intake items that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[intake_errors2]='1',y,,,,,
+intake_unfinished_msg3,intake,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([intake_errors3]='1' AND [intake_errors_cor3]='0') OR ([intake_errors3]='1' AND [intake_error_notes3]='')",,,,,,
+intake_check_name4,intake,,text,"Data Check 4
+
+Meal intake values checked by:",,,,,,,"[intake_errors3]='1' AND [intake_errors_cor3]='1' AND [intake_error_notes3]<>''",y,,,,,
+intake_check_date4,intake,,text,Date:,,,date_mdy,,,,[intake_check_name4]<>'',y,,,,,
+intake_errors4,intake,,yesno,"Were there intake value errors for the [intake_meal:checked] in the [intake_visit:checked] Child Qulatrics database?
+
+Examples of common errors include: 
+-wrong value entered
+-amount consumed was calculated incorrectly
+-missing data was not indicated using 'NA'. All missing data MUST be marked with 'NA'.
+-typos such as a letter or multiple periods/decimal points
+-commas used instead of periods for the decimal point",,,,,,,"[intake_check_name4]<>'' AND [intake_errors3]='1'",y,,,,,
+intake_errors_cor4,intake,,yesno,"Intake errors for the [intake_meal:checked] were corrected in the [intake_visit:checked] Child Qualtrics Database:",,,,,,,[intake_errors4]='1',y,,,,,
+intake_error_notes4,intake,,notes,"Meal intake errors. Please list the intake items that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**
+",,,,,,,[intake_errors4]='1',y,,,,,
+intake_unfinished_msg4,intake,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([intake_errors4]='1' AND [intake_errors_cor4]='0') OR ([intake_errors4]='1' AND [intake_error_notes4]='')",,,,,,
+intake_errors_email,intake,,radio,"Email the Lead Data RA or graduate student for final checks since agreement has not yet been reached.
+
+Include the visit and meal: [intake_visit:checked] [intake_meal:checked] 
+
+**Once email has been sent, mark form status as ""unverified"" so Lead RA and/or graduate student knows to check form**","0, Email not Sent | 1, Email Sent",,,,,,"[intake_errors4]='1' AND [intake_errors_cor4]='1' AND [intake_error_notes4]<>''",y,,,,,
+intake_resolve,intake,,yesno,"For Lead RA or graduate student ONLY:
+
+Have intake data issues been resolved?
+
+**if yes, mark form status as complete**",,,,,,,[intake_errors_email]='1',y,,,,,
+intake_form_complete,intake,,yesno,"All Qualtrics data was correct (no errors found).
+
+Has form status been changed to ""complete""?",,,,,,,"[intake_errors]='0' OR [intake_errors2]='0' OR [intake_errors3]='0' OR [intake_errors4]='0'",y,,,,,
+eah_visit,eah_intake_2_ab0a,,radio,"EAH Completed at Visit:","0, Visit 1 | 1, Visit 7",,,,,,,y,,,,,
+eah_exist,eah_intake_2_ab0a,,yesno,"Was EAH completed for [eah_visit]?",,,,,,,,,,,,,
+eah_visit_age,eah_intake_2_ab0a,,calc,"Age at [eah_visit:checked]","if([eah_visit] = '0', [baseline_arm_1][v1_age], [baseline_arm_1][v7_age])",,,,,,[eah_exist]='1',,,,,,
+eah_entered,eah_intake_2_ab0a,,yesno,"EAH intake values have been entered in [eah_visit:checked] Qualtrics Database",,,,,,,[eah_exist]='1',y,,,,,
+eah_check_name,eah_intake_2_ab0a,,text,"Data Check 1
+
+EAH intake values checked by:",,,,,,,[eah_entered]='1',y,,,,,
+eah_check_date,eah_intake_2_ab0a,,text,Date:,,,date_mdy,,,,[eah_entered]='1',y,,,,,
+eah_errors,eah_intake_2_ab0a,,yesno,"Were there EAH intake errors for [eah_visit:checked] Qualtrics Database?",,,,,,,[eah_entered]='1',y,,,,,
+eah_errors_cor,eah_intake_2_ab0a,,yesno,"EAH intake errors were corrected in the [eah_visit:checked] Child Qualtrics Database",,,,,,,[eah_errors]='1',y,,,,,
+eah_error_notes,eah_intake_2_ab0a,,notes,"EAH intake errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[eah_errors]='1',y,,,,,
+eah_unfinished_msg,eah_intake_2_ab0a,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([eah_errors]='1' AND [eah_errors_cor]='0') OR ([eah_errors]='1' AND [eah_error_notes]='')",,,,,,
+eah_check_name2,eah_intake_2_ab0a,,text,"Data Check 2
+
+Meal intake values checked by:",,,,,,,"[eah_errors]='1' AND [eah_errors_cor]='1' AND [eah_error_notes]<>''",y,,,,,
+eah_check_date2,eah_intake_2_ab0a,,text,Date:,,,date_mdy,,,,[eah_check_name2]<>'',y,,,,,
+eah_errors2,eah_intake_2_ab0a,,yesno,"Were there EAH intake errors for [eah_visit:checked] Child Qualtrics Database?",,,,,,,"[eah_check_name2]<>'' AND [eah_errors]='1'",y,,,,,
+eah_errors_cor2,eah_intake_2_ab0a,,yesno,"EAH intake errors were corrected in the [eah_visit:checked] Child Qualtrics Database",,,,,,,[eah_errors2]='1',y,,,,,
+eah_error_notes2,eah_intake_2_ab0a,,notes,"EAH intake errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[eah_errors2]='1',y,,,,,
+eah_unfinished_msg2,eah_intake_2_ab0a,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([eah_errors2]='1' AND [eah_errors_cor2]='0') OR ([eah_errors2]='1' AND [eah_error_notes2]='')",,,,,,
+eah_check_name3,eah_intake_2_ab0a,,text,"Data Check 3
+
+Meal intake values checked by:",,,,,,,"[eah_errors2]='1' AND [eah_errors_cor2]='1' AND [eah_error_notes2]<>''",y,,,,,
+eah_check_date3,eah_intake_2_ab0a,,text,Date:,,,date_mdy,,,,[eah_check_name3]<>'',y,,,,,
+eah_errors3,eah_intake_2_ab0a,,yesno,"Were there EAH intake errors for [eah_visit:checked] Child Qualtrics Database?",,,,,,,"[eah_check_name3]<>'' AND [eah_errors2]='1'",y,,,,,
+eah_errors_cor3,eah_intake_2_ab0a,,yesno,"EAH intake errors were corrected in the [eah_visit:checked] Child Qualtrics Database",,,,,,,[eah_errors3]='1',y,,,,,
+eah_error_notes3,eah_intake_2_ab0a,,notes,"EAH intake errors. Please list the intake values that were changed/updated.
+
+**Once done, change status to ""incomplete"" so others know that these data need to be checked again.**",,,,,,,[eah_errors3]='1',y,,,,,
+eah_unfinished_msg3,eah_intake_2_ab0a,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([eah_errors3]='1' AND [eah_errors_cor3]='0') OR ([eah_errors3]='1' AND [eah_error_notes3]='')",,,,,,
+eah_check_name4,eah_intake_2_ab0a,,text,"Data Check 4
+
+Meal intake values checked by:",,,,,,,"[eah_errors3]='1' AND [eah_errors_cor3]='1' AND [eah_error_notes3]<>''",y,,,,,
+eah_check_date4,eah_intake_2_ab0a,,text,Date:,,,date_mdy,,,,[eah_check_name4]<>'',y,,,,,
+eah_errors4,eah_intake_2_ab0a,,yesno,"Were there EAH intake errors for [eah_visit:checked] Child Qualtrics Database?",,,,,,,"[eah_check_name4]<>'' AND [eah_errors3]='1'",y,,,,,
+eah_errors_cor4,eah_intake_2_ab0a,,yesno,"EAH intake errors were corrected in the [eah_visit:checked] Child Qualtrics Database",,,,,,,[eah_errors4]='1',y,,,,,
+eah_error_notes4,eah_intake_2_ab0a,,notes,"EAH intake errors. Please list the intake values that were changed/updated.
+",,,,,,,[eah_errors4]='1',y,,,,,
+eah_unfinished_msg4,eah_intake_2_ab0a,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"([eah_errors4]='1' AND [eah_errors_cor4]='0') OR ([eah_errors4]='1' AND [eah_error_notes4]='')",,,,,,
+eah_errors_email,eah_intake_2_ab0a,,radio,"Email the Lead Data RA or graduate student for final checks since agreement has not yet been reached.
+
+Include the EAH visit: [eah_visit:checked]
+
+**Once email has been sent, mark form status as ""unverified"" so Lead RA and/or graduate student knows to check form**","0, Email not Sent | 1, Email Sent",,,,,,"[eah_errors4]='1' AND [eah_errors_cor4]='1' AND [eah_error_notes4]<>''",y,,,,,
+eah_resolve,eah_intake_2_ab0a,,yesno,"For Lead RA or graduate student ONLY:
+
+Have intake data issues been resolved?
+
+**if yes, mark form status as complete**",,,,,,,[eah_errors_email]='1',y,,,,,
+eah_form_complete,eah_intake_2_ab0a,,yesno,"All Qualtrics data was correct (no errors found).
+
+Has form status been changed to ""complete""?",,,,,,,"[eah_errors]='0' OR [eah_errors2]='0' OR [eah_errors3]='0' OR [eah_errors4]='0'",y,,,,,
+ff_meal,freddyfullness,,radio,"Freddy Fullness was used for:","0, Standard Meal and EAH | 1, Portion Size Meal",,,,,,,,,,,,
+ff_visit,freddyfullness,,radio,"[ff_meal:checked] Completed at Visit:","0, Visit 1 | 1, Visit 2 | 2, Visit 3 | 3, Visit 4 | 4, Visit 5 | 5, Visit 7",,,,,,,y,,,,,
+ff_exists,freddyfullness,,yesno,"Was Freddy Fullness completed at [ff_visit] for [ff_meal] ?",,,,,,,,,,,,,
+ff_age,freddyfullness,,calc,"Age at [ff_visit:checked]","if([ff_visit] = '0', [baseline_arm_1][v1_age], if([ff_visit] = '1', [baseline_arm_1][v2_age], if([ff_visit] = '2', [baseline_arm_1][v3_age], if([ff_visit] = '3', [baseline_arm_1][v4_age], if([ff_visit] = '4', [baseline_arm_1][v5_age], if([ff_visit] = '5', [baseline_arm_1][v7_age], 'NaN'))))))",,,,,,[ff_exists]='1',,,,,,
+ff_pre_measure,freddyfullness,"Freddy Fullness Measurement",yesno,"Pre-Meal Freddy Fullness: Child rating has been measured for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_pre_eah_measure,freddyfullness,,yesno,"Pre-EAH Freddy Fullness: Child rating has been measured for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_pre_total_measure,freddyfullness,,yesno,"Pre-Meal Freddy Fullness: Total Freddy size has been measured for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_pre_eah_total_measure,freddyfullness,,yesno,"Pre-EAH Freddy Fullness: Total Freddy size has been measured for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_post_measure,freddyfullness,,yesno,"Post-Meal Freddy Fullness: Child rating has been measured for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_post_eah_measure,freddyfullness,,yesno,"Post-EAH Freddy Fullness: Child rating has been measured for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_post_total_measure,freddyfullness,,yesno,"Post-Meal  Freddy Fullness: Total Freddy size has been measured for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_post_eah_total_measure,freddyfullness,,yesno,"Post-EAH Freddy Fullness: Total Freddy size has been measured for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_pre_enter,freddyfullness,"Freddy Fullness Data Entry",yesno,"Pre-Meal Freddy Fullness: Child rating has been entered for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_pre_eah_enter,freddyfullness,,yesno,"Pre-EAH Freddy Fullness: Child rating has been entered for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_pre_total_enter,freddyfullness,,yesno,"Pre-Meal Freddy Fullness: Total Freddy Size has been entered for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_pre_eah_total_enter,freddyfullness,,yesno,"Pre-EAH Freddy Fullness: Total Freddy Size has been entered for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_post_enter,freddyfullness,,yesno,"Post-Meal Freddy Fullness: Child rating has been entered for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_post_eah_enter,freddyfullness,,yesno,"Post-EAH Freddy Fullness: Child rating has been entered for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_post_total_enter,freddyfullness,,yesno,"Post-Meal Freddy Fullness: Total Freddy Size has been entered for [ff_visit:checked]",,,,,,,[ff_exists]='1',y,,,,,
+ff_post_eah_total_enter,freddyfullness,,yesno,"Post-EAH Freddy Fullness: Total Freddy Size has been entered for [ff_visit:checked]",,,,,,,[ff_meal]='0',y,,,,,
+ff_check_name,freddyfullness,"Data Checks",text,"Data Check 1
+
+Freddy Fullness values checked by:",,,,,,,"[ff_pre_enter]='1' AND [ff_post_enter]='1' AND [ff_pre_total_enter]='1' AND [ff_post_total_enter]='1'",y,,,,,
+ff_check_date,freddyfullness,,text,Date:,,,date_mdy,,,,[ff_check_name]<>'',y,,,,,
+ff_measurement_errors,freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for [ff_visit:checked] [ff_meal:checked]
+
+Please mark which, if any, measurements had errors:
+
+*ignore EAH if not checking Visits 1 or 7","0, Child Pre-Meal | 1, Child Post-Meal | 2, Total Size Pre-Meal | 3, Total Size Post-Meal | 4, Child Pre-EAH | 5, Child Post-EAH | 6, Total Size Pre-EAH | 7, Total Size Post-EAH",,,,,,[ff_check_name]<>'',y,,,,,
+ff_measurement_cor,freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_measurement_errors:checked] ",,,,,,,"sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0",y,,,,,
+ff_child_check,freddyfullness,,yesno,"Were there errors for child-rated [ff_meal:checked] Freddy Fullness values in the Visit [ff_visit:checked] Child Qualtrics Database?
+",,,,,,,"[ff_check_name]<>'' AND sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) = 0",y,,,,,
+ff_child_cor,freddyfullness,,yesno,"Child Freddy Fullness values corrected in Qulatrics Visit Database",,,,,,,"sum([ff_measurement_errors(0)], [ff_measurement_errors(1)],[ff_measurement_errors(4)], [ff_measurement_errors(5)]) > 0 OR [ff_child_check]='1'",y,,,,,
+ff_totalbox_check,freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for total Freddy Fullness size values for [ff_visit:checked] [ff_meal:checked]?
+",,,,,,,"[ff_check_name]<>'' AND sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) = 0",y,,,,,
+ff_totalbox_cor,freddyfullness,,yesno,"Total Freddy Fullness box size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_measurement_errors(2)], [ff_measurement_errors(3)],[ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 OR [ff_totalbox_check]='1'",y,,,,,
+ff_error_notes,freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated.
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 OR [ff_child_check] = '1' OR [ff_totalbox_check] = '1'",y,,,,,
+ff_unfinished_msg,freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 AND [ff_measurement_cor]='0') OR ([ff_child_check] = '1' AND [ff_child_cor] = '0') OR ([ff_totalbox_check] = '1' AND [ff_totalbox_cor]='0') OR ((sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 OR [ff_child_check] = '1' OR [ff_totalbox_check] = '1') AND [ff_error_notes]='')",,,,,,
+ff_check_name2,freddyfullness,,text,"Data Check 2
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 AND [ff_measurement_cor]='1') OR ([ff_child_check] = '1' AND [ff_child_cor] = '1') OR ([ff_totalbox_check] = '1' AND [ff_totalbox_cor]='1')) AND ((sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0 OR [ff_child_check] = '1' OR [ff_totalbox_check] = '1') AND [ff_error_notes]<>'')",y,,,,,
+ff_check_date2,freddyfullness,,text,Date:,,,date_mdy,,,,[ff_check_name2]<>'',y,,,,,
+ff_measurement_errors2,freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for [ff_visit:checked] [ff_meal:checked]
+
+Please mark which, if any, measurements had errors:
+
+*ignore EAH if not checking Visits 1 or 7","0, Child Pre-Meal | 1, Child Post-Meal | 2, Total Size Pre-Meal | 3, Total Size Post-Meal | 4, Child Pre-EAH | 5, Child Post-EAH | 6, Total Size Pre-EAH | 7, Total Size Post-EAH",,,,,,"[ff_check_name2]<>'' AND sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) > 0",y,,,,,
+ff_measurement_cor2,freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_measurement_errors2:checked] ",,,,,,,"sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0",y,,,,,
+ff_child_check2,freddyfullness,,yesno,"Were there errors for child-rated [ff_meal:checked] Freddy Fullness values in the Visit [ff_visit:checked] Child Qualtrics Database?",,,,,,,"([ff_check_name2]<>'' AND sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) = 0) OR ([ff_check_name2]<>'' AND sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) = 0)",y,,,,,
+ff_child_cor2,freddyfullness,,yesno,"Child Freddy Fullness values corrected in Qulatrics Visit Database",,,,,,,"sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)],[ff_measurement_errors2(4)], [ff_measurement_errors2(5)]) > 0 OR [ff_child_check]='1' OR [ff_child_check2]='1'",y,,,,,
+ff_totalbox_check2,freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for total Freddy Fullness size values for [ff_visit:checked] [ff_meal:checked]?",,,,,,,"([ff_check_name2]<>'' AND sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) = 0) OR ([ff_check_name2]<>'' AND sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) = 0)",y,,,,,
+ff_totalbox_cor2,freddyfullness,,yesno,"Total Freddy Fullness box size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_measurement_errors2(2)], [ff_measurement_errors2(3)],[ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 OR [ff_totalbox_check2]='1'",y,,,,,
+ff_error_notes2,freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 OR [ff_child_check2] = '1' OR [ff_totalbox_check2] = '1'",y,,,,,
+ff_unfinished_msg2,freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 AND [ff_measurement_cor2]='0') OR ([ff_child_check2] = '1' AND [ff_child_cor2] = '0') OR ([ff_totalbox_check2] = '1' AND [ff_totalbox_cor2]='0') OR ((sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 OR [ff_child_check2] = '1' OR [ff_totalbox_check2] = '1') AND [ff_error_notes2]='')",,,,,,
+ff_check_name3,freddyfullness,,text,"Data Check 3
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 AND [ff_measurement_cor2]='1') OR ([ff_child_check2] = '1' AND [ff_child_cor2] = '1') OR ([ff_totalbox_check2] = '1' AND [ff_totalbox_cor2]='1')) AND ((sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0 OR [ff_child_check2] = '1' OR [ff_totalbox_check2] = '1') AND [ff_error_notes2]<>'')",y,,,,,
+ff_check_date3,freddyfullness,,text,Date:,,,date_mdy,,,,[ff_check_name3]<>'',y,,,,,
+ff_measurement_errors3,freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for [ff_visit:checked] [ff_meal:checked]
+
+Please mark which, if any, measurements had errors:
+
+*ignore EAH if not checking Visits 1 or 7","0, Child Pre-Meal | 1, Child Post-Meal | 2, Total Size Pre-Meal | 3, Total Size Post-Meal | 4, Child Pre-EAH | 5, Child Post-EAH | 6, Total Size Pre-EAH | 7, Total Size Post-EAH",,,,,,"[ff_check_name3]<>'' AND sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) > 0",y,,,,,
+ff_measurement_cor3,freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_measurement_errors3:checked] ",,,,,,,"sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0",y,,,,,
+ff_child_check3,freddyfullness,,yesno,"Were there errors for child-rated [ff_meal:checked] Freddy Fullness values in the Visit [ff_visit:checked] Child Qualtrics Database?",,,,,,,"([ff_check_name3]<>'' AND sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) = 0) OR ([ff_check_name3]<>'' AND sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) = 0)",y,,,,,
+ff_child_cor3,freddyfullness,,yesno,"Child Freddy Fullness values corrected in Qulatrics Visit Database",,,,,,,"sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)],[ff_measurement_errors3(4)], [ff_measurement_errors3(5)]) > 0 OR [ff_child_check3]='1'",y,,,,,
+ff_totalbox_check3,freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for total Freddy Fullness size values for [ff_visit:checked] [ff_meal:checked]?
+",,,,,,,"([ff_check_name3]<>'' AND sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) = 0) OR ([ff_check_name3]<>'' AND sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) = 0)",y,,,,,
+ff_totalbox_cor3,freddyfullness,,yesno,"Total Freddy Fullness box size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_measurement_errors3(2)], [ff_measurement_errors3(3)],[ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 OR [ff_totalbox_check3]='1'",y,,,,,
+ff_error_notes3,freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 OR [ff_child_check3] = '1' OR [ff_totalbox_check3] = '1'",y,,,,,
+ff_unfinished_msg3,freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 AND [ff_measurement_cor3]='0') OR ([ff_child_check3] = '1' AND [ff_child_cor3] = '0') OR ([ff_totalbox_check3] = '1' AND [ff_totalbox_cor3]='0') OR ((sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 OR [ff_child_check3] = '1' OR [ff_totalbox_check3] = '1') AND [ff_error_notes3]='')",,,,,,
+ff_check_name4,freddyfullness,,text,"Data Check 4
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 AND [ff_measurement_cor3]='1') OR ([ff_child_check3] = '1' AND [ff_child_cor3] = '1') OR ([ff_totalbox_check3] = '1' AND [ff_totalbox_cor3]='1')) AND ((sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0 OR [ff_child_check3] = '1' OR [ff_totalbox_check3] = '1') AND [ff_error_notes3]<>'')",y,,,,,
+ff_check_date4,freddyfullness,,text,Date:,,,date_mdy,,,,[ff_check_name4]<>'',y,,,,,
+ff_measurement_errors4,freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for [ff_visit:checked] [ff_meal:checked]
+
+Please mark which, if any, measurements had errors:
+
+*ignore EAH if not checking Visits 1 or 7","0, Child Pre-Meal | 1, Child Post-Meal | 2, Total Size Pre-Meal | 3, Total Size Post-Meal | 4, Child Pre-EAH | 5, Child Post-EAH | 6, Total Size Pre-EAH | 7, Total Size Post-EAH",,,,,,"[ff_check_name4]<>'' AND sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) > 0",y,,,,,
+ff_measurement_cor4,freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_measurement_errors4:checked] ",,,,,,,"sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0",y,,,,,
+ff_child_check4,freddyfullness,,yesno,"Were there errors for child-rated [ff_meal:checked] Freddy Fullness values in the Visit [ff_visit:checked] Child Qualtrics Database?",,,,,,,"([ff_check_name4]<>'' AND sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) = 0) OR ([ff_check_name4]<>'' AND sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) = 0)",y,,,,,
+ff_child_cor4,freddyfullness,,yesno,"Child Freddy Fullness values corrected in Qulatrics Visit Database",,,,,,,"sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)],[ff_measurement_errors4(4)], [ff_measurement_errors4(5)]) > 0 OR [ff_child_check4]='1'",y,,,,,
+ff_totalbox_check4,freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for total Freddy Fullness size values for [ff_visit:checked] [ff_meal:checked]?
+",,,,,,,"([ff_check_name4]<>'' AND sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) = 0) OR ([ff_check_name4]<>'' AND sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) = 0)",y,,,,,
+ff_totalbox_cor4,freddyfullness,,yesno,"Total Freddy Fullness box size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_measurement_errors4(2)], [ff_measurement_errors4(3)],[ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 OR [ff_totalbox_check4]='1'",y,,,,,
+ff_error_notes4,freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated",,,,,,,"sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 OR [ff_child_check4] = '1' OR [ff_totalbox_check4] = '1'",y,,,,,
+ff_unfinished_msg4,freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 AND [ff_measurement_cor4]='0') OR ([ff_child_check4] = '1' AND [ff_child_cor4] = '0') OR ([ff_totalbox_check4] = '1' AND [ff_totalbox_cor4]='0') OR ((sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 OR [ff_child_check4] = '1' OR [ff_totalbox_check4] = '1') AND [ff_error_notes4]='')",,,,,,
+ff_error_email,freddyfullness,,radio,"Email the Lead Data RA or graduate student for final check since agreement has not yet been reached.
+
+Include the Freddy Fullness visit and meal: [ff_visit:checked] [ff_meal:checked]
+
+**Once email has been sent, mark form status as ""unverified"" so Lead RA and//or graduate student knows to check form**","0, Email Not Sent | 1, Email Sent",,,,,,"((sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 AND [ff_measurement_cor4]='1') OR ([ff_child_check4] = '1' AND [ff_child_cor4] = '1') OR ([ff_totalbox_check4] = '1' AND [ff_totalbox_cor4]='1')) AND ((sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) > 0 OR [ff_child_check4] = '1' OR [ff_totalbox_check4] = '1') AND [ff_error_notes4]<>'')",y,,,,,
+ff_error_resolve,freddyfullness,,yesno,"For Lead RA or graduate student ONLY:
+
+Have Freddy Fullness data issues been resolved?
+
+**if yes, mark form status as complete**",,,,,,,[ff_error_email]='1',y,,,,,
+ff_form_complete,freddyfullness,,yesno,"All Freddy Fullness measurement and Qualtrics data was correct (no errors found).
+
+Has form status been change to ""complete""?",,,,,,,"(sum([ff_measurement_errors(0)], [ff_measurement_errors(1)], [ff_measurement_errors(2)], [ff_measurement_errors(3)], [ff_measurement_errors(4)], [ff_measurement_errors(5)], [ff_measurement_errors(6)], [ff_measurement_errors(7)]) = 0 OR sum([ff_measurement_errors2(0)], [ff_measurement_errors2(1)], [ff_measurement_errors2(2)], [ff_measurement_errors2(3)], [ff_measurement_errors2(4)], [ff_measurement_errors2(5)], [ff_measurement_errors2(6)], [ff_measurement_errors2(7)]) = 0 OR sum([ff_measurement_errors3(0)], [ff_measurement_errors3(1)], [ff_measurement_errors3(2)], [ff_measurement_errors3(3)], [ff_measurement_errors3(4)], [ff_measurement_errors3(5)], [ff_measurement_errors3(6)], [ff_measurement_errors3(7)]) = 0 OR sum([ff_measurement_errors4(0)], [ff_measurement_errors4(1)], [ff_measurement_errors4(2)], [ff_measurement_errors4(3)], [ff_measurement_errors4(4)], [ff_measurement_errors4(5)], [ff_measurement_errors4(6)], [ff_measurement_errors4(7)]) = 0) AND ( ([ff_child_check] = '0' AND [ff_totalbox_check] = '0') OR ([ff_child_check2] = '0' AND [ff_totalbox_check2] = '0') OR ([ff_child_check3] = '0' AND [ff_totalbox_check3] = '0') OR ([ff_child_check4] = '0' AND [ff_totalbox_check4] = '0'))",y,,,,,
+ff_fmri_exist,fmri_freddyfullness,,yesno,"Was Freddy Fullness collected at Visit 6?",,,,,,,,,,,,,
+ff_age_v2,fmri_freddyfullness,,calc,"Age at Visit 6",[baseline_arm_1][v6_age],,,,,,[ff_fmri_exist]='1',,,,,,
+ff_pre_snack_measure,fmri_freddyfullness,"Pre-Freddy Fullness Measurement (check all that are complete)",checkbox,Snack,"0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_pre_fmri_measure,,
+ff_pre_mri_measure,fmri_freddyfullness,,checkbox,MRI,"0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_pre_fmri_measure,,
+ff_pre_dg_measure,fmri_freddyfullness,,checkbox,"Delay of Gratification","0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_pre_fmri_measure,,
+ff_pre_sst_measure,fmri_freddyfullness,,checkbox,SST,"0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_pre_fmri_measure,,
+ff_post_snack1_measure,fmri_freddyfullness,"Post-Freddy Fullness Measurement (check all that are complete",checkbox,"Snack 1","0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_post_fmri_measure,,
+ff_post_snack2_measure,fmri_freddyfullness,,checkbox,"Snack 2","0, Child Rating | 1, Total Freddy Size",,,,,,[ff_fmri_exist]='1',y,,,ff_post_fmri_measure,,
+ff_pre_snack_enter,fmri_freddyfullness,"Freddy Fullness Data Entry",yesno,"Pre-Snack Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_pre_snack_measure(0)], [ff_pre_snack_measure(1)]) = 2",y,,,,,
+ff_pre_snack_total_enter,fmri_freddyfullness,,yesno,"Pre-Snack Freddy Fullness: Total Freddy Size has been entered",,,,,,,"sum([ff_pre_snack_measure(0)], [ff_pre_snack_measure(1)]) = 2",y,,,,,
+ff_pre_mri_enter,fmri_freddyfullness,,yesno,"Pre-MRI Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_pre_mri_measure(0)], [ff_pre_mri_measure(1)]) = 2",y,,,,,
+ff_pre_mri_total_enter,fmri_freddyfullness,,yesno,"Pre-MRI Freddy Fullness: Total Freddy Size has been entered",,,,,,,"sum([ff_pre_mri_measure(0)], [ff_pre_mri_measure(1)]) = 2",y,,,,,
+ff_pre_df_enter,fmri_freddyfullness,,yesno,"Pre-Delay of Gratification Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_pre_dg_measure(0)], [ff_pre_dg_measure(1)]) = 2",y,,,,,
+ff_pre_df_total_enter,fmri_freddyfullness,,yesno,"Pre-Delay of Gratification Freddy Fullness: Total Freddy Size has been entered",,,,,,,"sum([ff_pre_dg_measure(0)], [ff_pre_dg_measure(1)]) = 2",y,,,,,
+ff_pre_sst_enter,fmri_freddyfullness,,yesno,"Pre-SST Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_pre_sst_measure(0)], [ff_pre_sst_measure(1)]) = 2",y,,,,,
+ff_pre_sst_total_enter,fmri_freddyfullness,,yesno,"Pre-SST Freddy Fullness: Total Freddy size has been entered",,,,,,,"sum([ff_pre_sst_measure(0)], [ff_pre_sst_measure(1)]) = 2",y,,,,,
+ff_pre_snack1_enter,fmri_freddyfullness,,yesno,"Post-Snack 1 Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_post_snack1_measure(0)], [ff_post_snack1_measure(1)]) = 2",y,,,,,
+ff_pre_snack1_total_enter,fmri_freddyfullness,,yesno,"Post-Snack 1 Freddy Fullness: Total Freddy Size has been entered",,,,,,,"sum([ff_post_snack1_measure(0)], [ff_post_snack1_measure(1)]) = 2",y,,,,,
+ff_pre_snack2_enter,fmri_freddyfullness,,yesno,"Post-Snack 2 Freddy Fullness: Child rating has been entered",,,,,,,"sum([ff_post_snack2_measure(0)], [ff_post_snack2_measure(1)]) = 2",y,,,,,
+ff_pre_snack2_total_enter,fmri_freddyfullness,,yesno,"Post-Snack 2 Freddy Fullness: Total Freddy Size has been entered",,,,,,,"sum([ff_post_snack2_measure(0)], [ff_post_snack2_measure(1)]) = 2",y,,,,,
+ff_fmri_check_name,fmri_freddyfullness,"Data Checks",text,"Data Check 1
+
+Freddy Fullness values checked by:",,,,,,,,y,,,,,
+ff_fmri_check_date,fmri_freddyfullness,,text,Date:,,,date_mdy,,,,,y,,,,,
+ff_fmri_measurement_errors,fmri_freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for fMRI visit.
+
+Please mark which, if any, measurements had errors - if a Freddy Fullness measurement was not taken, leave unchecked:","0, Child Pre-Snack | 1, Total Size Pre-Snack | 2, Child Post-Snack 1 | 3, Total Size Post-Snack 1 | 4, Child Post-Snack 2 | 5, Total Size Post-Snack 1 | 6, Child Pre-MRI | 7, Total Size Pre-MRI | 8, Child Pre-Delay of Gratification | 9, Total Size Pre-Delay of Gratification | 10, Child Pre-SST | 11, Total Size Pre-SST",,,,,,,y,,,,,
+ff_fmri_measurement_cor,fmri_freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_fmri_measurement_errors:checked] ",,,,,,,"sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0",y,,,,,
+ff_fmri_child_check,fmri_freddyfullness,,yesno,"Were there Freddy Fullness data entry errors in the Visit 6 Child Qualtrics Database?
+",,,,,,,"sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) = 0",y,,,,,
+ff_child_cor_v2,fmri_freddyfullness,,yesno,"Child Freddy Fullness values corrected in Visit 6 Child Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(10)]) > 0 OR [ff_fmri_child_check]='1'",y,,,,,
+ff_fmri_totalbox_check,fmri_freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for Visit 6 Total Freddy Fullness size?
+
+",,,,,,,"sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) = 0",y,,,,,
+ff_fmri_totalbox_cor,fmri_freddyfullness,,yesno,"Visit 6 Total Freddy Fullness size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(11)]) > 0 OR [ff_fmri_totalbox_check]='1'",y,,,,,
+ff_fmri_error_notes,fmri_freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated.
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0 OR [ff_fmri_totalbox_check]='1'",y,,,,,
+ff_fmri_unfinished_msg,fmri_freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0 AND [ff_fmri_measurement_cor]='0') OR ([ff_fmri_child_check] = '1' AND [ff_child_cor_v2] = '0') OR ([ff_fmri_totalbox_check] = '1' AND [ff_fmri_totalbox_cor]='0') OR ((sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0 OR [ff_fmri_child_check] = '1' OR [ff_fmri_totalbox_check]='1') AND [ff_fmri_error_notes]='')",,,,,,
+ff_fmri_check_name2,fmri_freddyfullness,,text,"Data Check 2
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0 AND [ff_fmri_measurement_cor]='1') OR ([ff_fmri_child_check] = '1' AND [ff_child_cor_v2] = '1') OR ([ff_fmri_totalbox_check] = '1' AND [ff_fmri_totalbox_cor]='1')) AND ((sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0 OR [ff_fmri_child_check] = '1' OR [ff_fmri_totalbox_check]='1') AND [ff_fmri_error_notes]<>'')",y,,,,,
+ff_fmri_check_date2,fmri_freddyfullness,,text,Date:,,,date_mdy,,,,[ff_fmri_check_name2]<>'',y,,,,,
+ff_fmri_measurement_errors2,fmri_freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for fMRI visit.
+
+Please mark which, if any, measurements had errors - if a Freddy Fullness measurement was not taken, leave unchecked:","0, Child Pre-Snack | 1, Total Size Pre-Snack | 2, Child Post-Snack 1 | 3, Total Size Post-Snack 1 | 4, Child Post-Snack 2 | 5, Total Size Post-Snack 1 | 6, Child Pre-MRI | 7, Total Size Pre-MRI | 8, Child Pre-Delay of Gratification | 9, Total Size Pre-Delay of Gratification | 10, Child Pre-SST | 11, Total Size Pre-SST",,,,,,"[ff_fmri_check_name2]<>'' AND sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) > 0",y,,,,,
+ff_fmri_measurement_cor2,fmri_freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_fmri_measurement_errors2:checked] ",,,,,,,"sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0",y,,,,,
+ff_fmri_child_check2,fmri_freddyfullness,,yesno,"Were there Freddy Fullness data entry errors in the Visit 6 Child Qualtrics Database?
+
+",,,,,,,"([ff_fmri_check_name2]<>'' AND sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) = 0) OR ([ff_fmri_check_name2]<>'' AND sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]))",y,,,,,
+ff_fmri_child_cor2,fmri_freddyfullness,,yesno,"Child Freddy Fullness values corrected in Visit 6 Child Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(10)]) > 0 OR [ff_fmri_child_check2]='1'",y,,,,,
+ff_fmri_totalbox_check2,fmri_freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for Visit 6 Total Freddy Fullness size?
+",,,,,,,"([ff_fmri_check_name2]<>'' AND sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) = 0) OR ([ff_fmri_check_name2]<>'' AND sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]))",y,,,,,
+ff_fmri_totalbox_cor2,fmri_freddyfullness,,yesno,"Visit 6 Total Freddy Fullness size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(11)]) > 0 OR [ff_fmri_totalbox_check2]='1'",y,,,,,
+ff_fmri_error_notes2,fmri_freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0 OR [ff_fmri_totalbox_check2]='1'",y,,,,,
+ff_fmri_unfinished_msg2,fmri_freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0 AND [ff_fmri_measurement_cor2]='0') OR ([ff_fmri_child_check2] = '1' AND [ff_fmri_child_cor2] = '0') OR ([ff_fmri_totalbox_check2] = '1' AND [ff_fmri_totalbox_cor2]='0') OR ((sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0 OR [ff_fmri_child_check2] = '1' OR [ff_fmri_totalbox_check2]='1') AND [ff_fmri_error_notes2]='')",,,,,,
+ff_fmri_check_name3,fmri_freddyfullness,,text,"Data Check 3
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0 AND [ff_fmri_measurement_cor2]='1') OR ([ff_fmri_child_check2] = '1' AND [ff_fmri_child_cor2] = '1') OR ([ff_fmri_totalbox_check2] = '1' AND [ff_fmri_totalbox_cor2]='1')) AND ((sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0 OR [ff_fmri_child_check2] = '1' OR [ff_fmri_totalbox_check2]='1') AND [ff_fmri_error_notes2]<>'')",y,,,,,
+ff_fmri_check_date3,fmri_freddyfullness,,text,Date:,,,date_mdy,,,,[ff_fmri_check_name3]<>'',y,,,,,
+ff_fmri_measurement_errors3,fmri_freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for fMRI visit.
+
+Please mark which, if any, measurements had errors - if a Freddy Fullness measurement was not taken, leave unchecked:","0, Child Pre-Snack | 1, Total Size Pre-Snack | 2, Child Post-Snack 1 | 3, Total Size Post-Snack 1 | 4, Child Post-Snack 2 | 5, Total Size Post-Snack 1 | 6, Child Pre-MRI | 7, Total Size Pre-MRI | 8, Child Pre-Delay of Gratification | 9, Total Size Pre-Delay of Gratification | 10, Child Pre-SST | 11, Total Size Pre-SST",,,,,,"[ff_fmri_check_name3]<>'' AND sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) > 0",y,,,,,
+ff_fmri_measurement_cor3,fmri_freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_fmri_measurement_errors3:checked] ",,,,,,,"sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0",y,,,,,
+ff_fmri_child_check3,fmri_freddyfullness,,yesno,"Were there Freddy Fullness data entry errors in the Visit 6 Child Qualtrics Database?
+
+",,,,,,,"([ff_fmri_check_name3]<>'' AND sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) = 0) OR ([ff_fmri_check_name3]<>'' AND sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]))",y,,,,,
+ff_fmri_child_cor3,fmri_freddyfullness,,yesno,"Child Freddy Fullness values corrected in Visit 6 Child Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(10)]) > 0 OR [ff_fmri_child_check3]='1'",y,,,,,
+ff_fmri_totalbox_check3,fmri_freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for Visit 6 Total Freddy Fullness size?",,,,,,,"([ff_fmri_check_name3]<>'' AND sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) = 0) OR ([ff_fmri_check_name3]<>'' AND sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]))",y,,,,,
+ff_fmri_totalbox_cor3,fmri_freddyfullness,,yesno,"Visit 6 Total Freddy Fullness size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(11)]) > 0 OR [ff_fmri_totalbox_check3]='1'",y,,,,,
+ff_fmri_error_notes3,fmri_freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated
+
+**Once done, change status to incomplete so others know that these data need to be checked again**",,,,,,,"sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0 OR [ff_fmri_totalbox_check3]='1'",y,,,,,
+ff_fmri_unfinished_msg3,fmri_freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0 AND [ff_fmri_measurement_cor3]='0') OR ([ff_fmri_child_check3] = '1' AND [ff_fmri_child_cor3] = '0') OR ([ff_fmri_totalbox_check3] = '1' AND [ff_fmri_totalbox_cor3]='0') OR ((sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0 OR [ff_fmri_child_check3] = '1' OR [ff_fmri_totalbox_check3]='1') AND [ff_fmri_error_notes3]='')",,,,,,
+ff_fmri_check_name4,fmri_freddyfullness,,text,"Data Check 4
+
+Freddy Fullness values checked by:",,,,,,,"((sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0 AND [ff_fmri_measurement_cor3]='1') OR ([ff_fmri_child_check3] = '1' AND [ff_fmri_child_cor3] = '1') OR ([ff_fmri_totalbox_check3] = '1' AND [ff_fmri_totalbox_cor3]='1')) AND ((sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0 OR [ff_fmri_child_check3] = '1' OR [ff_fmri_totalbox_check3]='1') AND [ff_fmri_error_notes3]<>'')",y,,,,,
+ff_fmri_check_date4,fmri_freddyfullness,,text,Date:,,,date_mdy,,,,[ff_fmri_check_name4]<>'',y,,,,,
+ff_fmri_measurement_errors4,fmri_freddyfullness,,checkbox,"Re-measure all Freddy Fullness sheets for fMRI visit.
+
+Please mark which, if any, measurements had errors - if a Freddy Fullness measurement was not taken, leave unchecked:","0, Child Pre-Snack | 1, Total Size Pre-Snack | 2, Child Post-Snack 1 | 3, Total Size Post-Snack 1 | 4, Child Post-Snack 2 | 5, Total Size Post-Snack 1 | 6, Child Pre-MRI | 7, Total Size Pre-MRI | 8, Child Pre-Delay of Gratification | 9, Total Size Pre-Delay of Gratification | 10, Child Pre-SST | 11, Total Size Pre-SST",,,,,,"[ff_fmri_check_name4]<>'' AND sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) > 0",y,,,,,
+ff_fmri_measurement_cor4,fmri_freddyfullness,,yesno,"Measurement errors were corrected on the paper sheets for: 
+[ff_fmri_measurement_errors4:checked] ",,,,,,,"sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0",y,,,,,
+ff_fmri_child_check4,fmri_freddyfullness,,yesno,"Were there Freddy Fullness data entry errors in the Visit 6 Child Qualtrics Database?
+
+",,,,,,,"([ff_fmri_check_name4]<>'' AND sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) = 0) OR ([ff_fmri_check_name4]<>'' AND sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]))",y,,,,,
+ff_fmri_child_cor4,fmri_freddyfullness,,yesno,"Child Freddy Fullness values corrected in Visit 6 Child Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(10)]) > 0 OR [ff_fmri_child_check4]='1'",y,,,,,
+ff_fmri_totalbox_check4,fmri_freddyfullness,,yesno,"Were there errors in the extra Freddy Fullness Qualtrics Database for Visit 6 Total Freddy Fullness size?
+
+",,,,,,,"([ff_fmri_check_name4]<>'' AND sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) = 0) OR ([ff_fmri_check_name4]<>'' AND sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]))",y,,,,,
+ff_fmri_totalbox_cor4,fmri_freddyfullness,,yesno,"Visit 6 Total Freddy Fullness size values corrected in extra Freddy Fullness Qulatrics Database",,,,,,,"sum([ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(11)]) > 0 OR [ff_fmri_totalbox_check4]='1'",y,,,,,
+ff_fmri_error_notes4,fmri_freddyfullness,,notes,"Freddy Fullness Notes. Please list the values that were changed/updated",,,,,,,"sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 OR [ff_fmri_totalbox_check4]='1'",y,,,,,
+ff_fmri_unfinished_msg4,fmri_freddyfullness,,descriptive,"Must document all errors in text box and mark that all errors have been corrected before finishing!",,,,,,,"(sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 AND [ff_fmri_measurement_cor4]='0') OR ([ff_fmri_child_check4] = '1' AND [ff_fmri_child_cor4] = '0') OR ([ff_fmri_totalbox_check4] = '1' AND [ff_fmri_totalbox_cor4]='0') OR ((sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 OR [ff_fmri_child_check4] = '1' OR [ff_fmri_totalbox_check4]='1') AND [ff_fmri_error_notes4]='')",,,,,,
+ff_fmri_error_email,fmri_freddyfullness,,radio,"Email the Lead Data RA or graduate student for final check since agreement has not yet been reached.
+
+Include Visit 6 information
+
+**Once email has been sent, mark form status as ""unverified"" so Lead RA and//or graduate student knows to check form**","0, Email Not Sent | 1, Email Sent",,,,,,"((sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 AND [ff_fmri_measurement_cor4]='1') OR ([ff_fmri_child_check4] = '1' AND [ff_fmri_child_cor4] = '1') OR ([ff_fmri_totalbox_check4] = '1' AND [ff_fmri_totalbox_cor4]='1')) AND ((sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 OR [ff_fmri_child_check4] = '1' OR [ff_fmri_totalbox_check4]='1') AND [ff_fmri_error_notes4]<>'')",y,,,,,
+ff_fmri_error_resolve,fmri_freddyfullness,,yesno,"For Lead RA or graduate student ONLY:
+
+Have Freddy Fullness data issues been resolved?
+
+**if yes, mark form status as complete**",,,,,,,"sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) > 0 OR [ff_fmri_totalbox_check4]='1'",y,,,,,
+ff_fmri_form_complete,fmri_freddyfullness,,yesno,"All Freddy Fullness measurement and Qualtrics data was correct (no errors found).
+
+Has form status been change to ""complete""?",,,,,,,"(sum([ff_fmri_measurement_errors4(0)], [ff_fmri_measurement_errors4(1)], [ff_fmri_measurement_errors4(2)], [ff_fmri_measurement_errors4(3)], [ff_fmri_measurement_errors4(4)], [ff_fmri_measurement_errors4(5)], [ff_fmri_measurement_errors4(6)], [ff_fmri_measurement_errors4(7)], [ff_fmri_measurement_errors4(8)], [ff_fmri_measurement_errors4(9)], [ff_fmri_measurement_errors4(10)], [ff_fmri_measurement_errors4(11)]) = 0 OR sum([ff_fmri_measurement_errors3(0)], [ff_fmri_measurement_errors3(1)], [ff_fmri_measurement_errors3(2)], [ff_fmri_measurement_errors3(3)], [ff_fmri_measurement_errors3(4)], [ff_fmri_measurement_errors3(5)], [ff_fmri_measurement_errors3(6)], [ff_fmri_measurement_errors3(7)], [ff_fmri_measurement_errors3(8)], [ff_fmri_measurement_errors3(9)], [ff_fmri_measurement_errors3(10)], [ff_fmri_measurement_errors3(11)]) = 0 OR sum([ff_fmri_measurement_errors2(0)], [ff_fmri_measurement_errors2(1)], [ff_fmri_measurement_errors2(2)], [ff_fmri_measurement_errors2(3)], [ff_fmri_measurement_errors2(4)], [ff_fmri_measurement_errors2(5)], [ff_fmri_measurement_errors2(6)], [ff_fmri_measurement_errors2(7)], [ff_fmri_measurement_errors2(8)], [ff_fmri_measurement_errors2(9)], [ff_fmri_measurement_errors2(10)], [ff_fmri_measurement_errors2(11)]) = 0 OR sum([ff_fmri_measurement_errors(0)], [ff_fmri_measurement_errors(1)], [ff_fmri_measurement_errors(2)], [ff_fmri_measurement_errors(3)], [ff_fmri_measurement_errors(4)], [ff_fmri_measurement_errors(5)], [ff_fmri_measurement_errors(6)], [ff_fmri_measurement_errors(7)], [ff_fmri_measurement_errors(8)], [ff_fmri_measurement_errors(9)], [ff_fmri_measurement_errors(10)], [ff_fmri_measurement_errors(11)]) = 0) AND 
+(([ff_fmri_child_check] = '0' AND [ff_fmri_totalbox_check] = '0') OR ([ff_fmri_child_check2] = '0' AND [ff_fmri_totalbox_check2] = '0') OR ([ff_fmri_child_check3] = '0' AND [ff_fmri_totalbox_check3] = '0') OR ([ff_fmri_child_check4] = '0' AND [ff_fmri_totalbox_check4] = '0'))",y,,,,,
+gng_complete,go_nogo_task,,radio,"Go No-Go Completed?","1, Yes | 0, No",,,,,,,,,,,,
+gng_visit,go_nogo_task,,radio,"Go No-Go Completed at Visit 2?","1, Yes | 0, No",,,,,,"[gng_complete] = '1'",y,,,,,"go-no go task completed on visit 3?"
+gng_dif_visit,go_nogo_task,,text,"Go No-Go Visit Number",,,,,,,"[gng_visit]='0' AND [gng_complete] = '1'",,,,,,"if not visit 3, when was go-no go task completed"
+gng_dif_date,go_nogo_task,,text,"Go No-Go Visit Date",,,date_mdy,,,,"[gng_visit]='0' AND [gng_complete] = '1'",y,,,,,"go-no go task date"
+gng_visit_age,go_nogo_task,,calc,"Go No-Go Visit Age","if([gng_visit]='1', [v2_age], round(datediff([gng_dif_date], [ch_dob], ""y""),2))",,,,,,"[gng_complete] = '1'",,,,,,"child age during go-no go task"
+gng_diff_covid_protocol,go_nogo_task,,radio,"Go No-Go Task was completed using protocols from:","0, Before COVID-19 | 1, After COVID-19",,,,,,"[gng_complete] = '1'",y,,,,,"covid protocol used during go-no go task"
+gng_saved_cloud,go_nogo_task,,radio,"1) E-Prime Files Saved to OneDrive
+
+Save to: Save to: .../Participant_Data/untouchedRaw/GNG_Raw/","0, Incomplete | 1, Complete",,,,,,"[gng_complete] = '1'",y,,,,,"go-no go task files saved to one drive"
+gng_raweprime_check,go_nogo_task,,checkbox,"Confirm these files have been added to the directories: GNG_Raw
+*edat files can be edat2 or edat3","0, Go No-Go Zoo_pseudorand-XXX-1.edat | 1, Go No-Go Zoo_pseudorand-XXX-1.txt | 2, Go No-Go Zoo Task_practice-XXX-1.edat | 3, Go No-Go Zoo Task_practice-XXX-1.txt",,,,,,[gng_saved_cloud]='1',y,,,,,"existing go-no go task files"
+gng_raweprime_miss,go_nogo_task,,descriptive,"E-Prime files that are missing:
+[gng_raweprime_check:unchecked]",,,,,,,"sum([gng_raweprime_check(0)], [gng_raweprime_check(1)], [gng_raweprime_check(2)], [gng_raweprime_check(3)]) < 4 AND [gng_saved_cloud]='1'",,,,,,"missing go-no go task files"
+gng_raweprime_notes,go_nogo_task,,notes,"Missing files notes:
+
+Email lead RA/grad student regarding missing files",,,,,,,"(sum([gng_raweprime_check(0)], [gng_raweprime_check(1)], [gng_raweprime_check(2)], [gng_raweprime_check(3)]) < 4 OR [gng_raweprime_notes]<>'') AND [gng_saved_cloud]='1'",y,,,,,"missing go-no go task file notes"
+gng_raweprime_resolve,go_nogo_task,,radio,"Resolve missing raw E-Prime files (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"(sum([gng_raweprime_check(0)], [gng_raweprime_check(1)], [gng_raweprime_check(2)], [gng_raweprime_check(3)]) < 4 OR [gng_raweprime_notes]<>'') AND [gng_saved_cloud]='1'",y,,,,,"missing go-no go task files resolved"
+gng_raw_check,go_nogo_task,,radio,"2) Check Participant Responses in E-Prime
+Did participant respond in a way consistent with task?
+-a few errors are ok, but shows responding to items marked 'Go'
+-did not respond to the majority of items marked 'NoGo'
+-only used space bar to respond (marked as '{SPACE}')
+","0, Incomplete (responses have not been checked yet) | 1, Consistent Responses | 2, Inconsistent or Errors",,,,,,"sum([gng_raweprime_check(0)], [gng_raweprime_check(1)], [gng_raweprime_check(2)], [gng_raweprime_check(3)]) = 4 OR [gng_raweprime_resolve]='1'",y,,,,,"go-no go task responses checked"
+gng_raw_issues,go_nogo_task,,notes,"Detail Issues with Go No-Go Raw Data
+
+Email lead RA/grad student regarding issues",,,,,,,"[gng_raw_check] = '2' OR [gng_raw_issues]<>''",y,,,,,"go-no go task participant response issues"
+gng_raw_issue_resolved,go_nogo_task,,radio,"Issues with Go No-Go Raw Data (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[gng_raw_check] = '2' OR [gng_raw_issues]<>''",y,,,,,"go-no go task participant response issues resolved"
+gng_export_txt,go_nogo_task,,yesno,"3) E-Prime Task File Exported to .txt file.
+
+File Naming: GNG_Zoo_Raw_parID-session.txt
+Example: GNG_Zoo_Raw_001-1.txt
+
+**participant ID must have leading zeros so that there are always 3 numbers
+
+Save to: .../Participant_Data/untouchedRaw/GNG_Raw/",,,,,,,"[gng_raw_check]='1' OR [gng_raw_issue_resolved]='1'",y,,,,,"go-no go task files converted to .txt"
+gng_org_script,go_nogo_task,,radio,"4) Run GNG_DataOrg.py to organize raw data into BIDS format
+
+In terminal: 
+cd .../Participant_Data/orgRaw_scripts/
+python3 GNG_DataOrg.py -p #
+","0, Incomplete | 1, Complete | 2, Error | 3, File not yet on ROAR",,,,,,"([gng_raweprime_resolve]='1' OR (sum([gng_raweprime_check(0)], [gng_raweprime_check(1)], [gng_raweprime_check(2)], [gng_raweprime_check(3)]) = 4)) AND [gng_export_txt] = '1'",y,,,,,"go-no go task files organized into BIDS format"
+gng_org_error,go_nogo_task,,notes,"GNG_DataOrg.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[gng_org_script]='2' OR [gng_org_error]<>''",y,,,,,"errors with BIDS org of go-no go task files"
+gng_org_resolved,go_nogo_task,,radio,"GNG_DataOrg.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"([gng_org_script]='2' OR [gng_org_error]<>'') AND [gng_export_txt] = '1'",y,,,,,"errors with BIDS org of go-no go task files resolved"
+gng_rawbids_check,go_nogo_task,,checkbox,"Confirm this file has been added to the BIDS directory under: BIDSdat/raw_data/sub-XXX/ses-X/beh/","0, sub-XXX_ses-1_task-gng_events.tsv",,,,,,"[gng_org_script]='1' OR [gng_org_resolved]='1'",,,,,,"BIDS organized gng files that exist"
+gng_rawbids_miss,go_nogo_task,,descriptive,"Raw BIDS formatted file is missing:
+[gng_rawbids_check:unchecked]",,,,,,,"[gng_rawbids_check(0)]<>'1' AND [gng_org_script]='1'",,,,,,"missing BIDS organized go-no go task files"
+gng_rawbids_notes,go_nogo_task,,notes,"Missing file notes:
+
+Email lead RA/grad student regarding missing file",,,,,,,"([gng_rawbids_check(0)]<>'1' AND ([gng_org_script]='1' OR [gng_org_resolved]='1')) OR (([gng_org_script]='1' OR [gng_org_resolved]='1') AND [gng_rawbids_notes]<>'')",y,,,,,"missing BIDS org go-no go task files notes"
+gng_rawbids_resolve,go_nogo_task,,radio,"Resolve missing raw BIDS file (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"([gng_rawbids_check(0)]<>'1' OR [gng_rawbids_notes]<>'') AND ([gng_org_script]='1' OR [gng_org_resolved]='1')",y,,,,,"missing BIDS org go-no go files resolved"
+gng_sum_script,go_nogo_task,,radio,"5) Run GNG_WF.py to add summary data to Go No-Go database
+
+In terminal: 
+cd .../Participant_Data/BIDSdat/code/
+python3 GNG_WF.py -p #
+
+Example - to process data for participant 001: python3 GNG_WF.py -p 1","0, Incomplete | 1, Complete (e.g., ""[Node] Finished"") | 2, Error (e.g., ""RuntimeError: Workflow did not execute cleanly. Check log for details"")",,,,,,[gng_rawbids_check(0)]='1',y,,,,,"go-no go data processed"
+gng_sum_error,go_nogo_task,,notes,"GNG_WF.py Error:
+
+Email lead RA/ grad student with exact error message",,,,,,,"[gng_sum_script]='2' or [gng_sum_error]<>''",y,,,,,"errors processing go-no go task data"
+gng_sum_resolved,go_nogo_task,,radio,"GNG_WF.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[gng_sum_script]='2' OR [gng_sum_error]<>''",y,,,,,"errors processing go-no go task data resolved"
+gng_sum_ckeck,go_nogo_task,,radio,"6) Confirm summary data has been added to the Go NoGo database.
+Go No-Go Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-gng_long.tsv","0, Incomplete | 1, Complete",,,,,,"[gng_sum_script]='1' or [gng_sum_resolved]='1'",y,,,,,"confirmation of go-no go summary data"
+gng_data_check,go_nogo_task,,yesno,"Go No-Go data has poor performance and may need to be excluded:
+
+1. Open Go No-Go Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-gng_long.tsv
+2. Select 'Yes' if value in 'p_go_hit' is below 0.75",,,,,,,"[gng_sum_ckeck] = '1' OR [gng_sum_resolved]='1'",y,,,,,"check of go-no go task performance"
+nb_complete,nback_task,,radio,"N-Back Completed?","1, Yes | 0, No",,,,,,,,,,,,
+nb_visit,nback_task,,radio,"N-Back Completed at Visit:","0, Visit 3 | 1, Visit 7 | 2, Other",,,,,,"[nb_complete] = '1'",y,,,,,
+nb_dif_visit,nback_task,,text,"N-Back Visit Number",,,,,,,"[nb_visit]='2' AND [nb_complete] = '1'",,,,,,"if not 3 or 7, nback visit number"
+nb_dif_date,nback_task,,text,"N-Back Visit Date",,,date_mdy,,,,"[nb_visit]='2' AND [nb_complete] = '1'",y,,,,,"Nback visit date"
+nb_visit_age,nback_task,,calc,"N-Back Age","if([nb_visit]='0', [baseline_arm_1][v3_age], if([nb_visit]='1', [baseline_arm_1][v7_age], round(datediff([nb_dif_date], [ch_dob], ""y""),2)))",,,,,,"[nb_complete] = '1'",,,,,,"child age during nback task"
+nb_diff_covid_protocol,nback_task,,radio,"N-Back was completed using protocols from:","0, Before COVID-19 | 1, After COVID-19",,,,,,"[nb_complete] = '1'",y,,,,,"covid protocols used with nback task"
+nb_saved_cloud,nback_task,,radio,"1) E-Prime Files Saved to OneDrive
+
+Save to: Save to: .../Participant_Data/untouchedRaw/NBack_Raw/","0, Incomplete | 1, Complete",,,,,,"[nb_complete] = '1'",y,,,,,"nback task files saved to OneDrive"
+nb_raweprime_check,nback_task,,checkbox,"Confirm these files have been added to the directory: Nback_Raw
+*edat files can be edat2 or edat3","0, 0-back_R01-XXX-X.edat | 1, 1-back_R01-XXX-X.edat | 2, 2-back_R01-XXX-X.edat | 3, 0-back_R01-XXX-X.txt | 4, 1-back_R01-XXX-X.txt | 5, 2-back_R01-XXX-X.txt",,,,,,[nb_saved_cloud]='1',y,,,,,"nback task files that exist"
+nb_raweprime_miss,nback_task,,descriptive,"E-Prime files that are missing:
+[nb_raweprime_check:unchecked]",,,,,,,"sum([nb_raweprime_check(0)], [nb_raweprime_check(1)], [nb_raweprime_check(2)], [nb_raweprime_check(3)], [nb_raweprime_check(4)], [nb_raweprime_check(5)]) < 6 AND [nb_saved_cloud]='1'",,,,,,"nback task files that are missing"
+nb_raweprime_notes,nback_task,,notes,"Missing files notes:",,,,,,,"(sum([nb_raweprime_check(0)], [nb_raweprime_check(1)], [nb_raweprime_check(2)], [nb_raweprime_check(3)], [nb_raweprime_check(4)], [nb_raweprime_check(5)]) < 6 OR [nb_raweprime_notes]<>'') AND [nb_saved_cloud]='1'",y,,,,,"missing nback task file notes"
+nb_raweprime_resolve,nback_task,,radio,"Resolve missing raw E-Prime files","0, Unresolved | 1, Resolved",,,,,,"(sum([nb_raweprime_check(0)], [nb_raweprime_check(1)], [nb_raweprime_check(2)], [nb_raweprime_check(3)], [nb_raweprime_check(4)], [nb_raweprime_check(5)]) < 6 OR [nb_raweprime_notes]<>'') AND [nb_saved_cloud]='1'",y,,,,,"nback files resolved"
+nb_raw_check,nback_task,,radio,"2) Check Participant Responses in E-Prime
+Did participant respond in a way consistent with task?
+-a few errors are ok, but shows responding to items marked 'target'
+-did not respond to the majority of items marked 'fill'
+-only used space bar to respond (marked as '{SPACE}')
+","0, Incomplete (responses have not been checked yet) | 1, Consistent Responses | 2, Inconsistent or Errors",,,,,,"sum([nb_raweprime_check(0)], [nb_raweprime_check(1)], [nb_raweprime_check(2)], [nb_raweprime_check(3)], [nb_raweprime_check(4)], [nb_raweprime_check(5)]) = 6 OR [nb_raweprime_resolve]='1'",y,,,,,"nback task participant responses checked"
+nb_raw_issues,nback_task,,notes,"Detail Issues with N-Back Raw Data and email lead RA or grad student ",,,,,,,"[nb_raw_check] = '2' OR [nb_raw_issues]<>''",y,,,,,
+nb_raw_issue_resolved,nback_task,,radio,"Issues with N-Back Raw Data:
+
+(to be determined by lead RA/grad student)","0, Unresolved | 1, Resolved",,,,,,"[nb_raw_check] = '2' OR [nb_raw_issues]<>''",y,,,,,
+nb_export_txt,nback_task,,yesno,"3) E-Prime Files Exported to .txt files.
+
+File Naming: NBack_block_Raw_parID-session.txt
+Example: NBack_0_Raw_001-1.txt
+**participant ID must have leading zeros so that there are always 3 numbers
+
+Save to: .../Participant_Data/untouchedRaw/NBack_Raw/",,,,,,,"[nb_raw_check]='1' OR [nb_raw_issue_resolved]='1'",y,,,,,
+nb_org_script,nback_task,,radio,"4) Run Nback_DataOrg.py to organize raw data into BIDS format
+
+In terminal: 
+cd .../Participant_Data/orgRaw_scripts/
+python3 Nback_DataOrg.py","0, Incomplete | 1, Complete | 2, Error | 3, File not yet on ROAR",,,,,,"([nb_raweprime_resolve]='1' OR (sum([nb_raweprime_check(0)], [nb_raweprime_check(1)], [nb_raweprime_check(2)], [nb_raweprime_check(3)], [nb_raweprime_check(4)], [nb_raweprime_check(5)]) = 6)) AND [nb_export_txt] = '1'",y,,,,,
+nb_org_error,nback_task,,notes,"Nback_DataOrg.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[nb_org_script]='2' OR [nb_org_error]<>''",y,,,,,
+nb_org_resolved,nback_task,,radio,"Nback_DataOrg.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"([nb_org_script]='2' OR [nb_org_error]<>'') AND [nb_export_txt] = '1'",y,,,,,
+nb_rawbids_check,nback_task,,checkbox,"Confirm these files have been added to the BIDS directory under: BIDSdat/raw_data/sub-XXX/ses-X/beh/","0, sub-XXX_ses-X_task-nback0_events.tsv | 1, sub-XXX_ses-X_task-nback1_events.tsv | 2, sub-XXX_ses-X_task-nback2_events.tsv",,,,,,"[nb_org_script]='1' OR [nb_org_resolved]='1'",,,,,,
+nb_rawbids_miss,nback_task,,descriptive,"Raw BIDS formatted files that are [were] missing:
+[nb_rawbids_check:unchecked]",,,,,,,"sum([nb_rawbids_check(0)], [nb_rawbids_check(1)], [nb_rawbids_check(2)]) < 3 AND [nb_org_script]='1'",,,,,,
+nb_rawbids_notes,nback_task,,notes,"Missing files notes:
+
+Email lead RA/grad student regarding missing files",,,,,,,"(sum([nb_rawbids_check(0)], [nb_rawbids_check(1)], [nb_rawbids_check(2)]) < 3 AND ([nb_org_script]='1' OR [nb_org_resolved]='1')) OR (([nb_org_script]='1' OR [nb_org_resolved]='1') AND [nb_rawbids_notes]<>'')",y,,,,,
+nb_rawbids_resolve,nback_task,,radio,"Resolve missing raw BIDS files (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"(sum([nb_rawbids_check(0)], [nb_rawbids_check(1)], [nb_rawbids_check(2)]) < 3 OR [nb_rawbids_notes]<>'') AND ([nb_org_script]='1' OR [nb_org_resolved]='1')",y,,,,,
+nb_sum_script,nback_task,,radio,"5) Run Nback_WF.py to add summary data to N-Back database
+
+In terminal: 
+cd .../Participant_Data/BIDSdat/code/
+python3 Nback_WF.py -s # -p #
+
+Example - to process session 1 data for participant 001: python3 Nback_WF.py -s 1 -p 1","0, Incomplete | 1, Complete (e.g., ""[Node] Finished"") | 2, Error (e.g., ""RuntimeError: Workflow did not execute cleanly. Check log for details"")",,,,,,"sum([nb_rawbids_check(0)], [nb_rawbids_check(1)], [nb_rawbids_check(2)]) = 3 OR [nb_rawbids_resolve]='1'",y,,,,,
+nb_sum_error,nback_task,,notes,"Nback_WF.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[nb_sum_script]='2' or [nb_sum_error]<>''",y,,,,,
+nb_sum_resolved,nback_task,,radio,"Nback_WF.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[nb_sum_script]='2' OR [nb_sum_error]<>''",y,,,,,
+nb_sum_ckeck,nback_task,,radio,"6) Confirm summary data has been added to the N-Back database.
+N-Back Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-nback_long.tsv","0, Incomplete | 1, Complete",,,,,,"[nb_sum_script]='1' or [nb_sum_resolved]='1'",y,,,,,
+nb_missing_confirm,nback_task,,checkbox,"N-Back blocks missing from N-Back Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-nback_long.tsv:","0, 0-back | 1, 1-back | 2, 2-back",,,,,,"([nb_sum_ckeck]='1' OR [nb_sum_resolved]='1') AND sum([nb_rawbids_check(0)], [nb_rawbids_check(1)], [nb_rawbids_check(2)]) < 3",,,,,,
+nb_complete_confirm,nback_task,,checkbox,"N-Back blocks that are incomplete in N-Back Database: 
+
+1. Open N-Back Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-nback_long.tsv
+2. Mark blocks where number of trials < 60 -- check value of column 'n_trial'","0, 0-back | 1, 1-back | 2, 2-back",,,,,,"[nb_sum_ckeck] = '1' OR [nb_sum_resolved]='1'",,,,,,
+nb_hit_check,nback_task,,checkbox,"Check blocks that have low hit percent (< 50%) :
+
+1. Open N-Back Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-nback_long.tsv
+2. Mark blocks where hit percent is < 50% -- check value of column 'p_target_hit'","0, 0-back | 1, 1-back | 2, 2-back",,,,,,"[nb_sum_ckeck] = '1' OR [nb_sum_resolved]='1'",,,,,,
+space_complete,space_game,,radio,"Space Game Complete?","1, Yes | 0, No",,,,,,,,,,,,
+space_visit,space_game,,radio,"Visit Space Game was Completed at:","0, Visit 4 | 1, Visit 7 | 2, Other",,,,,,"[space_complete] = '1'",y,,,,,
+space_dif_visit,space_game,,text,"Space Game Visit Number",,,,,,,"[space_visit]='2' AND [space_complete] = '1'",,,,,,
+space_dif_date,space_game,,text,"Space Game Visit Date",,,date_mdy,,,,"[space_visit]='2' AND [space_complete] = '1'",y,,,,,
+space_visit_age,space_game,,calc,"Space Game Visit Age","if([space_visit]='0', [baseline_arm_1][v4_age], if([space_visit]='1', [baseline_arm_1][v7_age], round(datediff([space_dif_date], [ch_dob], ""y""),2)))",,,,,,"[space_complete] = '1'",,,,,,
+space_diff_covid_protocol,space_game,,radio,"Space Game was completed using protocols from:","0, Before COVID-19 | 1, After COVID-19",,,,,,"[space_complete] = '1'",y,,,,,
+space_saved_cloud,space_game,,radio,"1) Raw .mat File Saved to OneDrive
+
+Save to: Save to: .../Participant_Data/untouchedRaw/SpaceGame_Raw/","0, Incomplete | 1, Complete",,,,,,"[space_complete] = '1'",y,,,,,
+space_rawmat_check,space_game,,checkbox,"Confirm this file has been added to the directory: SpaceGame_Raw","0, mbmfNovelStakes_XXX-X.mat",,,,,,[space_saved_cloud]='1',y,,,,,
+space_rawmat_miss,space_game,,descriptive,"Raw .mat file missing:
+[space_raweprime_check:unchecked]",,,,,,,"[space_rawmat_check(0)] <> '1' AND [space_saved_cloud]='1'",,,,,,
+space_rawmat_notes,space_game,,notes,"Missing file notes:
+
+Email lead RA/grad student regarding missing files",,,,,,,"([space_rawmat_check(0)]<>'1' OR [space_rawmat_notes]<>'') AND [space_saved_cloud]='1'",y,,,,,
+space_rawmat_resolve,space_game,,radio,"Resolve missing raw .mat file (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"([space_rawmat_check(0)]<>'1' OR [space_rawmat_notes]<>'') AND [space_saved_cloud]='1'",y,,,,,
+space_org_script,space_game,,radio,"2) Run SpaceGame_DataOrg.py to organize raw data into BIDS format
+
+In terminal: 
+cd .../Participant_Data/orgRaw_scripts/
+python3 SpaceGame_DataOrg.py","0, Incomplete | 1, Complete | 2, Error | 3, File not yet on ROAR",,,,,,"[space_rawmat_resolve]='1' OR [space_rawmat_check(0)]='1'",y,,,,,
+space_org_error,space_game,,notes,"SpaceGame_DataOrg.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"([space_org_script]='2' OR [space_org_error]<>'') AND [space_rawmat_check(0)]='1'",y,,,,,
+space_org_resolved,space_game,,radio,"SpaceGame_DataOrg.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"([space_org_script]='2' OR [space_org_error]<>'') AND [space_rawmat_check(0)]='1'",y,,,,,
+space_rawbids_check,space_game,,checkbox,"Confirm this file has been added to the BIDS directory under: BIDSdat/rawdata/sub-XXX/session-X/beh/","0, sub-XXX_ses-X_task-spacegame_events.tsv",,,,,,"[space_org_script]='1' OR [space_org_resolved]='1'",,,,,,
+space_rawbids_miss,space_game,,descriptive,"Raw BIDS formatted file is missing:
+[space_rawbids_check:unchecked]",,,,,,,"[space_rawbids_check(0)]<>'1' AND [space_org_script]='1'",,,,,,
+space_rawbids_notes,space_game,,notes,"Missing file notes:
+
+Email lead RA/grad student regarding missing file",,,,,,,"([space_rawbids_check(0)]<>'1' AND ([space_org_script]='1' OR [space_org_resolved]='1')) OR (([space_org_script]='1' OR [space_org_resolved]='1') AND [space_rawbids_notes]<>'')",y,,,,,
+space_rawbids_resolve,space_game,,radio,"Resolve missing raw BIDS file (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"([space_rawbids_check(0)]<>'1' OR [space_rawbids_notes]<>'') AND ([space_org_script]='1' OR [space_org_resolved]='1')",y,,,,,
+space_rawdata_check,space_game,,radio,"3) Check Participant Responses in the raw .txt produced by the SpaceGame_DataOrg.py script
+Did participant respond in a way consistent with task?
+
+Problematic patterns of responses:
+-did participant ALWAYS choose just 1 planet?
+-did participant ALWAYS respond with the same key press?
+-did participant Time Out frequently?
+","0, Incomplete (responses have not been checked yet) | 1, Consistent Responses | 2, Inconsistent or Errors",,,,,,"[space_rawbids_resolve]='1' OR [space_rawbids_check(0)]='1'",y,,,,,
+space_rawdata_notes,space_game,,notes,"Issues with Participant Responses:
+
+Email lead RA/grad student regarding issues",,,,,,,"[space_rawdata_check] = '2'",y,,,,,
+space_rawdata_resolve,space_game,,radio,"Issues with Space Game data (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[space_rawdata_check] = '2'",y,,,,,
+space_sum_script,space_game,,radio,"4) Run SpaceGame_WF.py to add summary data to Space Game database
+
+In terminal: 
+cd .../Participant_Data/BIDSdat/code/
+python3 SpaceGame_WF.py -s # -p #
+
+Example - to process session 1 data for participant 001: python3 SpaceGame_WF.py -s 1 -p 1","0, Incomplete | 1, Complete | 2, Error",,,,,,"[space_rawbids_check(0)]='1' AND ([space_rawdata_check] = '1' OR [space_rawdata_resolve] = '1')",y,,,,,
+space_sum_error,space_game,,notes,"SpaceGame_WF.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[space_sum_script]='2' or [space_sum_error]<>''",y,,,,,
+space_sum_resolved,space_game,,radio,"SpaceGame_WF.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[space_sum_script]='2' OR [space_sum_error]<>''",y,,,,,
+space_sum_ckeck,space_game,,radio,"5) Confirm summary data has been added to the Space Game database.
+Space Game Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-spacegame_long.tsv","0, Incomplete | 1, Complete",,,,,,"[space_sum_script]='1' or [space_sum_resolved]='1'",y,,,,,
+space_dmm_script,space_game,,yesno,"Decision Making Model script SpaceGame_Model.m included this participant when it was last run:
+
+*Note: this will be done by a graduate student or post-doc on ROAR
+",,,,,,,[space_sum_ckeck]='1',,,,,," @MAXCHECKED=1"
+sst_complete,stop_signal_task,,radio,"Stop Signal Task Complete?","1, Yes | 0, No",,,,,,,,,,,,
+sst_visit,stop_signal_task,,yesno,"Stop Signal Task Completed on Visit 6",,,,,,,"[sst_complete] = '1'",y,,,,," @MAXCHECKED=1"
+sst_dif_visit,stop_signal_task,,text,"Stop Signal Task Visit Number",,,,,,,"[sst_visit]='0' AND [sst_complete] = '1'",,,,,,
+sst_dif_date,stop_signal_task,,text,"Stop Signal Task Visit Date",,,date_mdy,,,,"[sst_visit]='0' AND [sst_complete] = '1'",y,,,,,
+sst_visit_age,stop_signal_task,,calc,"Stop Signal Task Visit Age","if([sst_visit]='1', [v6_age], round(datediff([sst_dif_date], [ch_dob], ""y""),2))",,,,,,"[sst_complete] = '1'",,,,,,
+sst_diff_covid_protocol,stop_signal_task,,radio,"Stop Signal Task was completed using protocols from:","0, Before COVID-19 | 1, After COVID-19",,,,,,"[sst_complete] = '1'",y,,,,,
+sst_saved_cloud,stop_signal_task,,radio,"1) Raw .txt Files Saved to OneDrive
+
+Save to: Save to: .../Participant_Data/untouchedRaw/SST_Raw/","0, Incomplete | 1, Complete",,,,,,"[sst_complete] = '1'",y,,,,,
+sst_rawtxt_check,stop_signal_task,,checkbox,"Confirm these files have been added to the directory: SST_Raw
+","0, stop_prac-XXX-1.txt | 1, stop-XXX-1.txt",,,,,,[sst_saved_cloud]='1',y,,,,,
+sst_rawtxt_miss,stop_signal_task,,descriptive,"Raw .txt files that are missing:
+[sst_rawtxt_check:unchecked]",,,,,,,"sum([sst_rawtxt_check(0)], [sst_rawtxt_check(1)]) < 2 AND [sst_saved_cloud]='1'",,,,,,
+sst_rawtxt_notes,stop_signal_task,,notes,"Missing files notes:
+
+Email lead RA or grad student regarding missing files",,,,,,,"(sum([sst_rawtxt_check(0)], [sst_rawtxt_check(1)]) < 2 OR [sst_rawtxt_notes]<>'') AND [sst_saved_cloud]='1'",y,,,,,
+sst_rawtxt_resolve,stop_signal_task,,radio,"Resolve missing raw txt files (to be determined by lead RA/grad student)","0, Unresolved | 1, Resolved",,,,,,"(sum([sst_rawtxt_check(0)], [sst_rawtxt_check(1)]) < 2 OR [sst_rawtxt_notes]<>'') AND [sst_saved_cloud]='1'",y,,,,,
+sst_raw_checka,stop_signal_task,,checkbox,"2a) Check Participant Responses in raw .txt files
+For each Block (number 1-4 in column 'block') check the 'block_cond'. Mark the blocks that had a duplicate (i.e., repeated condition (only mark the second instance - should never mark Block 1):
+","0, Block 1 | 1, Block 2 | 2, Block 3 | 3, Block 4",,,,,,"sum([sst_rawtxt_check(0)], [sst_rawtxt_check(1)]) = 2 OR [sst_rawtxt_resolve]='1'",,,,,,
+sst_raw_checkb,stop_signal_task,,radio,"2b) Check Participant Responses in raw .txt files
+Did participant respond in a way consistent with task?
+-a few errors are ok, but shows responding to items marked 'go'
+-did not respond when column 'reqSSD' had stop delay
+-go trials are generally correct (value of 4 in the 'correct' column)
+","0, Incomplete (responses have not been checked yet) | 1, Consistent Responses | 2, Inconsistent or Errors",,,,,,"sum([sst_rawtxt_check(0)], [sst_rawtxt_check(1)]) = 2 OR [sst_rawtxt_resolve]='1'",y,,,,,
+sst_raw_issues,stop_signal_task,,notes,"Detail Issues with Stop Signal Raw Data and email lead RA/grad student",,,,,,,"[sst_raw_checkb] = '2' OR [sst_raw_issues]<>''",y,,,,,
+sst_raw_issue_resolved,stop_signal_task,,radio,"Issues with Stop Signal Data (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[sst_raw_checkb] = '2'",y,,,,,
+sst_org_script,stop_signal_task,,radio,"3) Run SST_DataOrg.py to organize raw data into BIDS format
+
+In terminal: 
+cd .../Participant_Data/orgRaw_scripts/
+python3 SST_DataOrg.py","0, Incomplete | 1, Complete | 2, Error | 3, File not yet on ROAR",,,,,,"[sst_rawtxt_check(1)]='1' AND ([sst_raw_checkb]='1' OR [sst_raw_issue_resolved]='1')",y,,,,,
+sst_org_error,stop_signal_task,,notes,"SST_DataOrg.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[sst_org_script]='2' OR ([sst_org_error]<>'' AND ([sst_rawtxt_check]='0' AND ([sst_raw_checkb]='1' OR [sst_raw_issue_resolved]='1')))",y,,,,,
+sst_org_resolved,stop_signal_task,,radio,"SST_DataOrg.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[sst_org_script]='2' OR ([sst_org_error]<>'' AND ([sst_rawtxt_check]='0' AND ([sst_raw_checkb]='1' OR [sst_raw_issue_resolved]='1')))",y,,,,,
+sst_rawbids_check,stop_signal_task,,checkbox,"Confirm this file has been added to the BIDS directory under: BIDSdat/raw_data/sub-XXX/ses-X/beh/","0, sub-XXX_ses-1_task-sst_events.tsv",,,,,,"[sst_org_script]='1' OR [sst_org_resolved]='1'",,,,,,
+sst_rawbids_miss,stop_signal_task,,descriptive,"Raw BIDS formatted file is missing:
+[sst_rawbids_check:unchecked]",,,,,,,"[sst_rawbids_check(0)]<>'1' AND [sst_org_script]='1'",,,,,,
+sst_rawbids_notes,stop_signal_task,,notes,"Missing file notes:
+
+Email lead RA/grad student regarding missing file",,,,,,,"([sst_rawbids_check(0)]<>'1' AND ([sst_org_script]='1' OR [sst_org_resolved]='1')) OR (([sst_org_script]='1' OR [sst_org_resolved]='1') AND [sst_rawbids_notes]<>'')",y,,,,,
+sst_rawbids_resolve,stop_signal_task,,radio,"Resolve missing raw BIDS file (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"([sst_rawbids_check(0)]<>'1' OR [sst_rawbids_notes]<>'') AND ([sst_org_script]='1' OR [sst_org_resolved]='1')",y,,,,,
+sst_sum_script,stop_signal_task,,radio,"4) Run SST_WF.py to add summary data to Go No-Go database
+
+In terminal: 
+cd .../Participant_Data/BIDSdat/code/
+python3 SST_WF.py -p #
+
+Example - to process data for participant 001: python3 SST_WF.py -p 1","0, Incomplete | 1, Complete (e.g., ""[Node] Finished"") | 2, Error (e.g., ""RuntimeError: Workflow did not execute cleanly. Check log for details"")",,,,,,[sst_rawbids_check(0)]='1',y,,,,,
+sst_sum_error,stop_signal_task,,notes,"SST_WF.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[sst_sum_script]='2' or [sst_sum_error]<>''",y,,,,,
+sst_sum_resolved,stop_signal_task,,radio,"SST_WF.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[sst_sum_script]='2' OR [sst_sum_error]<>''",y,,,,,
+sst_sum_check,stop_signal_task,,radio,"5) Confirm summary data has been added to the Stop Signal Tasks database.
+Stop Signal Task Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-sst_long.tsv","0, Incomplete | 1, Complete",,,,,,"[sst_sum_script]='1' or [sst_sum_resolved]='1'",y,,,,,
+sst_data_check,stop_signal_task,,checkbox,"Select Stop Signal blocks that had poor performance:
+
+1. Open Stop Signal Task Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-sst_long.tsv
+2. Select block if 'go_error' and 'go_missed' add to 12 ","0, Block 1 | 1, Block 2 | 2, Block 3 | 3, Block 4",,,,,,"[sst_sum_check] = '1'",,,,,,
+sst_rhmodel_check,stop_signal_task,,checkbox,"Check the assumption in Stop Signal Task Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-sst_blockslong.tsv
+
+Not all participants will have all conditions. For the conditions that do exist, mark the conditions (from column 'condition') where the column 'racehorse_check' = 1.
+","0, hED_lPort | 1, hED_sPort | 2, lED_lPart | 3, lED_sPort",,,,,,"[sst_sum_check] = '1'",y,,,,,
+fmri_complete,fmri_data,,radio,"fMRI Completed?","1, Yes | 0, No",,,,,,,,,,,,
+fmri_visit,fmri_data,,radio,"fMRI Completed at Visit 7?","1, Yes | 0, No",,,,,,"[fmri_complete] = '1'",y,,,,,"fmri task completed on visit 7?"
+fmri_dif_visit,fmri_data,,text,"fMRI Visit Number",,,,,,,"[fmri_visit]='0' AND [fmri_complete] = '1'",,,,,,"if not visit 7, when was fMRI task completed"
+fmri_dif_date,fmri_data,,text,"fMRI Visit Date",,,date_mdy,,,,"[fmri_visit]='0' AND [fmri_complete] = '1'",y,,,,,"fmri task date"
+fmri_visit_age,fmri_data,,calc,"fMRI Visit Age","if([fmri_visit]='1', [v7_age], round(datediff([fmri_dif_date], [ch_dob], ""y""),2))",,,,,,"[fmri_complete] = '1'",,,,,,"child age during fmri visit"
+fmri_diff_covid_protocol,fmri_data,,radio,"fMRI visit was completed using protocols from:","0, Before COVID-19 | 1, After COVID-19",,,,,,"[fmri_complete] = '1'",y,,,,,"covid protocol used during fmri visit"
+fmri_saved_cloud,fmri_data,,radio,"1) E-Prime Files Saved to OneDrive
+
+Save to: Save to: .../Participant_Data/untouchedRaw/fMRITask_Raw/","0, Incomplete | 1, Complete",,,,,,"[fmri_complete] = '1'",y,,,,,"fmri task files saved to one drive"
+fmri_raweprime_check,fmri_data,,checkbox,"Confirm these files have been added to the directory: fMRITask_Raw
+*edat files can be edat2 or edat3","0, 000_R01_V(AorB)_allProc-XXX-1.edat2 | 1, 000_R01_V(AorB)_allProc-XXX-1.txt",,,,,,[fmri_saved_cloud]='1',y,,,,,"existing fmri task files"
+fmri_raweprime_miss,fmri_data,,descriptive,"E-Prime files that are missing:
+[fmri_raweprime_check:unchecked]",,,,,,,"sum([gng_raweprime_check_v2(0)], [gng_raweprime_check_v2(1)], [gng_raweprime_check_v2(2)], [gng_raweprime_check_v2(3)]) < 4 AND [gng_saved_cloud_v2]='1'",,,,,,"missing go-no go task files"
+fmri_raweprime_notes,fmri_data,,notes,"Missing files notes:
+
+Email lead RA/grad student regarding missing files",,,,,,,"(sum([fmri_raweprime_check(0)], [fmri_raweprime_check(1)]) < 2 OR [fmri_raweprime_notes]<>'') AND [fmri_saved_cloud]='1'",y,,,,,"missing fmri task file notes"
+fmri_raweprime_resolve,fmri_data,,radio,"Resolve missing raw E-Prime files (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"(sum([fmri_raweprime_check(0)], [fmri_raweprime_check(1)]) < 2 OR [fmri_raweprime_notes]<>'') AND [fmri_saved_cloud]='1'",y,,,,,"missing fmri task files resolved"
+fmri_raw_check,fmri_data,,radio,"2) Check Participant Responses in E-Prime
+Did participant respond in a way consistent with task?
+-most items have a response (a few missing is ok)
+-did not only respond using the same button (all one value in responses)","0, Incomplete (responses have not been checked yet) | 1, Consistent Responses | 2, Inconsistent or Errors",,,,,,"sum([fmri_raweprime_check(0)], [fmri_raweprime_check(1)]) = 2 OR [fmri_raweprime_resolve]='1'",y,,,,,"fmri task responses checked"
+fmri_raw_issues,fmri_data,,notes,"Detail Issues with fMRI Raw Task Data
+
+Email lead RA/grad student regarding issues",,,,,,,"[fmri_raw_check] = '2' OR [fmri_raw_issues]<>''",y,,,,,"fmri task participant response issues"
+fmri_raw_issue_resolved,fmri_data,,radio,"Issues with fMRI Raw Task Data (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[fmri_raw_check] = '2' OR [fmri_raw_issues]<>''",y,,,,,"fmri task participant response issues resolved"
+fmri_export_txt,fmri_data,,yesno,"3) E-Prime Task File Exported to .txt file.
+
+File Naming: fMRI_versionAB_Raw_parID-session.txt
+Example: fMRI_A_Raw_001-1.txt
+
+**participant ID must have leading zeros so that there are always 3 numbers
+
+Save to: .../Participant_Data/untouchedRaw/fmriTask_Raw/",,,,,,,"[fmri_raw_check]='1' OR [fmri_raw_issue_resolved]='1'",y,,,,,"fmri task files converted to .txt"
+fmri_org_script,fmri_data,,radio,"4) Run fmriTask_DataOrg.py to organize raw data into BIDS format
+
+In terminal: 
+cd .../Participant_Data/orgRaw_scripts/
+python3 fmriTask_DataOrg.py
+
+Note: this will process all available participants so only needs to be run once per batch
+","0, Incomplete | 1, Complete | 2, Error | 3, File not yet on ROAR",,,,,,"([fmri_raweprime_resolve]='1' OR (sum([fmri_raweprime_check(0)], [fmri_raweprime_check(1)]) = 2)) AND [fmri_export_txt] = '1'",y,,,,,"fmri task files organized into BIDS format"
+fmri_org_error,fmri_data,,notes,"fmriTask_DataOrg.py Error:
+
+Email lead RA/grad student with exact error message",,,,,,,"[fmri_org_script]='2' OR [fmri_org_error]<>''",y,,,,,"errors with BIDS org of fmri task files"
+fmri_org_resolved,fmri_data,,radio,"fmriTask_DataOrg.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"([fmri_org_script]='2' OR [fmri_org_error]<>'') AND [fmri_export_txt] = '1'",y,,,,,"errors with BIDS org of frmi task files resolved"
+fmri_rawbids_check,fmri_data,,checkbox,"Confirm this file has been added to the BIDS directory under: BIDSdat/raw_data/sub-XXX/ses-X/beh/","0, sub-XXX_ses-1_task-fmritask_events.tsv",,,,,,"[fmri_org_script]='1' OR [fmri_org_resolved]='1'",,,,,,"BIDS organized frmi task files that exist"
+fmri_rawbids_miss,fmri_data,,descriptive,"Raw BIDS formatted file is missing:
+[fmri_rawbids_check:unchecked]",,,,,,,"[fmri_rawbids_check(0)]<>'1' AND [fmri_org_script]='1'",,,,,,"missing BIDS organized fmri task files"
+fmri_rawbids_notes,fmri_data,,notes,"Missing file notes:
+
+Email lead RA/grad student regarding missing file",,,,,,,"([fmri_rawbids_check(0)]<>'1' AND ([fmri_org_script]='1' OR [fmri_org_resolved]='1')) OR (([fmri_org_script]='1' OR [fmri_org_resolved]='1') AND [fmri_rawbids_notes]<>'')",y,,,,,"missing BIDS org fmri task files notes"
+gng_rawbids_resolve_v2,fmri_data,,radio,"Resolve missing raw BIDS file (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"([fmri_rawbids_check(0)]<>'1' OR [fmri_rawbids_notes]<>'') AND ([fmri_org_script]='1' OR [fmri_org_resolved]='1')",y,,,,,"missing BIDS org go-no go files resolved"
+fmri_sum_script,fmri_data,,radio,"5) Run GNG_WF.py to add summary data to fMRI Task database and get onset files
+
+In terminal: 
+cd .../Participant_Data/BIDSdat/code/
+python3 fmriTask_WF.py -p #
+
+Example - to process data for participant 001: python3 fmriTask_WF.py -p 1","0, Incomplete | 1, Complete (e.g., ""[Node] Finished"") | 2, Error (e.g., ""RuntimeError: Workflow did not execute cleanly. Check log for details"")",,,,,,[fmri_rawbids_check(0)]='1',y,,,,,"fmri task data processed"
+fmri_sum_error,fmri_data,,notes,"fmriTask_WF.py Error:
+
+Email lead RA/ grad student with exact error message",,,,,,,"[fmri_sum_script]='2' or [fmri_sum_error]<>''",y,,,,,"errors processing fmri task data"
+fmri_sum_resolved,fmri_data,,radio,"fmriTask_WF.py Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[fmri_sum_script]='2' or [fmri_sum_error]<>''",y,,,,,"errors processing fmri task data resolved"
+fmri_sum_check,fmri_data,,radio,"6) Confirm summary data has been added to the fMRI Task database.
+fMRI Task Database: .../Participant_Data/BIDSdat/derivatives/preprocessed/beh/summary_task-fmri_long.tsv","0, Incomplete | 1, Complete",,,,,,"[fmri_sum_script]='1' or [fmri_sum_resolved]='1'",y,,,,,"confirmation of fmri summary data"
+fmri_sum_onset_check,fmri_data,,checkbox,"7) Confirm this onset file has been added to the BIDS directory under: BIDSdat/raw_data/sub-XXX/ses-X/beh/","0, sub-XXX_ses-1_task-fmritask_blockonset_events.tsv",,,,,,"[fmri_sum_script]='1' or [fmri_sum_resolved]='1'",y,,,,,"confirmation of fmri onset files"
+fmri_pp_status,fmri_preprocessing,"fMRI Visit Information",calc,"fMRI visit was completed on:","if([fmri_complete]='1', if([fmri_visit]='1', 7, [fmri_dif_visit]), 'fMRI not completed')",,,,,,,y,,,,,"fmri task completed on visit 7?"
+fmri_pp_date,fmri_preprocessing,,calc,"fMRI date:","if([fmri_visit]='1', [baseline_arm_1][v7_date], [fmri_dif_date])",,,,,,[fmri_complete]='1',y,,,,,"fmri task completed on visit 7?"
+fmri_pp_age,fmri_preprocessing,,calc,"fMRI child age:","if([fmri_visit]='1', [baseline_arm_1][v7_age], round(datediff([fmri_dif_date], [baseline_arm_1][ch_dob], ""y""),2))",,,,,,[fmri_complete]='1',y,,,,,"fmri task completed on visit 7?"
+fmri_pp_scans,fmri_preprocessing,"fMRI Scan Data Information",checkbox,"Confirm scans that were completed:","0, MPRAGE | 1, Resting-State Scan | 2, Food-Cue Paradigm 1 | 3, Food-Cue Paradigm 2 | 4, Food-Cue Paradigm 3 | 5, Food-Cue Paradigm 4 | 6, Food-Cue Paradigm 5 | 7, Field Map",,,,,,[fmri_complete]='1',y,,,,,
+fmri_pp_missingscans,fmri_preprocessing,,descriptive,"Scans that are missing:
+[fmri_pp_scans:unchecked]",,,,,,,"[fmri_complete]='1' AND sum([fmri_pp_scans(0)], [fmri_pp_scans(1)], [fmri_pp_scans(2)], [fmri_pp_scans(3)], [fmri_pp_scans(4)], [fmri_pp_scans(5)], [fmri_pp_scans(6)], [fmri_pp_scans(7)]) < 7",,,,,,
+fmri_pp_missingscan_notes,fmri_preprocessing,,notes,"Missing scans notes:
+
+Email lead RA/grad student regarding missing files",,,,,,,"sum([fmri_pp_scans(0)], [fmri_pp_scans(1)], [fmri_pp_scans(2)], [fmri_pp_scans(3)], [fmri_pp_scans(4)], [fmri_pp_scans(5)], [fmri_pp_scans(6)], [fmri_pp_scans(7)]) < 7",y,,,,,
+fmri_missingscans_resolve,fmri_preprocessing,,radio,"Resolve missing scans (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"sum([fmri_pp_scans(0)], [fmri_pp_scans(1)], [fmri_pp_scans(2)], [fmri_pp_scans(3)], [fmri_pp_scans(4)], [fmri_pp_scans(5)], [fmri_pp_scans(6)], [fmri_pp_scans(7)]) < 7 OR [fmri_pp_missingscan_notes]<>''",y,,,,,
+fmri_pp_physio,fmri_preprocessing,,yesno,"Was physiological data collected?",,,,,,,[fmri_complete]='1',,,,,,
+fmri_pp_missingphysio_notes,fmri_preprocessing,,notes,"Missing phisiological data:
+
+Email lead RA/grad student regarding missing files",,,,,,,[fmri_pp_physio]='0',y,,,,,
+fmri_physio_resolved,fmri_preprocessing,,radio,"Resolve missing physiological data (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[fmri_pp_physio]='0' OR [fmri_pp_missingphysio_notes]<>''",y,,,,,
+fmri_pp_extrascans,fmri_preprocessing,,yesno,"Were extra scans completed?
+
+Examples: participant exited the scanner and needed to re-start a scan, participant moved during MPRAGE, etc",,,,,,,[fmri_complete]='1',,,,,,
+fmri_pp_extrascans_complete,fmri_preprocessing,,checkbox,"Check if there was an extra scan completed:","0, MPRAGE | 1, Resting-State Scan | 2, Food-Cue Paradigm 1 | 3, Food-Cue Paradigm 2 | 4, Food-Cue Paradigm 3 | 5, Food-Cue Paradigm 4 | 6, Food-Cue Paradigm 5 | 7, Field Map",,,,,,"[fmri_complete]='1' AND [fmri_pp_extrascans]='1'",y,,,,,
+fmri_pp_save,fmri_preprocessing,"Preprocessing Steps",radio,"1) Transfer raw DICOMS to ROAR and re-name 
+
+**provide naming instructions and directory location","0, Incomplete | 1, Complete | 2, Error",,,,,,[fmri_complete]='1',,,,,,
+fmri_pp_save_issues,fmri_preprocessing,,notes,"Detail Issues with transferring DICOMS to RAOR
+
+Email lead RA/grad student regarding issues",,,,,,,"[fmri_pp_save] = '2' OR [fmri_pp_save_issues]<>''",y,,,,,
+fmri_pp_save_resolved,fmri_preprocessing,,radio,"Issues with saving DICOMS to ROAR (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[fmri_pp_save] = '2' OR [fmri_pp_save_issues]<>''",y,,,,,
+fmri_pp_save_physio,fmri_preprocessing,,radio,"2) Request and then transfer raw physiological data to ROAR and re-name 
+
+**provide naming instructions and directory location","0, Incomplete | 1, Complete | 2, Data Requested | 3, Error",,,,,,[fmri_complete]='1',,,,,,
+fmri_pp_physio_issues,fmri_preprocessing,,notes,"Detail Issues with transferring physiological data to RAOR
+
+Email lead RA/grad student regarding issues",,,,,,,"[fmri_pp_save_physio] = '3' OR [fmri_pp_physio_issues]<>''",y,,,,,
+fmri_pp_physio_resolved,fmri_preprocessing,,radio,"Issues with saving physiological data to ROAR (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[fmri_pp_save_physio] = '3' OR [fmri_pp_physio_issues]<>''",y,,,,,
+fmri_pp_scans_roar,fmri_preprocessing,,checkbox,"3a) Confirm all scans transferred to ROAR:","0, MPRAGE | 1, Resting-State Scan | 2, Food-Cue Paradigm 1 | 3, Food-Cue Paradigm 2 | 4, Food-Cue Paradigm 3 | 5, Food-Cue Paradigm 4 | 6, Food-Cue Paradigm 5 | 7, Field Map",,,,,,"[fmri_complete]='1' AND ([fmri_pp_save]='1' OR [fmri_pp_save_resolved]='1')",y,,,,,
+fmri_pp_rename,fmri_preprocessing,,radio,"3b) Rename the extra scans that will not be used in fmriPrep:
+
+**add instructions","0, Incomplete | 1, Consistent | 2, Errors/Questions",,,,,,[fmri_pp_extrascans]='1',y,,,,,
+fmri_pp_rename_notes,fmri_preprocessing,,notes,"Re-naming extra scans notes and questions:
+
+1) List how scans were re-named.
+
+2) Email lead RA/grad student with questions",,,,,,,[fmri_pp_extrascans]='1',y,,,,,
+fmri_pp_bids,fmri_preprocessing,,radio,"4) Run BIDS formatting script
+
+**add details","0, Incomplete | 1, Consistent | 2, Errors",,,,,,"[fmri_rawbids_check_v2(0)]<>'1' AND [fmri_org_script_v2]='1'",,,,,,
+fmri_pp_bids_notes,fmri_preprocessing,,notes,"BIDS organizaiton notes:
+
+Email lead RA/grad student regarding missing file",,,,,,,"[fmri_pp_bids]='2' OR [fmri_pp_bids_notes]<>''",y,,,,,
+fmri_pp_bids_resolve,fmri_preprocessing,,radio,"Resolve BIDS organization error (to be determined by lead RA/grad student):","0, Unresolved | 1, Resolved",,,,,,"[fmri_pp_bids]='2' OR [fmri_pp_bids_notes]<>''",y,,,,,"missing BIDS org go-no go files resolved"
+fmri_pp_prep,fmri_preprocessing,,radio,"5) Run fmriPrep
+
+**add details","0, Incomplete | 1, Complete | 2, Error",,,,,,"[fmri_pp_bids]='1' OR [fmri_pp_bids_resolve]='1'",y,,,,,
+fmri_pp_prep_notes,fmri_preprocessing,,notes,"fmriPrep Error:
+
+Email lead RA/ grad student with exact error message",,,,,,,"[fmri_pp_prep]='2' OR [fmri_pp_prep_notes]<>''",y,,,,,
+fmri_pp_prep_resolve,fmri_preprocessing,,radio,"fmriPrep Error (to be determined by lead RA/grad student):
+","0, Unresolved | 1, Resolved",,,,,,"[fmri_pp_prep]='2' OR [fmri_pp_prep_notes]<>''",y,,,,,
+fmri_pp_prepqc,fmri_preprocessing,,radio,"6) fmriPrep QC
+
+**add details","0, Incomplete | 1, Complete | 2, Error",,,,,,"[fmri_pp_bids]='1' OR [fmri_pp_bids_resolve]='1'",y,,,,,
+ms_coding_ps,ps_microstructure_new,,radio,"Participant videos collected and ready to be coded?","1, Yes | 2, No",,,,,,,,,,,,
+ps_meal_exist,ps_meal_microstructure_phase_1,,yesno,"Meal Video Collected?",,,,,,,,,,,,,
+ps_meal,ps_meal_microstructure_phase_1,,radio,"Meal Portion Size","0, Portion Size 1 (100%) | 1, Portion Size 2 (130%) | 2, Portion Size 3 (160%) | 4, Portion Size 4 (190%)",,,,,,[ps_meal_exist]='1',,,,,,
+ps_visit,ps_meal_microstructure_phase_1,,radio,"[ps_meal:checked] Completed at Visit:","0, Visit 2 | 1, Visit 3 | 2, Visit 4 | 3, Visit 5",,,,,,[ps_meal_exist]='1',y,,,,,
+ps_visit_age,ps_meal_microstructure_phase_1,,calc,"Age at [ps_meal:checked] Meal","if([ps_visit] = '0', [baseline_arm_1][v2_age], if([ps_visit] = '1', [baseline_arm_1][v3_age], if([ps_visit] = '2', [baseline_arm_1][v4_age], if([ps_visit] = '3', [baseline_arm_1][v5_age], 'NaN'))))",,,,,,[ps_meal_exist]='1',,,,,,
+ps_reader,ps_meal_microstructure_phase_1,,radio,"Was the Parent or the Researcher Reading to the Child During the Meal?","0, Researcher | 1, Parent | 2, Audible",,,,,,[ps_meal_exist]='1',y,,,,,
+ps_saved_cloud,ps_meal_microstructure_phase_1,,radio,"1) Meal was saved according to portions size, not visit number on OneDrive
+
+Save to: Save to: .../Participant_Data/Noldus Videos/BehavioralCoding/ProtionSizeVideos","0, Incomplete | 1, Complete | 2, Error",,,,,,[ps_meal_exist]='1',y,,,,,
+ps_videosave_notes,ps_meal_microstructure_phase_1,,notes,"Meal Portion Size Video Saving Error:
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,[ps_saved_cloud]='2',y,,,,,
+ps_resolve_save,ps_meal_microstructure_phase_1,,radio,"Resolve Error Saving Portion Size Video","0, Unresolved | 1, Resolved",,,,,,[ps_saved_cloud]='2',y,,,,,
+ps_meal_code_ph1,ps_meal_microstructure_phase_1,,radio,"Meal Coded?","1, Yes | 0, No",,,,,,"[ps_saved_cloud] = '1' OR [ps_resolve_save]='1'",,,,,,
+ps_meal_reason_ph1,ps_meal_microstructure_phase_1,,notes,"Detail reason for not coding video:
+
+1) Describe why video was not coded in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[ps_meal_code_ph1] = '0'",,,,,,
+ps_coder1_ph1,ps_meal_microstructure_phase_1,"Coder 1 - Phase 1 Behavioral Coding",text,"First Coder for Phase 1",,,,,,,"[ps_meal_code_ph1] = '1'",y,,,,,
+ps_coder1_date_ph1,ps_meal_microstructure_phase_1,,text,"First Coder for Phase 1 Date",,,date_mdy,,,,"[ps_meal_code_ph1] = '1'",y,,,,,
+ps_vidload_coder1,ps_meal_microstructure_phase_1,,radio,"[ps_meal:checked] loaded into ObserverXT for Coder 1
+","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[ps_coder1_date_ph1] <> ''",y,,,,,
+ps_vidload_coder1_issue,ps_meal_microstructure_phase_1,,notes,"Detail Issues with loading [ps_meal:checked] into ObserverXT:
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[ps_vidload_coder1] = '2'",y,,,,,
+ps_vidload_coder1_resolve,ps_meal_microstructure_phase_1,,radio,"[ps_meal:checked] ObserverXT issues:","0, Unresolved | 1, Resolved",,,,,,"[ps_vidload_coder1] = '2'",y,,,,,
+ps_coder1_crop_start,ps_meal_microstructure_phase_1,,radio,"First Coder: Was video cropped at the start (i.e., starts after meal duration started)?","0, No | 1, Yes",,,,,,"[ps_coder1_date_ph1] <> ''",,,,,,
+ps_coder1_crop_end,ps_meal_microstructure_phase_1,,radio,"First Coder: Was video cropped at the end (i.e., ends before meal duration ends)?","0, No | 1, Yes",,,,,,"[ps_coder1_date_ph1] <> ''",,,,,,
+ps_coder1_childtalk,ps_meal_microstructure_phase_1,,radio,"First Coder: Did the child talk during the meal (i.e., child transcription)?","0, No | 1, Yes",,,,,,"[ps_coder1_date_ph1] <> ''",,,,,,
+ps_coder1_q_ph1,ps_meal_microstructure_phase_1,,notes,"First Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,"[ps_coder1_date_ph1] <> ''",,,,,," @MAXCHECKED=1"
+ps_coder1_qcheck_ph1,ps_meal_microstructure_phase_1,,radio,"First coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[ps_coder1_q_ph1]<>'',y,,,,,
+ps_coder2_ph1,ps_meal_microstructure_phase_1," Coder 2 - Phase 1 Behavioral Coding",text,"Second Coder for Phase 1",,,,,,,[ps_coder1_date_ph1]<>'',y,,,,,
+ps_coder2_date_ph1,ps_meal_microstructure_phase_1,,text,"Second Coder for Phase 1 Date",,,date_mdy,,,,[ps_coder1_date_ph1]<>'',y,,,,,
+ps_vidload_coder2,ps_meal_microstructure_phase_1,,radio,"[ps_meal:checked] loaded into ObserverXT for Coder 2
+","0, Incomplete | 1, Complete | 2, Errors",,,,,,[ps_coder2_date_ph1]<>'',y,,,,,
+ps_vidload_issue_coder2,ps_meal_microstructure_phase_1,,notes,"Detail Issues with loading [ps_meal:checked] into ObserverXT
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[ps_vidload_coder2] = '2'",y,,,,,
+ps_vidload_resolve_coder2,ps_meal_microstructure_phase_1,,radio,"[ps_meal:checked] ObserverXT issues:","0, Unresolved | 1, Resolved",,,,,,"[ps_vidload_coder2] = '2'",y,,,,,
+ps_coder2_crop_start,ps_meal_microstructure_phase_1,,radio,"Second Coder: Was video cropped at the start (i.e., starts after meal duration starts)?","0, No | 1, Yes",,,,,,"[ps_coder2_date_ph1] <> ''",,,,,,
+ps_coder2_crop_end,ps_meal_microstructure_phase_1,,radio,"Second Coder: Was video cropped at the end (i.e., ends before meal duration ends)?","0, No | 1, Yes",,,,,,"[ps_coder2_date_ph1] <> ''",,,,,,
+ps_coder2_childtalk,ps_meal_microstructure_phase_1,,radio,"Second Coder: Did the child talk during the meal (i.e., child transcription)?","0, No | 1, Yes",,,,,,"[ps_coder2_date_ph1] <> ''",,,,,,
+ps_coder2_q_ph1,ps_meal_microstructure_phase_1,,notes,"Second Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,[ps_coder2_date_ph1]<>'',,,,,," @MAXCHECKED=1"
+ps_coder2_qcheck_ph1,ps_meal_microstructure_phase_1,,radio,"Second coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[ps_coder2_q_ph1]<>'',y,,,,,
+ps_irr_ph1,ps_meal_microstructure_phase_1,"Reliability - Phase 1 Behavioral Coding",radio,"Phase 1 reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[ps_coder2_date_ph1] <> ''",y,,,,,
+ps_irr_issues_ph1,ps_meal_microstructure_phase_1,,notes,"Phase 1 reliability issues
+",,,,,,,[ps_irr_ph1]='2',y,,,,,
+ps_irr_recode_ph1,ps_meal_microstructure_phase_1,,radio,"Phase 1 re-coded to improve reliability
+","0, Incomplete | 1, Complete",,,,,,[ps_irr_ph1]='2',y,,,,,
+ps_irr_recode_check_ph1,ps_meal_microstructure_phase_1,,radio,"Phase 1 re-coded reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[ps_irr_recode_ph1] = '1'",y,,,,,
+ps_ph2recode,ps_meal_microstructure_phase_1,,yesno,"Re-Coded after Phase 2?",,,,,,,[ps_meal_code_ph1]='1',,,,,,
+ps_recodeph2_coder1,ps_meal_microstructure_phase_1,,text,"First Coder for Phase 2 Re-Code",,,,,,,"[ps_ph2recode] = 1",y,,,,,
+ps_recodeph2_coder1_date,ps_meal_microstructure_phase_1,,text,"First Coder for Phase 2 Re-Code Date",,,date_mdy,,,,"[ps_ph2recode] = 1",y,,,,,
+ps_recodeph2_coder2,ps_meal_microstructure_phase_1,,text,"Second Coder for Phase 2 Re-Code",,,,,,,"[ps_ph2recode] = 1",y,,,,,
+ps_recodeph2_coder2_date,ps_meal_microstructure_phase_1,,text,"Second Coder for Phase 2 Re-Code Date",,,date_mdy,,,,"[ps_ph2recode] = 1",y,,,,,
+ps_meal_exist_check,ps_meal_microstructure_reliability_checks,,radio,"Confirm meal video was not collected:","1, Yes | 0, No",,,,,,[ps_meal_exist]='0',,,,,,
+ps_meal_check_rc,ps_meal_microstructure_reliability_checks,,radio,"Confirm Meal Portion Size Matches [ps_meal:checked]","0, No | 1, Yes",,,,,,[ps_meal_exist]='1',,,,,,
+ps_meal_reason_check_rc,ps_meal_microstructure_reliability_checks,,radio,"Confirm reason for no coding meal: [ps_meal_reason_ph1]","1, Yes | 0, No",,,,,,"[ps_meal_code_ph1] = '0'",,,,,,
+ps_coder_rc,ps_meal_microstructure_reliability_checks,,text,"Coder checking reliability/validating coding",,,,,,,"[ps_meal_exist]='1' OR [ps_meal_code_ph1] = '1'",y,,,,,
+ps_date_rc,ps_meal_microstructure_reliability_checks,,text,"Reliability Check/Validation Date",,,date_mdy,,,,"[ps_meal_check_rc] = '1' AND [ps_meal_code_ph1] = '1'",y,,,,,
+ps_bitesip_rc,ps_meal_microstructure_reliability_checks,,radio,"Check reliability of bites and sips:","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[ps_date_rc] <> ''",,,,,,
+ps_bitesip_error_rc,ps_meal_microstructure_reliability_checks,,notes,"Detail issues with number of bites and sips:
+",,,,,,,"[ps_bitesip_rc] = '2'",y,,,,," @MAXCHECKED=1"
+ps_bitesip_resolve_rc,ps_meal_microstructure_reliability_checks,,radio,"Resolve issues with number of bites and sips
+","0, Unresolved | 1, Resolved",,,,,,"[ps_bitesip_error_rc] <> ''",y,,,,,
+ps_mealdur_rc,ps_meal_microstructure_reliability_checks,,radio,"Check reliability of meal duration:","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[ps_date_rc] <> ''",,,,,,
+ps_mealdur_error_rc,ps_meal_microstructure_reliability_checks,,notes,"Detail issues with meal duration:
+",,,,,,,"[ps_mealdur_rc] = '2'",y,,,,," @MAXCHECKED=1"
+ps_mealdur_resolve_rc,ps_meal_microstructure_reliability_checks,,radio,"Resolve issues with meal duration","0, Unresolved | 1, Resolved",,,,,,"[ps_mealdur_error_rc] <> ''",y,,,,,
+ps_meal_exist_check_ph2,ps_meal_microstructure_phase_2,,yesno,"Confirm meal video was not collected:",,,,,,,[ps_meal_exist]='0',,,,,,"1, Yes
+0, No"
+ps_meal_check_ph2,ps_meal_microstructure_phase_2,,radio,"Confirm Meal Portion Size Matches [ps_meal:checked]","0, No | 1, Yes",,,,,,[ps_meal_exist]='1',,,,,,
+ps_meal_reason_check_ph2,ps_meal_microstructure_phase_2,,radio,"Confirm reason for no coding meal: [ps_meal_reason_ph1]",,,,,,,"[ps_meal_code_ph1] = '0'",,,,,,"1, Yes
+0, No"
+ps_coder1_ph2,ps_meal_microstructure_phase_2,"Coder 1 - Phase 2 Behavioral Coding",text,"First Coder for Phase 2",,,,,,,"[ps_meal_check_ph2] = '1' AND [ps_meal_code_ph1] = '1'",y,,,,,
+ps_coder1_date_ph2,ps_meal_microstructure_phase_2,,text,"First Coder for Phase 2 Date",,,date_mdy,,,,"[ps_meal_check_ph2] = '1' AND [ps_meal_code_ph1] = '1'",y,,,,,
+ps_coder1_start_affect,ps_meal_microstructure_phase_2,,radio,"First Coder: Rate Start of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[ps_coder1_date_ph2] <> ''",,,,,,
+ps_coder1_end_affect,ps_meal_microstructure_phase_2,,radio,"First Coder: Rate End of Meal Affect
+","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[ps_coder1_date_ph2] <> ''",,,,,,
+ps_coder1_distraction,ps_meal_microstructure_phase_2,,radio,"First Coder - Did distraction behaviors occur?
+
+Mark if any active distraction behaviors occurred (e.g., if the child gets up from the chair)","0, No | 1, Yes",,,,,,"[ps_coder1_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+ps_coder1_story,ps_meal_microstructure_phase_2,,radio,"First Coder: Visible Engagement with Story?
+
+
+","0, None - They did not engage with the story in a visible and clear way. | 1, During active eating time - at least once, the child the kid asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) DURING an episode of active eating | 2, Not during active eating time - at least once, the child asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) separate from active eating",,,,,,"[ps_coder1_date_ph2] <> ''",,,,,,
+ps_coder1_rprompt,ps_meal_microstructure_phase_2,,radio,"First Coder: Did the researcher prompt the end of the meal?
+
+Mark this if the researcher asks if the child is done eating (while they are clearly not finished or having not given any indication that they are finished). ","0, No | 1, Yes",,,,,,"[ps_coder1_date_ph2] <> ''",,,,,,
+ps_coder1_q_ph2,ps_meal_microstructure_phase_2,,notes,"First Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,"[ps_coder1_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+ps_coder1_qcheck_ph2,ps_meal_microstructure_phase_2,,radio,"First coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[ps_coder1_q_ph2]<>'',y,,,,,
+ps_coder2_ph2,ps_meal_microstructure_phase_2,"Coder 2 - Phase 2 Behavioral Coding",text,"Second Coder for Phase 2",,,,,,,"[ps_coder1_date_ph2] <> ''",y,,,,,
+ps_coder2_date_ph2,ps_meal_microstructure_phase_2,,text,"Second Coder for Phase 2 Date",,,date_mdy,,,,[ps_coder1_date_ph2]<>'',y,,,,,
+ps_coder2_start_affect,ps_meal_microstructure_phase_2,,radio,"Second Coder: Rate Start of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[ps_coder2_date_ph2] <> ''",,,,,,
+ps_coder2_end_affect,ps_meal_microstructure_phase_2,,radio,"Second Coder: Rate End of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[ps_coder2_date_ph2] <> ''",,,,,,
+ps_coder2_distraction,ps_meal_microstructure_phase_2,,radio,"Second Coder - Did distraction behaviors occur?
+
+Mark if any active distraction behaviors occurred (e.g., if the child gets up from the chair)","0, No | 1, Yes",,,,,,"[ps_coder2_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+ps_coder2_story,ps_meal_microstructure_phase_2,,radio,"Second Coder: Visible Engagement with Story?","0, None - They did not engage with the story in a visible and clear way. | 1, During active eating time - at least once, the child the kid asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) DURING an episode of active eating | 2, Not during active eating time - at least once, the child asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) separate from active eating",,,,,,"[ps_coder2_date_ph2] <> ''",,,,,,
+ps_coder2_rprompt,ps_meal_microstructure_phase_2,,radio,"Second Coder: Did the researcher prompt the end of the meal?
+
+Mark this if the researcher asks if the child is done eating (while they are clearly not finished or having not given any indication that they are finished). ","0, No | 1, Yes",,,,,,"[ps_coder2_date_ph2] <> ''",,,,,,
+ps_coder2_q_ph2,ps_meal_microstructure_phase_2,,notes,"Second Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,[ps_coder2_date_ph2]<>'',,,,,," @MAXCHECKED=1"
+ps_coder2_qcheck_ph2,ps_meal_microstructure_phase_2,,radio,"Second coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[ps_coder2_q_ph2]<>'',y,,,,,
+ps_irr_ph2,ps_meal_microstructure_phase_2,"Reliability - Phase 2 Behavioral Coding",radio,"Phase 2 reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[ps_coder2_date_ph2] <> ''",y,,,,,
+ps_irr_issues_ph2,ps_meal_microstructure_phase_2,,notes,"Phase 2 reliability issues
+",,,,,,,[ps_irr_ph2]='2',y,,,,," @MAXCHECKED=1"
+ps_irr_recode_ph2,ps_meal_microstructure_phase_2,,radio,"Phase 2 re-coded to improve reliability
+","0, Incomplete | 1, Complete",,,,,,[ps_irr_ph2]='2',y,,,,,
+ps_irr_recode_check_ph2,ps_meal_microstructure_phase_2,,radio,"Phase 2 re-coded reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[ps_irr_recode_ph2] = '1'",y,,,,,
+v1v7_ok,microstructure_new,,yesno,"Meal Video Collected?",,,,,,,,,,,,,
+ms_coding,microstructure_new,,radio,"Participant videos ready to be coded?","1, Yes | 2, No",,,,,,[v1v7_ok]='1',,,,,,
+v1v7_meal_exist,v1v7_meal_microstructure_phase_1,,yesno,"Meal Video Collected?",,,,,,,,,,,,,
+v1v7_meal,v1v7_meal_microstructure_phase_1,,radio,"Meal Visit:","0, Visit 1 (baseline) | 1, Visit 7 (follow-up)",,,,,,[v1v7_meal_exist]='1',,,,,,
+v1v7_visit_age,v1v7_meal_microstructure_phase_1,,calc,"Age at [v1v7_meal:checked] Meal","if([v1v7_meal] = '0', [baseline_arm_1][v1_age], if([v1v7_meal] = '1', [baseline_arm_1][v7_age], 'NaN'))",,,,,,[v1v7_meal_exist]='1',,,,,,
+v1v7_meal_reader,v1v7_meal_microstructure_phase_1,,radio,"Was the Parent or the Researcher Reading to the Child During the Meal?","0, Researcher | 1, Parent | 2, Audible",,,,,,[v1v7_meal_exist]='1',y,,,,,
+v1v7_savedraw_cloud,v1v7_meal_microstructure_phase_1,,radio,"1) Meal was saved on OneDrive
+
+Save to: .../Participant_Data/Noldus Videos/Visit X/Raw
+","0, Incomplete | 1, Complete | 2, Error",,,,,,[v1v7_meal_exist]='1',y,,,,,
+v1v7_videosaveraw_notes,v1v7_meal_microstructure_phase_1,,notes,"Meal Video Saving Error:
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,[v1v7_savedraw_cloud]='2',y,,,,,
+v1v7_resolve_saveraw,v1v7_meal_microstructure_phase_1,,radio,"Resolve Error Saving Meal Video","0, Unresolved | 1, Resolved",,,,,,[v1v7_savedraw_cloud]='2',y,,,,,
+v1v7_savedcrop_cloud,v1v7_meal_microstructure_phase_1,,radio,"2) Meal was cropped into Meal and EAH videos and Saved on OneDrive
+
+Save to: .../Participant_Data/Noldus Videos/Visit X/Cropped_EAH  AND  .../Participant_Data/Noldus Videos/Visit X/Cropped_Meal","0, Incomplete | 1, Complete | 2, Error",,,,,,"[v1v7_savedraw_cloud] = '1' OR [v1v7_resolve_saveraw] = '1'",y,,,,,
+v1v7_videosavecrop_notes,v1v7_meal_microstructure_phase_1,,notes,"Meal Cropping or Saving Error:
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,[v1v7_savedcrop_cloud]='2',y,,,,,
+v1v7_resolve_savecrop,v1v7_meal_microstructure_phase_1,,radio,"Resolve Error Saving Meal Video","0, Unresolved | 1, Resolved",,,,,,[v1v7_savedcrop_cloud]='2',y,,,,,
+v1v7_meal_code_ph1,v1v7_meal_microstructure_phase_1,,radio,"Meal Coded?","1, Yes | 0, No",,,,,,"([v1v7_savedraw_cloud] = '1' OR [v1v7_resolve_saveraw]='1') AND ([v1v7_savedcrop_cloud] = '1' OR [v1v7_resolve_savecrop]='1')",,,,,,
+v1v7_meal_reason_ph1,v1v7_meal_microstructure_phase_1,,notes,"Detail reason for not coding meal:
+
+1) Explain why video was not coded
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[v1v7_meal_code_ph1] = '0'",,,,,,
+v1v7_coder1_ph1,v1v7_meal_microstructure_phase_1,"Coder 1 - Phase 1 Behavioral Coding",text,"First Coder for Phase 1",,,,,,,"[v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_coder1_date_ph1,v1v7_meal_microstructure_phase_1,,text,"First Coder for Phase 1 Date",,,date_mdy,,,,"[v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_vidload_coder1,v1v7_meal_microstructure_phase_1,,radio,"[v1v7_meal:checked] loaded into ObserverXT for Coder 1
+","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[v1v7_coder1_date_ph1] <> ''",y,,,,,
+v1v7_vidload_coder1_issue,v1v7_meal_microstructure_phase_1,,notes,"Detail Issues with loading [v1v7_meal:checked] into ObserverXT
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[v1v7_vidload_coder1] = '2'",y,,,,,
+v1v7_vidload_coder1_resolve,v1v7_meal_microstructure_phase_1,,radio,"[v1v7_meal:checked] ObserverXT issues:","0, Unresolved | 1, Resolved",,,,,,"[v1v7_vidload_coder1] = '2'",y,,,,,
+v1v7_coder1_crop_start,v1v7_meal_microstructure_phase_1,,radio,"First Coder: Was video cropped at the start (i.e., starts after meal duration started)?","0, No | 1, Yes",,,,,,"[v1v7_coder1_date_ph1] <> ''",,,,,,
+v1v7_coder1_crop_end,v1v7_meal_microstructure_phase_1,,radio,"First Coder: Was video cropped at the end (i.e., ends before meal duration ends)?","0, No | 1, Yes",,,,,,"[v1v7_coder1_date_ph1] <> ''",,,,,,
+v1v7_coder1_childtalk,v1v7_meal_microstructure_phase_1,,radio,"First Coder: Did the child talk during the meal (i.e., child transcription)?","0, No | 1, Yes",,,,,,"[v1v7_coder1_date_ph1] <> ''",,,,,,
+v1v7_coder1_q_ph1,v1v7_meal_microstructure_phase_1,,notes,"First Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,"[v1v7_coder1_date_ph1] <> ''",,,,,," @MAXCHECKED=1"
+ps_coder1_qcheck_ph1_v2,v1v7_meal_microstructure_phase_1,,radio,"First coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[v1v7_coder1_q_ph1]<>'',y,,,,,
+v1v7_coder2_ph1,v1v7_meal_microstructure_phase_1,"Coder 2 - Phase 1 Behavioral Coding",text,"Second Coder for Phase 1",,,,,,,[v1v7_coder1_date_ph1]<>'',y,,,,,
+v1v7_coder2_date_ph1,v1v7_meal_microstructure_phase_1,,text,"Second Coder for Phase 1 Date",,,date_mdy,,,,[v1v7_coder1_date_ph1]<>'',y,,,,,
+v1v7_vidload_coder2,v1v7_meal_microstructure_phase_1,,radio,"[v1v7_meal:checked] loaded into ObserverXT for Coder 2
+","0, Incomplete | 1, Complete | 2, Errors",,,,,,[v1v7_coder2_date_ph1]<>'',y,,,,,
+v1v7_vidload_issue_coder2,v1v7_meal_microstructure_phase_1,,notes,"Detail Issues with loading [v1v7_meal:checked] into ObserverXT
+
+1) Copy exact error message/issue in text box
+2) Email Senior RA with error/issue 
+3) Mark status as 'Incomplete' at bottom of form",,,,,,,"[v1v7_vidload_coder2] = '2'",y,,,,,
+v1v7_vidload_resolve_coder2,v1v7_meal_microstructure_phase_1,,radio,"[v1v7_meal:checked] ObserverXT issues:","0, Unresolved | 1, Resolved",,,,,,"[v1v7_vidload_coder2] = '2'",y,,,,,
+v1v7_coder2_qcheck_ph1,v1v7_meal_microstructure_phase_1,,radio,"Second coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[v1v7_coder2_q_ph1]<>'',y,,,,,
+v1v7_coder2_crop_start,v1v7_meal_microstructure_phase_1,,radio,"Second Coder: Was video cropped at the start (i.e., starts after meal duration starts)?","0, No | 1, Yes",,,,,,"[v1v7_coder2_date_ph1] <> ''",,,,,,
+v1v7_coder2_crop_end,v1v7_meal_microstructure_phase_1,,radio,"Second Coder: Was video cropped at the end (i.e., ends before meal duration ends)?","0, No | 1, Yes",,,,,,"[v1v7_coder2_date_ph1] <> ''",,,,,,
+v1v7_coder2_childtalk,v1v7_meal_microstructure_phase_1,,radio,"Second Coder: Did the child talk during the meal (i.e., child transcription)?","0, No | 1, Yes",,,,,,"[v1v7_coder2_date_ph1] <> ''",,,,,,
+v1v7_coder2_q_ph1,v1v7_meal_microstructure_phase_1,,notes,"Second Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,[v1v7_coder2_date_ph1]<>'',,,,,," @MAXCHECKED=1"
+v1v7_irr_ph1,v1v7_meal_microstructure_phase_1,"Reliability - Phase 1 Behavioral Coding",radio,"Phase 1 reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[v1v7_coder2_date_ph1] <> ''",y,,,,," @MAXCHECKED=1"
+v1v7_irr_issues_ph1,v1v7_meal_microstructure_phase_1,,notes,"Phase 1 reliability issues
+",,,,,,,[v1v7_irr_ph1]='2',y,,,,," @MAXCHECKED=1"
+v1v7_irr_recode_ph1,v1v7_meal_microstructure_phase_1,,radio,"Phase 1 re-coded to improve reliability
+","0, Incomplete | 1, Complete",,,,,,[v1v7_irr_ph1]='2',y,,,,,
+v1v7_irr_recode_check_ph1,v1v7_meal_microstructure_phase_1,,radio,"Phase 1 re-coded reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[v1v7_irr_recode_ph1] = '1'",y,,,,,
+v1v7_recodeph2,v1v7_meal_microstructure_phase_1,,yesno,"Re-Coded after Phase 2?",,,,,,,[v1v7_meal_code_ph1]='1',y,,,,,
+v1v7_recodeph2_coder1,v1v7_meal_microstructure_phase_1,,text,"First Coder for Phase 2 Re-Code",,,,,,,"[v1v7_recodeph2] = '1'",y,,,,,
+v1v7_recodeph2_coder1_date,v1v7_meal_microstructure_phase_1,,text,"First Coder for Phase 2 Re-Code Date",,,date_mdy,,,,"[v1v7_recodeph2] = '1'",y,,,,,
+v1v7_recodeph2_coder2,v1v7_meal_microstructure_phase_1,,text,"Second Coder for Phase 2 Re-Code",,,,,,,"[v1v7_recodeph2] = '1'",y,,,,,
+v1v7_recodeph2_coder2_date,v1v7_meal_microstructure_phase_1,,text,"Second Coder for Phase 2 Re-Code Date",,,date_mdy,,,,"[v1v7_recodeph2] = '1'",y,,,,,
+v1v7_meal_exist_check,v1v7_meal_microstructure_reliability_checks_2,,radio,"Confirm meal video was not collected:","0, No | 1, Yes",,,,,,[v1v7_meal_exist]='0',,,,,,
+v1v7_meal_check_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Confirm Meal Portion Size Matches [v1v7_meal:checked]","0, No | 1, Yes",,,,,,[v1v7_meal_exist]='1',,,,,,
+v1v7_meal_reason_check_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Confirm reason for not coding video: [v1v7_meal_reason_ph1]",,,,,,,"[v1v7_meal_code_ph1] = '0'",,,,,,
+v1v7_coder_rc,v1v7_meal_microstructure_reliability_checks_2,,text,"Coder checking reliability/validating coding",,,,,,,"[v1v7_meal_check_rc] = '1' AND [v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_date_rc,v1v7_meal_microstructure_reliability_checks_2,,text,"Reliability Check/Validation Date",,,date_mdy,,,,"[v1v7_meal_check_rc] = '1' AND [v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_bitesip_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Check reliability of bites and sips:","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[v1v7_date_rc] <> ''",,,,,,
+v1v7_bitesip_error_rc,v1v7_meal_microstructure_reliability_checks_2,,notes,"Detail issues with number of bites and sips:
+",,,,,,,"[v1v7_bitesip_rc] = '2'",y,,,,," @MAXCHECKED=1"
+v1v7_bitesip_resolve_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Resolve issues with number of bites and sips
+","0, Unresolved | 1, Resolved",,,,,,"[v1v7_bitesip_error_rc] <> ''",y,,,,,
+v1v7_mealdur_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Check reliability of meal duration:","0, Incomplete | 1, Complete | 2, Errors",,,,,,"[v1v7_date_rc] <> ''",,,,,,
+v1v7_mealdur_error_rc,v1v7_meal_microstructure_reliability_checks_2,,notes,"Detail issues with meal duration:
+",,,,,,,"[v1v7_mealdur_rc] = '2'",y,,,,," @MAXCHECKED=1"
+v1v7_mealdur_resolve_rc,v1v7_meal_microstructure_reliability_checks_2,,radio,"Resolve issues with meal duration","0, Unresolved | 1, Resolved",,,,,,"[v1v7_mealdur_error_rc] <> ''",y,,,,,
+v1v7_meal_exist_check_ph2,v1v7_meal_microstructure_phase_2,,radio,"Confirm meal video was not collected:","0, No | 1, Yes",,,,,,[v1v7_meal_exist]='0',,,,,,
+v1v7_meal_check_ph2,v1v7_meal_microstructure_phase_2,,radio,"Confirm Meal Visit Matches [v1v7_meal:checked]","0, No | 1, Yes",,,,,,[v1v7_meal_exist]='1',,,,,,
+v1v7_meal_reason_ph2,v1v7_meal_microstructure_phase_2,,radio,"Confirm reason for not coding video: [v1v7_meal_reason_ph1]","1, Yes | 0, No",,,,,,"[v1v7_meal_code_ph1] = '0'",,,,,,
+v1v7_coder1_ph2,v1v7_meal_microstructure_phase_2,"Coder 1 - Phase 2 Behavioral Coding",text,"First Coder for Phase 2",,,,,,,"[v1v7_meal_check_ph2] = '1' AND [v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_coder1_date_ph2,v1v7_meal_microstructure_phase_2,,text,"First Coder for Phase 2 Date",,,date_mdy,,,,"[v1v7_meal_check_ph2] = '1' AND [v1v7_meal_code_ph1] = '1'",y,,,,,
+v1v7_coder1_start_affect,v1v7_meal_microstructure_phase_2,,radio,"First Coder: Rate Start of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,,
+v1v7_coder1_end_affect,v1v7_meal_microstructure_phase_2,,radio,"First Coder: Rate End of Meal Affect
+","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,,
+v1v7_coder1_distraction,v1v7_meal_microstructure_phase_2,,radio,"First Coder - Did distraction behaviors occur?
+
+Mark if any active distraction behaviors occurred (e.g., if the child gets up from the chair)","0, No | 1, Yes",,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+v1v7_coder1_story,v1v7_meal_microstructure_phase_2,,radio,"First Coder: Visible Engagement with Story?
+
+
+","0, None - They did not engage with the story in a visible and clear way. | 1, During active eating time - at least once, the child the kid asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) DURING an episode of active eating | 2, Not during active eating time - at least once, the child asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) separate from active eating",,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,,
+v1v7_coder1_rprompt,v1v7_meal_microstructure_phase_2,,radio,"First Coder: Did the researcher prompt the end of the meal?
+
+Mark this if the researcher asks if the child is done eating (while they are clearly not finished or having not given any indication that they are finished). ","0, No | 1, Yes",,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,,
+v1v7_coder1_q_ph2,v1v7_meal_microstructure_phase_2,,notes,"First Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,"[v1v7_coder1_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+v1v7_coder1_qcheck_ph2,v1v7_meal_microstructure_phase_2,,radio,"First coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[v1v7_coder1_q_ph2]<>'',y,,,,,
+v1v7_coder2_ph2,v1v7_meal_microstructure_phase_2,"Coder 2 - Phase 2 Behavioral Coding",text,"Second Coder for Phase 2",,,,,,,"[v1v7_coder1_date_ph2] <> ''",y,,,,,
+v1v7_coder2_date_ph2,v1v7_meal_microstructure_phase_2,,text,"Second Coder for Phase 2 Date",,,date_mdy,,,,[v1v7_coder1_date_ph2]<>'',y,,,,,
+v1v7_coder2_start_affect,v1v7_meal_microstructure_phase_2,,radio,"Second Coder: Rate Start of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[v1v7_coder2_date_ph2] <> ''",,,,,,
+v1v7_coder2_end_affect,v1v7_meal_microstructure_phase_2,,radio,"Second Coder: Rate End of Meal Affect","2, Laughter, clapping, moving hands to show excitement, open mouth smiles, explicit and direct verbal excitement and approval (2) | 1, Slight smiles, shaking head yes, verbal suggestion of approval (1) | 0, Shows no emotion or reaction to meal start/end. Completely neutral (0) | -1, Frowning, shaking head, looking confused/disgusted, any verbal suggestion of dislike or disapproval (-1) | -2, Vigorously shaking head or waving hands to reject food, explicit and direct negative verbal remark (-2) | 99, Meal starts or ends outside of video, so affect cannot be ranked (n/a)",,,,,,"[v1v7_coder2_date_ph2] <> ''",,,,,,
+v1v7_coder2_distraction,v1v7_meal_microstructure_phase_2,,radio,"First Coder - Did distraction behaviors occur?
+
+Mark if any active distraction behaviors occurred (e.g., if the child gets up from the chair)","0, No | 1, Yes",,,,,,"[v1v7_coder2_date_ph2] <> ''",,,,,," @MAXCHECKED=1"
+v1v7_coder2_story,v1v7_meal_microstructure_phase_2,,radio,"Second Coder: Visible Engagement with Story?","0, None - They did not engage with the story in a visible and clear way. | 1, During active eating time - at least once, the child the kid asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) DURING an episode of active eating | 2, Not during active eating time - at least once, the child asked questions about the story or engaged with the researcher about the story (making comments, laughing, getting up to look at book) separate from active eating",,,,,,"[v1v7_coder2_date_ph2] <> ''",,,,,,
+v1v7_coder2_rprompt,v1v7_meal_microstructure_phase_2,,radio,"Second Coder: Did the researcher prompt the end of the meal?
+
+Mark this if the researcher asks if the child is done eating (while they are clearly not finished or having not given any indication that they are finished). ","0, No | 1, Yes",,,,,,"[v1v7_coder2_date_ph2] <> ''",,,,,,
+v1v7_coder2_q_ph2,v1v7_meal_microstructure_phase_2,,notes,"Second Coder notes or questions:
+
+Be sure to note the @time:
+
+Ex: verify @##.## - second bite or not?
+",,,,,,,[v1v7_coder2_date_ph2]<>'',,,,,," @MAXCHECKED=1"
+v1v7_coder2_qcheck_ph2,v1v7_meal_microstructure_phase_2,,radio,"Second coder questions and/or notes  resolved
+","0, Incomplete | 1, Complete",,,,,,[v1v7_coder2_q_ph2]<>'',y,,,,,
+v1v7_irr_ph2,v1v7_meal_microstructure_phase_2,"Reliability - Phase 1 Behavioral Coding",radio,"Phase 2 reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[v1v7_coder2_date_ph2] <> ''",y,,,,,
+v1v7_irr_issues_ph2,v1v7_meal_microstructure_phase_2,,notes,"Phase 2 reliability issues
+",,,,,,,[v1v7_irr_ph2]='2',y,,,,," @MAXCHECKED=1"
+v1v7_irr_recode_ph2,v1v7_meal_microstructure_phase_2,,radio,"Phase 2 re-coded to improve reliability
+","0, Incomplete | 1, Complete",,,,,,[v1v7_irr_ph2]='2',y,,,,,
+v1v7_irr_recode_check_ph2,v1v7_meal_microstructure_phase_2,,radio,"Phase 2 re-coded reliability checked
+","0, Incomplete | 1, Good Reliability | 2, Poor Reliability",,,,,,"[v1v7_irr_recode_ph2] = '1'",y,,,,,

@@ -566,12 +566,16 @@ if args.overwrite is None:
     subs_exist_str = [str(item).zfill(3) for item in subs_exist]
     
     #compare subject_list to subs_exist
-    for sub in subject_list:
-        if sub in subs_exist_str:
-            
-            #remove sub if in list that exists in database already
-            print('Skipping sub-' + str(sub) + ' - Exists in database already.')
-            subject_list.remove(sub)
+    #get intersection
+    match_subs = list(set.intersection(set(subject_list), set(subs_exist_str)))
+    
+    #report
+    for sub in match_subs:
+        #remove sub if in list that exists in database already
+        print('Skipping sub-' + str(sub) + ' - Exists in database already.')
+    
+    #get subject_list
+    subject_list = list(set(subject_list) -  set(match_subs))
         
     #node to get list of ids to process - selectfiles
     if len(subject_list) > 0:

@@ -96,7 +96,7 @@ def bidsformat_nback_raw(raw_filepath, block, base_directory):
 ##############################################################################
 
 # get script location
-script_path = Path(os.path.dirname(__file__))
+script_path = Path(__file__).parent.resolve()
 
 # change directory to base directory and get path
 os.chdir(script_path)
@@ -112,7 +112,7 @@ nback_raw_path = Path(base_directory).joinpath('untouchedRaw/Nback_Raw')
 nback_raw_files = list(Path(nback_raw_path).rglob('NBack*.txt'))
 
 #Create error file. Overwrite existing error file if it exists
-error_file = open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "w+")
+error_file = open(Path(script_path).joinpath('Nback_DataOrg_error.txt'), "w+")
 
 # loop through files in raw Nback directory
 for filepath in nback_raw_files:
@@ -137,10 +137,10 @@ for filepath in nback_raw_files:
     #copy exported .txt file to sourcedata
     copy2(filepath, Path(beh_source_bids_path))
 
-    # set json file templates for raw GNG and practice file
+    # set json file templates for raw Nback and practice file
     json_template_path = Path(base_directory).joinpath('orgRaw_scripts/templates_json/task-nback' + block + '_' + str(ncol_source) + 'col_source_template.json')
 
-    # set raw GNG json file destination names
+    # set raw Nback json file destination names
     json_nback_sourcename = Path(beh_source_bids_path).joinpath('NBack_' + block + '_Raw_' + subname + '-' + sesnum + '.json')
 
     #copy source json file

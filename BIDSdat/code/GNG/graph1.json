@@ -4,10 +4,9 @@
             "name": "Group_00001",
             "procs": [
                 0,
-                1,
-                2
+                1
             ],
-            "total": 3
+            "total": 2
         }
     ],
     "links": [
@@ -15,14 +14,9 @@
             "source": 0,
             "target": 1,
             "value": 1
-        },
-        {
-            "source": 1,
-            "target": 2,
-            "value": 1
         }
     ],
-    "maxN": 3,
+    "maxN": 2,
     "nodes": [
         {
             "group": 1,
@@ -35,12 +29,6 @@
             "name": "1_summaryData",
             "report": "/summaryData/_report/report.rst",
             "result": "/summaryData/result_summaryData.pklz"
-        },
-        {
-            "group": 1,
-            "name": "2_gngDatabase",
-            "report": "/gngDatabase/_report/report.rst",
-            "result": "/gngDatabase/result_gngDatabase.pklz"
         }
     ]
 }

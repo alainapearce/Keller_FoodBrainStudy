@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* SST_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-019/ses-1/beh/sub-019_ses-1_task-sst_events.tsv
+* SST_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-114/ses-1/beh/sub-114_ses-1_task-sst_events.tsv
 * function_str : def summarySST(SST_file):
     import numpy as np
     import pandas as pd
@@ -324,7 +324,7 @@ Execution Inputs
 ----------------
 
 
-* SST_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-019/ses-1/beh/sub-019_ses-1_task-sst_events.tsv
+* SST_file : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-114/ses-1/beh/sub-114_ses-1_task-sst_events.tsv
 * function_str : def summarySST(SST_file):
     import numpy as np
     import pandas as pd
@@ -638,16 +638,16 @@ Execution Outputs
 -----------------
 
 
-* summarySST_dat :   sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  19     all        all  ...  320.5625  340.374673  307.078125
-1  19    h_ed       h_ed  ...   322.375  353.488158    305.3125
-2  19    l_ed       l_ed  ...    318.75  327.416667   310.96875
-3  19  l_port     l_port  ...   309.875  332.630263   306.78125
-4  19  s_port     s_port  ...    331.25  347.927083      307.75
-5  19       1  lED_lPort  ...    256.25  358.458333      335.75
-6  19       2  lED_sPort  ...    381.25     296.375     287.375
-7  19       3  hED_sPort  ...    281.25  399.479167    343.4375
-8  19       4  hED_lPort  ...     363.5  307.393617    269.4375
+* summarySST_dat :    sub   block  condition racehorse_check  ...    us_rt      ssd ssrt_mean ssrt_int
+0  114     all        all               1  ...  439.594  223.188   326.456  319.312
+1  114    h_ed       h_ed               1  ...  465.312  223.969    290.75  266.531
+2  114    l_ed       l_ed               1  ...  413.875  222.406   362.531  367.094
+3  114  l_port     l_port               1  ...  486.357    224.5   303.906      268
+4  114  s_port     s_port               1  ...  403.222  221.875    349.23  375.438
+5  114       1  hED_lPort               1  ...  498.286  179.188   309.792  277.938
+6  114       2  hED_sPort               1  ...  439.667   268.75   271.708  274.125
+7  114       3  lED_sPort               1  ...  366.778      175   427.404  461.688
+8  114       4  lED_lPort               1  ...  474.429  269.812   298.021      251
 
 [9 rows x 17 columns]
 
@@ -656,8 +656,8 @@ Runtime info
 ------------
 
 
-* duration : 0.181724
-* hostname : ND-NTR-FCH12085
+* duration : 0.490516
+* hostname : nut-azp271-10239
 * prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/SST/summaryData/mapflow/_summaryData0
 
@@ -673,29 +673,55 @@ Environment
 * CONDA_PROMPT_MODIFIER : (base) 
 * CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
-* DYLD_LIBRARY_PATH : /opt/X11/lib/flat_namespace:/opt/X11/lib/flat_namespace
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
+* DYLD_LIBRARY_PATH : /Applications/freesurfer/lib/gcc/lib::/opt/X11/lib/flat_namespace
+* FIX_VERTEX_AREA : 
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
+* FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
+* FS_OVERRIDE : 0
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
 * HOME : /Users/azp271
 * LANG : en_US.UTF-8
+* LOCAL_DIR : /Applications/freesurfer/local
 * LOGNAME : azp271
 * LSCOLORS : ExFxBxDxCxegedabagacad
-* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
+* OS : Darwin
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin/:/Users/azp271/dcm2niix/build/bin/:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6/
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
 * PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
-* SHLVL : 2
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
+* SHLVL : 1
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
-* TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : 216F9EAF-B278-47F3-8606-A712F9800D89
-* TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
+* TERM_PROGRAM_VERSION : 433
+* TERM_SESSION_ID : 5D558CB1-2FBB-498C-9075-455C5F6CB8AA
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
 * USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
 * _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.apple.Terminal
 

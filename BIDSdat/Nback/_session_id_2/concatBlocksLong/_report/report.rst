@@ -11,528 +11,179 @@ Original Inputs
 
 
 * bids_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* block_sumDat : [array([['20', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '885.6875', '828.0'],
-       ['20', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '950.2666666666667',
-        '977.0'],
-       ['20', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '899.0', '909.0']],
-      dtype='<U32'), array([['26', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '733.25',
-        '748.0'],
-       ['26', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '828.3333333333334',
-        '769.0'],
-       ['26', '2', 'b2', '16', '44', '60', '55', '91.66666666666666',
-        '12', '75.0', '4', '25.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '86.36363636363637', '933.4166666666666',
-        '1009.0']], dtype='<U32'), array([['45', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '442.5625',
-        '428.0'],
-       ['45', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '560.1875',
-        '468.5'],
-       ['45', '2', 'b2', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '435.6875',
-        '418.5']], dtype='<U32'), array([['3', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '582.6875', '586.5'],
-       ['3', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '625.9375',
-        '570.5'],
-       ['3', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '15', '93.75', '1', '6.25', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '93.4659090909091', '812.0', '798.0']],
-      dtype='<U32'), array([['36', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '462.625', '478.5'],
-       ['36', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '607.6875', '562.5'],
-       ['36', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '654.0833333333334', '608.0']], dtype='<U32'), array([['78', '2', 'b0', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '580.9333333333333', '504.0'],
-       ['78', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '599.75', '551.0'],
-       ['78', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '13', '81.25', '3', '18.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '89.48863636363637', '699.5384615384615',
-        '609.0']], dtype='<U32'), array([['28', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '506.0', '488.0'],
-       ['28', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '549.5', '534.5'],
-       ['28', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '673.6428571428571', '689.5']], dtype='<U32'), array([['94', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '678.6875', '606.0'],
-       ['94', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '683.9375', '625.0'],
-       ['94', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '931.5714285714286', '677.0']], dtype='<U32'), array([['84', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '494.375',
-        '502.0'],
-       ['84', '2', 'b1', '16', '44', '60', '55', '91.66666666666666',
-        '14', '87.5', '2', '12.5', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '90.3409090909091', '587.5714285714286',
-        '587.0'],
-       ['84', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '888.1428571428571', '1046.0']], dtype='<U32'), array([['55', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '621.6875',
-        '587.5'],
-       ['55', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '786.375',
-        '780.0'],
-       ['55', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '795.8571428571429', '862.0']], dtype='<U32'), array([['37', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '725.1875', '722.5'],
-       ['37', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '810.0', '756.0'],
-       ['37', '2', 'b2', '16', '44', '60', '44', '73.33333333333333',
-        '11', '68.75', '5', '31.25', '33', '75.0', '11', '25.0',
-        '71.875', '822.0909090909091', '863.0']], dtype='<U32'), array([['6', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '490.375',
-        '461.0'],
-       ['6', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '655.1875', '648.0']],
-      dtype='<U32'), array([['49', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '484.1875',
-        '447.5'],
-       ['49', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '586.1875', '568.0'],
-       ['49', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '5', '31.25', '11', '68.75', '44', '100.0', '0', '0.0', '65.625',
-        '649.6', '640.0']], dtype='<U32'), array([['7', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '737.875', '690.5'],
-       ['7', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '670.0666666666667',
-        '631.0'],
-       ['7', '2', 'b2', '16', '44', '60', '50', '83.33333333333334',
-        '15', '93.75', '1', '6.25', '35', '79.54545454545455', '9',
-        '20.454545454545457', '86.64772727272728', '1145.2', '1001.0']],
-      dtype='<U32'), array([['23', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '1002.0', '981.0'],
-       ['23', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '831.2857142857143', '858.0'],
-       ['23', '2', 'b2', '16', '44', '60', '52', '86.66666666666667',
-        '14', '87.5', '2', '12.5', '38', '86.36363636363636', '6',
-        '13.636363636363635', '86.93181818181819', '1001.9285714285714',
-        '968.5']], dtype='<U32'), array([['1', '2', 'b0', '16', '44', '60', '56', '93.33333333333333',
-        '14', '87.5', '2', '12.5', '42', '95.45454545454545', '2',
-        '4.545454545454546', '91.47727272727272', '680.8571428571429',
-        '549.5'],
-       ['1', '2', 'b1', '16', '44', '60', '57', '95.0', '13', '81.25',
-        '3', '18.75', '44', '100.0', '0', '0.0', '90.625',
-        '836.2307692307693', '794.0'],
-       ['1', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '785.3333333333334',
-        '700.0']], dtype='<U32'), array([['22', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '717.6666666666666', '673.0'],
-       ['22', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '817.3125',
-        '824.0'],
-       ['22', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '11', '68.75', '5', '31.25', '42', '95.45454545454545', '2',
-        '4.545454545454546', '82.10227272727272', '837.2727272727273',
-        '699.0']], dtype='<U32'), array([['83', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '559.3125', '569.5'],
-       ['83', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '613.0', '486.0'],
-       ['83', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '9', '56.25', '7', '43.75', '44', '100.0', '0', '0.0', '78.125',
-        '616.4444444444445', '562.0']], dtype='<U32'), array([['2', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '642.2', '620.0'],
-       ['2', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '690.125',
-        '768.0'],
-       ['2', '2', 'b2', '16', '44', '60', '51', '85.0', '10', '62.5',
-        '6', '37.5', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '77.8409090909091', '829.2', '676.0']],
-      dtype='<U32'), array([['96', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '441.5625',
-        '456.0'],
-       ['96', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '553.6875', '560.5'],
-       ['96', '2', 'b2', '16', '44', '60', '54', '90.0', '12', '75.0',
-        '4', '25.0', '42', '95.45454545454545', '2', '4.545454545454546',
-        '85.22727272727272', '796.4166666666666', '795.5']], dtype='<U32'), array([['54', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '578.75',
-        '563.0'],
-       ['54', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '754.5625',
-        '723.5'],
-       ['54', '2', 'b2', '16', '44', '60', '51', '85.0', '8', '50.0',
-        '8', '50.0', '43', '97.72727272727273', '1', '2.272727272727273',
-        '73.86363636363637', '735.5', '762.0']], dtype='<U32'), array([['33', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '651.4375', '674.5'],
-       ['33', '2', 'b1', '16', '44', '60', '56', '93.33333333333333',
-        '15', '93.75', '1', '6.25', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '93.4659090909091', '745.8', '818.0'],
-       ['33', '2', 'b2', '16', '44', '60', '47', '78.33333333333333',
-        '7', '43.75', '9', '56.25', '40', '90.9090909090909', '4',
-        '9.090909090909092', '67.32954545454545', '715.8571428571429',
-        '713.0']], dtype='<U32'), array([['95', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '459.125',
-        '447.5'],
-       ['95', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '714.6875',
-        '667.5'],
-       ['95', '2', 'b2', '16', '44', '60', '50', '83.33333333333334',
-        '10', '62.5', '6', '37.5', '40', '90.9090909090909', '4',
-        '9.090909090909092', '76.70454545454545', '907.1', '938.0']],
-      dtype='<U32'), array([['52', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '589.1875',
-        '560.0'],
-       ['52', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '521.8666666666667', '507.0'],
-       ['52', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '5', '31.25', '11', '68.75', '44', '100.0', '0', '0.0', '65.625',
-        '472.6', '452.0']], dtype='<U32'), array([['35', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '656.375',
-        '638.0'],
-       ['35', '2', 'b1', '16', '44', '60', '57', '95.0', '13', '81.25',
-        '3', '18.75', '44', '100.0', '0', '0.0', '90.625',
-        '888.3076923076923', '875.0'],
-       ['35', '2', 'b2', '16', '44', '60', '54', '90.0', '10', '62.5',
-        '6', '37.5', '44', '100.0', '0', '0.0', '81.25', '968.6',
-        '934.5']], dtype='<U32'), array([['21', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '626.8125', '568.0'],
-       ['21', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '624.1875',
-        '613.5'],
-       ['21', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '13', '81.25', '3', '18.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '89.48863636363637', '856.2307692307693',
-        '908.0']], dtype='<U32'), array([['80', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '491.0625',
-        '467.0'],
-       ['80', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '568.0625',
-        '547.0'],
-       ['80', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '601.9285714285714', '607.0']], dtype='<U32'), array([['11', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '462.875',
-        '446.5'],
-       ['11', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '545.875',
-        '493.0'],
-       ['11', '2', 'b2', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '541.0625',
-        '559.0']], dtype='<U32'), array([['74', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '435.8125', '452.5'],
-       ['74', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '532.9375', '531.0'],
-       ['74', '2', 'b2', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '563.0', '455.0']], dtype='<U32'), array([['43', '2', 'b0', '16', '44', '60', '57', '95.0', '16', '100.0',
-        '0', '0.0', '41', '93.18181818181817', '3', '6.8181818181818175',
-        '96.5909090909091', '496.0625', '508.5'],
-       ['43', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '637.1875',
-        '508.5'],
-       ['43', '2', 'b2', '16', '44', '60', '55', '91.66666666666666',
-        '13', '81.25', '3', '18.75', '42', '95.45454545454545', '2',
-        '4.545454545454546', '88.35227272727272', '691.5384615384615',
-        '659.0']], dtype='<U32'), array([['40', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '535.375', '510.0'],
-       ['40', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '543.3125',
-        '535.0'],
-       ['40', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '621.6666666666666', '546.0']], dtype='<U32'), array([['19', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '549.375',
-        '540.0'],
-       ['19', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '686.125', '664.0'],
-       ['19', '2', 'b2', '16', '44', '60', '54', '90.0', '15', '93.75',
-        '1', '6.25', '39', '88.63636363636364', '5',
-        '11.363636363636363', '91.19318181818181', '745.0666666666667',
-        '687.0']], dtype='<U32'), array([['68', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '616.25',
-        '592.0'],
-       ['68', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '695.4375',
-        '594.5'],
-       ['68', '2', 'b2', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '748.4666666666667', '757.0']], dtype='<U32'), array([['93', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '572.625',
-        '538.0'],
-       ['93', '2', 'b1', '16', '44', '60', '41', '68.33333333333333',
-        '10', '62.5', '6', '37.5', '31', '70.45454545454545', '13',
-        '29.545454545454547', '66.47727272727272', '644.9', '535.5'],
-       ['93', '2', 'b2', '16', '44', '60', '48', '80.0', '5', '31.25',
-        '11', '68.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '64.48863636363637', '756.0', '784.0']],
-      dtype='<U32'), array([['18', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '589.0625',
-        '573.0'],
-       ['18', '2', 'b1', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '614.6666666666666', '568.0'],
-       ['18', '2', 'b2', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '619.7333333333333', '547.0']], dtype='<U32'), array([['5', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '554.4375', '562.0'],
-       ['5', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '782.25', '754.5'],
-       ['5', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '1008.8', '974.0']],
-      dtype='<U32'), array([['41', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '430.625', '398.0'],
-       ['41', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '482.0', '404.0'],
-       ['41', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '9', '56.25', '7', '43.75', '44', '100.0', '0', '0.0', '78.125',
-        '616.2222222222222', '684.0']], dtype='<U32'), array([['89', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '567.8125',
-        '567.5'],
-       ['89', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '563.9375',
-        '538.5'],
-       ['89', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '757.5833333333334', '697.5']], dtype='<U32'), array([['39', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '750.0625', '682.5'],
-       ['39', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '773.8666666666667',
-        '693.0'],
-       ['39', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '12', '75.0', '4', '25.0', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '84.0909090909091', '819.3333333333334',
-        '781.0']], dtype='<U32'), array([['17', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '655.9375',
-        '601.5'],
-       ['17', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '694.875',
-        '695.0'],
-       ['17', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '777.0', '640.0']], dtype='<U32'), array([['71', '2', 'b0', '16', '44', '60', '55', '91.66666666666666',
-        '16', '100.0', '0', '0.0', '39', '88.63636363636364', '5',
-        '11.363636363636363', '94.31818181818181', '604.125', '591.0'],
-       ['71', '2', 'b1', '16', '44', '60', '57', '95.0', '16', '100.0',
-        '0', '0.0', '41', '93.18181818181817', '3', '6.8181818181818175',
-        '96.5909090909091', '708.0', '722.0'],
-       ['71', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '8', '50.0', '8', '50.0', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '71.5909090909091', '849.625', '666.0']],
-      dtype='<U32'), array([['38', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '488.9375',
-        '478.0'],
-       ['38', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '543.2', '419.0']],
-      dtype='<U32'), array([['51', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '730.5', '710.5'],
-       ['51', '2', 'b1', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '739.4666666666667', '759.0'],
-       ['51', '2', 'b2', '16', '44', '60', '54', '90.0', '11', '68.75',
-        '5', '31.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '83.23863636363637', '726.9090909090909',
-        '648.0']], dtype='<U32')]
+* block_sumDat : ['no files']
 * function_str : def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
     import numpy as np
     import pandas as pd
     from pathlib import Path
     from nipype.interfaces.base import Bunch
 
-    #get a Bunch object if more than 1 participant 
-    if isinstance(block_sumDat, Bunch):        
-        #get output data from node
-        np_allBlockDat = block_sumDat.summaryNback_dat
+    #check to see if it is filepath str or 'no files' message
+    if isinstance(block_sumDat[0], str):
 
-    #if only 1 participant/dataset then it is a list    
-    elif isinstance(block_sumDat, list):
-        if len(block_sumDat) == 1:
-            np_allBlockDat = block_sumDat[0]
-        else:
-            np_allBlockDat = block_sumDat
+        print('******** No new data to be processed ********')
 
-    #convert np subarrays to pandas
-    def np2pds(t):
-        return [pd.DataFrame(sublist) for sublist in t]
+        Nback_database = 'no new data files'
+        Nback_database_long = 'no new data files'
 
-    pandas_allBlockDat = np2pds(np_allBlockDat)
+    else:
+        #get a Bunch object if more than 1 participant
+        if isinstance(block_sumDat, Bunch):
+            #get output data from node
+            np_allBlockDat = block_sumDat.summaryNback_dat
 
-    #combine datasets 
-    allBlockDat = pd.concat(pandas_allBlockDat)
+        #if only 1 participant/dataset then it is a list
+        elif isinstance(block_sumDat, list):
+            if len(block_sumDat) == 1:
+                np_allBlockDat = block_sumDat[0]
+            else:
+                np_allBlockDat = block_sumDat
 
-    #if a pandas dataframe
-    if isinstance(allBlockDat, pd.DataFrame):
-        col_names = ['sub', 'ses', 'block','n_targets', 'n_fill', 'n_trials', 'n_acc', 'p_acc', 'n_target_hit', 'p_target_hit', 'n_target_miss', 'p_target_miss', 'n_fill_corr', 'p_fill_corr', 'n_fill_fa', 'p_fill_fa', 'p_target_ba', 'rt_mean_target_hit', 'rt_med_target_hit']
-        allBlockDat.columns = col_names
-        allBlockDat = pd.DataFrame(allBlockDat).convert_dtypes()
-        allBlockDat = allBlockDat.reset_index(drop = True)    
+        #convert np subarrays to pandas
+        def np2pds(t):
+            return [pd.DataFrame(sublist) for sublist in t]
 
-        #set numeric columns to dtype numeric
-        num_cols = allBlockDat.loc[:, allBlockDat.columns != 'block'].apply(pd.to_numeric).round(3)
+        pandas_allBlockDat = np2pds(np_allBlockDat)
 
-        #replace in orig dataset
-        allBlockDat.loc[:, num_cols.columns] = num_cols
+        #combine datasets
+        allBlockDat = pd.concat(pandas_allBlockDat)
 
-        #get session subsets
-        db_sessions = allBlockDat.ses.unique()
+        #if a pandas dataframe
+        if isinstance(allBlockDat, pd.DataFrame):
+            col_names = ['sub', 'ses', 'block','n_targets', 'n_fill', 'n_trials', 'n_acc', 'p_acc', 'n_target_hit', 'p_target_hit', 'n_target_miss', 'p_target_miss', 'n_fill_corr', 'p_fill_corr', 'n_fill_fa', 'p_fill_fa', 'p_target_ba', 'rt_mean_target_hit', 'rt_med_target_hit']
+            allBlockDat.columns = col_names
+            allBlockDat = pd.DataFrame(allBlockDat).convert_dtypes()
+            allBlockDat = allBlockDat.reset_index(drop = True)
 
-        #make wide data set 
-        if len(db_sessions) > 1:
-            allBlockDat_ses1_dat = allBlockDat.groupby('ses').get_group(1)
-            allBlockDat_ses2_dat = allBlockDat.groupby('ses').get_group(2)
+            #set numeric columns to dtype numeric
+            num_cols = allBlockDat.loc[:, allBlockDat.columns != 'block'].apply(pd.to_numeric).round(3)
 
-            #make wide data set 
-            allBlockDat_ses1_wide = allBlockDat_ses1_dat.pivot(columns='block', index='sub', values=col_names[3:19])
-            allBlockDat_ses1_wide.columns = ['_'.join(col) for col in allBlockDat_ses1_wide.columns.reorder_levels(order=[1, 0])]
+            #replace in orig dataset
+            allBlockDat.loc[:, num_cols.columns] = num_cols
 
-            allBlockDat_ses2_wide = allBlockDat_ses2_dat.pivot(columns='block', index='sub', values=col_names[3:19])
-            allBlockDat_ses2_wide.columns = ['_'.join(col) for col in allBlockDat_ses2_wide.columns.reorder_levels(order=[1, 0])]
+            #get session subsets
+            db_sessions = allBlockDat.ses.unique()
 
-            #make the sub index into a dataset column
-            allBlockDat_ses1_wide = allBlockDat_ses1_wide.reset_index(level = 0)
-            allBlockDat_ses2_wide = allBlockDat_ses2_wide.reset_index(level = 0)
-
-            #add session
-            allBlockDat_ses1_wide.insert(1, 'ses', 1)
-            allBlockDat_ses1_wide.insert(1, 'ses', 2)
-
-
-            #concatonate databases
-            allBlockDat_wide = pd.concat([allBlockDat_ses1_wide, allBlockDat_ses2_wide],ignore_index=True)
-
-        else:
-            #make wide data set 
-            allBlockDat_wide = allBlockDat.pivot(columns='block', index='sub', values = col_names[3:19])        
-            allBlockDat_wide.columns = ['_'.join(col) for col in allBlockDat_wide.columns.reorder_levels(order=[1, 0])]
-
-            #make the sub index into a dataset column
-            allBlockDat_wide = allBlockDat_wide.reset_index(level = 0)
-
-            #add session
-            allBlockDat_wide.insert(1, 'ses', db_sessions[0])
-
-        #re-order columns
-        columnnames_reorder = ['sub', 'ses', 
-         'b0_n_targets', 'b0_n_fill', 'b0_n_trials', 'b0_n_acc','b0_p_acc',
-         'b0_n_target_hit','b0_p_target_hit', 'b0_n_target_miss',
-         'b0_p_target_miss','b0_n_fill_corr','b0_p_fill_corr',
-         'b0_n_fill_fa', 'b0_p_fill_fa','b0_p_target_ba',
-         'b0_rt_mean_target_hit','b0_rt_med_target_hit',
-         'b1_n_targets', 'b1_n_fill', 'b1_n_trials', 'b1_n_acc','b1_p_acc',
-         'b1_n_target_hit','b1_p_target_hit','b1_n_target_miss',
-         'b1_p_target_miss', 'b1_n_fill_corr','b1_p_fill_corr',
-         'b1_n_fill_fa','b1_p_fill_fa','b1_p_target_ba',
-         'b1_rt_mean_target_hit','b1_rt_med_target_hit',
-         'b2_n_targets', 'b2_n_fill', 'b2_n_trials', 'b2_n_acc','b2_p_acc',
-         'b2_n_target_hit','b2_p_target_hit', 'b2_n_target_miss',
-         'b2_p_target_miss','b2_n_fill_corr','b2_p_fill_corr',
-         'b2_n_fill_fa','b2_p_fill_fa','b2_p_target_ba',
-         'b2_rt_mean_target_hit','b2_rt_med_target_hit']
-
-        allBlockDat_wide = allBlockDat_wide.reindex(columns=columnnames_reorder)
-
-        ## load databases
-        #derivative data path
-        derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
-
-        #load databases
-        Nback_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t') 
-        Nback_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t')
-
-        #if overwriting participants
-        if overwrite_flag == True:
-            #function to drop rows based on values
-            def filter_rows_by_values(df, sub_values, sesnum):
-                #fileter based on sub and ses
-                return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
-
-            #filter out/remove exisiting subs to overwrit~
+            #make wide data set
             if len(db_sessions) > 1:
-                #get list of subs by ses to filter in wide and long data
-                wide_sub_list = allBlockDat_wide.groupby('ses')['sub'].unique()
-                long_sub_list = allBlockDat.groupby('ses')['sub'].unique()
+                allBlockDat_ses1_dat = allBlockDat.groupby('ses').get_group(1)
+                allBlockDat_ses2_dat = allBlockDat.groupby('ses').get_group(2)
 
-                Nback_database_ses1 = filter_rows_by_values(Nback_database, wide_sub_list[0], 1)
-                Nback_database_ses2 = filter_rows_by_values(Nback_database, wide_sub_list[1], 2)
+                #make wide data set
+                allBlockDat_ses1_wide = allBlockDat_ses1_dat.pivot(columns='block', index='sub', values=col_names[3:19])
+                allBlockDat_ses1_wide.columns = ['_'.join(col) for col in allBlockDat_ses1_wide.columns.reorder_levels(order=[1, 0])]
 
-                Nback_database_ses1_long = filter_rows_by_values(Nback_database_long, long_sub_list[0], 1)
-                Nback_database_ses2_long = filter_rows_by_values(Nback_database_long, long_sub_list[1], 2)
+                allBlockDat_ses2_wide = allBlockDat_ses2_dat.pivot(columns='block', index='sub', values=col_names[3:19])
+                allBlockDat_ses2_wide.columns = ['_'.join(col) for col in allBlockDat_ses2_wide.columns.reorder_levels(order=[1, 0])]
+
+                #make the sub index into a dataset column
+                allBlockDat_ses1_wide = allBlockDat_ses1_wide.reset_index(level = 0)
+                allBlockDat_ses2_wide = allBlockDat_ses2_wide.reset_index(level = 0)
+
+                #add session
+                allBlockDat_ses1_wide.insert(1, 'ses', 1)
+                allBlockDat_ses1_wide.insert(1, 'ses', 2)
+
 
                 #concatonate databases
-                Nback_database = pd.concat([Nback_database_ses1, Nback_database_ses2],ignore_index=True)
-                Nback_database_long = pd.concat([Nback_database_ses1_long, Nback_database_ses2_long],ignore_index=True)
+                allBlockDat_wide = pd.concat([allBlockDat_ses1_wide, allBlockDat_ses2_wide],ignore_index=True)
 
             else:
-                wide_sub_list = list(allBlockDat_wide['sub'].unique())
-                long_sub_list = list(allBlockDat['sub'].unique())
+                #make wide data set
+                allBlockDat_wide = allBlockDat.pivot(columns='block', index='sub', values = col_names[3:19])
+                allBlockDat_wide.columns = ['_'.join(col) for col in allBlockDat_wide.columns.reorder_levels(order=[1, 0])]
 
-                #filter by ses and sub
-                Nback_database_ses = filter_rows_by_values(Nback_database, wide_sub_list, db_sessions[0])
-                Nback_database_long_ses = filter_rows_by_values(Nback_database_long, long_sub_list, db_sessions[0])
+                #make the sub index into a dataset column
+                allBlockDat_wide = allBlockDat_wide.reset_index(level = 0)
 
-                #concatonate with other session in full database
-                Nback_database = pd.concat([Nback_database[Nback_database['ses'] != db_sessions[0]], Nback_database_ses],ignore_index=True)
-                Nback_database_long = pd.concat([Nback_database_long[Nback_database_long['ses'] != db_sessions[0]], Nback_database_long_ses],ignore_index=True)
+                #add session
+                allBlockDat_wide.insert(1, 'ses', db_sessions[0])
 
-        #add newly processed data
-        Nback_database = Nback_database.append(allBlockDat_wide)
-        Nback_database_long = Nback_database_long.append(allBlockDat)
+            #re-order columns
+            columnnames_reorder = ['sub', 'ses',
+            'b0_n_targets', 'b0_n_fill', 'b0_n_trials', 'b0_n_acc','b0_p_acc',
+            'b0_n_target_hit','b0_p_target_hit', 'b0_n_target_miss',
+            'b0_p_target_miss','b0_n_fill_corr','b0_p_fill_corr',
+            'b0_n_fill_fa', 'b0_p_fill_fa','b0_p_target_ba',
+            'b0_rt_mean_target_hit','b0_rt_med_target_hit',
+            'b1_n_targets', 'b1_n_fill', 'b1_n_trials', 'b1_n_acc','b1_p_acc',
+            'b1_n_target_hit','b1_p_target_hit','b1_n_target_miss',
+            'b1_p_target_miss', 'b1_n_fill_corr','b1_p_fill_corr',
+            'b1_n_fill_fa','b1_p_fill_fa','b1_p_target_ba',
+            'b1_rt_mean_target_hit','b1_rt_med_target_hit',
+            'b2_n_targets', 'b2_n_fill', 'b2_n_trials', 'b2_n_acc','b2_p_acc',
+            'b2_n_target_hit','b2_p_target_hit', 'b2_n_target_miss',
+            'b2_p_target_miss','b2_n_fill_corr','b2_p_fill_corr',
+            'b2_n_fill_fa','b2_p_fill_fa','b2_p_target_ba',
+            'b2_rt_mean_target_hit','b2_rt_med_target_hit']
 
-        #sort to ensure in sub order
-        Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
-        Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
+            allBlockDat_wide = allBlockDat_wide.reindex(columns=columnnames_reorder)
 
-        #round to 3 decimal points
-        Nback_database = Nback_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
-        Nback_database_long = Nback_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+            ## load databases
+            #derivative data path
+            derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
 
-        #write databases
-        Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
-        Nback_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+            #load databases
+            Nback_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t')
+            Nback_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t')
 
-        return Nback_database, Nback_database_long
+            #if overwriting participants
+            if overwrite_flag == True:
+                #function to drop rows based on values
+                def filter_rows_by_values(df, sub_values, sesnum):
+                    #filter based on sub and ses
+                    return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
 
-* overwrite_flag : True
+                #filter out/remove exisiting subs to overwrit~
+                if len(db_sessions) > 1:
+                    #get list of subs by ses to filter in wide and long data
+                    wide_sub_list = allBlockDat_wide.groupby('ses')['sub'].unique()
+                    long_sub_list = allBlockDat.groupby('ses')['sub'].unique()
+
+                    Nback_database_ses1 = filter_rows_by_values(Nback_database, wide_sub_list[0], 1)
+                    Nback_database_ses2 = filter_rows_by_values(Nback_database, wide_sub_list[1], 2)
+
+                    Nback_database_ses1_long = filter_rows_by_values(Nback_database_long, long_sub_list[0], 1)
+                    Nback_database_ses2_long = filter_rows_by_values(Nback_database_long, long_sub_list[1], 2)
+
+                    #concatonate databases
+                    Nback_database = pd.concat([Nback_database_ses1, Nback_database_ses2],ignore_index=True)
+                    Nback_database_long = pd.concat([Nback_database_ses1_long, Nback_database_ses2_long],ignore_index=True)
+
+                else:
+                    wide_sub_list = list(allBlockDat_wide['sub'].unique())
+                    long_sub_list = list(allBlockDat['sub'].unique())
+
+                    #filter by ses and sub
+                    Nback_database_ses = filter_rows_by_values(Nback_database, wide_sub_list, db_sessions[0])
+                    Nback_database_long_ses = filter_rows_by_values(Nback_database_long, long_sub_list, db_sessions[0])
+
+                    #concatonate with other session in full database
+                    Nback_database = pd.concat([Nback_database[Nback_database['ses'] != db_sessions[0]], Nback_database_ses],ignore_index=True)
+                    Nback_database_long = pd.concat([Nback_database_long[Nback_database_long['ses'] != db_sessions[0]], Nback_database_long_ses],ignore_index=True)
+
+            #add newly processed data
+            Nback_database = Nback_database.append(allBlockDat_wide)
+            Nback_database_long = Nback_database_long.append(allBlockDat)
+
+            #sort to ensure in sub order
+            Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
+            Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
+
+            #round to 3 decimal points
+            Nback_database = Nback_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+            Nback_database_long = Nback_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
+            #write databases
+            Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+            Nback_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        else:
+            Nback_database = 'allBlockDat no pd.DataFrame'
+            Nback_database_long = 'allBlockDat no pd.DataFrame'
+
+    return Nback_database, Nback_database_long
+
+* overwrite_flag : False
 
 
 Execution Inputs
@@ -540,569 +191,194 @@ Execution Inputs
 
 
 * bids_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* block_sumDat : [array([['20', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '885.6875', '828.0'],
-       ['20', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '950.2666666666667',
-        '977.0'],
-       ['20', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '899.0', '909.0']],
-      dtype='<U32'), array([['26', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '733.25',
-        '748.0'],
-       ['26', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '828.3333333333334',
-        '769.0'],
-       ['26', '2', 'b2', '16', '44', '60', '55', '91.66666666666666',
-        '12', '75.0', '4', '25.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '86.36363636363637', '933.4166666666666',
-        '1009.0']], dtype='<U32'), array([['45', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '442.5625',
-        '428.0'],
-       ['45', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '560.1875',
-        '468.5'],
-       ['45', '2', 'b2', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '435.6875',
-        '418.5']], dtype='<U32'), array([['3', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '582.6875', '586.5'],
-       ['3', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '625.9375',
-        '570.5'],
-       ['3', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '15', '93.75', '1', '6.25', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '93.4659090909091', '812.0', '798.0']],
-      dtype='<U32'), array([['36', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '462.625', '478.5'],
-       ['36', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '607.6875', '562.5'],
-       ['36', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '654.0833333333334', '608.0']], dtype='<U32'), array([['78', '2', 'b0', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '580.9333333333333', '504.0'],
-       ['78', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '599.75', '551.0'],
-       ['78', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '13', '81.25', '3', '18.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '89.48863636363637', '699.5384615384615',
-        '609.0']], dtype='<U32'), array([['28', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '506.0', '488.0'],
-       ['28', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '549.5', '534.5'],
-       ['28', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '673.6428571428571', '689.5']], dtype='<U32'), array([['94', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '678.6875', '606.0'],
-       ['94', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '683.9375', '625.0'],
-       ['94', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '931.5714285714286', '677.0']], dtype='<U32'), array([['84', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '494.375',
-        '502.0'],
-       ['84', '2', 'b1', '16', '44', '60', '55', '91.66666666666666',
-        '14', '87.5', '2', '12.5', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '90.3409090909091', '587.5714285714286',
-        '587.0'],
-       ['84', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '888.1428571428571', '1046.0']], dtype='<U32'), array([['55', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '621.6875',
-        '587.5'],
-       ['55', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '786.375',
-        '780.0'],
-       ['55', '2', 'b2', '16', '44', '60', '51', '85.0', '7', '43.75',
-        '9', '56.25', '44', '100.0', '0', '0.0', '71.875',
-        '795.8571428571429', '862.0']], dtype='<U32'), array([['37', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '725.1875', '722.5'],
-       ['37', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '810.0', '756.0'],
-       ['37', '2', 'b2', '16', '44', '60', '44', '73.33333333333333',
-        '11', '68.75', '5', '31.25', '33', '75.0', '11', '25.0',
-        '71.875', '822.0909090909091', '863.0']], dtype='<U32'), array([['6', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '490.375',
-        '461.0'],
-       ['6', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '655.1875', '648.0']],
-      dtype='<U32'), array([['49', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '484.1875',
-        '447.5'],
-       ['49', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '586.1875', '568.0'],
-       ['49', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '5', '31.25', '11', '68.75', '44', '100.0', '0', '0.0', '65.625',
-        '649.6', '640.0']], dtype='<U32'), array([['7', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '737.875', '690.5'],
-       ['7', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '670.0666666666667',
-        '631.0'],
-       ['7', '2', 'b2', '16', '44', '60', '50', '83.33333333333334',
-        '15', '93.75', '1', '6.25', '35', '79.54545454545455', '9',
-        '20.454545454545457', '86.64772727272728', '1145.2', '1001.0']],
-      dtype='<U32'), array([['23', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '1002.0', '981.0'],
-       ['23', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '831.2857142857143', '858.0'],
-       ['23', '2', 'b2', '16', '44', '60', '52', '86.66666666666667',
-        '14', '87.5', '2', '12.5', '38', '86.36363636363636', '6',
-        '13.636363636363635', '86.93181818181819', '1001.9285714285714',
-        '968.5']], dtype='<U32'), array([['1', '2', 'b0', '16', '44', '60', '56', '93.33333333333333',
-        '14', '87.5', '2', '12.5', '42', '95.45454545454545', '2',
-        '4.545454545454546', '91.47727272727272', '680.8571428571429',
-        '549.5'],
-       ['1', '2', 'b1', '16', '44', '60', '57', '95.0', '13', '81.25',
-        '3', '18.75', '44', '100.0', '0', '0.0', '90.625',
-        '836.2307692307693', '794.0'],
-       ['1', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '785.3333333333334',
-        '700.0']], dtype='<U32'), array([['22', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '717.6666666666666', '673.0'],
-       ['22', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '817.3125',
-        '824.0'],
-       ['22', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '11', '68.75', '5', '31.25', '42', '95.45454545454545', '2',
-        '4.545454545454546', '82.10227272727272', '837.2727272727273',
-        '699.0']], dtype='<U32'), array([['83', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '559.3125', '569.5'],
-       ['83', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '613.0', '486.0'],
-       ['83', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '9', '56.25', '7', '43.75', '44', '100.0', '0', '0.0', '78.125',
-        '616.4444444444445', '562.0']], dtype='<U32'), array([['2', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '642.2', '620.0'],
-       ['2', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '690.125',
-        '768.0'],
-       ['2', '2', 'b2', '16', '44', '60', '51', '85.0', '10', '62.5',
-        '6', '37.5', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '77.8409090909091', '829.2', '676.0']],
-      dtype='<U32'), array([['96', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '441.5625',
-        '456.0'],
-       ['96', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '553.6875', '560.5'],
-       ['96', '2', 'b2', '16', '44', '60', '54', '90.0', '12', '75.0',
-        '4', '25.0', '42', '95.45454545454545', '2', '4.545454545454546',
-        '85.22727272727272', '796.4166666666666', '795.5']], dtype='<U32'), array([['54', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '578.75',
-        '563.0'],
-       ['54', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '754.5625',
-        '723.5'],
-       ['54', '2', 'b2', '16', '44', '60', '51', '85.0', '8', '50.0',
-        '8', '50.0', '43', '97.72727272727273', '1', '2.272727272727273',
-        '73.86363636363637', '735.5', '762.0']], dtype='<U32'), array([['33', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '651.4375', '674.5'],
-       ['33', '2', 'b1', '16', '44', '60', '56', '93.33333333333333',
-        '15', '93.75', '1', '6.25', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '93.4659090909091', '745.8', '818.0'],
-       ['33', '2', 'b2', '16', '44', '60', '47', '78.33333333333333',
-        '7', '43.75', '9', '56.25', '40', '90.9090909090909', '4',
-        '9.090909090909092', '67.32954545454545', '715.8571428571429',
-        '713.0']], dtype='<U32'), array([['95', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '459.125',
-        '447.5'],
-       ['95', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '714.6875',
-        '667.5'],
-       ['95', '2', 'b2', '16', '44', '60', '50', '83.33333333333334',
-        '10', '62.5', '6', '37.5', '40', '90.9090909090909', '4',
-        '9.090909090909092', '76.70454545454545', '907.1', '938.0']],
-      dtype='<U32'), array([['52', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '589.1875',
-        '560.0'],
-       ['52', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '521.8666666666667', '507.0'],
-       ['52', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '5', '31.25', '11', '68.75', '44', '100.0', '0', '0.0', '65.625',
-        '472.6', '452.0']], dtype='<U32'), array([['35', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '656.375',
-        '638.0'],
-       ['35', '2', 'b1', '16', '44', '60', '57', '95.0', '13', '81.25',
-        '3', '18.75', '44', '100.0', '0', '0.0', '90.625',
-        '888.3076923076923', '875.0'],
-       ['35', '2', 'b2', '16', '44', '60', '54', '90.0', '10', '62.5',
-        '6', '37.5', '44', '100.0', '0', '0.0', '81.25', '968.6',
-        '934.5']], dtype='<U32'), array([['21', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '626.8125', '568.0'],
-       ['21', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '624.1875',
-        '613.5'],
-       ['21', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '13', '81.25', '3', '18.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '89.48863636363637', '856.2307692307693',
-        '908.0']], dtype='<U32'), array([['80', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '491.0625',
-        '467.0'],
-       ['80', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '568.0625',
-        '547.0'],
-       ['80', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '601.9285714285714', '607.0']], dtype='<U32'), array([['11', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '462.875',
-        '446.5'],
-       ['11', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '545.875',
-        '493.0'],
-       ['11', '2', 'b2', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '541.0625',
-        '559.0']], dtype='<U32'), array([['74', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '435.8125', '452.5'],
-       ['74', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '532.9375', '531.0'],
-       ['74', '2', 'b2', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '563.0', '455.0']], dtype='<U32'), array([['43', '2', 'b0', '16', '44', '60', '57', '95.0', '16', '100.0',
-        '0', '0.0', '41', '93.18181818181817', '3', '6.8181818181818175',
-        '96.5909090909091', '496.0625', '508.5'],
-       ['43', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '637.1875',
-        '508.5'],
-       ['43', '2', 'b2', '16', '44', '60', '55', '91.66666666666666',
-        '13', '81.25', '3', '18.75', '42', '95.45454545454545', '2',
-        '4.545454545454546', '88.35227272727272', '691.5384615384615',
-        '659.0']], dtype='<U32'), array([['40', '2', 'b0', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '535.375', '510.0'],
-       ['40', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '543.3125',
-        '535.0'],
-       ['40', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '621.6666666666666', '546.0']], dtype='<U32'), array([['19', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '549.375',
-        '540.0'],
-       ['19', '2', 'b1', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '686.125', '664.0'],
-       ['19', '2', 'b2', '16', '44', '60', '54', '90.0', '15', '93.75',
-        '1', '6.25', '39', '88.63636363636364', '5',
-        '11.363636363636363', '91.19318181818181', '745.0666666666667',
-        '687.0']], dtype='<U32'), array([['68', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '616.25',
-        '592.0'],
-       ['68', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '695.4375',
-        '594.5'],
-       ['68', '2', 'b2', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '748.4666666666667', '757.0']], dtype='<U32'), array([['93', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '572.625',
-        '538.0'],
-       ['93', '2', 'b1', '16', '44', '60', '41', '68.33333333333333',
-        '10', '62.5', '6', '37.5', '31', '70.45454545454545', '13',
-        '29.545454545454547', '66.47727272727272', '644.9', '535.5'],
-       ['93', '2', 'b2', '16', '44', '60', '48', '80.0', '5', '31.25',
-        '11', '68.75', '43', '97.72727272727273', '1',
-        '2.272727272727273', '64.48863636363637', '756.0', '784.0']],
-      dtype='<U32'), array([['18', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '589.0625',
-        '573.0'],
-       ['18', '2', 'b1', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '614.6666666666666', '568.0'],
-       ['18', '2', 'b2', '16', '44', '60', '59', '98.33333333333333',
-        '15', '93.75', '1', '6.25', '44', '100.0', '0', '0.0', '96.875',
-        '619.7333333333333', '547.0']], dtype='<U32'), array([['5', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '554.4375', '562.0'],
-       ['5', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '16', '100.0', '0', '0.0', '42', '95.45454545454545', '2',
-        '4.545454545454546', '97.72727272727272', '782.25', '754.5'],
-       ['5', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '1008.8', '974.0']],
-      dtype='<U32'), array([['41', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '430.625', '398.0'],
-       ['41', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '482.0', '404.0'],
-       ['41', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '9', '56.25', '7', '43.75', '44', '100.0', '0', '0.0', '78.125',
-        '616.2222222222222', '684.0']], dtype='<U32'), array([['89', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '567.8125',
-        '567.5'],
-       ['89', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '563.9375',
-        '538.5'],
-       ['89', '2', 'b2', '16', '44', '60', '56', '93.33333333333333',
-        '12', '75.0', '4', '25.0', '44', '100.0', '0', '0.0', '87.5',
-        '757.5833333333334', '697.5']], dtype='<U32'), array([['39', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '750.0625', '682.5'],
-       ['39', '2', 'b1', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '773.8666666666667',
-        '693.0'],
-       ['39', '2', 'b2', '16', '44', '60', '53', '88.33333333333333',
-        '12', '75.0', '4', '25.0', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '84.0909090909091', '819.3333333333334',
-        '781.0']], dtype='<U32'), array([['17', '2', 'b0', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '655.9375',
-        '601.5'],
-       ['17', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '694.875',
-        '695.0'],
-       ['17', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '14', '87.5', '2', '12.5', '44', '100.0', '0', '0.0', '93.75',
-        '777.0', '640.0']], dtype='<U32'), array([['71', '2', 'b0', '16', '44', '60', '55', '91.66666666666666',
-        '16', '100.0', '0', '0.0', '39', '88.63636363636364', '5',
-        '11.363636363636363', '94.31818181818181', '604.125', '591.0'],
-       ['71', '2', 'b1', '16', '44', '60', '57', '95.0', '16', '100.0',
-        '0', '0.0', '41', '93.18181818181817', '3', '6.8181818181818175',
-        '96.5909090909091', '708.0', '722.0'],
-       ['71', '2', 'b2', '16', '44', '60', '49', '81.66666666666667',
-        '8', '50.0', '8', '50.0', '41', '93.18181818181817', '3',
-        '6.8181818181818175', '71.5909090909091', '849.625', '666.0']],
-      dtype='<U32'), array([['38', '2', 'b1', '16', '44', '60', '60', '100.0', '16', '100.0',
-        '0', '0.0', '44', '100.0', '0', '0.0', '100.0', '488.9375',
-        '478.0'],
-       ['38', '2', 'b2', '16', '44', '60', '58', '96.66666666666667',
-        '15', '93.75', '1', '6.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '95.73863636363637', '543.2', '419.0']],
-      dtype='<U32'), array([['51', '2', 'b0', '16', '44', '60', '59', '98.33333333333333',
-        '16', '100.0', '0', '0.0', '43', '97.72727272727273', '1',
-        '2.272727272727273', '98.86363636363637', '730.5', '710.5'],
-       ['51', '2', 'b1', '16', '44', '60', '57', '95.0', '15', '93.75',
-        '1', '6.25', '42', '95.45454545454545', '2', '4.545454545454546',
-        '94.60227272727272', '739.4666666666667', '759.0'],
-       ['51', '2', 'b2', '16', '44', '60', '54', '90.0', '11', '68.75',
-        '5', '31.25', '43', '97.72727272727273', '1',
-        '2.272727272727273', '83.23863636363637', '726.9090909090909',
-        '648.0']], dtype='<U32')]
+* block_sumDat : ['no files']
 * function_str : def updateDatabase_save(block_sumDat, overwrite_flag, bids_dir):
     import numpy as np
     import pandas as pd
     from pathlib import Path
     from nipype.interfaces.base import Bunch
 
-    #get a Bunch object if more than 1 participant 
-    if isinstance(block_sumDat, Bunch):        
-        #get output data from node
-        np_allBlockDat = block_sumDat.summaryNback_dat
+    #check to see if it is filepath str or 'no files' message
+    if isinstance(block_sumDat[0], str):
 
-    #if only 1 participant/dataset then it is a list    
-    elif isinstance(block_sumDat, list):
-        if len(block_sumDat) == 1:
-            np_allBlockDat = block_sumDat[0]
-        else:
-            np_allBlockDat = block_sumDat
+        print('******** No new data to be processed ********')
 
-    #convert np subarrays to pandas
-    def np2pds(t):
-        return [pd.DataFrame(sublist) for sublist in t]
+        Nback_database = 'no new data files'
+        Nback_database_long = 'no new data files'
 
-    pandas_allBlockDat = np2pds(np_allBlockDat)
+    else:
+        #get a Bunch object if more than 1 participant
+        if isinstance(block_sumDat, Bunch):
+            #get output data from node
+            np_allBlockDat = block_sumDat.summaryNback_dat
 
-    #combine datasets 
-    allBlockDat = pd.concat(pandas_allBlockDat)
+        #if only 1 participant/dataset then it is a list
+        elif isinstance(block_sumDat, list):
+            if len(block_sumDat) == 1:
+                np_allBlockDat = block_sumDat[0]
+            else:
+                np_allBlockDat = block_sumDat
 
-    #if a pandas dataframe
-    if isinstance(allBlockDat, pd.DataFrame):
-        col_names = ['sub', 'ses', 'block','n_targets', 'n_fill', 'n_trials', 'n_acc', 'p_acc', 'n_target_hit', 'p_target_hit', 'n_target_miss', 'p_target_miss', 'n_fill_corr', 'p_fill_corr', 'n_fill_fa', 'p_fill_fa', 'p_target_ba', 'rt_mean_target_hit', 'rt_med_target_hit']
-        allBlockDat.columns = col_names
-        allBlockDat = pd.DataFrame(allBlockDat).convert_dtypes()
-        allBlockDat = allBlockDat.reset_index(drop = True)    
+        #convert np subarrays to pandas
+        def np2pds(t):
+            return [pd.DataFrame(sublist) for sublist in t]
 
-        #set numeric columns to dtype numeric
-        num_cols = allBlockDat.loc[:, allBlockDat.columns != 'block'].apply(pd.to_numeric).round(3)
+        pandas_allBlockDat = np2pds(np_allBlockDat)
 
-        #replace in orig dataset
-        allBlockDat.loc[:, num_cols.columns] = num_cols
+        #combine datasets
+        allBlockDat = pd.concat(pandas_allBlockDat)
 
-        #get session subsets
-        db_sessions = allBlockDat.ses.unique()
+        #if a pandas dataframe
+        if isinstance(allBlockDat, pd.DataFrame):
+            col_names = ['sub', 'ses', 'block','n_targets', 'n_fill', 'n_trials', 'n_acc', 'p_acc', 'n_target_hit', 'p_target_hit', 'n_target_miss', 'p_target_miss', 'n_fill_corr', 'p_fill_corr', 'n_fill_fa', 'p_fill_fa', 'p_target_ba', 'rt_mean_target_hit', 'rt_med_target_hit']
+            allBlockDat.columns = col_names
+            allBlockDat = pd.DataFrame(allBlockDat).convert_dtypes()
+            allBlockDat = allBlockDat.reset_index(drop = True)
 
-        #make wide data set 
-        if len(db_sessions) > 1:
-            allBlockDat_ses1_dat = allBlockDat.groupby('ses').get_group(1)
-            allBlockDat_ses2_dat = allBlockDat.groupby('ses').get_group(2)
+            #set numeric columns to dtype numeric
+            num_cols = allBlockDat.loc[:, allBlockDat.columns != 'block'].apply(pd.to_numeric).round(3)
 
-            #make wide data set 
-            allBlockDat_ses1_wide = allBlockDat_ses1_dat.pivot(columns='block', index='sub', values=col_names[3:19])
-            allBlockDat_ses1_wide.columns = ['_'.join(col) for col in allBlockDat_ses1_wide.columns.reorder_levels(order=[1, 0])]
+            #replace in orig dataset
+            allBlockDat.loc[:, num_cols.columns] = num_cols
 
-            allBlockDat_ses2_wide = allBlockDat_ses2_dat.pivot(columns='block', index='sub', values=col_names[3:19])
-            allBlockDat_ses2_wide.columns = ['_'.join(col) for col in allBlockDat_ses2_wide.columns.reorder_levels(order=[1, 0])]
+            #get session subsets
+            db_sessions = allBlockDat.ses.unique()
 
-            #make the sub index into a dataset column
-            allBlockDat_ses1_wide = allBlockDat_ses1_wide.reset_index(level = 0)
-            allBlockDat_ses2_wide = allBlockDat_ses2_wide.reset_index(level = 0)
-
-            #add session
-            allBlockDat_ses1_wide.insert(1, 'ses', 1)
-            allBlockDat_ses1_wide.insert(1, 'ses', 2)
-
-
-            #concatonate databases
-            allBlockDat_wide = pd.concat([allBlockDat_ses1_wide, allBlockDat_ses2_wide],ignore_index=True)
-
-        else:
-            #make wide data set 
-            allBlockDat_wide = allBlockDat.pivot(columns='block', index='sub', values = col_names[3:19])        
-            allBlockDat_wide.columns = ['_'.join(col) for col in allBlockDat_wide.columns.reorder_levels(order=[1, 0])]
-
-            #make the sub index into a dataset column
-            allBlockDat_wide = allBlockDat_wide.reset_index(level = 0)
-
-            #add session
-            allBlockDat_wide.insert(1, 'ses', db_sessions[0])
-
-        #re-order columns
-        columnnames_reorder = ['sub', 'ses', 
-         'b0_n_targets', 'b0_n_fill', 'b0_n_trials', 'b0_n_acc','b0_p_acc',
-         'b0_n_target_hit','b0_p_target_hit', 'b0_n_target_miss',
-         'b0_p_target_miss','b0_n_fill_corr','b0_p_fill_corr',
-         'b0_n_fill_fa', 'b0_p_fill_fa','b0_p_target_ba',
-         'b0_rt_mean_target_hit','b0_rt_med_target_hit',
-         'b1_n_targets', 'b1_n_fill', 'b1_n_trials', 'b1_n_acc','b1_p_acc',
-         'b1_n_target_hit','b1_p_target_hit','b1_n_target_miss',
-         'b1_p_target_miss', 'b1_n_fill_corr','b1_p_fill_corr',
-         'b1_n_fill_fa','b1_p_fill_fa','b1_p_target_ba',
-         'b1_rt_mean_target_hit','b1_rt_med_target_hit',
-         'b2_n_targets', 'b2_n_fill', 'b2_n_trials', 'b2_n_acc','b2_p_acc',
-         'b2_n_target_hit','b2_p_target_hit', 'b2_n_target_miss',
-         'b2_p_target_miss','b2_n_fill_corr','b2_p_fill_corr',
-         'b2_n_fill_fa','b2_p_fill_fa','b2_p_target_ba',
-         'b2_rt_mean_target_hit','b2_rt_med_target_hit']
-
-        allBlockDat_wide = allBlockDat_wide.reindex(columns=columnnames_reorder)
-
-        ## load databases
-        #derivative data path
-        derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
-
-        #load databases
-        Nback_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t') 
-        Nback_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t')
-
-        #if overwriting participants
-        if overwrite_flag == True:
-            #function to drop rows based on values
-            def filter_rows_by_values(df, sub_values, sesnum):
-                #fileter based on sub and ses
-                return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
-
-            #filter out/remove exisiting subs to overwrit~
+            #make wide data set
             if len(db_sessions) > 1:
-                #get list of subs by ses to filter in wide and long data
-                wide_sub_list = allBlockDat_wide.groupby('ses')['sub'].unique()
-                long_sub_list = allBlockDat.groupby('ses')['sub'].unique()
+                allBlockDat_ses1_dat = allBlockDat.groupby('ses').get_group(1)
+                allBlockDat_ses2_dat = allBlockDat.groupby('ses').get_group(2)
 
-                Nback_database_ses1 = filter_rows_by_values(Nback_database, wide_sub_list[0], 1)
-                Nback_database_ses2 = filter_rows_by_values(Nback_database, wide_sub_list[1], 2)
+                #make wide data set
+                allBlockDat_ses1_wide = allBlockDat_ses1_dat.pivot(columns='block', index='sub', values=col_names[3:19])
+                allBlockDat_ses1_wide.columns = ['_'.join(col) for col in allBlockDat_ses1_wide.columns.reorder_levels(order=[1, 0])]
 
-                Nback_database_ses1_long = filter_rows_by_values(Nback_database_long, long_sub_list[0], 1)
-                Nback_database_ses2_long = filter_rows_by_values(Nback_database_long, long_sub_list[1], 2)
+                allBlockDat_ses2_wide = allBlockDat_ses2_dat.pivot(columns='block', index='sub', values=col_names[3:19])
+                allBlockDat_ses2_wide.columns = ['_'.join(col) for col in allBlockDat_ses2_wide.columns.reorder_levels(order=[1, 0])]
+
+                #make the sub index into a dataset column
+                allBlockDat_ses1_wide = allBlockDat_ses1_wide.reset_index(level = 0)
+                allBlockDat_ses2_wide = allBlockDat_ses2_wide.reset_index(level = 0)
+
+                #add session
+                allBlockDat_ses1_wide.insert(1, 'ses', 1)
+                allBlockDat_ses1_wide.insert(1, 'ses', 2)
+
 
                 #concatonate databases
-                Nback_database = pd.concat([Nback_database_ses1, Nback_database_ses2],ignore_index=True)
-                Nback_database_long = pd.concat([Nback_database_ses1_long, Nback_database_ses2_long],ignore_index=True)
+                allBlockDat_wide = pd.concat([allBlockDat_ses1_wide, allBlockDat_ses2_wide],ignore_index=True)
 
             else:
-                wide_sub_list = list(allBlockDat_wide['sub'].unique())
-                long_sub_list = list(allBlockDat['sub'].unique())
+                #make wide data set
+                allBlockDat_wide = allBlockDat.pivot(columns='block', index='sub', values = col_names[3:19])
+                allBlockDat_wide.columns = ['_'.join(col) for col in allBlockDat_wide.columns.reorder_levels(order=[1, 0])]
 
-                #filter by ses and sub
-                Nback_database_ses = filter_rows_by_values(Nback_database, wide_sub_list, db_sessions[0])
-                Nback_database_long_ses = filter_rows_by_values(Nback_database_long, long_sub_list, db_sessions[0])
+                #make the sub index into a dataset column
+                allBlockDat_wide = allBlockDat_wide.reset_index(level = 0)
 
-                #concatonate with other session in full database
-                Nback_database = pd.concat([Nback_database[Nback_database['ses'] != db_sessions[0]], Nback_database_ses],ignore_index=True)
-                Nback_database_long = pd.concat([Nback_database_long[Nback_database_long['ses'] != db_sessions[0]], Nback_database_long_ses],ignore_index=True)
+                #add session
+                allBlockDat_wide.insert(1, 'ses', db_sessions[0])
 
-        #add newly processed data
-        Nback_database = Nback_database.append(allBlockDat_wide)
-        Nback_database_long = Nback_database_long.append(allBlockDat)
+            #re-order columns
+            columnnames_reorder = ['sub', 'ses',
+            'b0_n_targets', 'b0_n_fill', 'b0_n_trials', 'b0_n_acc','b0_p_acc',
+            'b0_n_target_hit','b0_p_target_hit', 'b0_n_target_miss',
+            'b0_p_target_miss','b0_n_fill_corr','b0_p_fill_corr',
+            'b0_n_fill_fa', 'b0_p_fill_fa','b0_p_target_ba',
+            'b0_rt_mean_target_hit','b0_rt_med_target_hit',
+            'b1_n_targets', 'b1_n_fill', 'b1_n_trials', 'b1_n_acc','b1_p_acc',
+            'b1_n_target_hit','b1_p_target_hit','b1_n_target_miss',
+            'b1_p_target_miss', 'b1_n_fill_corr','b1_p_fill_corr',
+            'b1_n_fill_fa','b1_p_fill_fa','b1_p_target_ba',
+            'b1_rt_mean_target_hit','b1_rt_med_target_hit',
+            'b2_n_targets', 'b2_n_fill', 'b2_n_trials', 'b2_n_acc','b2_p_acc',
+            'b2_n_target_hit','b2_p_target_hit', 'b2_n_target_miss',
+            'b2_p_target_miss','b2_n_fill_corr','b2_p_fill_corr',
+            'b2_n_fill_fa','b2_p_fill_fa','b2_p_target_ba',
+            'b2_rt_mean_target_hit','b2_rt_med_target_hit']
 
-        #sort to ensure in sub order
-        Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
-        Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
+            allBlockDat_wide = allBlockDat_wide.reindex(columns=columnnames_reorder)
 
-        #round to 3 decimal points
-        Nback_database = Nback_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
-        Nback_database_long = Nback_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+            ## load databases
+            #derivative data path
+            derivative_data_path = Path(bids_dir).joinpath('derivatives/preprocessed/beh')
 
-        #write databases
-        Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False) 
-        Nback_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+            #load databases
+            Nback_database = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t')
+            Nback_database_long = pd.read_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t')
 
-        return Nback_database, Nback_database_long
+            #if overwriting participants
+            if overwrite_flag == True:
+                #function to drop rows based on values
+                def filter_rows_by_values(df, sub_values, sesnum):
+                    #filter based on sub and ses
+                    return df[(df['sub'].isin(sub_values) == False) & (df['ses'] == sesnum)]
 
-* overwrite_flag : True
+                #filter out/remove exisiting subs to overwrit~
+                if len(db_sessions) > 1:
+                    #get list of subs by ses to filter in wide and long data
+                    wide_sub_list = allBlockDat_wide.groupby('ses')['sub'].unique()
+                    long_sub_list = allBlockDat.groupby('ses')['sub'].unique()
+
+                    Nback_database_ses1 = filter_rows_by_values(Nback_database, wide_sub_list[0], 1)
+                    Nback_database_ses2 = filter_rows_by_values(Nback_database, wide_sub_list[1], 2)
+
+                    Nback_database_ses1_long = filter_rows_by_values(Nback_database_long, long_sub_list[0], 1)
+                    Nback_database_ses2_long = filter_rows_by_values(Nback_database_long, long_sub_list[1], 2)
+
+                    #concatonate databases
+                    Nback_database = pd.concat([Nback_database_ses1, Nback_database_ses2],ignore_index=True)
+                    Nback_database_long = pd.concat([Nback_database_ses1_long, Nback_database_ses2_long],ignore_index=True)
+
+                else:
+                    wide_sub_list = list(allBlockDat_wide['sub'].unique())
+                    long_sub_list = list(allBlockDat['sub'].unique())
+
+                    #filter by ses and sub
+                    Nback_database_ses = filter_rows_by_values(Nback_database, wide_sub_list, db_sessions[0])
+                    Nback_database_long_ses = filter_rows_by_values(Nback_database_long, long_sub_list, db_sessions[0])
+
+                    #concatonate with other session in full database
+                    Nback_database = pd.concat([Nback_database[Nback_database['ses'] != db_sessions[0]], Nback_database_ses],ignore_index=True)
+                    Nback_database_long = pd.concat([Nback_database_long[Nback_database_long['ses'] != db_sessions[0]], Nback_database_long_ses],ignore_index=True)
+
+            #add newly processed data
+            Nback_database = Nback_database.append(allBlockDat_wide)
+            Nback_database_long = Nback_database_long.append(allBlockDat)
+
+            #sort to ensure in sub order
+            Nback_database = Nback_database.sort_values(by = ['ses', 'sub'])
+            Nback_database_long = Nback_database_long.sort_values(by = ['ses', 'sub', 'block'])
+
+            #round to 3 decimal points
+            Nback_database = Nback_database.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+            Nback_database_long = Nback_database_long.applymap(lambda x: round(x, 3) if isinstance(x, (int, float)) else x)
+
+            #write databases
+            Nback_database.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+            Nback_database_long.to_csv(str(Path(derivative_data_path).joinpath('task-nback_summary_long.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        else:
+            Nback_database = 'allBlockDat no pd.DataFrame'
+            Nback_database_long = 'allBlockDat no pd.DataFrame'
+
+    return Nback_database, Nback_database_long
+
+* overwrite_flag : False
 
 
 Execution Outputs
 -----------------
 
 
-* allBlocks_longDat : (    sub  ses  b0_n_targets  b0_n_fill  ...  b2_p_fill_fa  b2_p_target_ba  b2_rt_mean_target_hit  b2_rt_med_target_hit
-0     5    1          16.0       44.0  ...         2.273          95.739                960.067                 878.0
-1     6    1          16.0       44.0  ...         4.545          72.727               1033.000                 920.5
-2     7    1           8.0       20.0  ...         0.000          84.375               1108.455                1068.0
-3     9    1          16.0       44.0  ...         4.545          82.102               1130.636                1107.0
-4    11    1          16.0       44.0  ...         0.000          81.250                657.700                 656.5
-..  ...  ...           ...        ...  ...           ...             ...                    ...                   ...
-38   89    2          16.0       44.0  ...         0.000          87.500                757.583                 697.5
-39   93    2          16.0       44.0  ...         2.273          64.489                756.000                 784.0
-40   94    2          16.0       44.0  ...         0.000          71.875                931.571                 677.0
-41   95    2          16.0       44.0  ...         9.091          76.705                907.100                 938.0
-42   96    2          16.0       44.0  ...         4.545          85.227                796.417                 795.5
-
-[97 rows x 50 columns],     sub  ses block  n_targets  n_fill  ...  n_fill_fa  p_fill_fa  p_target_ba  rt_mean_target_hit  rt_med_target_hit
-0     5    1    b0         16      44  ...          0      0.000      100.000             582.500              560.5
-1     5    1    b1         16      44  ...          1      2.273       98.864             675.188              646.5
-2     5    1    b2         16      44  ...          1      2.273       95.739             960.067              878.0
-3     6    1    b0         16      44  ...          1      2.273       98.864             658.250              654.5
-4     6    1    b1         16      44  ...          0      0.000       90.625             774.308              738.0
-..  ...  ...   ...        ...     ...  ...        ...        ...          ...                 ...                ...
-66   95    2    b1         16      44  ...          0      0.000      100.000             714.688              667.5
-67   95    2    b2         16      44  ...          4      9.091       76.705             907.100              938.0
-56   96    2    b0         16      44  ...          0      0.000      100.000             441.562              456.0
-57   96    2    b1         16      44  ...          1      2.273       98.864             553.688              560.5
-58   96    2    b2         16      44  ...          2      4.545       85.227             796.417              795.5
-
-[288 rows x 19 columns])
+* allBlocks_longDat : ('no new data files', 'no new data files')
 
 
 Runtime info
 ------------
 
 
-* duration : 0.081044
-* hostname : ND-NTR-FCH12085
+* duration : 0.004094
+* hostname : nut-azp271-10239
 * prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/Nback/_session_id_2/concatBlocksLong
 
@@ -1118,28 +394,55 @@ Environment
 * CONDA_PROMPT_MODIFIER : (base) 
 * CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
+* DYLD_LIBRARY_PATH : /Applications/freesurfer/lib/gcc/lib::/opt/X11/lib/flat_namespace
+* FIX_VERTEX_AREA : 
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
+* FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
+* FS_OVERRIDE : 0
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
 * HOME : /Users/azp271
 * LANG : en_US.UTF-8
+* LOCAL_DIR : /Applications/freesurfer/local
 * LOGNAME : azp271
 * LSCOLORS : ExFxBxDxCxegedabagacad
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
-* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin
+* OS : Darwin
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin/:/Users/azp271/dcm2niix/build/bin/:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6/
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
 * PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
 * SHLVL : 1
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
-* TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : A30D2AAF-B645-4A29-9775-89587571A8F8
-* TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
+* TERM_PROGRAM_VERSION : 433
+* TERM_SESSION_ID : 5D558CB1-2FBB-498C-9075-455C5F6CB8AA
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
 * USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
 * _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.apple.Terminal
 

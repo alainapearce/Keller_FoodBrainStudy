@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-113/ses-1/beh/sub-113_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -44,7 +44,7 @@ Original Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -177,11 +177,7 @@ Original Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -234,7 +230,7 @@ Execution Inputs
 ----------------
 
 
-* GNG_file : ['/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-026/ses-1/beh/sub-026_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-028/ses-1/beh/sub-028_ses-1_task-gng_events.tsv', '/Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-030/ses-1/beh/sub-030_ses-1_task-gng_events.tsv']
+* GNG_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-113/ses-1/beh/sub-113_ses-1_task-gng_events.tsv']
 * function_str : def summaryGNG(GNG_file):
     import numpy as np
     import pandas as pd
@@ -268,7 +264,7 @@ Execution Inputs
         # Change nan to none because pandas/NumPy uses the fact that np.nan != np.nan
         GNG_data[['ca', 'trial_resp']] = GNG_data[['ca', 'trial_resp']].fillna(value='None')
 
-        # Set accuracy equal to 1 when trial_acc = trial_resp
+        # Set accuracy equal to 1 when ca = trial_resp
         GNG_data['trial_acc'] = np.where(GNG_data['trial_resp'] == GNG_data['ca'], '1', '0')
 
         return(GNG_data)
@@ -401,11 +397,7 @@ Execution Inputs
             GNG_data = getGNGtrialAcc(GNG_data)
 
             # Set column names
-            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr', 
-                        'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit',
-                        'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA',
-                        'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm', 
-                        'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
+            colnames = ['sub', 'block', 'nGo', 'nNoGo', 'nAcc', 'pAcc', 'nGo_Hit', 'nGo_Miss', 'nNoGo_Corr',  'nNoGo_FA', 'pGo_Hit', 'pGo_Miss', 'pNoGo_Corr', 'pNoGo_FA', 'RTmeanGo_Hit', 'RTmeanNoGo_FA', 'RTmedGo_Hit', 'RTmedNoGo_FA', 'z_Hit', 'z_FA', 'z_Hit_mm', 'z_FA_mm', 'z_Hit_ll', 'z_FA_ll', 'd_prime_mm',  'd_prime_ll','A_prime_mm', 'A_prime_ll', 'c_mm', 'c_ll', 'Grier_beta_mm', 'Grier_beta_ll']
 
             #summary stats - across all blocks
             all_trials_stat = summary_stats(GNG_data)
@@ -458,29 +450,13 @@ Execution Outputs
 -----------------
 
 
-* summaryGNG_dat : [  sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA pGo_Hit pGo_Miss  ...  z_Hit_mm   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
-0  26   all  150    50  191  0.955     150        0         41        9     1.0      0.0  ...  2.713052 -0.915365  2.715253 -0.891709   3.628417   3.606962   0.953833   0.952259  0.898843  0.911772     -0.955974     -0.957382
-1  26    b1   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-2  26    b2   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-3  26    b3   30    10   40    1.0      30        0         10        0     1.0      0.0  ...  2.128045 -1.644854  2.141198 -1.690622   3.772899    3.83182   0.982902   0.984226  0.241596  0.225288     -0.486957     -0.464408
-4  26    b4   30    10   38   0.95      30        0          8        2     1.0      0.0  ...  2.128045 -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-5  26    b5   30    10   37  0.925      30        0          7        3     1.0      0.0  ...  2.128045 -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
-
-[6 rows x 32 columns],   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  ...   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
-0  28   all  150    50  177  0.885     147        3         30       20      0.98  ... -0.253347  1.992123 -0.248275   2.307096   2.240398   0.889626   0.887436  0.900201  0.871924     -0.848998      -0.82784
-1  28    b1   30    10   35  0.875      30        0          5        5       1.0  ...       0.0  2.141198       0.0   2.128045   2.141198   0.864548   0.864886  1.064023  1.070599     -0.876955     -0.880626
-2  28    b2   30    10   36    0.9      29        1          7        3  0.966667  ... -0.524401  1.660698 -0.472789   2.358315   2.133487   0.910509   0.898668  0.654757  0.593954     -0.733945     -0.649826
-3  28    b3   30    10   38   0.95      30        0          8        2       1.0  ... -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
-4  28    b4   30    10   35  0.875      29        1          6        4  0.966667  ... -0.253347  1.660698 -0.229884   2.087262   1.890582   0.882663   0.872056  0.790284  0.715407     -0.763265     -0.679995
-5  28    b5   30    10   33  0.825      29        1          4        6  0.966667  ...  0.253347  1.660698  0.229884   1.580568   1.430813   0.823994   0.815191  1.043631  0.945291     -0.763265     -0.679995
-
-[6 rows x 32 columns],   sub block  nGo nNoGo nAcc   pAcc nGo_Hit nGo_Miss nNoGo_Corr nNoGo_FA   pGo_Hit  ...   z_FA_mm  z_Hit_ll   z_FA_ll d_prime_mm d_prime_ll A_prime_mm A_prime_ll      c_mm      c_ll Grier_beta_mm Grier_beta_ll
-0  30   all  150    50  183  0.915     144        6         39       11      0.96  ... -0.772193  1.716379 -0.753782   2.522879    2.47016   0.929888   0.927197  0.489246  0.481299     -0.634286     -0.618293
-1  30    b1   30    10   37  0.925      30        0          7        3       1.0  ... -0.524401  2.141198 -0.472789   2.652446   2.613987   0.917776   0.913237  0.801822  0.834204     -0.855215     -0.863676
-2  30    b2   30    10   38   0.95      28        2         10        0  0.933333  ... -1.644854  1.400745 -1.690622    3.14594   3.091367   0.969063   0.966518 -0.071884 -0.144938      0.134177      0.261662
-3  30    b3   30    10   37  0.925      28        2          9        1  0.933333  ... -1.281552  1.400745 -1.096804   2.782638   2.497549   0.954696   0.939574  0.109767  0.151971     -0.182482     -0.227331
-4  30    b4   30    10   33  0.825      28        2          5        5  0.933333  ...       0.0  1.400745       0.0   1.501086   1.400745   0.832738   0.823713  0.750543  0.700373     -0.601423     -0.542536
-5  30    b5   30    10   38   0.95      30        0          8        2       1.0  ... -0.841621  2.141198 -0.747859   2.969666   2.889057   0.943944   0.937032  0.643212   0.69667     -0.814173     -0.834258
+* summaryGNG_dat : [   sub block  nGo nNoGo nAcc  ... A_prime_ll     c_mm     c_ll Grier_beta_mm Grier_beta_ll
+0  113   all  150    50  166  ...   0.827762  1.59038  1.58655     -0.969924     -0.970289
+1  113    b1   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
+2  113    b2   30    10   32  ...   0.785909  1.48483  1.44453     -0.814173     -0.834258
+3  113    b3   30    10   35  ...   0.864886  1.06402   1.0706     -0.876955     -0.880626
+4  113    b4   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
+5  113    b5   30    10   33  ...   0.814078  1.32622  1.30699     -0.855215     -0.863676
 
 [6 rows x 32 columns]]
 
@@ -489,7 +465,5 @@ Subnode reports
 ---------------
 
 
- subnode 0 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0/_report/report.rst
- subnode 1 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData1/_report/report.rst
- subnode 2 : /Users/baf44/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData2/_report/report.rst
+ subnode 0 : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/GNG/summaryData/mapflow/_summaryData0/_report/report.rst
 

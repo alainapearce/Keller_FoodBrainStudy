@@ -1,0 +1,218 @@
+"column","variable","label","value_labels","class","type","n_na","range"
+"1","id","ID","NULL","numeric","double","0","c(1, 129)"
+"2","v1_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","0","c(17606, 18997)"
+"3","bmi_screenout","Child BMI Percentile Screen Out","c(`YES, child is overweight, screen out` = 1, `NO, child is normal weight, keep in study` = 0)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"4","parent_respondent","Parent Reported: Parent relationship to child re-leveled in R to start with 0","c(Mother = 0, Father = 1, Other = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"5","parent_respondent_other","Parent Reported: Parent specify relationship to child if other","NULL","character","character","0","c("""", """")"
+"6","hw_measured","Parent attending Visit 1 had measured height and weight","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"7","measured_parent","Parent with measured BMI at Visit 1","c(mom = 0, dad = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","4","c(0, 1)"
+"8","risk_status_mom","Child risk categor: Low risk: Mom BMI < 26, High Risk: Mom BMI >= 29","c(`Low Risk` = 0, `High Risk` = 1, Neither = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","1","c(0, 2)"
+"9","risk_status_both","Child risk category: Low Risk: Mom and Dad BMI < 25, High Risk: Mom BMI >=30 and Dad rounded BMI >= 25","c(`Low Risk` = 0, `High Risk` = 1, Neither = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","1","c(0, 2)"
+"10","sex","Child Sex re-leveled in R to start with 0","c(Male = 0, Female = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"11","dob","date of birth converted to format yyyy-mm-dd in R","NULL","Date","double","0","c(14277, 16374)"
+"12","age_yr","Age in years calculated from dob and start_date","NULL","numeric","double","0","c(5.97, 9.94)"
+"13","age_mo","Age in months calculated from dob and start_date","NULL","numeric","double","0","c(71.7, 119.2)"
+"14","ethnicity","Parent Reported: Child ethnicity","c(`NOT Hispanic or Latino` = 0, `Hispanic or Latino` = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"15","race","Parent Reported: Child race -- Note: prefer not to answer (pna) marked NA - see pna database for which were pna rather than missing NA re-leveled in R to start with 0 and set 'White/Caucasion' = 0","c(`White/Caucasian` = 0, `American Indian/Alaskan Native` = 1, Asian = 2, `Black/African American` = 3, `Hawaiian/Pacific Islander` = 4)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","1","c(0, 3)"
+"16","income","Parent Reported: Yearly household income -- Note: prefer not to answer (pna) marked NA - see pna database for which were pna rather than missing NA re-leveled in R to start with 0","c(`Less than $20,000` = 0, `$20,000 - $35,999` = 1, `$36,000 - $50,999` = 2, `$51,000 - $75,999` = 3, `$76,000 - $100,000` = 4, `More than $100,000` = 5)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","3","c(1, 5)"
+"17","parent_ed","Parent Reported: Parent education re-leveled in R to start with 0","c(`High School or GED (12 years)` = 0, `Associate's Degree (14 years)` = 1, `Technical or Vocational School (14 years)` = 2, `Bachelor's Degree (16 years)` = 3, `Master's Degree (18 years)` = 4, `Ph.D. (20+ years)` = 5, `M.D. (20+ years)` = 6, `J.D. (20+ years)` = 7, Other = 8)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 5)"
+"18","parent_ed_other","Parent Reported: Parent specify education if other","NULL","character","character","0","c("""", """")"
+"19","partner_ed","Parent Reported: Partner education re-leveled in R to start with 0","c(`High School or GED (12 years)` = 0, `Associate's Degree (14 years)` = 1, `Technical or Vocational School (14 years)` = 2, `Bachelor's Degree (16 years)` = 3, `Master's Degree (18 years)` = 4, `Ph.D. (20+ years)` = 5, `M.D. (20+ years)` = 6, `J.D. (20+ years)` = 7, Other = 8)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","6","c(0, 8)"
+"20","partner_ed_other","Parent Reported: Partner specify education if other","NULL","character","character","0","c("""", ""medical Assistant Degree"")"
+"21","bmi","bmi calculated in R package using scripted average height and weight","NULL","numeric","double","0","c(13.52, 21.71)"
+"22","bmi_percentile","BMI percentile updated: calculated using childsds R package and scripted average height and weight","NULL","numeric","double","0","c(3.33, 98.65)"
+"23","bmi_z","BMI-z/sds calculated using childsds R package","NULL","numeric","double","0","c(-1.83, 2.21)"
+"24","weight_status","Child weight status using CDC BMI percentile cutoffs","c(UW = -99, HW = 0, OW = 1, OB = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(-99, 2)"
+"25","dad_weight_status","Dad weight status using CDC cutoffs","c(UW = -99, HW = 0, OW = 1, `C1-OB` = 2, `C2-OB` = 3, `C3-Severe OB` = 4)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","1","c(0, 4)"
+"26","mom_weight_status","Mom weight status using CDC cutoffs","c(UW = -99, HW = 0, OW = 1, `C1-OB` = 2, `C2-OB` = 3, `C3-Severe OB` = 4)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","6","c(0, 4)"
+"27","v1_child_broke_fast","Visit 1 - Parent Reported: Child broke fast","c(`Yes (MUST STOP VISIT AND RESCHEDULE)` = 1, `No (continue)` = 0)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","0","c(0, 1)"
+"28","v1_child_intake_premeal","Visit 1 - Parent Reported: What did (child name) eat/drink and when?","NULL","character","character","0","c("""", ""snack on school bus at 3:15"")"
+"29","v1_food_initials","Visit 1 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","0","c("""", ""WL, KH"")"
+"30","v1_child_notes","Visit 1 - Notes about visit:
+Researcher:  If you have any notes about this visit that you want to record, please use the box below.  If you don't have any notes, click the Next Page to submit this questionnaire.
+
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","0","c("""", ""We were low on bread and had to use one end piece on the pb&j. There was no extra bread in chandlee either. However, the child ate all of the pb and J"")"
+"31","v2_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","27","c(17631, 18970)"
+"32","v2_fast","Visit 2 - Parent Reported: Fasting:  Has child fasted for past 3 hours? -- Note: prefer not to answer (pna) marked NA - see pna database for which were pna rather than missing NA","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","43","c(0, 1)"
+"33","v2_food_initials","Visit 2 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","27","c("""", ""WL"")"
+"34","v2_child_notes","Visit 2 - Notes about visit:
+Researcher:  If you have any notes about this visit that you want to record, please use the box below.  If you don't have any notes, click the Next Page to submit this questionnaire.
+
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","27","c("""", ""Would not try broccoli sample; in questionnaire, did not know what type of milk (skim or whole) she drinks - I marked it as whole; repeated GNG practice twice"")"
+"35","v2_update1","Visit 2 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 0)"
+"36","v2_update2","Visit 2 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"37","v2_update3","Visit 2 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"38","v2_update4","Visit 2 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 0)"
+"39","v2_update5","Visit 2 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"40","v2_update6","Visit 2 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"41","v2_update7","Visit 2 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 0)"
+"42","v2_update1detail","Visit 2 - Parent Reported: changes in medical history detail","NULL","character","character","28","c("""", """")"
+"43","v2_update2detail","Visit 2 - Parent Reported: changes in medications detail","NULL","character","character","28","c("""", ""Rosalynn has begun taking over the counter allergy medications (Claritin) for seasonal spring allergies."")"
+"44","v2_update3detail","Visit 2 - Parent Reported: changes in dental work","NULL","character","character","28","c("""", ""She had a tooth pulled, it is her upper right side."")"
+"45","v2_update5detail","Visit 2 - Parent Reported: illnesses","NULL","character","character","28","c("""", ""She had a cold (lasted about 24 hours) at the beginning of the week.  No fever but stuffy nose and more tired than usual."")"
+"46","v2_update6detail","Visit 2 - Parent Reported: dietary or appetite changes","NULL","character","character","28","c("""", ""Because of the new springs, it has made his teeth sore so he is only eating soft foods the dont require chewing."")"
+"47","v2_update7detail","Visit 2 - Parent Reported: contact information","NULL","character","character","28","c("""", """")"
+"48","v3_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","29","c(17612, 18977)"
+"49","v3_fast","Visit 3 - Parent Reported: Fasting:  Has child fasted for past 3 hours?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","38","c(0, 1)"
+"50","v3_food_initials","Visit 3 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","29","c("""", ""WL, VD"")"
+"51","v3_child_notes","Visit 3 - Notes about visit:
+Researcher:  If you have any notes about this visit that you want to record, please use the box below. If you don't have any notes, you can click Next Page to submit this questionnaire.
+
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","29","c("""", ""When child returned actigraph, mom reported that this was an \""outlier of a week for physical activity and sleep\"" due to the snow and 3 day weekend.  Gave the participant the actigraph for another week (initialized with subject ID as R01_43_week2)"")"
+"52","v3_update1","Visit 3 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"53","v3_update2","Visit 3 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"54","v3_update3","Visit 3 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"55","v3_update4","Visit 3 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"56","v3_update5","Visit 3 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"57","v3_update6","Visit 3 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"58","v3_update7","Visit 3 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","55","c(0, 1)"
+"59","v3_update1detail","Visit 3 - Parent Reported: changes in medical history detail","NULL","character","character","28","c("""", """")"
+"60","v3_update2detail","Visit 3 - Parent Reported: changes in medications detail","NULL","character","character","28","c("""", ""She received antibiotics last week for a small skin infection which has since cleared."")"
+"61","v3_update3detail","Visit 3 - Parent Reported: changes in dental work","NULL","character","character","28","c("""", ""Penelope had an expander placed last Friday. The expander is made out of metal and acrylic. Penelope can have the expander removed for the MRI study.\n\nThe contact info for State College Orthodontics is 814-308-9504, if you have any further questions."")"
+"62","v3_update5detail","Visit 3 - Parent Reported: illnesses","NULL","character","character","28","c("""", ""Penelope just has a slight headache and stuffy nose, she remains afebrile and has no other symptoms. I believe it is 2/2 going back to school and being reintroduced to other student's germs."")"
+"63","v3_update6detail","Visit 3 - Parent Reported: dietary or appetite changes","NULL","character","character","28","c("""", """")"
+"64","v3_update7detail","Visit 3 - Parent Reported: contact information","NULL","character","character","28","c("""", """")"
+"65","v4_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","33","c(17617, 18978)"
+"66","v4_fast","Visit 4 - Parent Reported: Fasting:  Has child fasted for past 3 hours?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","40","c(0, 1)"
+"67","v4_spacegame_reward","Visit 4 - Type of candy selected for Space Game reward","c(Skittles = 1, `M&Ms` = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","62","c(1, 2)"
+"68","v4_food_initials","Visit 4 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","33","c("""", ""WL/JL"")"
+"69","v4_child_notes","Visit 4 - Notes about visit:
+
+ 
+Researcher:  If you have any notes about this visit that you want to record, please use the box below. If you don't have any notes, you can click Next Page to submit this questionnaire.
+
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","33","c("""", ""When asked if he ever went on a diet, he made a mention that his family fasts sometimes for religious purposes.\n\nWASI data was input on 12/17. Visit date may say 12/17 but the visit was ran on 12/16."")"
+"70","v4_update1","Visit 4 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"71","v4_update2","Visit 4 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"72","v4_update3","Visit 4 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"73","v4_update4","Visit 4 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"74","v4_update5","Visit 4 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week? -- Note: prefer not to answer (pna) marked NA - see pna database for which were pna rather than missing NA","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","59","c(0, 1)"
+"75","v4_update6","Visit 4 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"76","v4_update7","Visit 4 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","58","c(0, 0)"
+"77","v4_update1detail","Visit 4 - Parent Reported: changes in medical history detail","NULL","character","character","32","c("""", """")"
+"78","v4_update2detail","Visit 4 - Parent Reported: changes in medications detail","NULL","character","character","32","c("""", """")"
+"79","v4_update3detail","Visit 4 - Parent Reported: changes in dental work","NULL","character","character","32","c("""", """")"
+"80","v4_update5detail","Visit 4 - Parent Reported: illnesses","NULL","character","character","32","c("""", ""He has still been fighting a cold this past week.  He started to run a low fever on Tuesday night of last week and I kept him home from school on Wednesday, but he was feeling much better on Thursday and went back then."")"
+"81","v4_update6detail","Visit 4 - Parent Reported: dietary or appetite changes","NULL","character","character","32","c("""", """")"
+"82","v4_update7detail","Visit 4 - Parent Reported: contact information","NULL","character","character","32","c("""", """")"
+"83","v5_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","33","c(17626, 18997)"
+"84","v5_food_initials","Visit 5 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","33","c("""", ""WL, OB"")"
+"85","v5_extra_mock_needed","Visit 5 - Does this child need additional mock scanner training, based on their reactions today?
+If yes, please also email the Project Coordinator so the mock scanner can be scheduled during Visit 6.","c(`YES, child needs additional training` = 1, `NO, child does NOT need additional training` = 0)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","34","c(0, 1)"
+"86","v5_mockscan2_notes","Visit 5 - If you have any notes about the parent or child's experience with the mock scanner, type it in the box below.","NULL","character","character","33","c("""", ""Was very nervous during mock scanning, might want to offer mock again before actual scan"")"
+"87","v5_child_notes","Visit 5 - Notes about visit:
+Researcher:  If you have any other notes about this visit that you want to record, please use the box below.  If you don't have any notes, you can click Next Page to submit this questionnaire.
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","33","c("""", ""While going down to mock scanner mom asked child if she ate all the food."")"
+"88","v5_fast","Visit 5 - Parent Reported: Fasting:  Has child fasted for past 3 hours?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","41","c(0, 1)"
+"89","v5_update1","Visit 5 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"90","v5_update2","Visit 5 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"91","v5_update3","Visit 5 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"92","v5_update4","Visit 5 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"93","v5_update5","Visit 5 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 1)"
+"94","v5_update6","Visit 5 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"95","v5_update7","Visit 5 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","60","c(0, 0)"
+"96","v5_update1detail","Visit 5 - Parent Reported: changes in medical history detail","NULL","character","character","35","c("""", """")"
+"97","v5_update2detail","Visit 5 - Parent Reported: changes in medications detail","NULL","character","character","35","c("""", """")"
+"98","v5_update3detail","Visit 5 - Parent Reported: changes in dental work","NULL","character","character","35","c("""", """")"
+"99","v5_update5detail","Visit 5 - Parent Reported: illnesses","NULL","character","character","35","c("""", ""On Sunday night she began a stomach ache and low grade fever"")"
+"100","v5_update6detail","Visit 5 - Parent Reported: dietary or appetite changes","NULL","character","character","35","c("""", """")"
+"101","v5_update7detail","Visit 5 - Parent Reported: contact information","NULL","character","character","35","c("""", """")"
+"102","v6_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","36","c(17647, 18975)"
+"103","v6_notes_mri_mprage","Visit 6 - notes about MRI: mprage scan","NULL","character","character","36","c("""", ""visible ringing, but wasn't horrible (quality seemed sufficient for alignment). decided not to repeat at end bc child was getting more wiggly as scans progressed"")"
+"104","v6_notes_mri_restingstate","Visit 6 - notes about MRI: resting state scan","NULL","character","character","36","c("""", ""tech could not get pulse ox to work"")"
+"105","v6_notes_mri_run1","Visit 6 - notes about MRI: food cue task - run1","NULL","character","character","36","c("""", ""when explaining instructions for responding to each food image, tech said \""like\"" instead of \""want\"", but then corrected herself"")"
+"106","v6_notes_mri_run2","Visit 6 - notes about MRI: food cue task - run2","NULL","character","character","36","c("""", ""started to cry when we checked in, so we pulled him out of the scanner"")"
+"107","v6_notes_mri_run3","Visit 6 - notes about MRI: food cue task - run3","NULL","character","character","36","c("""", ""scanner was still running when 'good work' screen appeared"")"
+"108","v6_notes_mri_run4","Visit 6 - notes about MRI: food cue task - run4","NULL","character","character","36","c("""", ""Told to only hit button 1x per image"")"
+"109","v6_notes_mri_run5","Visit 6 - notes about MRI: food cue task - run5","NULL","character","character","36","c("""", ""runs 1-4 were run off the 'allProc' script. Run 5 was run off the Run5 script (forgot to advance to trigger screen in allProc, participant did not see any of run 5 before restarted)"")"
+"110","v6_childnotes","Visit 6 - If you have notes about the MRI scan, type them in the boxes below.  Make sure to include if you partially completed any runs, had to repeat any scans, or have any concerns about the position of the child's head in the scanner. - Other notes","NULL","character","character","36","c("""", ""wiggled feet between runs"")"
+"111","v6_fastv5","Visit 6 - Parent Reported: Fasting:  Has child fasted for past 3 hours?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 1)"
+"112","v6_update1","Visit 6 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 0)"
+"113","v6_update2","Visit 6 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 0)"
+"114","v6_update3","Visit 6 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 0)"
+"115","v6_update4","Visit 6 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 0)"
+"116","v6_update5","Visit 6 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 1)"
+"117","v6_update6","Visit 6 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 1)"
+"118","v6_update7","Visit 6 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 1)"
+"119","v6_update8","Visit 6 - Parent Reported: Updates - Does your family have any plans to move more than an hour away from State College in the next year?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","63","c(0, 0)"
+"120","v6_update1detail","Visit 6 - Parent Reported: changes in medical history detail","NULL","character","character","63","c("" none"", ""There are none."")"
+"121","v6_update2detail","Visit 6 - Parent Reported: changes in medications detail","NULL","character","character","63","c(""n/a"", ""There are none."")"
+"122","v6_update3detail","Visit 6 - Parent Reported: changes in dental work","NULL","character","character","63","c(""n/a"", ""There are none."")"
+"123","v6_update5detail","Visit 6 - Parent Reported: illnesses","NULL","character","character","63","c(""24 hour stomach flu on Sunday 10/20"", ""This past week she hasn't had any illnesses."")"
+"124","v6_update6detail","Visit 6 - Parent Reported: dietary or appetite changes","NULL","character","character","63","c(""appetite has been the same as always"", ""There were none."")"
+"125","v6_update7detail","Visit 6 - Parent Reported: contact information","NULL","character","character","63","c(""information still the same"", ""we will be at the same address and have the same contact information"")"
+"126","v6_update8detail","Visit 6 - Parent Reported: moving","NULL","character","character","63","c(""n/a"", ""will still be in the same place next year"")"
+"127","v7_date","start_date from qualtrics survey meta-data converted to format yyyy-mm-dd in R","NULL","Date","double","68","c(18032, 18835)"
+"128","v7_spacegame_reward","Visit 7 - Type of candy selected for Space Game reward","c(Skittles = 1, `M&Ms` = 2)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","68","c(1, 2)"
+"129","v7_food_initials","Visit 7 - Enter your initials in the box below, in case we have a question about the food intake data.","NULL","character","character","68","c("""", ""WL"")"
+"130","v7_childnotes","Visit 7 - Notes about visit:
+Researcher:  If you have any notes about this visit that you want to record, please use the box below.  If you don't have any notes, click the Next Page to submit this questionnaire.
+
+
+
+Examples of things to note: 
+
+	Child was sick or not feeling well
+	Child was uncomfortable with any questions you asked
+	Child did not understand instructions for a task
+	Parent said or did something that could affect child's responses, like made comments about their or child's weight or appearance
+	Any procedures written in the tech instructions were not followed or modified due to a special circumstance
+	Anything else that you feel may affect the validity or analysis of the data collected today.","NULL","character","character","68","c("""", ""When I presented food to the child, mom made comment, \""wow! that's a lot of food!\"""")"
+"131","v7_update1","Visit 7 - Parent Reported: Updates - Have there been any changes in your child medical history since your last visit, including any medical, psychological, or learning disability diagnoses?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","73","c(0, 0)"
+"132","v7_update2","Visit 7 - Parent Reported: Updates - Have there been any changes in your child prescription or over the counter medications since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","73","c(0, 1)"
+"133","v7_update3","Visit 7 - Parent Reported: Updates - Have there been any changes in your child dental work, including braces or retainers, since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","73","c(0, 1)"
+"134","v7_update4","Visit 7 - Parent Reported: Updates - Has your child acquired any new piercings since your last visit?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","73","c(0, 1)"
+"135","v7_update5","Visit 7 - Parent Reported: Updates - Has your child experienced a cold, flu, or any other illnesses in the past week?","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","73","c(0, 1)"
+"136","v7_update6","Visit 7 - Parent Reported: Updates - Have you noticed any changes in your child dietary habits or appetite in the past 24 hours?  This could include eating more or less than he/she normally does, eating a food he/she normally doesn't, or refusing to eat a food he/she normally eats.","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","74","c(0, 0)"
+"137","v7_update7","Visit 7 - Parent Reported: Updates - Are there any changes to your preferred contact information (address, email or phone number) since your last visit? -- Note: prefer not to answer (pna) marked NA - see pna database for which were pna rather than missing NA","c(No = 0, Yes = 1)","c(""haven_labelled"", ""vctrs_vctr"", ""double"")","double","74","c(0, 1)"
+"138","v7_update1detail","Visit 7 - Parent Reported: changes in medical history detail","NULL","character","character","73","c("""", """")"
+"139","v7_update2detail","Visit 7 - Parent Reported: changes in medications detail","NULL","character","character","73","c("""", ""She recently had an illness that required an antibiotic treatment.  She finished that last week."")"
+"140","v7_update3detail","Visit 7 - Parent Reported: changes in dental work","NULL","character","character","73","c("""", ""Top and bottom expanders and braces on the front top teeth."")"
+"141","v7_update5detail","Visit 7 - Parent Reported: illnesses","NULL","character","character","73","c("""", ""coughing, but not very bad."")"
+"142","v7_update6detail","Visit 7 - Parent Reported: dietary or appetite changes","NULL","character","character","73","c("""", """")"
+"143","v7_update7detail","Visit 7 - Parent Reported: contact information","NULL","character","character","73","c("""", ""New phone number: 814-400-4500"")"

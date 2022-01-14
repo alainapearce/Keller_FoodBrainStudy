@@ -10,7 +10,7 @@ Original Inputs
 ---------------
 
 
-* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback2_events.tsv']
+* Nback_file : No subfiles
 * function_str : def summaryNback(Nback_file):
     import numpy as np
     import pandas as pd
@@ -105,7 +105,7 @@ Execution Inputs
 ----------------
 
 
-* Nback_file : ['/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback0_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback1_events.tsv', '/Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/raw_data/sub-020/ses-2/beh/sub-020_ses-2_task-nback2_events.tsv']
+* Nback_file : No subfiles
 * function_str : def summaryNback(Nback_file):
     import numpy as np
     import pandas as pd
@@ -200,23 +200,15 @@ Execution Outputs
 -----------------
 
 
-* summaryNback_dat : [['20' '2' 'b0' '16' '44' '60' '59' '98.33333333333333' '16' '100.0' '0'
-  '0.0' '43' '97.72727272727273' '1' '2.272727272727273'
-  '98.86363636363637' '885.6875' '828.0']
- ['20' '2' 'b1' '16' '44' '60' '58' '96.66666666666667' '15' '93.75' '1'
-  '6.25' '43' '97.72727272727273' '1' '2.272727272727273'
-  '95.73863636363637' '950.2666666666667' '977.0']
- ['20' '2' 'b2' '16' '44' '60' '58' '96.66666666666667' '15' '93.75' '1'
-  '6.25' '43' '97.72727272727273' '1' '2.272727272727273'
-  '95.73863636363637' '899.0' '909.0']]
+* summaryNback_dat : no files
 
 
 Runtime info
 ------------
 
 
-* duration : 0.06772
-* hostname : ND-NTR-FCH12085
+* duration : 0.001504
+* hostname : nut-azp271-10239
 * prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/Nback/_session_id_2/summaryData/mapflow/_summaryData0
 
@@ -232,28 +224,55 @@ Environment
 * CONDA_PROMPT_MODIFIER : (base) 
 * CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
+* DYLD_LIBRARY_PATH : /Applications/freesurfer/lib/gcc/lib::/opt/X11/lib/flat_namespace
+* FIX_VERTEX_AREA : 
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
+* FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
+* FS_OVERRIDE : 0
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
 * HOME : /Users/azp271
 * LANG : en_US.UTF-8
+* LOCAL_DIR : /Applications/freesurfer/local
 * LOGNAME : azp271
 * LSCOLORS : ExFxBxDxCxegedabagacad
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
-* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin
+* OS : Darwin
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin/:/Users/azp271/dcm2niix/build/bin/:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6/
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
 * PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
 * SHLVL : 1
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
-* TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : A30D2AAF-B645-4A29-9775-89587571A8F8
-* TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
+* TERM_PROGRAM_VERSION : 433
+* TERM_SESSION_ID : 5D558CB1-2FBB-498C-9075-455C5F6CB8AA
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
 * USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
 * _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.apple.Terminal
 

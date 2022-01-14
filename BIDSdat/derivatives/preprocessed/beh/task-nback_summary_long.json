@@ -19,7 +19,7 @@
         "Levels": {
             "b0": "0-back condition",
             "b1": "1-back condition",
-            "b2": "2-back condition",
+            "b2": "2-back condition"
         }
     },
     "n_targets": {
@@ -62,7 +62,7 @@
         "Description": "percent incorrect responses (false alarms) to filler/non-target trials"
     },
     "p_target_ba": {
-        "Description": "ballanced accuracy ((percent hits + percent correct no response)/2)"
+        "Description": "balanced accuracy ((percent hits + percent correct no response)/2)"
     },
     "rt_mean_target_hit": {
         "Description": "average reaction time across all correct target responses (i.e., hits)",

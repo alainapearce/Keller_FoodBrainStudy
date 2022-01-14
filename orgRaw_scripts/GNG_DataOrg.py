@@ -51,11 +51,6 @@ def get_task_info(raw_filepath):
     # return pandas dataset
     return(exp_name, eprime_ver, ncol, file_version)
 
-# function to append error message to error_file
-def log_error(error_str: str):
-    with open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "a") as error_file:
-        error_file.write(error_str + "\n")
-
 # function to remove columns/rows associated with practice trials and rename GNG raw data columns
 def bidsformat_gng_raw(raw_filepath):
 
@@ -95,7 +90,7 @@ def bidsformat_gng_raw(raw_filepath):
 ##############################################################################
 
 # get script location
-script_path = Path(os.path.dirname(__file__))
+script_path = Path(__file__).parent.resolve()
 
 # change directory to base directory and get path
 os.chdir(script_path)
@@ -174,8 +169,10 @@ for filepath in gng_raw_files:
                     # write out if no edat file
                     eprime_err = 'sub-' + subname + ' has no GNG edat file'
                     print(eprime_err)
+                    
                     #open error file and append error message
-                    log_error(eprime_err)
+                    with open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "a") as error_file:
+                        error_file.write(eprime_err + "\n")
                 else:
                     copy2(eprime_filename, Path(beh_source_bids_path))
             else:
@@ -201,8 +198,10 @@ for filepath in gng_raw_files:
                     # write out if no edat file
                     eprime_err = 'sub-' + subname + ' has no GNG xml file'
                     print(eprime_err)
+                    
                     #open error file and append error message
-                    log_error(eprime_err)
+                    with open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "a") as error_file:
+                        error_file.write(eprime_err + "\n")
                 else:
                     copy2(eprimeXML_filename, Path(beh_source_bids_path))
             else:
@@ -228,8 +227,10 @@ for filepath in gng_raw_files:
                     # write out if no edat file
                     eprime_err = 'sub-' + subname + ' has no GNG txt file'
                     print(eprime_err)
+                    
                     #open error file and append error message
-                    log_error(eprime_err)
+                    with open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "a") as error_file:
+                        error_file.write(eprime_err + "\n")
                 else:
                     copy2(eprimeTXT_filename, Path(beh_source_bids_path))
             else:
@@ -251,8 +252,10 @@ for filepath in gng_raw_files:
     if exp_name == 'Go No-Go Zoo_pseudorand' and not gng_practice_files:
         practice_err = 'sub-' + subname + ' has no practice file'
         print(practice_err)
+        
         #open error file and append error message
-        log_error(practice_err)
+        with open(Path(script_path).joinpath('GNG_DataOrg_error.txt'), "a") as error_file:
+            error_file.write(practice_err + "\n")
     
     # copy practice files into source data
     else:

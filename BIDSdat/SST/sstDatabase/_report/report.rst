@@ -10,596 +10,16 @@ Original Inputs
 ---------------
 
 
-* SST_summary_dat : [  sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  19     all        all  ...  320.5625  340.374673  307.078125
-1  19    h_ed       h_ed  ...   322.375  353.488158    305.3125
-2  19    l_ed       l_ed  ...    318.75  327.416667   310.96875
-3  19  l_port     l_port  ...   309.875  332.630263   306.78125
-4  19  s_port     s_port  ...    331.25  347.927083      307.75
-5  19       1  lED_lPort  ...    256.25  358.458333      335.75
-6  19       2  lED_sPort  ...    381.25     296.375     287.375
-7  19       3  hED_sPort  ...    281.25  399.479167    343.4375
-8  19       4  hED_lPort  ...     363.5  307.393617    269.4375
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean   ssrt_int
-0   7   all        all  ...  290.59375  544.217361  563.90625
-1   7     1  hED_lPort  ...   262.4375  508.073611   528.5625
-2   7     2  hED_sPort  ...     318.75  580.361111     573.75
-
-[3 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  107     all        all  ...  392.453125  398.211648  324.546875
-1  107    h_ed       h_ed  ...       350.0  498.209302      392.75
-2  107    l_ed       l_ed  ...   434.90625         NaN         NaN
-3  107  l_port     l_port  ...     396.875  381.636364       323.5
-4  107  s_port     s_port  ...   388.03125  414.786932   323.40625
-5  107       1  lED_sPort  ...    488.5625         NaN         NaN
-6  107       2  lED_lPort  ...      381.25  317.345745     322.875
-7  107       3  hED_lPort  ...       412.5  457.621951     372.625
-8  107       4  hED_sPort  ...       287.5  540.744444     439.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  68     all        all  ...  362.765625   453.33607  363.234375
-1  68    h_ed       h_ed  ...   384.90625  455.442065     344.375
-2  68    l_ed       l_ed  ...     340.625  450.954545    379.9375
-3  68  l_port     l_port  ...       300.0  538.522222   444.71875
-4  68  s_port     s_port  ...   425.53125  367.376796   293.96875
-5  68       1  hED_sPort  ...    469.8125    345.4375     245.875
-6  68       2  lED_lPort  ...       300.0  512.155556    420.5625
-7  68       3  hED_lPort  ...       300.0  564.888889      453.75
-8  68       4  lED_sPort  ...      381.25         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean   ssrt_int
-0  83     all        all  ...  392.1875  511.225198   458.8125
-1  83    h_ed       h_ed  ...   365.625  530.922368      483.0
-2  83    l_ed       l_ed  ...    418.75  491.601064     432.25
-3  83  l_port     l_port  ...     412.5  444.847368  398.46875
-4  83  s_port     s_port  ...   371.875  578.093085    559.125
-5  83       1  hED_lPort  ...     387.5  487.916667     426.75
-6  83       2  lED_sPort  ...     400.0  581.808511   559.4375
-7  83       3  lED_lPort  ...     437.5  401.393617    373.375
-8  83       4  hED_sPort  ...    343.75   574.37766    549.125
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean  ssrt_int
-0  74     all        all  ...    337.5         NaN       NaN
-1  74    h_ed       h_ed  ...  371.875  299.556579   207.125
-2  74    l_ed       l_ed  ...  303.125         NaN       NaN
-3  74  l_port     l_port  ...    300.0     366.625     279.0
-4  74  s_port     s_port  ...    375.0         NaN       NaN
-5  74       1  hED_sPort  ...    375.0  298.638298  224.1875
-6  74       2  lED_sPort  ...    375.0         NaN       NaN
-7  74       3  lED_lPort  ...   231.25  432.729167  370.3125
-8  74       4  hED_lPort  ...   368.75  300.520833   189.125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  23     all        all  ...  337.765625  298.176783  243.234375
-1  23    h_ed       h_ed  ...   338.03125  279.791667   227.15625
-2  23    l_ed       l_ed  ...       337.5  316.752632    253.6875
-3  23  l_port     l_port  ...     290.625         NaN         NaN
-4  23  s_port     s_port  ...   384.90625  282.230592   231.65625
-5  23       1  lED_sPort  ...      393.75  294.824468     231.375
-6  23       2  hED_sPort  ...    376.0625  270.083333    226.9375
-7  23       3  hED_lPort  ...       300.0       289.5    238.5625
-8  23       4  lED_lPort  ...      281.25         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   1     all        all  ...  396.859375  426.579778  355.796875
-1   1    h_ed       h_ed  ...   372.84375  417.440461   373.28125
-2   1    l_ed       l_ed  ...     420.875  436.071809   337.78125
-3   1  l_port     l_port  ...    373.9375  454.322917   338.96875
-4   1  s_port     s_port  ...   419.78125  398.681116   364.03125
-5   1       1  lED_lPort  ...       435.5  432.604167    310.0625
-6   1       2  lED_sPort  ...      406.25  439.054348      407.25
-7   1       3  hED_sPort  ...    433.3125  358.878989    346.6875
-8   1       4  hED_lPort  ...     312.375  476.041667     347.375
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd ssrt_mean ssrt_int
-0  77     all        all  ...  88.0625       NaN      NaN
-1  77    h_ed       h_ed  ...   89.625       NaN      NaN
-2  77    l_ed       l_ed  ...     86.5       NaN      NaN
-3  77  l_port     l_port  ...     86.0       NaN      NaN
-4  77  s_port     s_port  ...   90.125       NaN      NaN
-5  77       1  hED_sPort  ...   95.875       NaN      NaN
-6  77       2  lED_sPort  ...   84.375       NaN      NaN
-7  77       3  lED_lPort  ...   88.625       NaN      NaN
-8  77       4  hED_lPort  ...   83.375       NaN      NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  31     all        all  ...  231.265625  300.921875  267.734375
-1  31    h_ed       h_ed  ...   234.90625   314.59375   264.09375
-2  31    l_ed       l_ed  ...     227.625      287.25     271.875
-3  31  l_port     l_port  ...   223.46875    282.4375   255.03125
-4  31  s_port     s_port  ...    239.0625   319.40625    280.9375
-5  31       1  lED_lPort  ...     239.625  301.791667     276.875
-6  31       2  hED_sPort  ...       262.5  366.104167       365.0
-7  31       3  hED_lPort  ...    207.3125  263.083333    251.6875
-8  31       4  lED_sPort  ...     215.625  272.708333     252.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  28     all        all  ...  275.796875  321.372437  269.265625
-1  28    h_ed       h_ed  ...   272.40625  329.806516   285.65625
-2  28    l_ed       l_ed  ...    279.1875  312.991447   260.34375
-3  28  l_port     l_port  ...   291.15625  320.317434   271.09375
-4  28  s_port     s_port  ...    260.4375  322.275266    270.0625
-5  28       1  lED_lPort  ...    282.3125  329.479167    272.8125
-6  28       2  hED_lPort  ...       300.0  311.148936    278.3125
-7  28       3  hED_sPort  ...    244.8125  348.464096    304.6875
-8  28       4  lED_sPort  ...    276.0625  296.086436    234.9375
-
-[9 rows x 17 columns],   sub block  condition racehorse_check  ...     us_rt      ssd   ssrt_mean ssrt_int
-0  56   all        all               1  ...  517.0625  346.875  237.791667  204.125
-1  56     1  hED_sPort               1  ...     504.0   293.75     249.875   204.25
-2  56     2  lED_lPort               1  ...   530.125    400.0  225.708333    195.0
-
-[3 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  90     all        all  ...  253.90625  270.710771  281.84375
-1  90    h_ed       h_ed  ...   189.0625  275.235372     403.25
-2  90    l_ed       l_ed  ...     318.75   266.18617   168.8125
-3  90  l_port     l_port  ...    290.625   283.93414    195.375
-4  90  s_port     s_port  ...   217.1875  258.538816   362.4375
-5  90       1  lED_sPort  ...     343.75  236.270833     153.25
-6  90       2  lED_lPort  ...     293.75  296.315217     182.75
-7  90       3  hED_lPort  ...      287.5  271.882979      241.0
-8  90       4  hED_sPort  ...     90.625  278.587766     631.75
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  41     all        all  ...  98.484375       317.5  449.453125
-1  41    h_ed       h_ed  ...   91.65625         NaN         NaN
-2  41    l_ed       l_ed  ...   105.3125    307.4375   385.53125
-3  41  l_port     l_port  ...   89.65625  327.708333   584.65625
-4  41  s_port     s_port  ...   107.3125         NaN         NaN
-5  41       1  lED_sPort  ...   118.8125  297.729167    328.3125
-6  41       2  lED_lPort  ...    91.8125  317.145833    517.8125
-7  41       3  hED_lPort  ...       87.5  338.270833    630.5625
-8  41       4  hED_sPort  ...    95.8125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  71     all        all  ...  135.96875   301.03125  388.03125
-1  71    h_ed       h_ed  ...  160.96875  312.020833  378.28125
-2  71    l_ed       l_ed  ...  110.96875  290.041667  374.28125
-3  71  l_port     l_port  ...  104.71875  312.041667     448.75
-4  71  s_port     s_port  ...  167.21875  290.020833      326.5
-5  71       1  hED_sPort  ...      237.5  277.916667      248.5
-6  71       2  lED_lPort  ...      125.0  277.958333    315.375
-7  71       3  lED_sPort  ...    96.9375     302.125     426.75
-8  71       4  hED_lPort  ...    84.4375     346.125   934.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  95     all        all  ...  386.203125     359.375  260.109375
-1  95    h_ed       h_ed  ...      356.25  396.010417    292.0625
-2  95    l_ed       l_ed  ...   416.15625  322.739583   228.84375
-3  95  l_port     l_port  ...       425.0  359.333333     264.625
-4  95  s_port     s_port  ...   347.40625  359.416667      273.25
-5  95       1  lED_sPort  ...    376.0625    348.8125    256.5625
-6  95       2  lED_lPort  ...      456.25  296.666667       211.5
-7  95       3  hED_lPort  ...      393.75       422.0      314.75
-8  95       4  hED_sPort  ...      318.75  370.020833    299.0625
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  39     all        all  ...  122.15625  462.335897  569.53125
-1  39    h_ed       h_ed  ...  121.90625  449.458333  578.34375
-2  39    l_ed       l_ed  ...  122.40625  475.351645  564.84375
-3  39  l_port     l_port  ...    94.8125    490.5875   742.1875
-4  39  s_port     s_port  ...      149.5   434.09375  474.15625
-5  39       1  lED_sPort  ...   151.0625  476.979167   492.6875
-6  39       2  hED_sPort  ...   147.9375         NaN        NaN
-7  39       3  hED_lPort  ...     95.875  507.708333    747.875
-8  39       4  lED_lPort  ...      93.75         NaN        NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  84     all        all  ...  264.0625  264.272579  224.453125
-1  84    h_ed       h_ed  ...     275.0  234.666667   186.59375
-2  84    l_ed       l_ed  ...   253.125     294.075     249.875
-3  84  l_port     l_port  ...    281.25     229.625      184.75
-4  84  s_port     s_port  ...   246.875  299.103947    253.1875
-5  84       1  hED_lPort  ...     300.0       206.5       140.5
-6  84       2  lED_sPort  ...    243.75  336.079787      272.75
-7  84       3  lED_lPort  ...     262.5      252.75    233.5625
-8  84       4  hED_sPort  ...     250.0  262.833333       240.0
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  18     all        all  ...  309.640625  360.546541  281.953125
-1  18    h_ed       h_ed  ...     284.375  373.803947       306.0
-2  18    l_ed       l_ed  ...   334.90625  347.680707    261.4375
-3  18  l_port     l_port  ...   331.78125   348.77789   267.59375
-4  18  s_port     s_port  ...       287.5  372.425532       300.5
-5  18       1  hED_lPort  ...       325.0  366.916667       293.5
-6  18       2  lED_sPort  ...      331.25   364.87766       280.5
-7  18       3  lED_lPort  ...    338.5625  329.881944    235.5625
-8  18       4  hED_sPort  ...      243.75  379.973404    304.8125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  96     all        all  ...  165.109375  263.980099  299.53125
-1  96    h_ed       h_ed  ...    176.5625         NaN        NaN
-2  96    l_ed       l_ed  ...   153.65625  269.406908  308.84375
-3  96  l_port     l_port  ...      206.25  209.979167     251.75
-4  96  s_port     s_port  ...   123.96875  318.254654  366.03125
-5  96       1  lED_sPort  ...    113.5625  288.011968   341.6875
-6  96       2  lED_lPort  ...      193.75  250.354167     289.75
-7  96       3  hED_lPort  ...      218.75         NaN        NaN
-8  96       4  hED_sPort  ...     134.375   348.49734    414.125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  75     all        all  ...  148.203125  274.197917  380.078125
-1  75    h_ed       h_ed  ...     190.625     297.625    319.5625
-2  75    l_ed       l_ed  ...   105.78125  250.770833   443.09375
-3  75  l_port     l_port  ...   131.28125     261.625   431.96875
-4  75  s_port     s_port  ...     165.125  286.770833     339.125
-5  75       1  hED_sPort  ...      206.25  319.541667      296.25
-6  75       2  lED_sPort  ...       124.0       254.0      386.75
-7  75       3  lED_lPort  ...     87.5625  247.541667    904.4375
-8  75       4  hED_lPort  ...       175.0  275.708333     340.625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  17     all        all  ...  275.265625  307.307292  275.796875
-1  17    h_ed       h_ed  ...   238.03125         NaN         NaN
-2  17    l_ed       l_ed  ...       312.5  292.229167    243.0625
-3  17  l_port     l_port  ...   250.53125  321.458333    281.0625
-4  17  s_port     s_port  ...       300.0         NaN         NaN
-5  17       1  lED_lPort  ...      268.75  339.458333      284.75
-6  17       2  hED_lPort  ...    232.3125  303.458333    276.1875
-7  17       3  hED_sPort  ...      243.75         NaN         NaN
-8  17       4  lED_sPort  ...      356.25       245.0    199.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  49     all        all  ...  311.515625  295.971147   239.0625
-1  49    h_ed       h_ed  ...    299.5625  338.813844    304.625
-2  49    l_ed       l_ed  ...   323.46875   254.09375  208.71875
-3  49  l_port     l_port  ...    308.9375  269.019489    213.625
-4  49  s_port     s_port  ...   314.09375       322.0     250.25
-5  49       1  hED_sPort  ...     308.375    350.6875    327.875
-6  49       2  lED_sPort  ...    319.8125    293.3125   226.0625
-7  49       3  hED_lPort  ...      290.75  325.561111   273.4375
-8  49       4  lED_lPort  ...     327.125     214.875   184.5625
-
-[9 rows x 17 columns],    sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  106     all        all  ...  269.28125   401.61293  384.90625
-1  106    h_ed       h_ed  ...  250.53125         NaN        NaN
-2  106    l_ed       l_ed  ...  288.03125  410.830452   385.8125
-3  106  l_port     l_port  ...      237.5  378.594737      361.5
-4  106  s_port     s_port  ...   301.0625         NaN        NaN
-5  106       1  lED_sPort  ...   351.0625         NaN        NaN
-6  106       2  lED_lPort  ...      225.0  456.489362      432.5
-7  106       3  hED_lPort  ...      250.0         NaN        NaN
-8  106       4  hED_sPort  ...   251.0625  485.256649   458.4375
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  55     all        all  ...  281.515625  240.057292  220.03125
-1  55    h_ed       h_ed  ...   263.03125   227.59375  209.96875
-2  55    l_ed       l_ed  ...       300.0  252.520833  213.53125
-3  55  l_port     l_port  ...   275.53125  247.385417  238.96875
-4  55  s_port     s_port  ...       287.5  232.729167  208.03125
-5  55       1  hED_sPort  ...       250.0  230.791667      205.0
-6  55       2  hED_lPort  ...    276.0625  224.395833   212.4375
-7  55       3  lED_sPort  ...       325.0  234.666667   180.5625
-8  55       4  lED_lPort  ...       275.0     270.375      244.0
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean  ssrt_int
-0  26     all        all  ...  409.65625  319.437991  279.9375
-1  26    h_ed       h_ed  ...   455.6875      281.75  233.9375
-2  26    l_ed       l_ed  ...    363.625  357.038158  324.6875
-3  26  l_port     l_port  ...      412.5     318.625   281.125
-4  26  s_port     s_port  ...   406.8125  320.229605  268.0625
-5  26       1  lED_lPort  ...     354.25  376.916667  364.3125
-6  26       2  hED_lPort  ...     470.75  260.333333    192.75
-7  26       3  hED_sPort  ...    440.625  303.166667     268.5
-8  26       4  lED_sPort  ...      373.0   336.93617     267.0
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  70     all        all  ...  260.9375  308.151974  277.546875
-1  70    h_ed       h_ed  ...     287.5  279.197917   257.96875
-2  70    l_ed       l_ed  ...   234.375  337.156915     301.125
-3  70  l_port     l_port  ...   234.375         NaN         NaN
-4  70  s_port     s_port  ...     287.5  280.882979    233.5625
-5  70       1  hED_sPort  ...    343.75  215.854167      166.25
-6  70       2  lED_lPort  ...     237.5         NaN         NaN
-7  70       3  lED_sPort  ...    231.25  346.293478      294.25
-8  70       4  hED_lPort  ...    231.25         NaN         NaN
-
-[9 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  104     all        all  ...  205.484375  449.138662  490.265625
-1  104    h_ed       h_ed  ...   131.78125         NaN         NaN
-2  104    l_ed       l_ed  ...    279.1875  419.104167      416.75
-3  104  l_port     l_port  ...   167.71875  470.912829   515.53125
-4  104  s_port     s_port  ...      243.25  427.197917       472.5
-5  104       1  lED_sPort  ...     345.875      450.25     396.375
-6  104       2  lED_lPort  ...       212.5         NaN         NaN
-7  104       3  hED_lPort  ...    122.9375  554.679521    579.1875
-8  104       4  hED_sPort  ...     140.625         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  37     all        all  ...  375.796875  323.297862  265.203125
-1  37    h_ed       h_ed  ...       362.5  341.110526     307.125
-2  37    l_ed       l_ed  ...   389.09375  305.485197   227.15625
-3  37  l_port     l_port  ...    363.5625  334.479605    284.5625
-4  37  s_port     s_port  ...   388.03125  312.116118   240.96875
-5  37       1  lED_lPort  ...     395.875  302.666667       234.5
-6  37       2  hED_sPort  ...      393.75    315.8125       266.5
-7  37       3  hED_lPort  ...      331.25  366.281915      350.75
-8  37       4  lED_sPort  ...    382.3125  308.219415    219.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  69     all        all  ...  172.671875  512.466423  610.453125
-1  69    h_ed       h_ed  ...    169.8125         NaN         NaN
-2  69    l_ed       l_ed  ...   175.53125  512.224069    639.5625
-3  69  l_port     l_port  ...   163.03125         NaN         NaN
-4  69  s_port     s_port  ...    182.3125  504.453457   564.71875
-5  69       1  hED_sPort  ...    257.3125         NaN         NaN
-6  69       2  lED_lPort  ...      243.75  511.696809      510.25
-7  69       3  lED_sPort  ...    107.3125   512.75133    786.8125
-8  69       4  hED_lPort  ...     82.3125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean    ssrt_int
-0  40     all        all  ...  396.875  410.454843  307.046875
-1  40    h_ed       h_ed  ...   393.75  413.839474      318.25
-2  40    l_ed       l_ed  ...    400.0  407.072917   286.96875
-3  40  l_port     l_port  ...  390.625  411.059211      313.25
-4  40  s_port     s_port  ...  403.125  409.791667   302.09375
-5  40       1  lED_lPort  ...   393.75     366.875       282.0
-6  40       2  hED_lPort  ...    387.5  456.117021     360.625
-7  40       3  lED_sPort  ...   406.25  447.270833    363.8125
-8  40       4  hED_sPort  ...    400.0    372.3125      289.75
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean   ssrt_int
-0  11     all        all  ...   306.25  343.321429   227.0625
-1  11    h_ed       h_ed  ...  290.625  370.322368    296.125
-2  11    l_ed       l_ed  ...  321.875  316.199468   196.5625
-3  11  l_port     l_port  ...    387.5  423.734043   340.6875
-4  11  s_port     s_port  ...    225.0  264.610526  246.40625
-5  11       1  lED_lPort  ...   493.75  359.402174    324.125
-6  11       2  hED_lPort  ...   281.25    489.8125   415.5625
-7  11       3  hED_sPort  ...    300.0  248.489362    175.125
-8  11       4  lED_sPort  ...    150.0  281.958333      305.5
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean ssrt_int
-0  48   all        all  ...  350.53125  314.347871    298.0
-1  48     1  hED_sPort  ...   426.0625      256.25   231.25
-2  48     3  lED_lPort  ...      275.0  370.418605    351.5
-
-[3 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  101     all        all  ...  135.953125  341.552083  366.734375
-1  101    h_ed       h_ed  ...   125.53125    371.9375   401.53125
-2  101    l_ed       l_ed  ...     146.375  311.166667    332.6875
-3  101  l_port     l_port  ...    157.8125  329.895833   336.40625
-4  101  s_port     s_port  ...   114.09375  353.208333     407.875
-5  101       1  lED_sPort  ...       111.5     335.625     369.125
-6  101       2  lED_lPort  ...      181.25  286.708333       298.0
-7  101       3  hED_lPort  ...     134.375  373.083333       375.0
-8  101       4  hED_sPort  ...    116.6875  370.791667    455.3125
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  47   all        all  ...  334.90625    307.6875  268.15625
-1  47     1  hED_sPort  ...   257.3125  374.145833   386.8125
-2  47     2  lED_lPort  ...      412.5  241.229167    141.125
-
-[3 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean  ssrt_int
-0  22     all        all  ...  265.625   387.29123   381.375
-1  22    h_ed       h_ed  ...  246.875  387.697917   384.125
-2  22    l_ed       l_ed  ...  284.375  387.077632  382.5625
-3  22  l_port     l_port  ...    300.0  355.484211     341.5
-4  22  s_port     s_port  ...   231.25         NaN       NaN
-5  22       1  lED_lPort  ...    325.0  353.978723    320.25
-6  22       2  hED_lPort  ...    275.0  357.479167   356.875
-7  22       3  hED_sPort  ...   218.75         NaN       NaN
-8  22       4  lED_sPort  ...   243.75  420.333333     490.0
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   5     all        all  ...  241.765625   397.40625  366.265625
-1   5    h_ed       h_ed  ...   229.78125         NaN         NaN
-2   5    l_ed       l_ed  ...      253.75  403.239583   371.53125
-3   5  l_port     l_port  ...   275.09375  363.541667   334.40625
-4   5  s_port     s_port  ...    208.4375  431.270833   397.28125
-5   5       1  lED_lPort  ...    289.6875    365.1875       338.0
-6   5       2  hED_lPort  ...       260.5         NaN         NaN
-7   5       3  hED_sPort  ...    199.0625      421.25    350.0625
-8   5       4  lED_sPort  ...    217.8125  441.291667    407.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  58     all        all  ...  439.640625  343.170893  270.703125
-1  58    h_ed       h_ed  ...       448.5  313.916667   237.15625
-2  58    l_ed       l_ed  ...   430.78125  372.639803   298.59375
-3  58  l_port     l_port  ...   440.71875  320.460197   278.03125
-4  58  s_port     s_port  ...    438.5625   365.65625   247.15625
-5  58       1  lED_sPort  ...    407.3125  428.895833      337.75
-6  58       2  hED_lPort  ...    427.1875  325.416667    318.9375
-7  58       3  hED_sPort  ...    469.8125  302.416667    192.6875
-8  58       4  lED_lPort  ...      454.25   315.68617    228.8125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  20     all        all  ...  226.296875  385.761949    487.125
-1  20    h_ed       h_ed  ...      231.75         NaN        NaN
-2  20    l_ed       l_ed  ...   220.84375  346.732337     560.25
-3  20  l_port     l_port  ...       325.0  382.804348  275.34375
-4  20  s_port     s_port  ...   127.59375  391.743092  680.15625
-5  20       1  lED_lPort  ...      331.25  395.727273    274.625
-6  20       2  hED_lPort  ...      318.75         NaN        NaN
-7  20       3  hED_sPort  ...      144.75  474.547872     564.75
-8  20       4  lED_sPort  ...    110.4375  311.020833    904.375
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd  ssrt_mean   ssrt_int
-0  45   all        all  ...  388.03125  262.09375  192.59375
-1  45     1  hED_sPort  ...   351.0625    258.875    228.625
-2  45     3  lED_lPort  ...      425.0   265.3125      160.5
-
-[3 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  93     all        all  ...    296.625  430.552419   370.5625
-1  93    h_ed       h_ed  ...  245.84375  436.354052  429.78125
-2  93    l_ed       l_ed  ...  347.40625  422.856908   315.1875
-3  93  l_port     l_port  ...    328.125  437.481383   360.9375
-4  93  s_port     s_port  ...    265.125  422.788043   357.9375
-5  93       1  lED_sPort  ...   369.8125  405.520833   253.5625
-6  93       2  lED_lPort  ...      325.0  440.085106      359.0
-7  93       3  hED_lPort  ...     331.25   434.87766     364.75
-8  93       4  hED_sPort  ...   160.4375  432.107955   465.4375
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  73     all        all  ...  414.59375  323.515625  265.671875
-1  73    h_ed       h_ed  ...  413.03125  306.052083     223.625
-2  73    l_ed       l_ed  ...  416.15625  340.979167   308.03125
-3  73  l_port     l_port  ...      400.0  310.614583     254.375
-4  73  s_port     s_port  ...   429.1875  336.416667    259.4375
-5  73       1  hED_sPort  ...   432.3125  313.458333      202.75
-6  73       2  lED_sPort  ...   426.0625     359.375    320.8125
-7  73       3  lED_lPort  ...     406.25  322.583333      286.75
-8  73       4  hED_lPort  ...     393.75  298.645833     243.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  30     all        all  ...  273.265625  348.744957   333.1875
-1  30    h_ed       h_ed  ...    312.5625  338.010417   289.5625
-2  30    l_ed       l_ed  ...   233.96875  358.558132  383.90625
-3  30  l_port     l_port  ...     302.125  338.917105   280.4375
-4  30  s_port     s_port  ...   244.40625  358.370346  431.28125
-5  30       1  hED_lPort  ...      265.75  351.854167   317.8125
-6  30       2  lED_lPort  ...       338.5  326.478723    242.625
-7  30       3  hED_sPort  ...     359.375  324.166667    321.625
-8  30       4  lED_sPort  ...    129.4375    389.0625     549.25
-
-[9 rows x 17 columns],    sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  103     all        all  ...  96.984375  515.595412  804.734375
-1  103    h_ed       h_ed  ...   103.1875  482.575941    567.5625
-2  103    l_ed       l_ed  ...   90.78125  548.050329  1047.03125
-3  103  l_port     l_port  ...   95.40625   567.71203    939.0625
-4  103  s_port     s_port  ...    98.5625         NaN         NaN
-5  103       1  lED_sPort  ...      89.75         NaN         NaN
-6  103       2  lED_lPort  ...    91.8125  631.485372    981.5625
-7  103       3  hED_lPort  ...       99.0  502.630435     779.875
-8  103       4  hED_sPort  ...    107.375  462.859043     508.375
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   4     all        all  ...  315.109375  459.667221  371.578125
-1   4    h_ed       h_ed  ...    302.0625  464.729167      355.75
-2   4    l_ed       l_ed  ...   328.15625  454.952446   364.84375
-3   4  l_port     l_port  ...   338.03125  428.652961   327.96875
-4   4  s_port     s_port  ...    292.1875  490.855511    406.9375
-5   4       1  hED_lPort  ...     305.125      439.75    326.4375
-6   4       2  hED_sPort  ...       299.0  489.708333     407.625
-7   4       3  lED_lPort  ...    370.9375  418.019947    320.3125
-8   4       4  lED_sPort  ...     285.375     491.625     411.125
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean  ssrt_int
-0   6     all        all  ...     282.0         NaN       NaN
-1   6    h_ed       h_ed  ...  272.8125         NaN       NaN
-2   6    l_ed       l_ed  ...  291.1875  359.065247     297.5
-3   6  l_port     l_port  ...  311.4375  416.026786   350.375
-4   6  s_port     s_port  ...  252.5625         NaN       NaN
-5   6       1  lED_lPort  ...  338.5625  384.504167  325.6875
-6   6       2  hED_lPort  ...  284.3125         NaN       NaN
-7   6       3  hED_sPort  ...  261.3125         NaN       NaN
-8   6       4  lED_sPort  ...  243.8125         NaN       NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  78     all        all  ...  336.203125  351.389468  292.390625
-1  78    h_ed       h_ed  ...      318.75  357.994681    303.8125
-2  78    l_ed       l_ed  ...   353.65625  344.670066   276.59375
-3  78  l_port     l_port  ...   338.03125   370.59641    315.5625
-4  78  s_port     s_port  ...     334.375  332.403947   286.21875
-5  78       1  lED_sPort  ...       337.5    344.6875      289.75
-6  78       2  lED_lPort  ...    369.8125  344.996011    271.9375
-7  78       3  hED_lPort  ...      306.25  396.196809    350.5625
-8  78       4  hED_sPort  ...      331.25  319.792553    275.4375
-
-[9 rows x 17 columns],   sub block  condition  ...      ssd   ssrt_mean   ssrt_int
-0  21   all        all  ...  246.875  315.927083  305.53125
-1  21     1  hED_sPort  ...  302.125  279.666667   277.0625
-2  21     2  lED_lPort  ...  191.625    352.1875    329.375
-
-[3 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  80     all        all  ...  226.828125  248.890625    239.625
-1  80    h_ed       h_ed  ...      256.25   220.90625     210.75
-2  80    l_ed       l_ed  ...   197.40625     276.875  260.90625
-3  80  l_port     l_port  ...   234.90625  228.020833    232.125
-4  80  s_port     s_port  ...      218.75  269.760417     247.75
-5  80       1  hED_sPort  ...      243.75  246.333333     227.25
-6  80       2  lED_lPort  ...    201.0625         NaN        NaN
-7  80       3  lED_sPort  ...      193.75    293.1875     256.25
-8  80       4  hED_lPort  ...      268.75  195.479167   186.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  43     all        all  ...      181.0  316.802083      297.0
-1  43    h_ed       h_ed  ...     143.25  332.895833  324.15625
-2  43    l_ed       l_ed  ...     218.75  300.708333     288.25
-3  43  l_port     l_port  ...  152.09375  331.052083  328.65625
-4  43  s_port     s_port  ...  209.90625  302.552083  267.09375
-5  43       1  lED_sPort  ...      262.5  297.041667      262.5
-6  43       2  hED_sPort  ...   157.3125    308.0625   295.4375
-7  43       3  lED_lPort  ...      175.0     304.375      312.0
-8  43       4  hED_lPort  ...   129.1875  357.729167   351.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  52     all        all  ...  407.890625  426.144057    316.125
-1  52    h_ed       h_ed  ...   379.78125  420.129861   317.1875
-2  52    l_ed       l_ed  ...       436.0  435.036145   303.8125
-3  52  l_port     l_port  ...    437.0625  372.459722   243.4375
-4  52  s_port     s_port  ...   378.71875  481.895708  372.90625
-5  52       1  lED_sPort  ...      429.25  480.776316     390.25
-6  52       2  lED_lPort  ...      442.75  395.361111    287.875
-7  52       3  hED_lPort  ...     431.375  349.558333    186.625
-8  52       4  hED_sPort  ...    328.1875  490.701389   416.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  36     all        all  ...  186.234375  364.241815  357.671875
-1  36    h_ed       h_ed  ...      205.25  327.986559     330.625
-2  36    l_ed       l_ed  ...   167.21875         NaN         NaN
-3  36  l_port     l_port  ...   183.90625  338.115027     377.375
-4  36  s_port     s_port  ...    188.5625  390.069079    349.9375
-5  36       1  lED_lPort  ...     189.625         NaN         NaN
-6  36       2  hED_sPort  ...    232.3125  380.878989      306.25
-7  36       3  hED_lPort  ...    178.1875  273.355978    349.3125
-8  36       4  lED_sPort  ...    144.8125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  89     all        all  ...  357.046875  256.046875  221.046875
-1  89    h_ed       h_ed  ...    322.9375  300.197917    266.5625
-2  89    l_ed       l_ed  ...   391.15625  211.895833   172.03125
-3  89  l_port     l_port  ...   354.71875  250.583333    229.8125
-4  89  s_port     s_port  ...     359.375  261.510417     207.625
-5  89       1  hED_lPort  ...     308.375  330.104167     300.125
-6  89       2  lED_sPort  ...      381.25  252.729167     181.625
-7  89       3  lED_lPort  ...    401.0625    171.0625    162.0625
-8  89       4  hED_sPort  ...       337.5  270.291667       234.5
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  38     all        all  ...  360.15625  322.078125   273.8125
-1  38    h_ed       h_ed  ...   413.5625   314.40625   264.3125
-2  38    l_ed       l_ed  ...     306.75      329.75   267.0625
-3  38  l_port     l_port  ...  363.03125  276.458333  240.96875
-4  38  s_port     s_port  ...  357.28125  367.697917  304.46875
-5  38       1  lED_lPort  ...      300.0  299.395833   244.6875
-6  38       2  hED_lPort  ...   426.0625  253.520833   228.0625
-7  38       3  hED_sPort  ...   401.0625  375.291667   293.0625
-8  38       4  lED_sPort  ...      313.5  360.104167   319.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  94     all        all  ...  270.609375  341.983218  331.03125
-1  94    h_ed       h_ed  ...       274.0  347.368421    297.375
-2  94    l_ed       l_ed  ...   267.21875  336.504654  388.28125
-3  94  l_port     l_port  ...   332.84375         NaN        NaN
-4  94  s_port     s_port  ...     208.375  377.979839    371.625
-5  94       1  hED_lPort  ...    351.0625  270.541667   248.3125
-6  94       2  lED_lPort  ...     314.625         NaN        NaN
-7  94       3  lED_sPort  ...    219.8125  331.013587   394.5625
-8  94       4  hED_sPort  ...    196.9375   424.19016   365.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  35     all        all  ...      293.5  508.064103  526.328125
-1  35    h_ed       h_ed  ...  248.96875  550.680601   617.53125
-2  35    l_ed       l_ed  ...  338.03125   465.39913      432.75
-3  35  l_port     l_port  ...      387.5     411.975    383.1875
-4  35  s_port     s_port  ...      199.5  604.263158   654.59375
-5  35       1  hED_lPort  ...     368.75  449.654762    380.8125
-6  35       2  lED_sPort  ...   269.8125  556.675305    430.0625
-7  35       3  lED_lPort  ...     406.25  372.302632     417.625
-8  35       4  hED_sPort  ...   129.1875         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  33     all        all  ...  352.09375  427.034592  367.90625
-1  33    h_ed       h_ed  ...  338.03125  451.570901  402.09375
-2  33    l_ed       l_ed  ...  366.15625  402.609707    340.625
-3  33  l_port     l_port  ...   369.8125  411.703289    362.375
-4  33  s_port     s_port  ...    334.375  442.288043    384.125
-5  33       1  lED_lPort  ...   369.8125  418.770833   372.1875
-6  33       2  hED_lPort  ...   369.8125  404.485372   341.3125
-7  33       3  hED_sPort  ...     306.25   498.98913    459.125
-8  33       4  lED_sPort  ...      362.5  385.586957     328.25
+* SST_summary_dat : [   sub   block  condition racehorse_check  ...    us_rt      ssd ssrt_mean ssrt_int
+0  114     all        all               1  ...  439.594  223.188   326.456  319.312
+1  114    h_ed       h_ed               1  ...  465.312  223.969    290.75  266.531
+2  114    l_ed       l_ed               1  ...  413.875  222.406   362.531  367.094
+3  114  l_port     l_port               1  ...  486.357    224.5   303.906      268
+4  114  s_port     s_port               1  ...  403.222  221.875    349.23  375.438
+5  114       1  hED_lPort               1  ...  498.286  179.188   309.792  277.938
+6  114       2  hED_sPort               1  ...  439.667   268.75   271.708  274.125
+7  114       3  lED_sPort               1  ...  366.778      175   427.404  461.688
+8  114       4  lED_lPort               1  ...  474.429  269.812   298.021      251
 
 [9 rows x 17 columns]]
 * bids_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
@@ -716,603 +136,23 @@ Original Inputs
 
     return SST_database_cond, SST_database_blocks
 
-* overwrite_flag : True
+* overwrite_flag : False
 
 
 Execution Inputs
 ----------------
 
 
-* SST_summary_dat : [  sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  19     all        all  ...  320.5625  340.374673  307.078125
-1  19    h_ed       h_ed  ...   322.375  353.488158    305.3125
-2  19    l_ed       l_ed  ...    318.75  327.416667   310.96875
-3  19  l_port     l_port  ...   309.875  332.630263   306.78125
-4  19  s_port     s_port  ...    331.25  347.927083      307.75
-5  19       1  lED_lPort  ...    256.25  358.458333      335.75
-6  19       2  lED_sPort  ...    381.25     296.375     287.375
-7  19       3  hED_sPort  ...    281.25  399.479167    343.4375
-8  19       4  hED_lPort  ...     363.5  307.393617    269.4375
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean   ssrt_int
-0   7   all        all  ...  290.59375  544.217361  563.90625
-1   7     1  hED_lPort  ...   262.4375  508.073611   528.5625
-2   7     2  hED_sPort  ...     318.75  580.361111     573.75
-
-[3 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  107     all        all  ...  392.453125  398.211648  324.546875
-1  107    h_ed       h_ed  ...       350.0  498.209302      392.75
-2  107    l_ed       l_ed  ...   434.90625         NaN         NaN
-3  107  l_port     l_port  ...     396.875  381.636364       323.5
-4  107  s_port     s_port  ...   388.03125  414.786932   323.40625
-5  107       1  lED_sPort  ...    488.5625         NaN         NaN
-6  107       2  lED_lPort  ...      381.25  317.345745     322.875
-7  107       3  hED_lPort  ...       412.5  457.621951     372.625
-8  107       4  hED_sPort  ...       287.5  540.744444     439.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  68     all        all  ...  362.765625   453.33607  363.234375
-1  68    h_ed       h_ed  ...   384.90625  455.442065     344.375
-2  68    l_ed       l_ed  ...     340.625  450.954545    379.9375
-3  68  l_port     l_port  ...       300.0  538.522222   444.71875
-4  68  s_port     s_port  ...   425.53125  367.376796   293.96875
-5  68       1  hED_sPort  ...    469.8125    345.4375     245.875
-6  68       2  lED_lPort  ...       300.0  512.155556    420.5625
-7  68       3  hED_lPort  ...       300.0  564.888889      453.75
-8  68       4  lED_sPort  ...      381.25         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean   ssrt_int
-0  83     all        all  ...  392.1875  511.225198   458.8125
-1  83    h_ed       h_ed  ...   365.625  530.922368      483.0
-2  83    l_ed       l_ed  ...    418.75  491.601064     432.25
-3  83  l_port     l_port  ...     412.5  444.847368  398.46875
-4  83  s_port     s_port  ...   371.875  578.093085    559.125
-5  83       1  hED_lPort  ...     387.5  487.916667     426.75
-6  83       2  lED_sPort  ...     400.0  581.808511   559.4375
-7  83       3  lED_lPort  ...     437.5  401.393617    373.375
-8  83       4  hED_sPort  ...    343.75   574.37766    549.125
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean  ssrt_int
-0  74     all        all  ...    337.5         NaN       NaN
-1  74    h_ed       h_ed  ...  371.875  299.556579   207.125
-2  74    l_ed       l_ed  ...  303.125         NaN       NaN
-3  74  l_port     l_port  ...    300.0     366.625     279.0
-4  74  s_port     s_port  ...    375.0         NaN       NaN
-5  74       1  hED_sPort  ...    375.0  298.638298  224.1875
-6  74       2  lED_sPort  ...    375.0         NaN       NaN
-7  74       3  lED_lPort  ...   231.25  432.729167  370.3125
-8  74       4  hED_lPort  ...   368.75  300.520833   189.125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  23     all        all  ...  337.765625  298.176783  243.234375
-1  23    h_ed       h_ed  ...   338.03125  279.791667   227.15625
-2  23    l_ed       l_ed  ...       337.5  316.752632    253.6875
-3  23  l_port     l_port  ...     290.625         NaN         NaN
-4  23  s_port     s_port  ...   384.90625  282.230592   231.65625
-5  23       1  lED_sPort  ...      393.75  294.824468     231.375
-6  23       2  hED_sPort  ...    376.0625  270.083333    226.9375
-7  23       3  hED_lPort  ...       300.0       289.5    238.5625
-8  23       4  lED_lPort  ...      281.25         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   1     all        all  ...  396.859375  426.579778  355.796875
-1   1    h_ed       h_ed  ...   372.84375  417.440461   373.28125
-2   1    l_ed       l_ed  ...     420.875  436.071809   337.78125
-3   1  l_port     l_port  ...    373.9375  454.322917   338.96875
-4   1  s_port     s_port  ...   419.78125  398.681116   364.03125
-5   1       1  lED_lPort  ...       435.5  432.604167    310.0625
-6   1       2  lED_sPort  ...      406.25  439.054348      407.25
-7   1       3  hED_sPort  ...    433.3125  358.878989    346.6875
-8   1       4  hED_lPort  ...     312.375  476.041667     347.375
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd ssrt_mean ssrt_int
-0  77     all        all  ...  88.0625       NaN      NaN
-1  77    h_ed       h_ed  ...   89.625       NaN      NaN
-2  77    l_ed       l_ed  ...     86.5       NaN      NaN
-3  77  l_port     l_port  ...     86.0       NaN      NaN
-4  77  s_port     s_port  ...   90.125       NaN      NaN
-5  77       1  hED_sPort  ...   95.875       NaN      NaN
-6  77       2  lED_sPort  ...   84.375       NaN      NaN
-7  77       3  lED_lPort  ...   88.625       NaN      NaN
-8  77       4  hED_lPort  ...   83.375       NaN      NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  31     all        all  ...  231.265625  300.921875  267.734375
-1  31    h_ed       h_ed  ...   234.90625   314.59375   264.09375
-2  31    l_ed       l_ed  ...     227.625      287.25     271.875
-3  31  l_port     l_port  ...   223.46875    282.4375   255.03125
-4  31  s_port     s_port  ...    239.0625   319.40625    280.9375
-5  31       1  lED_lPort  ...     239.625  301.791667     276.875
-6  31       2  hED_sPort  ...       262.5  366.104167       365.0
-7  31       3  hED_lPort  ...    207.3125  263.083333    251.6875
-8  31       4  lED_sPort  ...     215.625  272.708333     252.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  28     all        all  ...  275.796875  321.372437  269.265625
-1  28    h_ed       h_ed  ...   272.40625  329.806516   285.65625
-2  28    l_ed       l_ed  ...    279.1875  312.991447   260.34375
-3  28  l_port     l_port  ...   291.15625  320.317434   271.09375
-4  28  s_port     s_port  ...    260.4375  322.275266    270.0625
-5  28       1  lED_lPort  ...    282.3125  329.479167    272.8125
-6  28       2  hED_lPort  ...       300.0  311.148936    278.3125
-7  28       3  hED_sPort  ...    244.8125  348.464096    304.6875
-8  28       4  lED_sPort  ...    276.0625  296.086436    234.9375
-
-[9 rows x 17 columns],   sub block  condition racehorse_check  ...     us_rt      ssd   ssrt_mean ssrt_int
-0  56   all        all               1  ...  517.0625  346.875  237.791667  204.125
-1  56     1  hED_sPort               1  ...     504.0   293.75     249.875   204.25
-2  56     2  lED_lPort               1  ...   530.125    400.0  225.708333    195.0
-
-[3 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  90     all        all  ...  253.90625  270.710771  281.84375
-1  90    h_ed       h_ed  ...   189.0625  275.235372     403.25
-2  90    l_ed       l_ed  ...     318.75   266.18617   168.8125
-3  90  l_port     l_port  ...    290.625   283.93414    195.375
-4  90  s_port     s_port  ...   217.1875  258.538816   362.4375
-5  90       1  lED_sPort  ...     343.75  236.270833     153.25
-6  90       2  lED_lPort  ...     293.75  296.315217     182.75
-7  90       3  hED_lPort  ...      287.5  271.882979      241.0
-8  90       4  hED_sPort  ...     90.625  278.587766     631.75
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  41     all        all  ...  98.484375       317.5  449.453125
-1  41    h_ed       h_ed  ...   91.65625         NaN         NaN
-2  41    l_ed       l_ed  ...   105.3125    307.4375   385.53125
-3  41  l_port     l_port  ...   89.65625  327.708333   584.65625
-4  41  s_port     s_port  ...   107.3125         NaN         NaN
-5  41       1  lED_sPort  ...   118.8125  297.729167    328.3125
-6  41       2  lED_lPort  ...    91.8125  317.145833    517.8125
-7  41       3  hED_lPort  ...       87.5  338.270833    630.5625
-8  41       4  hED_sPort  ...    95.8125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  71     all        all  ...  135.96875   301.03125  388.03125
-1  71    h_ed       h_ed  ...  160.96875  312.020833  378.28125
-2  71    l_ed       l_ed  ...  110.96875  290.041667  374.28125
-3  71  l_port     l_port  ...  104.71875  312.041667     448.75
-4  71  s_port     s_port  ...  167.21875  290.020833      326.5
-5  71       1  hED_sPort  ...      237.5  277.916667      248.5
-6  71       2  lED_lPort  ...      125.0  277.958333    315.375
-7  71       3  lED_sPort  ...    96.9375     302.125     426.75
-8  71       4  hED_lPort  ...    84.4375     346.125   934.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  95     all        all  ...  386.203125     359.375  260.109375
-1  95    h_ed       h_ed  ...      356.25  396.010417    292.0625
-2  95    l_ed       l_ed  ...   416.15625  322.739583   228.84375
-3  95  l_port     l_port  ...       425.0  359.333333     264.625
-4  95  s_port     s_port  ...   347.40625  359.416667      273.25
-5  95       1  lED_sPort  ...    376.0625    348.8125    256.5625
-6  95       2  lED_lPort  ...      456.25  296.666667       211.5
-7  95       3  hED_lPort  ...      393.75       422.0      314.75
-8  95       4  hED_sPort  ...      318.75  370.020833    299.0625
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  39     all        all  ...  122.15625  462.335897  569.53125
-1  39    h_ed       h_ed  ...  121.90625  449.458333  578.34375
-2  39    l_ed       l_ed  ...  122.40625  475.351645  564.84375
-3  39  l_port     l_port  ...    94.8125    490.5875   742.1875
-4  39  s_port     s_port  ...      149.5   434.09375  474.15625
-5  39       1  lED_sPort  ...   151.0625  476.979167   492.6875
-6  39       2  hED_sPort  ...   147.9375         NaN        NaN
-7  39       3  hED_lPort  ...     95.875  507.708333    747.875
-8  39       4  lED_lPort  ...      93.75         NaN        NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  84     all        all  ...  264.0625  264.272579  224.453125
-1  84    h_ed       h_ed  ...     275.0  234.666667   186.59375
-2  84    l_ed       l_ed  ...   253.125     294.075     249.875
-3  84  l_port     l_port  ...    281.25     229.625      184.75
-4  84  s_port     s_port  ...   246.875  299.103947    253.1875
-5  84       1  hED_lPort  ...     300.0       206.5       140.5
-6  84       2  lED_sPort  ...    243.75  336.079787      272.75
-7  84       3  lED_lPort  ...     262.5      252.75    233.5625
-8  84       4  hED_sPort  ...     250.0  262.833333       240.0
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  18     all        all  ...  309.640625  360.546541  281.953125
-1  18    h_ed       h_ed  ...     284.375  373.803947       306.0
-2  18    l_ed       l_ed  ...   334.90625  347.680707    261.4375
-3  18  l_port     l_port  ...   331.78125   348.77789   267.59375
-4  18  s_port     s_port  ...       287.5  372.425532       300.5
-5  18       1  hED_lPort  ...       325.0  366.916667       293.5
-6  18       2  lED_sPort  ...      331.25   364.87766       280.5
-7  18       3  lED_lPort  ...    338.5625  329.881944    235.5625
-8  18       4  hED_sPort  ...      243.75  379.973404    304.8125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  96     all        all  ...  165.109375  263.980099  299.53125
-1  96    h_ed       h_ed  ...    176.5625         NaN        NaN
-2  96    l_ed       l_ed  ...   153.65625  269.406908  308.84375
-3  96  l_port     l_port  ...      206.25  209.979167     251.75
-4  96  s_port     s_port  ...   123.96875  318.254654  366.03125
-5  96       1  lED_sPort  ...    113.5625  288.011968   341.6875
-6  96       2  lED_lPort  ...      193.75  250.354167     289.75
-7  96       3  hED_lPort  ...      218.75         NaN        NaN
-8  96       4  hED_sPort  ...     134.375   348.49734    414.125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  75     all        all  ...  148.203125  274.197917  380.078125
-1  75    h_ed       h_ed  ...     190.625     297.625    319.5625
-2  75    l_ed       l_ed  ...   105.78125  250.770833   443.09375
-3  75  l_port     l_port  ...   131.28125     261.625   431.96875
-4  75  s_port     s_port  ...     165.125  286.770833     339.125
-5  75       1  hED_sPort  ...      206.25  319.541667      296.25
-6  75       2  lED_sPort  ...       124.0       254.0      386.75
-7  75       3  lED_lPort  ...     87.5625  247.541667    904.4375
-8  75       4  hED_lPort  ...       175.0  275.708333     340.625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  17     all        all  ...  275.265625  307.307292  275.796875
-1  17    h_ed       h_ed  ...   238.03125         NaN         NaN
-2  17    l_ed       l_ed  ...       312.5  292.229167    243.0625
-3  17  l_port     l_port  ...   250.53125  321.458333    281.0625
-4  17  s_port     s_port  ...       300.0         NaN         NaN
-5  17       1  lED_lPort  ...      268.75  339.458333      284.75
-6  17       2  hED_lPort  ...    232.3125  303.458333    276.1875
-7  17       3  hED_sPort  ...      243.75         NaN         NaN
-8  17       4  lED_sPort  ...      356.25       245.0    199.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  49     all        all  ...  311.515625  295.971147   239.0625
-1  49    h_ed       h_ed  ...    299.5625  338.813844    304.625
-2  49    l_ed       l_ed  ...   323.46875   254.09375  208.71875
-3  49  l_port     l_port  ...    308.9375  269.019489    213.625
-4  49  s_port     s_port  ...   314.09375       322.0     250.25
-5  49       1  hED_sPort  ...     308.375    350.6875    327.875
-6  49       2  lED_sPort  ...    319.8125    293.3125   226.0625
-7  49       3  hED_lPort  ...      290.75  325.561111   273.4375
-8  49       4  lED_lPort  ...     327.125     214.875   184.5625
-
-[9 rows x 17 columns],    sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  106     all        all  ...  269.28125   401.61293  384.90625
-1  106    h_ed       h_ed  ...  250.53125         NaN        NaN
-2  106    l_ed       l_ed  ...  288.03125  410.830452   385.8125
-3  106  l_port     l_port  ...      237.5  378.594737      361.5
-4  106  s_port     s_port  ...   301.0625         NaN        NaN
-5  106       1  lED_sPort  ...   351.0625         NaN        NaN
-6  106       2  lED_lPort  ...      225.0  456.489362      432.5
-7  106       3  hED_lPort  ...      250.0         NaN        NaN
-8  106       4  hED_sPort  ...   251.0625  485.256649   458.4375
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  55     all        all  ...  281.515625  240.057292  220.03125
-1  55    h_ed       h_ed  ...   263.03125   227.59375  209.96875
-2  55    l_ed       l_ed  ...       300.0  252.520833  213.53125
-3  55  l_port     l_port  ...   275.53125  247.385417  238.96875
-4  55  s_port     s_port  ...       287.5  232.729167  208.03125
-5  55       1  hED_sPort  ...       250.0  230.791667      205.0
-6  55       2  hED_lPort  ...    276.0625  224.395833   212.4375
-7  55       3  lED_sPort  ...       325.0  234.666667   180.5625
-8  55       4  lED_lPort  ...       275.0     270.375      244.0
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean  ssrt_int
-0  26     all        all  ...  409.65625  319.437991  279.9375
-1  26    h_ed       h_ed  ...   455.6875      281.75  233.9375
-2  26    l_ed       l_ed  ...    363.625  357.038158  324.6875
-3  26  l_port     l_port  ...      412.5     318.625   281.125
-4  26  s_port     s_port  ...   406.8125  320.229605  268.0625
-5  26       1  lED_lPort  ...     354.25  376.916667  364.3125
-6  26       2  hED_lPort  ...     470.75  260.333333    192.75
-7  26       3  hED_sPort  ...    440.625  303.166667     268.5
-8  26       4  lED_sPort  ...      373.0   336.93617     267.0
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean    ssrt_int
-0  70     all        all  ...  260.9375  308.151974  277.546875
-1  70    h_ed       h_ed  ...     287.5  279.197917   257.96875
-2  70    l_ed       l_ed  ...   234.375  337.156915     301.125
-3  70  l_port     l_port  ...   234.375         NaN         NaN
-4  70  s_port     s_port  ...     287.5  280.882979    233.5625
-5  70       1  hED_sPort  ...    343.75  215.854167      166.25
-6  70       2  lED_lPort  ...     237.5         NaN         NaN
-7  70       3  lED_sPort  ...    231.25  346.293478      294.25
-8  70       4  hED_lPort  ...    231.25         NaN         NaN
-
-[9 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  104     all        all  ...  205.484375  449.138662  490.265625
-1  104    h_ed       h_ed  ...   131.78125         NaN         NaN
-2  104    l_ed       l_ed  ...    279.1875  419.104167      416.75
-3  104  l_port     l_port  ...   167.71875  470.912829   515.53125
-4  104  s_port     s_port  ...      243.25  427.197917       472.5
-5  104       1  lED_sPort  ...     345.875      450.25     396.375
-6  104       2  lED_lPort  ...       212.5         NaN         NaN
-7  104       3  hED_lPort  ...    122.9375  554.679521    579.1875
-8  104       4  hED_sPort  ...     140.625         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  37     all        all  ...  375.796875  323.297862  265.203125
-1  37    h_ed       h_ed  ...       362.5  341.110526     307.125
-2  37    l_ed       l_ed  ...   389.09375  305.485197   227.15625
-3  37  l_port     l_port  ...    363.5625  334.479605    284.5625
-4  37  s_port     s_port  ...   388.03125  312.116118   240.96875
-5  37       1  lED_lPort  ...     395.875  302.666667       234.5
-6  37       2  hED_sPort  ...      393.75    315.8125       266.5
-7  37       3  hED_lPort  ...      331.25  366.281915      350.75
-8  37       4  lED_sPort  ...    382.3125  308.219415    219.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  69     all        all  ...  172.671875  512.466423  610.453125
-1  69    h_ed       h_ed  ...    169.8125         NaN         NaN
-2  69    l_ed       l_ed  ...   175.53125  512.224069    639.5625
-3  69  l_port     l_port  ...   163.03125         NaN         NaN
-4  69  s_port     s_port  ...    182.3125  504.453457   564.71875
-5  69       1  hED_sPort  ...    257.3125         NaN         NaN
-6  69       2  lED_lPort  ...      243.75  511.696809      510.25
-7  69       3  lED_sPort  ...    107.3125   512.75133    786.8125
-8  69       4  hED_lPort  ...     82.3125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean    ssrt_int
-0  40     all        all  ...  396.875  410.454843  307.046875
-1  40    h_ed       h_ed  ...   393.75  413.839474      318.25
-2  40    l_ed       l_ed  ...    400.0  407.072917   286.96875
-3  40  l_port     l_port  ...  390.625  411.059211      313.25
-4  40  s_port     s_port  ...  403.125  409.791667   302.09375
-5  40       1  lED_lPort  ...   393.75     366.875       282.0
-6  40       2  hED_lPort  ...    387.5  456.117021     360.625
-7  40       3  lED_sPort  ...   406.25  447.270833    363.8125
-8  40       4  hED_sPort  ...    400.0    372.3125      289.75
-
-[9 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean   ssrt_int
-0  11     all        all  ...   306.25  343.321429   227.0625
-1  11    h_ed       h_ed  ...  290.625  370.322368    296.125
-2  11    l_ed       l_ed  ...  321.875  316.199468   196.5625
-3  11  l_port     l_port  ...    387.5  423.734043   340.6875
-4  11  s_port     s_port  ...    225.0  264.610526  246.40625
-5  11       1  lED_lPort  ...   493.75  359.402174    324.125
-6  11       2  hED_lPort  ...   281.25    489.8125   415.5625
-7  11       3  hED_sPort  ...    300.0  248.489362    175.125
-8  11       4  lED_sPort  ...    150.0  281.958333      305.5
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean ssrt_int
-0  48   all        all  ...  350.53125  314.347871    298.0
-1  48     1  hED_sPort  ...   426.0625      256.25   231.25
-2  48     3  lED_lPort  ...      275.0  370.418605    351.5
-
-[3 rows x 17 columns],    sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  101     all        all  ...  135.953125  341.552083  366.734375
-1  101    h_ed       h_ed  ...   125.53125    371.9375   401.53125
-2  101    l_ed       l_ed  ...     146.375  311.166667    332.6875
-3  101  l_port     l_port  ...    157.8125  329.895833   336.40625
-4  101  s_port     s_port  ...   114.09375  353.208333     407.875
-5  101       1  lED_sPort  ...       111.5     335.625     369.125
-6  101       2  lED_lPort  ...      181.25  286.708333       298.0
-7  101       3  hED_lPort  ...     134.375  373.083333       375.0
-8  101       4  hED_sPort  ...    116.6875  370.791667    455.3125
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  47   all        all  ...  334.90625    307.6875  268.15625
-1  47     1  hED_sPort  ...   257.3125  374.145833   386.8125
-2  47     2  lED_lPort  ...      412.5  241.229167    141.125
-
-[3 rows x 17 columns],   sub   block  condition  ...      ssd   ssrt_mean  ssrt_int
-0  22     all        all  ...  265.625   387.29123   381.375
-1  22    h_ed       h_ed  ...  246.875  387.697917   384.125
-2  22    l_ed       l_ed  ...  284.375  387.077632  382.5625
-3  22  l_port     l_port  ...    300.0  355.484211     341.5
-4  22  s_port     s_port  ...   231.25         NaN       NaN
-5  22       1  lED_lPort  ...    325.0  353.978723    320.25
-6  22       2  hED_lPort  ...    275.0  357.479167   356.875
-7  22       3  hED_sPort  ...   218.75         NaN       NaN
-8  22       4  lED_sPort  ...   243.75  420.333333     490.0
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   5     all        all  ...  241.765625   397.40625  366.265625
-1   5    h_ed       h_ed  ...   229.78125         NaN         NaN
-2   5    l_ed       l_ed  ...      253.75  403.239583   371.53125
-3   5  l_port     l_port  ...   275.09375  363.541667   334.40625
-4   5  s_port     s_port  ...    208.4375  431.270833   397.28125
-5   5       1  lED_lPort  ...    289.6875    365.1875       338.0
-6   5       2  hED_lPort  ...       260.5         NaN         NaN
-7   5       3  hED_sPort  ...    199.0625      421.25    350.0625
-8   5       4  lED_sPort  ...    217.8125  441.291667    407.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  58     all        all  ...  439.640625  343.170893  270.703125
-1  58    h_ed       h_ed  ...       448.5  313.916667   237.15625
-2  58    l_ed       l_ed  ...   430.78125  372.639803   298.59375
-3  58  l_port     l_port  ...   440.71875  320.460197   278.03125
-4  58  s_port     s_port  ...    438.5625   365.65625   247.15625
-5  58       1  lED_sPort  ...    407.3125  428.895833      337.75
-6  58       2  hED_lPort  ...    427.1875  325.416667    318.9375
-7  58       3  hED_sPort  ...    469.8125  302.416667    192.6875
-8  58       4  lED_lPort  ...      454.25   315.68617    228.8125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  20     all        all  ...  226.296875  385.761949    487.125
-1  20    h_ed       h_ed  ...      231.75         NaN        NaN
-2  20    l_ed       l_ed  ...   220.84375  346.732337     560.25
-3  20  l_port     l_port  ...       325.0  382.804348  275.34375
-4  20  s_port     s_port  ...   127.59375  391.743092  680.15625
-5  20       1  lED_lPort  ...      331.25  395.727273    274.625
-6  20       2  hED_lPort  ...      318.75         NaN        NaN
-7  20       3  hED_sPort  ...      144.75  474.547872     564.75
-8  20       4  lED_sPort  ...    110.4375  311.020833    904.375
-
-[9 rows x 17 columns],   sub block  condition  ...        ssd  ssrt_mean   ssrt_int
-0  45   all        all  ...  388.03125  262.09375  192.59375
-1  45     1  hED_sPort  ...   351.0625    258.875    228.625
-2  45     3  lED_lPort  ...      425.0   265.3125      160.5
-
-[3 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  93     all        all  ...    296.625  430.552419   370.5625
-1  93    h_ed       h_ed  ...  245.84375  436.354052  429.78125
-2  93    l_ed       l_ed  ...  347.40625  422.856908   315.1875
-3  93  l_port     l_port  ...    328.125  437.481383   360.9375
-4  93  s_port     s_port  ...    265.125  422.788043   357.9375
-5  93       1  lED_sPort  ...   369.8125  405.520833   253.5625
-6  93       2  lED_lPort  ...      325.0  440.085106      359.0
-7  93       3  hED_lPort  ...     331.25   434.87766     364.75
-8  93       4  hED_sPort  ...   160.4375  432.107955   465.4375
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  73     all        all  ...  414.59375  323.515625  265.671875
-1  73    h_ed       h_ed  ...  413.03125  306.052083     223.625
-2  73    l_ed       l_ed  ...  416.15625  340.979167   308.03125
-3  73  l_port     l_port  ...      400.0  310.614583     254.375
-4  73  s_port     s_port  ...   429.1875  336.416667    259.4375
-5  73       1  hED_sPort  ...   432.3125  313.458333      202.75
-6  73       2  lED_sPort  ...   426.0625     359.375    320.8125
-7  73       3  lED_lPort  ...     406.25  322.583333      286.75
-8  73       4  hED_lPort  ...     393.75  298.645833     243.875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  30     all        all  ...  273.265625  348.744957   333.1875
-1  30    h_ed       h_ed  ...    312.5625  338.010417   289.5625
-2  30    l_ed       l_ed  ...   233.96875  358.558132  383.90625
-3  30  l_port     l_port  ...     302.125  338.917105   280.4375
-4  30  s_port     s_port  ...   244.40625  358.370346  431.28125
-5  30       1  hED_lPort  ...      265.75  351.854167   317.8125
-6  30       2  lED_lPort  ...       338.5  326.478723    242.625
-7  30       3  hED_sPort  ...     359.375  324.166667    321.625
-8  30       4  lED_sPort  ...    129.4375    389.0625     549.25
-
-[9 rows x 17 columns],    sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  103     all        all  ...  96.984375  515.595412  804.734375
-1  103    h_ed       h_ed  ...   103.1875  482.575941    567.5625
-2  103    l_ed       l_ed  ...   90.78125  548.050329  1047.03125
-3  103  l_port     l_port  ...   95.40625   567.71203    939.0625
-4  103  s_port     s_port  ...    98.5625         NaN         NaN
-5  103       1  lED_sPort  ...      89.75         NaN         NaN
-6  103       2  lED_lPort  ...    91.8125  631.485372    981.5625
-7  103       3  hED_lPort  ...       99.0  502.630435     779.875
-8  103       4  hED_sPort  ...    107.375  462.859043     508.375
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0   4     all        all  ...  315.109375  459.667221  371.578125
-1   4    h_ed       h_ed  ...    302.0625  464.729167      355.75
-2   4    l_ed       l_ed  ...   328.15625  454.952446   364.84375
-3   4  l_port     l_port  ...   338.03125  428.652961   327.96875
-4   4  s_port     s_port  ...    292.1875  490.855511    406.9375
-5   4       1  hED_lPort  ...     305.125      439.75    326.4375
-6   4       2  hED_sPort  ...       299.0  489.708333     407.625
-7   4       3  lED_lPort  ...    370.9375  418.019947    320.3125
-8   4       4  lED_sPort  ...     285.375     491.625     411.125
-
-[9 rows x 17 columns],   sub   block  condition  ...       ssd   ssrt_mean  ssrt_int
-0   6     all        all  ...     282.0         NaN       NaN
-1   6    h_ed       h_ed  ...  272.8125         NaN       NaN
-2   6    l_ed       l_ed  ...  291.1875  359.065247     297.5
-3   6  l_port     l_port  ...  311.4375  416.026786   350.375
-4   6  s_port     s_port  ...  252.5625         NaN       NaN
-5   6       1  lED_lPort  ...  338.5625  384.504167  325.6875
-6   6       2  hED_lPort  ...  284.3125         NaN       NaN
-7   6       3  hED_sPort  ...  261.3125         NaN       NaN
-8   6       4  lED_sPort  ...  243.8125         NaN       NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  78     all        all  ...  336.203125  351.389468  292.390625
-1  78    h_ed       h_ed  ...      318.75  357.994681    303.8125
-2  78    l_ed       l_ed  ...   353.65625  344.670066   276.59375
-3  78  l_port     l_port  ...   338.03125   370.59641    315.5625
-4  78  s_port     s_port  ...     334.375  332.403947   286.21875
-5  78       1  lED_sPort  ...       337.5    344.6875      289.75
-6  78       2  lED_lPort  ...    369.8125  344.996011    271.9375
-7  78       3  hED_lPort  ...      306.25  396.196809    350.5625
-8  78       4  hED_sPort  ...      331.25  319.792553    275.4375
-
-[9 rows x 17 columns],   sub block  condition  ...      ssd   ssrt_mean   ssrt_int
-0  21   all        all  ...  246.875  315.927083  305.53125
-1  21     1  hED_sPort  ...  302.125  279.666667   277.0625
-2  21     2  lED_lPort  ...  191.625    352.1875    329.375
-
-[3 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  80     all        all  ...  226.828125  248.890625    239.625
-1  80    h_ed       h_ed  ...      256.25   220.90625     210.75
-2  80    l_ed       l_ed  ...   197.40625     276.875  260.90625
-3  80  l_port     l_port  ...   234.90625  228.020833    232.125
-4  80  s_port     s_port  ...      218.75  269.760417     247.75
-5  80       1  hED_sPort  ...      243.75  246.333333     227.25
-6  80       2  lED_lPort  ...    201.0625         NaN        NaN
-7  80       3  lED_sPort  ...      193.75    293.1875     256.25
-8  80       4  hED_lPort  ...      268.75  195.479167   186.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  43     all        all  ...      181.0  316.802083      297.0
-1  43    h_ed       h_ed  ...     143.25  332.895833  324.15625
-2  43    l_ed       l_ed  ...     218.75  300.708333     288.25
-3  43  l_port     l_port  ...  152.09375  331.052083  328.65625
-4  43  s_port     s_port  ...  209.90625  302.552083  267.09375
-5  43       1  lED_sPort  ...      262.5  297.041667      262.5
-6  43       2  hED_sPort  ...   157.3125    308.0625   295.4375
-7  43       3  lED_lPort  ...      175.0     304.375      312.0
-8  43       4  hED_lPort  ...   129.1875  357.729167   351.3125
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  52     all        all  ...  407.890625  426.144057    316.125
-1  52    h_ed       h_ed  ...   379.78125  420.129861   317.1875
-2  52    l_ed       l_ed  ...       436.0  435.036145   303.8125
-3  52  l_port     l_port  ...    437.0625  372.459722   243.4375
-4  52  s_port     s_port  ...   378.71875  481.895708  372.90625
-5  52       1  lED_sPort  ...      429.25  480.776316     390.25
-6  52       2  lED_lPort  ...      442.75  395.361111    287.875
-7  52       3  hED_lPort  ...     431.375  349.558333    186.625
-8  52       4  hED_sPort  ...    328.1875  490.701389   416.6875
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  36     all        all  ...  186.234375  364.241815  357.671875
-1  36    h_ed       h_ed  ...      205.25  327.986559     330.625
-2  36    l_ed       l_ed  ...   167.21875         NaN         NaN
-3  36  l_port     l_port  ...   183.90625  338.115027     377.375
-4  36  s_port     s_port  ...    188.5625  390.069079    349.9375
-5  36       1  lED_lPort  ...     189.625         NaN         NaN
-6  36       2  hED_sPort  ...    232.3125  380.878989      306.25
-7  36       3  hED_lPort  ...    178.1875  273.355978    349.3125
-8  36       4  lED_sPort  ...    144.8125         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean    ssrt_int
-0  89     all        all  ...  357.046875  256.046875  221.046875
-1  89    h_ed       h_ed  ...    322.9375  300.197917    266.5625
-2  89    l_ed       l_ed  ...   391.15625  211.895833   172.03125
-3  89  l_port     l_port  ...   354.71875  250.583333    229.8125
-4  89  s_port     s_port  ...     359.375  261.510417     207.625
-5  89       1  hED_lPort  ...     308.375  330.104167     300.125
-6  89       2  lED_sPort  ...      381.25  252.729167     181.625
-7  89       3  lED_lPort  ...    401.0625    171.0625    162.0625
-8  89       4  hED_sPort  ...       337.5  270.291667       234.5
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  38     all        all  ...  360.15625  322.078125   273.8125
-1  38    h_ed       h_ed  ...   413.5625   314.40625   264.3125
-2  38    l_ed       l_ed  ...     306.75      329.75   267.0625
-3  38  l_port     l_port  ...  363.03125  276.458333  240.96875
-4  38  s_port     s_port  ...  357.28125  367.697917  304.46875
-5  38       1  lED_lPort  ...      300.0  299.395833   244.6875
-6  38       2  hED_lPort  ...   426.0625  253.520833   228.0625
-7  38       3  hED_sPort  ...   401.0625  375.291667   293.0625
-8  38       4  lED_sPort  ...      313.5  360.104167   319.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...         ssd   ssrt_mean   ssrt_int
-0  94     all        all  ...  270.609375  341.983218  331.03125
-1  94    h_ed       h_ed  ...       274.0  347.368421    297.375
-2  94    l_ed       l_ed  ...   267.21875  336.504654  388.28125
-3  94  l_port     l_port  ...   332.84375         NaN        NaN
-4  94  s_port     s_port  ...     208.375  377.979839    371.625
-5  94       1  hED_lPort  ...    351.0625  270.541667   248.3125
-6  94       2  lED_lPort  ...     314.625         NaN        NaN
-7  94       3  lED_sPort  ...    219.8125  331.013587   394.5625
-8  94       4  hED_sPort  ...    196.9375   424.19016   365.5625
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean    ssrt_int
-0  35     all        all  ...      293.5  508.064103  526.328125
-1  35    h_ed       h_ed  ...  248.96875  550.680601   617.53125
-2  35    l_ed       l_ed  ...  338.03125   465.39913      432.75
-3  35  l_port     l_port  ...      387.5     411.975    383.1875
-4  35  s_port     s_port  ...      199.5  604.263158   654.59375
-5  35       1  hED_lPort  ...     368.75  449.654762    380.8125
-6  35       2  lED_sPort  ...   269.8125  556.675305    430.0625
-7  35       3  lED_lPort  ...     406.25  372.302632     417.625
-8  35       4  hED_sPort  ...   129.1875         NaN         NaN
-
-[9 rows x 17 columns],   sub   block  condition  ...        ssd   ssrt_mean   ssrt_int
-0  33     all        all  ...  352.09375  427.034592  367.90625
-1  33    h_ed       h_ed  ...  338.03125  451.570901  402.09375
-2  33    l_ed       l_ed  ...  366.15625  402.609707    340.625
-3  33  l_port     l_port  ...   369.8125  411.703289    362.375
-4  33  s_port     s_port  ...    334.375  442.288043    384.125
-5  33       1  lED_lPort  ...   369.8125  418.770833   372.1875
-6  33       2  hED_lPort  ...   369.8125  404.485372   341.3125
-7  33       3  hED_sPort  ...     306.25   498.98913    459.125
-8  33       4  lED_sPort  ...      362.5  385.586957     328.25
+* SST_summary_dat : [   sub   block  condition racehorse_check  ...    us_rt      ssd ssrt_mean ssrt_int
+0  114     all        all               1  ...  439.594  223.188   326.456  319.312
+1  114    h_ed       h_ed               1  ...  465.312  223.969    290.75  266.531
+2  114    l_ed       l_ed               1  ...  413.875  222.406   362.531  367.094
+3  114  l_port     l_port               1  ...  486.357    224.5   303.906      268
+4  114  s_port     s_port               1  ...  403.222  221.875    349.23  375.438
+5  114       1  hED_lPort               1  ...  498.286  179.188   309.792  277.938
+6  114       2  hED_sPort               1  ...  439.667   268.75   271.708  274.125
+7  114       3  lED_sPort               1  ...  366.778      175   427.404  461.688
+8  114       4  lED_lPort               1  ...  474.429  269.812   298.021      251
 
 [9 rows x 17 columns]]
 * bids_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
@@ -1429,95 +269,49 @@ Execution Inputs
 
     return SST_database_cond, SST_database_blocks
 
-* overwrite_flag : True
+* overwrite_flag : False
 
 
 Execution Outputs
 -----------------
 
 
-* SST_database_blocks :     sub  block  condition  ...      ssd  ssrt_mean  ssrt_int
-5     1      1  lED_lPort  ...  435.500    432.604   310.062
-6     1      2  lED_sPort  ...  406.250    439.054   407.250
-7     1      3  hED_sPort  ...  433.312    358.879   346.688
-8     1      4  hED_lPort  ...  312.375    476.042   347.375
-5     4      1  hED_lPort  ...  305.125    439.750   326.438
-..  ...    ...        ...  ...      ...        ...       ...
-8   106      4  hED_sPort  ...  251.062    485.257   458.438
-5   107      1  lED_sPort  ...  488.562        NaN       NaN
-6   107      2  lED_lPort  ...  381.250    317.346   322.875
-7   107      3  hED_lPort  ...  412.500    457.622   372.625
-8   107      4  hED_sPort  ...  287.500    540.744   439.875
+* SST_database_blocks :      sub  block  condition  racehorse_check  ...    us_rt      ssd  ssrt_mean  ssrt_int
+0      1      1  lED_lPort                1  ...  702.600  435.500    432.604   310.062
+1      1      2  lED_sPort                1  ...  635.167  406.250    439.054   407.250
+2      1      3  hED_sPort                1  ...  505.625  433.312    358.879   346.688
+3      1      4  hED_lPort                1  ...  573.500  312.375    476.042   347.375
+4      4      1  hED_lPort                1  ...  568.286  305.125    439.750   326.438
+..   ...    ...        ...              ...  ...      ...      ...        ...       ...
+270  123      4  hED_sPort                1  ...  512.375  275.000    260.250   238.000
+271  124      1  lED_sPort                1  ...  612.167  376.062    357.807   231.688
+272  124      2  lED_lPort                1  ...  710.400  468.750    356.606   218.312
+273  124      3  hED_lPort                1  ...  593.833  307.312    456.915   380.938
+274  124      4  hED_sPort                1  ...  574.857  345.875    363.755   301.375
 
-[216 rows x 17 columns]
+[279 rows x 17 columns]
 * SST_database_cond :     sub  all_racehorse_check  ...  s_port_ssrt_mean  s_port_ssrt_int
 0     1                    1  ...           398.681          364.031
 1     4                    1  ...           490.856          406.938
 2     5                    1  ...           431.271          397.281
 3     6                    0  ...               NaN              NaN
 4     7                    1  ...               NaN              NaN
-5    11                    1  ...           264.611          246.406
-6    17                    1  ...               NaN              NaN
-7    18                    1  ...           372.426          300.500
-8    19                    1  ...           347.927          307.750
-9    20                    1  ...           391.743          680.156
-10   21                    1  ...               NaN              NaN
-11   22                    1  ...               NaN              NaN
-12   23                    1  ...           282.231          231.656
-13   26                    1  ...           320.230          268.062
-14   28                    1  ...           322.275          270.062
-15   30                    1  ...           358.370          431.281
-16   31                    1  ...           319.406          280.938
-17   33                    1  ...           442.288          384.125
-18   35                    1  ...           604.263          654.594
-19   36                    1  ...           390.069          349.938
-20   37                    1  ...           312.116          240.969
-21   38                    1  ...           367.698          304.469
-22   39                    1  ...           434.094          474.156
-23   40                    1  ...           409.792          302.094
-24   41                    1  ...               NaN              NaN
-25   43                    1  ...           302.552          267.094
-26   45                    1  ...               NaN              NaN
-27   47                    1  ...               NaN              NaN
-28   48                    1  ...               NaN              NaN
-29   49                    1  ...           322.000          250.250
-30   52                    1  ...           481.896          372.906
-31   55                    1  ...           232.729          208.031
-32   56                    1  ...               NaN              NaN
-33   58                    1  ...           365.656          247.156
-34   68                    1  ...           367.377          293.969
-35   69                    1  ...           504.453          564.719
-36   70                    1  ...           280.883          233.562
-37   71                    1  ...           290.021          326.500
-38   73                    1  ...           336.417          259.438
-39   74                    0  ...               NaN              NaN
-40   75                    1  ...           286.771          339.125
-41   77                    0  ...               NaN              NaN
-42   78                    1  ...           332.404          286.219
-43   80                    1  ...           269.760          247.750
-44   83                    1  ...           578.093          559.125
-45   84                    1  ...           299.104          253.188
-46   89                    1  ...           261.510          207.625
-47   90                    1  ...           258.539          362.438
-48   93                    1  ...           422.788          357.938
-49   94                    1  ...           377.980          371.625
-50   95                    1  ...           359.417          273.250
-51   96                    1  ...           318.255          366.031
-52  101                    1  ...           353.208          407.875
-53  103                    1  ...               NaN              NaN
-54  104                    1  ...           427.198          472.500
-55  106                    1  ...               NaN              NaN
-56  107                    1  ...           414.787          323.406
+..  ...                  ...  ...               ...              ...
+67  120                    0  ...           379.387          338.375
+68  121                    1  ...           404.375          357.500
+69  122                    1  ...           410.740          276.031
+70  123                    1  ...           293.156          253.031
+71  124                    1  ...           360.781          278.812
 
-[57 rows x 71 columns]
+[73 rows x 71 columns]
 
 
 Runtime info
 ------------
 
 
-* duration : 0.065564
-* hostname : ND-NTR-FCH12085
+* duration : 0.102611
+* hostname : nut-azp271-10239
 * prev_wd : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
 * working_dir : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/SST/sstDatabase
 
@@ -1533,29 +327,55 @@ Environment
 * CONDA_PROMPT_MODIFIER : (base) 
 * CONDA_PYTHON_EXE : /Users/azp271/opt/anaconda3/bin/python
 * CONDA_SHLVL : 1
-* DISPLAY : /private/tmp/com.apple.launchd.GWJcr5aiMQ/org.xquartz:0
-* DYLD_LIBRARY_PATH : /opt/X11/lib/flat_namespace:/opt/X11/lib/flat_namespace
+* DISPLAY : /private/tmp/com.apple.launchd.1mdV9E7QdF/org.xquartz:0
+* DYLD_LIBRARY_PATH : /Applications/freesurfer/lib/gcc/lib::/opt/X11/lib/flat_namespace
+* FIX_VERTEX_AREA : 
+* FMRI_ANALYSIS_DIR : /Applications/freesurfer/fsfast
+* FREESURFER_HOME : /Applications/freesurfer
+* FSFAST_HOME : /Applications/freesurfer/fsfast
+* FSF_OUTPUT_FORMAT : nii.gz
+* FSLDIR : /usr/local/fsl
+* FSLGECUDAQ : cuda.q
+* FSLLOCKDIR : 
+* FSLMACHINELIST : 
+* FSLMULTIFILEQUIT : TRUE
+* FSLOUTPUTTYPE : NIFTI_GZ
+* FSLREMOTECALL : 
+* FSLTCLSH : /usr/local/fsl/bin/fsltclsh
+* FSLWISH : /usr/local/fsl/bin/fslwish
+* FSL_BIN : /usr/local/fsl/bin
+* FSL_DIR : /usr/local/fsl
+* FS_OVERRIDE : 0
+* FUNCTIONALS_DIR : /Applications/freesurfer/sessions
 * HOME : /Users/azp271
 * LANG : en_US.UTF-8
+* LOCAL_DIR : /Applications/freesurfer/local
 * LOGNAME : azp271
 * LSCOLORS : ExFxBxDxCxegedabagacad
-* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat
-* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin
+* MINC_BIN_DIR : /Applications/freesurfer/mni/bin
+* MINC_LIB_DIR : /Applications/freesurfer/mni/lib
+* MNI_DATAPATH : /Applications/freesurfer/mni/data
+* MNI_DIR : /Applications/freesurfer/mni
+* MNI_PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
+* OLDPWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/orgRaw_scripts
+* OS : Darwin
+* PATH : /Users/azp271/opt/anaconda3/bin:/Users/azp271/opt/anaconda3/condabin:/Applications/freesurfer/bin:/Applications/freesurfer/fsfast/bin:/Applications/freesurfer/tktools:/usr/local/fsl/bin:/Applications/freesurfer/mni/bin:/usr/local/fsl/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/opt/X11/bin:/Library/Apple/usr/bin:/Users/azp271/abin:/Applications/CMake.app/Contents/bin/:/Users/azp271/dcm2niix/build/bin/:/Users/azp271/.local/bin:/Users/azp271/pigz-2.6/
+* PERL5LIB : /Applications/freesurfer/mni/lib/../Library/Perl/Updates/5.12.3
 * PS1 : (base) \[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]$ 
 * PWD : /Users/azp271/OneDrive - The Pennsylvania State University/b-childfoodlab_Shared/Active_Studies/RO1_Brain_Mechanisms_IRB_5357/Participant_Data/BIDSdat/code
 * SHELL : /bin/bash
-* SHLVL : 2
-* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.7qhvbO6vQS/Listeners
+* SHLVL : 1
+* SSH_AUTH_SOCK : /private/tmp/com.apple.launchd.Eua71eiyFT/Listeners
+* SUBJECTS_DIR : /Applications/freesurfer/subjects
 * TERM : xterm-256color
 * TERM_PROGRAM : Apple_Terminal
-* TERM_PROGRAM_VERSION : 440
-* TERM_SESSION_ID : 216F9EAF-B278-47F3-8606-A712F9800D89
-* TMPDIR : /var/folders/y5/lybvr3s93wn9ny273pk2fhgr0000gp/T/
+* TERM_PROGRAM_VERSION : 433
+* TERM_SESSION_ID : 5D558CB1-2FBB-498C-9075-455C5F6CB8AA
+* TMPDIR : /var/folders/3c/pvrbw1ld5290z020487lf9340000gp/T/
 * USER : azp271
 * XPC_FLAGS : 0x0
 * XPC_SERVICE_NAME : 0
 * _ : /Users/azp271/opt/anaconda3/bin/python3
 * _CE_CONDA : 
 * _CE_M : 
-* __CFBundleIdentifier : com.apple.Terminal
 
