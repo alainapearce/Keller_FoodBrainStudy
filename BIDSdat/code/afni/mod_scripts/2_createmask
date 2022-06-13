@@ -1,0 +1,56 @@
+#!/bin/bash
+#usage: ./1_smoothing     $1          $2    
+#		    ParicipantID   Session
+#		    
+#
+### This script will create 1 mask by combining masks.nii.gz files for each run
+### AFNI code was derived from https://andysbrainbook.readthedocs.io/en/latest/OpenScience/OS/fMRIPrep_Demo_4_AdditionalPreproc.html 
+
+
+###################### set up initial variables  ###########################
+
+#set input argument 1 to variable 'subID' and make sure it has leading zeros
+
+#remove leading zeros if they were included -- trying to add leading zeros to numbers with leading zeros can lead to issues (https://stackoverflow.com/questions/8078167/printf-in-bash-09-and-08-are-invalid-numbers-07-and-06-are-fine)
+ID_nozero=$(echo $1 | sed 's/^0*//')
+
+# add leading zeros back
+ID=`printf %03d $ID_nozero`
+subID="sub-$ID"
+session="Session$2"
+
+###################### setup and check directories  ###########################
+#go to and set BIDs as main directory
+cd ../../../
+topdir=$(pwd)
+ 
+#set parDir to participants fmriprep func directory
+parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2/func"
+ 
+#check for participant fmriprep directory, exit if doesnt exist
+if [ -d "$parDir" ]
+then
+     echo "Making full foodcue mask for $subID in $session"
+else
+     echo "fmriprep/ses-$2/func directory does not exist for participant $subID"
+     exit
+fi
+
+###################### AFNI: make mask  ###########################
+cd $parDir
+
+# get list of run numbers and templates
+runs=`find *foodcue*desc-brain_mask.nii.gz -type f -exec basename "{}" \; | grep -o -P '(?<=foodcue_run-).*(?=_space)'| sort -u`
+templates=`find *foodcue*desc-brain_mask.nii.gz -type f -exec basename "{}" \; | grep -o -P '(?<=space-).*(?=_desc)'| sort -u`
+
+# make 1 mask per template
+
+for template in $templates; do
+	if [ -f "foodcue_full_mask-${template}.nii" ] 
+	then
+		echo "foodcue_full_mask-${template}.nii already exists"
+	else
+		3dmask_tool -inputs *foodcue*${template}*mask.nii.gz -union -prefix foodcue_full_mask-${template}.nii	
+	fi
+done
+

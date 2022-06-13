@@ -1,0 +1,87 @@
+#!/bin/bash
+#usage: ./2_afni_create_censor_files     $1              $2    
+#		    		ParicipantID      Session
+#		    
+#
+### This script will generate 1D censor files using AFNIs 1d_tool.py and the translation and rotation regressors from fmriprep ###
+
+###################### set up initial variables  ###########################
+
+#set input argument 1 to variable 'subID' and make sure it has leading zeros
+
+ID=`printf %03d $1`
+subID="sub-$ID"
+session="Session$2"
+
+###################### setup and check directories  ###########################
+#go to and set BIDs as main directory
+cd ../../../
+topdir=$(pwd)
+ 
+#set parDir to participants fmriprep func directory
+parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2/func"
+ 
+#check for participant fmriprep directory, exit if doesnt exist
+if [ -d "$parDir" ]
+then
+     echo "Creating censor file for $subID in $session"
+else
+     echo "fmriprep/ses-$2/func directory does not exist for participant $subID"
+     exit
+fi
+
+###################### concatenate confound.tsv files  ###########################
+cd $parDir
+
+# get list of confound files (there will be 1 per run)
+confoundfiles=($(ls *foodcue*confounds*tsv))
+
+# get list of run numbers
+runs=`find *foodcue*confounds*tsv -type f -exec basename "{}" \; | grep -o -P '(?<=foodcue_run-).*(?=_desc)'| sort -u`
+#echo $runs
+n_runs=${#runs[@]}
+
+# remove motion_confounds_allruns.txt if it exists
+rm *motion_confounds_allruns*
+
+# concatenate motion parameters from each run into 1 file
+for file in ${confoundfiles[@]};do
+
+	# extract run number
+	runnum=`find $file -type f -exec basename "{}" \; | grep -o -P '(?<=foodcue_run-).*(?=_desc)'`
+	#echo $runnum
+	col_trans_x=`awk -v RS='\t' '/trans_x/{print NR; exit}' $file`
+        col_trans_y=`awk -v RS='\t' '/trans_y/{print NR; exit}' $file`
+        col_trans_z=`awk -v RS='\t' '/trans_z/{print NR; exit}' $file`
+        col_rot_x=`awk -v RS='\t' '/rot_x/{print NR; exit}' $file`
+        col_rot_y=`awk -v RS='\t' '/rot_y/{print NR; exit}' $file`
+        col_rot_z=`awk -v RS='\t' '/rot_z/{print NR; exit}' $file`
+
+	# extract 6 motion columns	
+	cut -f $col_trans_x,$col_trans_y,$col_trans_z,$col_rot_x,$col_rot_y,$col_rot_z $file > rm.run${runnum}_mot_reg.txt
+
+	# remove column headers and append remaining rows to confound_allruns.txt
+	sed '1d' rm.run${runnum}_mot_reg.txt >> ${subID}_motion_confounds_allruns.txt
+
+	# remove temporary files
+	rm rm*
+done
+
+###################### generate motion censor files  ###########################
+
+## Note: fmriprep units for rotation are radians; since the rotations in 3dvolreg are in degrees, those values
+## should be converted before taking the euclidean norm. One option would be to multiply by 180/pi = 57.3 
+## see: https://afni.nimh.nih.gov/afni/community/board/read.php?1,159438,159487#msg-159487
+
+1d_tool.py \
+	-infile ${subID}_motion_confounds_allruns.txt \
+	-set_nruns $n_runs\
+	-derivative \
+	-censor_prev_TR \
+	-collapse_cols weighted_enorm \
+	-weight_vec 1 1 1 57.3 57.3 57.3 \
+	-moderate_mask -1.0 1.0 \
+	-show_censor_count \
+	-write_censor ${subID}.censor1.0mm_all.1D \
+	-write_CENSORTR ${subID}.censorTR1.0mm_all.1D
+

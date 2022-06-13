@@ -1,0 +1,212 @@
+#!/bin/tcsh
+#
+#useage: G2_2sample-pairedT   $1         $2       $3        $4				$5
+#		     	template	session	  execute?  TR-Censor-criteria	   Run censor criteria
+#
+# The purpose of this script is to create and run 1sample t-tests of all conditions of interest
+# $1: ped or MNI
+# $2: 1 or 2
+# $3 run or no
+# $4 fd-1.0_stddvar-1.8 (or other criteria used in future)
+# $5 20 (or other criteria used in future)
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+#go to and set BIDS main directory
+cd ../../
+set bidsdir = "$cwd"
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+
+#set group level dir
+set group_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/1sampleT
+
+# set index dir
+set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}
+
+#set output name
+set today = `date +%m-%d-%y`
+
+# set censor criteria
+set TRcen = $4
+set runcen = $5
+
+# set path to templates
+set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+
+##Get template specific results folder
+if ( "$1" == "MNI" ) then
+	##Get MNI template impelemented in 1_sswarp_strct
+	set basedset = $tpath/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz
+	set basedset_name = "tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz"
+	# set string
+    	set temp = "MNI152NLin2009cAsym"
+	set tempst = "MNI"
+else
+	##Get pediatric template used in fmriprep
+	set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+	set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+	# set strings
+	set temp = "MNIPediatricAsym_cohort-3"
+	set tempst = "ped"
+endif
+
+
+# set results folder
+set results_folder = ${tempst}_${TRcen}_p${runcen}
+
+
+#check to see if have 'Old' directory, 
+#if do, check for and clean up old directories,
+#if not, create all folders in that path    
+if ( -d $group_dir/Old ) then
+    set old_folders = `( ls -d $group_dir/* )`
+
+    #if file path $group_dir/$old in loop not same direct file link to $group_dir/Old
+    foreach old ( $old_folders )
+
+        #get just dirname
+        set dname = `basename $old`
+
+        #if not the 'Old' directory
+        if ( "$dname" != "Old" ) then
+
+            #if $group_dir/$old hasn't been moved to $group_dir/Old
+            if ( ! -d $group_dir/Old/$dname ) then
+                mv $old $group_dir/Old/
+
+            #else update/copy and remove
+            else
+                cp -u $old $group_dir/Old/
+                rm -r $old
+            endif
+        endif
+    end
+else
+    mkdir -p $group_dir/Old
+endif
+
+#set map folder
+set map_folder = $group_dir/${tempst}_${TRcen}_p${runcen}_${today}
+
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+endif
+
+
+echo "${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask*${temp}*+tlrc.HEAD"
+
+## Use this if masks are in fmriprep dir
+#make mask with 80% of participants overlapping
+if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
+    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
+            -prefix $map_folder/Session${2}_mask0.8_${today}+tlrc              \
+            -frac 0.8
+endif
+
+## Use this if masks are in lev1 dir
+#make mask with 80% of participants overlapping
+#if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
+#   3dmask_tool -input $lev1_dir/*/$results_folder/full_mask*+tlrc.HEAD \
+#	    -prefix $map_folder/Session${2}_mask0.8_${today}+tlrc              \
+#	    -frac 0.8
+#endif
+
+
+
+###################### generate scripts  ########################
+
+#loop though all conditions/contrasts of interest
+set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+
+foreach m ( $maps )
+    set output_name = $m
+
+    ###################### WholeGroup  ########################
+
+    #zskip-skip voxels if more than 20% of dsets have zero value
+    #toz-when using zskip need to convert t to z because voxel 
+    #may have different number of samples
+    gen_group_command.py -command 3dttest++                                             \
+                         -write_script $map_folder/WG_1sampleT++_${output_name}       \
+                         -prefix  WG_1sampleT++_${output_name}                                 \
+                         -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD             \
+                         -set_labels $m                                                 \
+                         -subs_betas "${m}"'#'0_Coef                                    \
+                         -options                                                       \
+                            -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+
+    chmod 775 $map_folder/WG_1sampleT++_${output_name}
+
+    ###################### HighRiskGroup  ########################
+
+    #get index list
+    set HRindex = `cat $index_dir/highrisk_subjects.txt`
+
+    #zskip-skip voxels if more than 20% of dsets have zero value
+    #toz-when using zskip need to convert t to z because voxel 
+    #may have different number of samples
+    #dset_index0_list: will need to update each time run script or not valid
+    gen_group_command.py -command 3dttest++                                         \
+                     -write_script $map_folder/HR_1sampleT++_${output_name}     \
+                     -prefix  HR_1sampleT++_${output_name}                             \
+                     -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD              \
+                     -dset_sid_list $HRindex                                     \
+                     -set_labels $m                                                 \
+                     -subs_betas "${m}"'#'0_Coef                                    \
+                     -options                                                       \
+                        -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+
+    chmod 775 $map_folder/HR_1sampleT++_${output_name}
+
+    ###################### LowRiskGroup  ########################
+
+    #get index list
+    set LRindex = `cat $index_dir/highrisk_subjects.txt`
+
+    #zskip-skip voxels if more than 20% of dsets have zero value
+    #toz-when using zskip need to convert t to z because voxel 
+    #may have different number of samples
+    gen_group_command.py -command 3dttest++                                         \
+                     -write_script $map_folder/LR_1sampleT++_${output_name}     \
+                     -prefix LR_1sampleT++_${output_name}                            \
+                     -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD              \
+                     -dset_sid_list $LRindex                                     \
+                     -set_labels $m                                                 \
+                     -subs_betas "${m}"'#'0_Coef                                    \
+                     -options                                                       \
+                        -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+
+    chmod 775 $map_folder/LR_1sampleT++_${output_name}
+
+    ###################### Execute?  ########################
+    if ( "$3" == "run" ) then
+        cd $map_folder
+        tcsh WG_1sampleT++_${output_name}
+        #tcsh HR_1sampleT++_${output_name}
+        #tcsh LR_1sampleT++_${output_name}
+    endif
+end
+
+
+# Copy base template into results folder 
+
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    if ( ! -f $map_folder/$basedset_name ) then
+        cp ${basedset}.BRIK.gz $map_folder
+        cp ${basedset}.HEAD $map_folder
+    endif
+endif
+

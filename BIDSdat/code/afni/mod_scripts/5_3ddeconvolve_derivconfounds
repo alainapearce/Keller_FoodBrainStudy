@@ -1,0 +1,135 @@
+#!/bin/bash
+#usage: ./4_3dDeconvolve     $1          $2   	 $3		$4  						$5
+#		    	ParicipantID   Session Template	  TR-Censor-criteria (fd-X.X_stddvar-X.X)	Run censor criteria (e.g., 20)
+#		    
+#
+### This script will run 3ddeconvolve ###
+### AFNI code was derived from https://andysbrainbook.readthedocs.io/en/latest/OpenScience/OS/fMRIPrep_Demo_4_AdditionalPreproc.html
+ 
+
+
+###################### set up initial variables  ###########################
+
+#set input argument 1 to variable 'subID' and make sure it has leading zeros
+
+ID=`printf %03d $1`
+subID="sub-$ID"
+session="Session$2"
+TRcen="$4"
+runcen="$5"
+
+# set template string
+if [ "$3" == "Ped" ]
+then
+	temp="MNIPediatricAsym_cohort-3"
+	tempst="ped"
+	echo "template for 3ddeconvolve is $temp"
+elif [ "$3" == "MNI" ]
+then
+	temp="MNI152NLin2009cAsym"
+	tempst="MNI"
+	echo "template for 3ddeconvolve is $temp"
+else
+	echo "please specify template as Ped or MNI. Exiting 4_3dDeconvlve"
+fi
+
+
+
+###################### setup and check directories  ###########################
+# assign output directory name
+
+#go to and set BIDs as main directory
+cd ../../../
+topdir=$(pwd)
+
+#set parDir to participants fmriprep ses directory
+parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2"
+
+#set output directory
+output_dir="$topdir/derivatives/analyses/FoodCue-fmri/Level1GLM/${subID}/${tempst}_${TRcen}_p${runcen}"
+ 
+# verify that the results directory with output does not yet exist
+if [ -d $output_dir ]
+then
+	if [ "$(ls -A $output_dir)" ]
+	then
+		echo "output dir already exists and is not empty. Exiting 4_3dDeconvolve"
+ 		exit
+	else
+		echo "output dir exists but is empty. Deleting output dir"
+		rm -r $output_dir
+	fi
+fi
+
+#check for participant fmriprep directory, exit if doesnt exist
+if [ ! -d $parDir ]
+then
+	echo "fmriprep/ses-$2/ directory does not exist for participant $subID. Exiting 4_3dDeconvolve"
+	exit
+fi
+
+# verify that stimtime files exist
+if [ ! -d $parDir/stim_times/${TRcen}_p${runcen} ]
+then    
+	echo "$parDir/stim_times/${TRcen}_p${runcen} does not exist. Exiting 4_3dDeconvolve"
+	exit
+else
+	echo "starting 3ddeconvolve for ${subID} ${session}" 
+fi
+
+
+# create results and stimuli directories
+mkdir -p $output_dir
+
+
+# get list of tr counts
+
+
+
+
+###################### AFNI: 3dDeconvolve  ###########################
+# run the first-level regression analysis
+cd $output_dir
+
+3dDeconvolve -input $parDir/func/*foodcue*${temp}*scale.nii                            				\
+   	-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+	-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+    	-polort 2                                                               		\
+    	#-num_stimts 18 										\
+	-num_stimts 12                                                                                \
+	-stim_times 1 $parDir/stim_times/${TRcen}_p${runcen}/*HighLarge*.txt 'BLOCK(18,1)'	\
+	-stim_label 1 HighLarge                  						\
+	-stim_times 2 $parDir/stim_times/${TRcen}_p${runcen}/*HighSmall*.txt 'BLOCK(18,1)'    \
+	-stim_label 2 HighSmall     								\
+	-stim_times 3 $parDir/stim_times/${TRcen}_p${runcen}/*LowLarge*.txt 'BLOCK(18,1)' 	\
+	-stim_label 3 LowLarge     								\
+	-stim_times 4 $parDir/stim_times/${TRcen}_p${runcen}/*LowSmall*.txt 'BLOCK(18,1)'     \
+	-stim_label 4 LowSmall     								\
+	-stim_times 5 $parDir/stim_times/${TRcen}_p${runcen}/*OfficeLarge*.txt 'BLOCK(18,1)'  \
+	-stim_label 5 OfficeLarge     								\
+	-stim_times 6 $parDir/stim_times/${TRcen}_p${runcen}/*OfficeSmall*.txt 'BLOCK(18,1)'  \
+	-stim_label 6 OfficeSmall     								\
+	-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[0]' -stim_base 7 -stim_label 7 trans_x_01    		\
+	-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[1]' -stim_base 8 -stim_label 8 trans_y_01   		\
+	-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[2]' -stim_base 9 -stim_label 9 trans_z_01     	\
+	-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[3]' -stim_base 10 -stim_label 10 rot_x_01  		\
+	-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[4]' -stim_base 11 -stim_label 11 rot_y_01   		\
+	-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[5]' -stim_base 12 -stim_label 12 rot_z_01   		\
+	#-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[6]' -stim_base 13 -stim_label 13 trans_x_02  	\
+	#-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[7]' -stim_base 14 -stim_label 14 trans_y_02 		\
+	#-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[8]' -stim_base 15 -stim_label 15 trans_z_02   	\
+	#-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[9]' -stim_base 16 -stim_label 16 rot_x_02    	\
+	#-stim_file 17 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[10]' -stim_base 17 -stim_label 17 rot_y_02    	\
+	#-stim_file 18 $parDir/func/${subID}_foodcue-allruns_confounds-noheader.tsv'[11]' -stim_base 18 -stim_label 18 rot_z_02    	\
+	-gltsym 'SYM: HighLarge -HighSmall' -glt_label 1 HighLarge-Small                        \
+        -gltsym 'SYM: LowLarge -LowSmall' -glt_label 2 LowLarge-Small                           \
+        -gltsym 'SYM: HighLarge -LowLarge' -glt_label 3 LargeHigh-Low                           \
+        -gltsym 'SYM: HighSmall -LowSmall' -glt_label 4 SmallHigh-Low                           \
+        -gltsym 'SYM: HighLarge LowLarge -HighSmall -LowSmall' -glt_label 5 Large-Small_allED   \
+        -gltsym 'SYM: HighLarge HighSmall -LowLarge -LowSmall' -glt_label 6 High-Low_allPS      \
+    	-jobs 8                                                    				\
+    	-fout -tout -x1D X.xmat.1D -xjpeg X.jpg                                  		\
+    	-x1D_uncensored X.nocensor.xmat.1D                                       		\
+    	-fitts fitts.$subj                                                       		\
+    	-errts errts.${subj}                                                     		\
+    	-bucket stats.$subj
