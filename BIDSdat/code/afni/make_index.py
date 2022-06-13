@@ -54,10 +54,10 @@ from pathlib import Path
 
 #input arguments setup
 parser=argparse.ArgumentParser()
-parser.add_argument('--TRcensorCriteria', '-c', help='TR censor criteria string. format = fd-X.X_stddvar-X.X', type=str)
-parser.add_argument('--RuncensorCriteria', '-r', help='Run censor criteria percentage', type=int)
+parser.add_argument('--censorsumfile', '-c', help='name of censor summary file (e.g., task-foodcue_censorsummary_fd-1.0.tsv', type=str)
+parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
+parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
 parser.add_argument('--generateIndex', '-g', help='Generate index files', action='store_true')
-
 args=parser.parse_args()
 
 ##############################################################################
@@ -81,60 +81,92 @@ bids_fmriprep_path = Path(pardata_directory).joinpath('BIDSdat/derivatives/prepr
 database_path = Path(pardata_directory).joinpath('Databases')
 
 # set framewise displacement and std_dvar threshold variables
-TR_censor_threshold = args.TRcensorCriteria
-run_censor_threshold = args.RuncensorCriteria
+censorsummary_file = args.censorsumfile
 
 # Import censor summary database for TR censor criteria
-censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(TR_censor_threshold) + '.tsv')
+censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsummary_file))
+
 # if database exists
 if censor_summary_path.is_file():
     # import database
-    censor_summary_allPar = pd.read_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(TR_censor_threshold) + '.tsv')), sep = '\t')
+    censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
 else:
     print("censor summary file does not exist")
 
-###### get list of subjects with >2 acceptable runs ######
+###### get list of subjects with N acceptable runs ######
 
 # subset data to remove runs with less than RuncensorCriteria acceptable TRs
-good_runs = censor_summary_allPar[censor_summary_allPar["p_censor"] < run_censor_threshold]
+
+# if censoring based on blocks of interest
+if (args.pthresh_b is not None) and (args.pthresh_r is None):
+    p_thresh_block = args.pthresh_b
+    good_runs = censor_summary_allPar[censor_summary_allPar["p_censor_interest"] < p_thresh_block]
+    exclude_string = "b" + str(p_thresh_block)
+# if censoring based on total run and blocks of interest
+elif (args.pthresh_b is not None) and (args.pthresh_r is not None):
+    p_thresh_block = args.pthresh_b
+    p_thresh_run = args.pthresh_r
+    exclude_string = "r" + str(p_thresh_run) + "b" + str(p_thresh_block)
+    #good_runs = censor_summary_allPar[censor_summary_allPar["p_censor"] < p_thresh_run]
+# if censoring based on total run 
+elif (args.pthresh_b is None) and (args.pthresh_r is not None):
+    p_thresh_run = args.pthresh_r
+    good_runs = censor_summary_allPar[censor_summary_allPar["p_censor"] < p_thresh_run]
+    exclude_string = "r" + str(p_thresh_run)
 
 # get number of good runs per subject
 n_good_persub = good_runs.groupby('sub').size().reset_index(name='n_good_runs')
 
 # Subset data to include subjects with >2 good runs
-sub_include = n_good_persub[n_good_persub["n_good_runs"] > 2]
+sub_include_3runs = n_good_persub[n_good_persub["n_good_runs"] >= 3]
+sub_include_2runs = n_good_persub[n_good_persub["n_good_runs"] >= 2]
 
 # rename sub column to id to facilitate merge
-sub_include=sub_include.rename(columns = {'sub':'id'})
+sub_include_3runs=sub_include_3runs.rename(columns = {'sub':'id'})
+sub_include_2runs=sub_include_2runs.rename(columns = {'sub':'id'})
 
 # Add risk information to sub_include
 anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav'))
-sub_include = pd.merge(sub_include,anthro_df[['id','risk_status_mom']],on='id', how='left')
+sub_include_3runs = pd.merge(sub_include_3runs,anthro_df[['id','risk_status_mom']],on='id', how='left')
+sub_include_2runs = pd.merge(sub_include_2runs,anthro_df[['id','risk_status_mom']],on='id', how='left')
 
 # subset based on low and high risk
-high_risk_df = sub_include[sub_include["risk_status_mom"] == "High Risk"]
-low_risk_df = sub_include[sub_include["risk_status_mom"] == "Low Risk"]
+high_risk_df_3runs = sub_include_3runs[sub_include_3runs["risk_status_mom"] == "High Risk"]
+low_risk_df_3runs = sub_include_3runs[sub_include_3runs["risk_status_mom"] == "Low Risk"]
+
+high_risk_df_2runs = sub_include_2runs[sub_include_2runs["risk_status_mom"] == "High Risk"]
+low_risk_df_2runs = sub_include_2runs[sub_include_2runs["risk_status_mom"] == "Low Risk"]
 
 # Get lists of subjects with leading zeros
-all_list = [str(sub).zfill(3) for sub in sub_include['id']]
-highrisk_list = [str(sub).zfill(3) for sub in high_risk_df['id']]
-lowrisk_list = [str(sub).zfill(3) for sub in low_risk_df['id']]
+all_3runs = [str(sub).zfill(3) for sub in sub_include_3runs['id']]
+highrisk_3runs = [str(sub).zfill(3) for sub in high_risk_df_3runs['id']]
+lowrisk_3runs = [str(sub).zfill(3) for sub in low_risk_df_3runs['id']]
+
+all_2runs = [str(sub).zfill(3) for sub in sub_include_2runs['id']]
+highrisk_2runs = [str(sub).zfill(3) for sub in high_risk_df_2runs['id']]
+lowrisk_2runs = [str(sub).zfill(3) for sub in low_risk_df_2runs['id']]
 
 # count total number of subjects to include
-print("TR criteria:", TR_censor_threshold, "run %:", run_censor_threshold)
 print("N evaluated:", censor_summary_allPar['sub'].nunique())
-print("N with >2 good runs:", len(all_list))
-print("N high risk with >2 good runs:", len(highrisk_list))
-print("N low risk with >2 good runs:", len(lowrisk_list))
+print("")
+print("N with at least 3 good runs:", len(all_3runs))
+print("N high risk with at least 3 good runs:", len(highrisk_3runs))
+print("N low risk with at least 3 good runs:", len(lowrisk_3runs))
+print("")
+print("N with at least 2 good runs:", len(all_2runs))
+print("N high risk with at least 2 good runs:", len(highrisk_2runs))
+print("N low risk with at least 2 good runs:", len(lowrisk_2runs))
 
 # Generate index files for each list
-for name in (['all_list', 'highrisk_list', 'lowrisk_list']):
+for name in (['all_3runs', 'highrisk_3runs', 'lowrisk_3runs' 'all_2runs', 'highrisk_2runs', 'lowrisk_2runs']):
     # get group name
-    group = name.split('_', 1)[0]
+    #group = name.split('_', 1)[0]
+    group = name
     # get list of IDs 
     list = globals()[name]
     # define output path
-    file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/index-' + group + '_' + TR_censor_threshold + '_r' + str(run_censor_threshold) + '.txt')
+    censor_string = censorsummary_file.rsplit('summary_',1)[1][0:-4]
+    file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/index-' + group + '_' + str(censor_string) + "_" + str(exclude_string) + '.txt')
     # write to file
     with open(file, 'w') as indexFile:
         joined_list = "  ".join(list)
