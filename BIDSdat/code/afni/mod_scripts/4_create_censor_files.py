@@ -7,7 +7,7 @@ The following steps will occur:
     (2) output a censor file that indicates which TRs to censor across all runs -- will be used by AFNI in first-level analyses
     (3) output a regressor file containing regressor information for all runs -- will be used by AFNI in first-level analyses
     (4) make new onsetfiles that exclude runs with >threshold % TRs censored -- will be used by AFNI in first-level analyses
-    (5) output summary data that indicates % of TRs censored per run
+    (5) output summary data that indicates % of TRs censored per run (total and for blocks of interest)
 
 Written by Bari Fuchs in Spring 2022
 
@@ -44,6 +44,7 @@ import sys, argparse
 #from scipy.stats import norm
 from scipy.stats.morestats import shapiro
 from pathlib import Path
+import re
 
 ##############################################################################
 ####                                                                      ####
@@ -60,9 +61,10 @@ from pathlib import Path
 #input arguments setup
 parser=argparse.ArgumentParser()
 parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs="+")
-parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is .5', default=0.5, type=float)
+parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is .5', default=1.0, type=float)
 parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float)
-parser.add_argument('--pthresh', '-r', help='threshold for censoring runs based on percent of TRs censored', default=20, type=int)
+parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
+parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
 args=parser.parse_args()
 
 ##############################################################################
@@ -71,57 +73,85 @@ args=parser.parse_args()
 ####                                                                      ####
 ##############################################################################
 
-def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh):
+def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
     Inputs:
         Confound_Data (dataframe) - data from a -desc-confounds_timeseries.tsv file
         FD_thresh (float) - framewise displacement threshold
         std_dvars_thresh ('none' or float) - std_dvars threshold
+        r_int_info (list) - length equal to number of TRs in Confound_Data; 
+            0 = TR is of non-interest, 1 = TR of interest
     Outputs:
         censor_info (list) - length equal to number of TRs in input dataset; 
             0 = TR is to be censored, 1 = TR is to be included in analyses
         nvol (integer) - number of TRs/volumes in the dataset (Confound_Data)
         n_censored (integer) - number of TRs/volumes to be censored 
         p_censored (integer) - percentage of TRs/volumes to be censored
+        nvol_int (integer) - number of TRs/volumes of interest in the dataset
+        n_censored_int (integer) - number of TRs/volumes of interest to be censored 
+        p_censored_int (integer) - percentage of TRs/volumes of interest to be censored
     """
 
-    # get number of volumes
+    # get number of volumes in Confound Data
     nvol = len(Confound_Data)
 
     Confound_Data = Confound_Data.reset_index()  # make sure indexes pair with number of rows
 
-    censor_info = []
-
-    # censor if: 
+    # censor TR if: 
     #   (1) First or second TR (datapoints 0 and 1)
     #   (2) std_dvars > std_dvars_thresh, if a threshold is specified
     #   (3) framewise_displacement > FD_thresh
     #   (4) TR was detected by fmriprep as a steady state outlier
-
-    if std_dvars_threshold == 'none':
-        for index, row in Confound_Data.iterrows():
-            if (index < 2) or (row['framewise_displacement'] > FD_thresh) or (row['non_steady_state_outlier00'] == 1):
+    #   (5) framewise_displacement on the next TR > FD_thresh
+    
+    censor_info = []
+    for index, row in Confound_Data.iterrows():
+        # if first or second TR
+        if (index < 2):
+            censor_info.append(0)
+        # if fd > threshold
+        elif (row['framewise_displacement'] > FD_thresh):
+            censor_info.append(0) # censor current TR
+            censor_info[index-1] = 0 # censor previous TR
+        # if steady state outlier
+        elif (row['non_steady_state_outlier00'] == 1):
+            censor_info.append(0)
+        # if std_dvars thresold a float (i.e., is specified)
+        elif isinstance(std_dvars_threshold, float):
+            # if std_dvars is above thresold
+            if (row['std_dvars'] > std_dvars_thresh):
                 censor_info.append(0)
-            else:
-                censor_info.append(1)
-    else:
-        for index, row in Confound_Data.iterrows():
-            if (index < 2) or (row['std_dvars'] > std_dvars_thresh) or (row['framewise_displacement'] > FD_thresh) or (row['non_steady_state_outlier00'] == 1):
-                censor_info.append(0)
-            else:
-                censor_info.append(1)
+        else:
+            censor_info.append(1)
 
     censor_info_df = pd.DataFrame(censor_info)
 
     # count number of censored TRs
     n_censored = (censor_info_df[0] == 0).sum()
 
-    # get percent of censored TRs
-    p_censored = (n_censored/nvol)*100
+    # get percent of censored TRs, rounded to 2 decimals
+    p_censored = round((n_censored/nvol)*100,1)
 
-    return(censor_info, nvol, n_censored, p_censored)
+    ### Get censor information for TRs of interest ###
 
+    # get indices of r_int_info that are non-zero (i.e., TRs of interest)
+    interest_ind = np.nonzero(r_int_info)[0]
 
+    # filter censor_info to only include indeces of interest
+    censor_info_int = [censor_info[i] for i in interest_ind]
+    
+    censor_info_int_df = pd.DataFrame(censor_info_int)
+
+    # get number of volumes of interest
+    nvol_int = len(censor_info_int)
+
+    # count number of censored TRs of intrest
+    n_censored_int = (censor_info_int_df[0] == 0).sum()
+
+    # get percent of censored TRs of interest, rounded to 2 decimals
+    p_censored_int = round((n_censored_int/nvol_int)*100,2)
+
+    return(censor_info, nvol, n_censored, p_censored, nvol_int, n_censored_int, p_censored_int)
 
 ##############################################################################
 ####                                                                      ####
@@ -159,9 +189,14 @@ if args.parIDs is not None and len(args.parIDs) >= 1:
     for sub in subs:
 
         confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*confounds_timeseries.tsv'))
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
         if len(confound_files) < 1:
-            print('No Files found for sub-' + str(sub))
+            print('No confound files found for sub-' + str(sub))
+            subject_list.remove(sub)
+
+        if len(orig_onsetfiles) < 1:
+            print('No onset files found for sub-' + str(sub))
             subject_list.remove(sub)
         
     #check if any files to process
@@ -180,7 +215,13 @@ else:
     fmriprep_subs = [item.relative_to(bids_fmriprep_path).parts[0] for item in confound_files]
 
     ##set is finding only unique values
-    subject_list = list(set([item[4:7] for item in fmriprep_subs]))   
+    subject_list = list(set([item[4:7] for item in fmriprep_subs]))
+
+    for sub in subject_list:        
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+        if len(orig_onsetfiles) < 1:
+            print('Confound files but no onset files found for sub-' + str(sub))
+            subject_list.remove(sub)
 
 # set framewise displacement and std_dvar threshold variables
 FD_threshold = args.framewisedisplacement
@@ -198,8 +239,8 @@ if censor_summary_path.is_file():
 # if database does not exist
 else:
     # create new dataframe 
-    censor_summary_allPar = pd.DataFrame(np.zeros((0, 5)))
-    censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor']
+    censor_summary_allPar = pd.DataFrame(np.zeros((0, 8)))
+    censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
 ## Loop through subject_list and create onset files ##
 subs = list(subject_list)
@@ -212,11 +253,10 @@ for sub in subs:
     nruns = len(confoundfiles)
 
     # create censor data summary per participant
-    censor_sum_Pardat = pd.DataFrame(np.zeros((0, 5)))
-    censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor']
+    censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
+    censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
     # create overall regressor dataframe participant
-    #regress_lev1=['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
     regress_lev1=['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'csf', 'white_matter', 'global_signal', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
     regress_Pardat = pd.DataFrame(np.zeros((0, len(regress_lev1))))
     regress_Pardat.columns = regress_lev1
@@ -244,9 +284,44 @@ for sub in subs:
             confound_dat['non_steady_state_outlier00'] = confound_dat_all['non_steady_state_outlier00']
         else: 
             confound_dat['non_steady_state_outlier00'] = 0
+        
+        ### Identify TRs in food blocks ###
+        # get onset files
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+
+        # make empty list for block onsets
+        block_onsets = []
+
+        # loop through onset files to get a list of block onset times in a run
+        for onsetfile in orig_onsetfiles:
+            # get file name
+            filename = onsetfile.stem
+            # get condition 
+            cond = re.split('_|-',filename)[2]
+
+            # if condition contains High or Low string 
+            #if ('High' in cond) or ('Low' in cond):
+
+            #load file
+            onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
+
+            # append block onset time for the given run (indexed by row) to block_onsets -- onset times are in seconds
+            block_onsets.append(onsetfile_dat.iloc[runnum-1, 0])
+
+        # convert block onset times from seconds to TRs
+        TR = 2
+        block_onsets_TR = [x / TR for x in block_onsets]
+        block_onsets_TR = ([int(onset) for onset in block_onsets_TR]) # convert floats to integers
+
+        # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
+        r_int_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
+
+        for onset in block_onsets_TR:
+            offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
+            r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
         # run function to get censor information
-        res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold)
+        res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold, r_int_info = r_int_list)
 
         #export run-specific censor file
         censordata = res[0]
@@ -265,9 +340,10 @@ for sub in subs:
         regress_Pardat.loc[0, deriv_vars] = regress_Pardat.loc[0, deriv_vars].fillna(value=0)
 
         # add run summary information to participant summary dataframe 
-        # res[1] = number of TRs; res[2] = number of TRs censored, res[3] = % of TRs censored
+        # res[1] = number of TRs total; res[2] = number of TRs censored total, res[3] = % of TRs censored total
+        # res[4] = number of TRs of interest; res[5] = number of TRs of interest censored , res[6] = % of TRs of interest censored
         df_len = len(censor_sum_Pardat)
-        runsum = [sub, runnum, res[1], res[2], res[3]]
+        runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6]]
         censor_sum_Pardat.loc[df_len] = runsum
 
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
@@ -291,49 +367,93 @@ for sub in subs:
     # Add participant summary dataframe to overall summary database
     censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
 
-    #### Make new onset timing files that exclude runs with > threshold TRs censored ####
-    # set threshold for censoring runs
-    p_thresh = args.pthresh
+    #### Make new onset timing files ####
 
-    # get original onset files
-    orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
-    for onsetfile in orig_onsetfiles:
+    # if thresholds are specified
+    if (args.pthresh_r is not None) or (args.pthresh_b is not None):
+        # set thresholds for censoring runs
+        if args.pthresh_r is not None:
+            p_thresh_run = args.pthresh_r
 
-        #get filename
-        filename = str(onsetfile).rsplit('/',1)[-1]
-
-        #load file
-        onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
-
-        # change onset times to '*' for runs with >p_thresh TRs censored
-        for i in range(len(onsetfile_dat)):
-
-            # if % of TRs censored in run (row i) is > threshold
-            if censor_sum_Pardat['p_censor'].iloc[i] > p_thresh:
-
-                # replace column zero, row i with *
-                pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-        # for subject 49, exclude run 1 due to triggering issues between scanner and eprime experiment 
-        if sub == '049':
-            onsetfile_dat[0].iloc[0] = '*'
-
-        ## output new onsetfile ##
-        # set path to onset directory
-        if std_dvars_threshold == 'none':
-            new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_p' + str(p_thresh))
-        else:
-            new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_p' + str(p_thresh))
-
-        # Check whether the onset directory exists or not
-        isExist = os.path.exists(new_onset_path)
-        if not isExist:
-            # make new path
-            os.makedirs(new_onset_path)
+        if args.pthresh_b is not None:
+            p_thresh_block = args.pthresh_b
         
-        # write file
-        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+        # get original onset files
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+        for onsetfile in orig_onsetfiles:
+
+            #get filename
+            filename = str(onsetfile).rsplit('/',1)[-1]
+
+            #load file
+            onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
+
+            # change onset times to '*' for runs with >p_thresh TRs censored
+            for i in range(len(onsetfile_dat)):
+
+                # if censoring based on blocks of interest
+                if (args.pthresh_b is not None) and (args.pthresh_r is None):
+                    # if % of TRs censored across all blocks of interest in a run (row i) is > threshold
+                    if censor_sum_Pardat['p_censor_interest'].iloc[i] > p_thresh_block:
+
+                        # replace column zero, row i with *
+                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+                # if censoring based on total run only
+                if (args.pthresh_b is None) and (args.pthresh_r is not None):
+
+                    # if % of TRs censored in run (row i) is > threshold
+                    if censor_sum_Pardat['p_censor'].iloc[i] > p_thresh_run:
+
+                        # replace column zero, row i with *
+                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+                # if censoring based on total run and blocks of interest
+                if (args.pthresh_b is not None) and (args.pthresh_r is not None):
+
+                    # if % of TRs censored in across blocks of interest or in a run (row i) is > threshold
+                    if censor_sum_Pardat['p_censor'].iloc[i] > p_thresh_run or censor_sum_Pardat['p_censor_interest'].iloc[i] > p_thresh_block:
+
+                        # replace column zero, row i with *
+                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+            # for subject 49, exclude run 1 due to triggering issues between scanner and eprime experiment 
+            if sub == '049':
+                onsetfile_dat[0].iloc[0] = '*'
+
+            ## output new onsetfile ##
+            # set path to onset directory
+
+            # if thresholding based on blocks only
+            if (args.pthresh_b is not None) and (args.pthresh_r is None):
+                if std_dvars_threshold == 'none':
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_b' + str(p_thresh_block))
+                else:
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_b' + str(p_thresh_block))
+            # if thresholding based on runs only
+            elif (args.pthresh_r is not None) and (args.pthresh_b is None):
+                if std_dvars_threshold == 'none':
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run))
+                else:
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run))
+            # if thresholding based on block and run
+            elif (args.pthresh_r is not None) and (args.pthresh_b is not None):
+                if std_dvars_threshold == 'none':
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
+                else:
+                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
+
+            # Check whether the onset directory exists or not
+            isExist = os.path.exists(new_onset_path)
+            if not isExist:
+                # make new path
+                os.makedirs(new_onset_path)
+            
+            # write file
+            onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
 
 #write summary database
 #print(censor_summary_allPar)
