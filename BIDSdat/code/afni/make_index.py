@@ -158,7 +158,8 @@ print("N high risk with at least 2 good runs:", len(highrisk_2runs))
 print("N low risk with at least 2 good runs:", len(lowrisk_2runs))
 
 # Generate index files for each list
-for name in (['all_3runs', 'highrisk_3runs', 'lowrisk_3runs' 'all_2runs', 'highrisk_2runs', 'lowrisk_2runs']):
+for name in (['all_3runs', 'highrisk_3runs', 'lowrisk_3runs', 'all_2runs', 'highrisk_2runs', 'lowrisk_2runs']):
+    print(name)
     # get group name
     #group = name.split('_', 1)[0]
     group = name
@@ -166,7 +167,7 @@ for name in (['all_3runs', 'highrisk_3runs', 'lowrisk_3runs' 'all_2runs', 'highr
     list = globals()[name]
     # define output path
     censor_string = censorsummary_file.rsplit('summary_',1)[1][0:-4]
-    file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/index-' + group + '_' + str(censor_string) + "_" + str(exclude_string) + '.txt')
+    file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + group + '_' + str(censor_string) + "_" + str(exclude_string) + '.txt')
     # write to file
     with open(file, 'w') as indexFile:
         joined_list = "  ".join(list)

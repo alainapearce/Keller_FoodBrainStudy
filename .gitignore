@@ -1,6 +1,7 @@
 /Actigraph
 /BIDSdat/sourcedata
 /BIDSdat/raw_data
+/BIDSdat/derivatives/preprocessed/beh
 /DXA
 /Intake_Sheets
 /Interoception
