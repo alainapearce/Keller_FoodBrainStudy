@@ -7,8 +7,8 @@
 # $1: ped or MNI
 # $2: 1 or 2
 # $3 run or no
-# $4 fd-1.0_stddvar-1.8 (or other criteria used in future)
-# $5 20 (or other criteria used in future)
+# $4 fd-1.0_stddvar-1.8 fd-1.0 (or other criteria used in future)
+# $5 b20 (or other criteria used in future)
 
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
@@ -61,7 +61,7 @@ else
 endif
 
 # set same of level1 results folder
-set results_folder = ${tempst}_${TRcen}_p${runcen}
+set results_folder = ${tempst}_${TRcen}_${runcen}
 
 #check to see if have 'Old' directory, 
 #if do, check for and clean up old directories,
@@ -94,7 +94,7 @@ else
 endif
 
 #set map folder
-set map_folder = $group_dir/${tempst}_${TRcen}_p${runcen}_${today}
+set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
 
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
@@ -113,34 +113,40 @@ endif
 
 ############# High Risk v Low Risk  ##############
 
-set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+#set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+set models = ( HighLarge HighSmall LowLarge LowSmall Large-Small_allED_GLT High-Low_allPS_GLT )
+set runnum = ( 2 3 )
 
 foreach m ( $models )
-    set output_name = "$m"
-    set fileG = "HR_v_LR"
+	set output_name = "$m"
+
+	foreach runthresh ($runnum)
+
+    		set fileG = "HR_v_LR_${runthresh}run"
     
-    set HRindex = `cat $index_dir/highrisk_subjects.txt`
-    set LRindex = `cat $index_dir/lowrisk_subjects.txt`
-    #toz-when using zskip need to convert t to z because voxel
-    #may have different number of samples
-    gen_group_command.py -command 3dttest++                                        \
-	    -write_script $map_folder/${fileG}_2sampleT++_${output_name}           \
-	    -prefix  ${fileG}_2sampleT++_${output_name}                            \
-            -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
-	    -dset_sid_list $HRindex                                                \
-            -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
-	    -dset_sid_list $LRindex						   \
-	    -set_labels highrisk lowrisk					   \
-	    -subs_betas "${m}"'#'0_Coef					   \
-	    -options								   \
-		    -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
+		set HRindex = `cat $index_dir/index-highrisk_${runthresh}runs_${TRcen}_${runcen}.txt`
+		set LRindex = `cat $index_dir/index-lowrisk_${runthresh}runs_${TRcen}_${runcen}.txt`
+		#toz-when using zskip need to convert t to z because voxel
+    		#may have different number of samples
+    		gen_group_command.py -command 3dttest++                                        \
+	    		-write_script $map_folder/${fileG}_2sampleT++_${output_name}           \
+	    		-prefix  ${fileG}_2sampleT++_${output_name}                            \
+            		-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
+	   	 	-dset_sid_list $HRindex                                                \
+            		-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
+	    		-dset_sid_list $LRindex						   \
+	    		-set_labels highrisk lowrisk					   \
+	    		-subs_betas "${m}"'#'0_Coef					   \
+	    		-options								   \
+		    		-mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
     
-    chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
+   		 chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
     
-    if ( "$3" == "run" ) then
-	cd $map_folder
-	tcsh ${fileG}_2sampleT++_${output_name}
-    endif
+    		if ( "$3" == "run" ) then
+			cd $map_folder
+			tcsh ${fileG}_2sampleT++_${output_name}
+    		endif
+	end
 end
 
 # Copy base template into results folder 
@@ -149,8 +155,7 @@ if ( ! -f $basedset ) then
     exit 1
 else
     if ( ! -f $map_folder/$basedset_name ) then
-        cp ${basedset}.BRIK.gz $map_folder
-        cp ${basedset}.HEAD $map_folder
+        cp ${basedset} $map_folder
     endif
 endif
 

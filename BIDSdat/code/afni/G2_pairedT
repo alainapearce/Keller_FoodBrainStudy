@@ -7,8 +7,8 @@
 # $1: ped or MNI
 # $2: 1 or 2
 # $3 run or no
-# $4 fd-1.0_stddvar-1.8 (or other criteria used in future)
-# $5 20 (or other criteria used in future)
+# $4 e.g., fd-1.0_stddvar-1.8 fd-1.0 (or other criteria used in future)
+# $5 e.g. b20 (or other criteria used in future)
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
 setenv AFNI_DONT_LOGFILE YES
@@ -62,7 +62,7 @@ endif
 
 
 # set results folder
-set results_folder = ${tempst}_${TRcen}_p${runcen}
+set results_folder = ${tempst}_${TRcen}_${runcen}
 
 
 #check to see if have 'Old' directory, 
@@ -96,7 +96,7 @@ else
 endif
 
 #set map folder
-set map_folder = $group_dir/${tempst}_${TRcen}_p${runcen}_${today}
+set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
 
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
@@ -125,37 +125,35 @@ endif
 ###################### generate scripts  ########################
 #loop though all conditions/contrasts of interest
 #set groups = ( WholeGroup HighRisk LowRisk )
-set groups = ( WholeGroup )
 
+set groups = ( WholeGroup_2runs WholeGroup_3runs )
 
 foreach g ( $groups )
 
-    ###################### High_v_Low_PScon ######################
-    set output_name = "High_v_Low_PScon"
-        
-    if ( "$g" == "WholeGroup" ) then
-	set fileG = "WG"
-	#toz-when using zskip need to convert t to z because voxel 
-	#may have different number of samples
-	gen_group_command.py -command 3dttest++							\
-	    		 -write_script $map_folder/${fileG}_2sampleT++_${output_name}	\
-			 -prefix  ${fileG}_2sampleT++_${output_name}			\
-			 -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD			\
-			 -set_labels HighLarge-Small LowLarge-Small				\
-			 -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef	\
-			 -options								\
-	    		    -paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-    
-	chmod 775 $map_folder/${fileG}_2sampleT++_${output_name} 
-    else
-	if ( "$g" == "HighRisk" ) then
-	    set index = `cat $index_dir/highrisk_subjects.txt`
-	    set fileG = "HR"
-	else 
-	    set index = `cat $index_dir/lowrisk_subjects.txt`
-	    set fileG = "LR"
+        # set index list
+	if ( "$g" == "WholeGroup" ) then
+		set fileG = "WG"
+		set index = `cat $index_dir/all_subjects.txt`
+	else if ( "$g" == "WholeGroup_2runs" ) then
+		set fileG = "WG-2runs"
+		set index = `cat $index_dir/index-all_2runs_${TRcen}_${runcen}.txt`
+	else if ( "$g" == "WholeGroup_3runs" ) then
+                set fileG = "WG-3runs"
+                set index = `cat $index_dir/index-all_3runs_${TRcen}_${runcen}.txt`
+        else if ( "$g" == "HighRisk" ) then
+                set index = `cat $index_dir/highrisk_subjects.txt`
+                set fileG = "HR"
+        else if ( "$g" == "LowRisk" ) then
+                set index = `cat $index_dir/lowrisk_subjects.txt`
+                set fileG = "LR"
+
 	endif
 
+	echo $index    	
+
+	###################### High_v_Low PS contrast ######################
+	set output_name = "High_v_Low_PScon"
+        
 	#toz-when using zskip need to convert t to z because voxel
 	#may have different number of samples
 	gen_group_command.py -command 3dttest++                                            \
@@ -169,45 +167,20 @@ foreach g ( $groups )
 			-paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
 
 	chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
-	
-    endif
 
-    if ( "$3" == "run" ) then
-	cd $map_folder
-	tcsh ${fileG}_2sampleT++_${output_name}
-    endif
+	if ( "$3" == "run" ) then
+		cd $map_folder
+		tcsh ${fileG}_2sampleT++_${output_name}
+    	endif
 
-    ###################### Large_v_Small_EDcon ######################
-    set output_name = "Large_v_Small_EDcon"
-
-    if ( "$g" == "WholeGroup" ) then
-        set fileG = "WG"
-        #toz-when using zskip need to convert t to z because voxel 
-        #may have different number of samples
-        gen_group_command.py -command 3dttest++                                                 \
-                         -write_script $map_folder/${fileG}_2sampleT++_${output_name}          \
-                         -prefix  ${fileG}_1sampleT++_${output_name}                           \
-                         -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
-                         -set_labels LargeHigh-Low SmallHigh-Low                             \
-                         -subs_betas LargeHigh-Low_GLT'#'0_Coef SmallHigh-Low_GLT'#'0_Coef   \
-                         -options                                                               \
-                            -paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-
-        chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
-    else
-        if ( "$g" == "HighRisk" ) then
-            set index = `cat $index_dir/highrisk_subjects.txt`
-            set fileG = "HR"
-        else
-            set index = `cat $index_dir/lowrisk_subjects.txt`
-            set fileG = "LR"
-        endif
+    ###################### Large_v_Small ED contrast ######################
+	set output_name = "Large_v_Small_EDcon"
 
         #toz-when using zskip need to convert t to z because voxel
         #may have different number of samples
         gen_group_command.py -command 3dttest++                                            \
-                    -write_script $map_folder/${fileG}_2sampleT++_${output_name}_${motst}            \
-                    -prefix  ${fileG}_2sampleT++_${output_name}_${motst}                               \
+                    -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
+                    -prefix  ${fileG}_2sampleT++_${output_name}                       \
                     -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
                     -dset_sid_list $index                                               \
                     -set_labels LargeHigh-Low SmallHigh-Low                             \
@@ -217,50 +190,12 @@ foreach g ( $groups )
 
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
-    endif
-
-    if ( "$3" == "run" ) then
-        cd $map_folder
-        tcsh ${fileG}_2sampleT++_${output_name}
-    endif
+	if ( "$3" == "run" ) then
+        	cd $map_folder
+        	tcsh ${fileG}_2sampleT++_${output_name}
+    	endif
 
 end
-
-###################### High Risk v Low Risk  ######################
-
-#set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small LowLarge-Small LargeHigh-Low SmallHigh-Low Large-Small_allED High-Low_allPS )
-#
-#foreach m ( $models )
-#    set output_name = "$m"
-#    set fileG = "HR_v_LR"
-#    
-#    set HRindex = `cat $index_dir/HRindex_$motst.txt`
-#    set LRindex = `cat $index_dir/LRindex_$motst.txt`
-#    #toz-when using zskip need to convert t to z because voxel
-#    #may have different number of samples
-#    gen_group_command.py -command 3dttest++                                        \
-#	    -write_script $map_folder/${fileG}_2sampleT++_${output_name}_${motst}            \
-#	    -prefix  ${fileG}_2sampleT++_${output_name}_${motst}                               \
-#	    -dsets $ind_dir/R01_*/$results_folder/stats*REML+tlrc.HEAD                     \
-#	    -dset_index0_list $HRindex                                             \
-#	    -dsets $ind_dir/R01_*/$results_folder/stats*REML+tlrc.HEAD                     \
-#	    -dset_index0_list $LRindex						   \
-#	    -set_labels ${m}							   \
-#	    -subs_betas "${m}"'#'0_Coef					   \
-#	    -options								   \
-#		    -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
-#    
-#    chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}_${motst} 
-#    
-#    if ( "$3" == "run" ) then
-#	cd $map_folder
-#	tcsh ${fileG}_2sampleT++_${output_name}_${motst} 
-#    endif
-#end
-
-
-
-exit
 
 # Copy base template into results folder 
 
@@ -269,8 +204,7 @@ if ( ! -f $basedset ) then
     exit 1
 else
     if ( ! -f $map_folder/$basedset_name ) then
-        cp ${basedset}.BRIK.gz $map_folder
-        cp ${basedset}.HEAD $map_folder
+        cp ${basedset} $map_folder
     endif
 endif
 

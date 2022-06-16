@@ -7,8 +7,8 @@
 # $1: ped or MNI
 # $2: 1 or 2
 # $3 run or no
-# $4 fd-1.0_stddvar-1.8 (or other criteria used in future)
-# $5 20 (or other criteria used in future)
+# $4 e.g., fd-1.0_stddvar-1.8 fd-1.0 (or other criteria used in future)
+# $5 e.g., b20 (or other criteria used in future)
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
 setenv AFNI_DONT_LOGFILE YES
@@ -62,7 +62,7 @@ endif
 
 
 # set results folder
-set results_folder = ${tempst}_${TRcen}_p${runcen}
+set results_folder = ${tempst}_${TRcen}_${runcen}
 
 
 #check to see if have 'Old' directory, 
@@ -96,7 +96,7 @@ else
 endif
 
 #set map folder
-set map_folder = $group_dir/${tempst}_${TRcen}_p${runcen}_${today}
+set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
 
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
@@ -126,75 +126,61 @@ endif
 ###################### generate scripts  ########################
 
 #loop though all conditions/contrasts of interest
-set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+#set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+
+set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT HighLarge-Small_GLT LowLarge-Small_GLT )
+#set groups = ( WholeGroup HighRisk LowRisk )
+set groups = ( WholeGroup_2runs WholeGroup_3runs )
 
 foreach m ( $maps )
-    set output_name = $m
+	set output_name = $m
+	
+	foreach g ( $groups )
 
-    ###################### WholeGroup  ########################
+		# set index list
+	        if ( "$g" == "WholeGroup" ) then
+                	set fileG = "WG"
+                	set index = `cat $index_dir/all_subjects.txt`
+        	else if ( "$g" == "WholeGroup_2runs" ) then
+               		set fileG = "WG-2runs"
+                	set index = `cat $index_dir/index-all_2runs_${TRcen}_${runcen}.txt`
+        	else if ( "$g" == "WholeGroup_3runs" ) then
+                	set fileG = "WG-3runs"
+                	set index = `cat $index_dir/index-all_3runs_${TRcen}_${runcen}.txt`
+        	else if ( "$g" == "HighRisk" ) then
+                	set index = `cat $index_dir/highrisk_subjects.txt`
+                	set fileG = "HR"
+        	else if ( "$g" == "LowRisk" ) then
+                	set index = `cat $index_dir/lowrisk_subjects.txt`
+                	set fileG = "LR"
+		endif
+		
+		# generate t-test script
 
-    #zskip-skip voxels if more than 20% of dsets have zero value
-    #toz-when using zskip need to convert t to z because voxel 
-    #may have different number of samples
-    gen_group_command.py -command 3dttest++                                             \
-                         -write_script $map_folder/WG_1sampleT++_${output_name}       \
-                         -prefix  WG_1sampleT++_${output_name}                                 \
-                         -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD             \
-                         -set_labels $m                                                 \
-                         -subs_betas "${m}"'#'0_Coef                                    \
-                         -options                                                       \
-                            -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+    		#zskip-skip voxels if more than 20% of dsets have zero value
+    		#toz-when using zskip need to convert t to z because voxel 
+    		#may have different number of samples
+		# add -Clustsim option to run 3dClustSim
+    		gen_group_command.py -command 3dttest++                                             \
+                	        -write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
+                	        -prefix  ${fileG}_1sampleT++_${output_name}                          \
+                        	-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD            \
+                         	-dset_sid_list $index 					\
+			 	-set_labels $m                                                 \
+                         	-subs_betas "${m}"'#'0_Coef                                    \
+                         	-options                                                       \
+                            		-mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
 
-    chmod 775 $map_folder/WG_1sampleT++_${output_name}
+		
+		# set script permissions
+    		chmod 775 $map_folder/${fileG}_1sampleT++_${output_name}
 
-    ###################### HighRiskGroup  ########################
-
-    #get index list
-    set HRindex = `cat $index_dir/highrisk_subjects.txt`
-
-    #zskip-skip voxels if more than 20% of dsets have zero value
-    #toz-when using zskip need to convert t to z because voxel 
-    #may have different number of samples
-    #dset_index0_list: will need to update each time run script or not valid
-    gen_group_command.py -command 3dttest++                                         \
-                     -write_script $map_folder/HR_1sampleT++_${output_name}     \
-                     -prefix  HR_1sampleT++_${output_name}                             \
-                     -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD              \
-                     -dset_sid_list $HRindex                                     \
-                     -set_labels $m                                                 \
-                     -subs_betas "${m}"'#'0_Coef                                    \
-                     -options                                                       \
-                        -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-
-    chmod 775 $map_folder/HR_1sampleT++_${output_name}
-
-    ###################### LowRiskGroup  ########################
-
-    #get index list
-    set LRindex = `cat $index_dir/highrisk_subjects.txt`
-
-    #zskip-skip voxels if more than 20% of dsets have zero value
-    #toz-when using zskip need to convert t to z because voxel 
-    #may have different number of samples
-    gen_group_command.py -command 3dttest++                                         \
-                     -write_script $map_folder/LR_1sampleT++_${output_name}     \
-                     -prefix LR_1sampleT++_${output_name}                            \
-                     -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD              \
-                     -dset_sid_list $LRindex                                     \
-                     -set_labels $m                                                 \
-                     -subs_betas "${m}"'#'0_Coef                                    \
-                     -options                                                       \
-                        -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-
-    chmod 775 $map_folder/LR_1sampleT++_${output_name}
-
-    ###################### Execute?  ########################
-    if ( "$3" == "run" ) then
-        cd $map_folder
-        tcsh WG_1sampleT++_${output_name}
-        #tcsh HR_1sampleT++_${output_name}
-        #tcsh LR_1sampleT++_${output_name}
-    endif
+    		# Execute?
+		if ( "$3" == "run" ) then
+        		cd $map_folder
+        		tcsh ${fileG}_1sampleT++_${output_name}
+    		endif
+	end
 end
 
 
@@ -205,8 +191,7 @@ if ( ! -f $basedset ) then
     exit 1
 else
     if ( ! -f $map_folder/$basedset_name ) then
-        cp ${basedset}.BRIK.gz $map_folder
-        cp ${basedset}.HEAD $map_folder
+        cp ${basedset} $map_folder
     endif
 endif
 
