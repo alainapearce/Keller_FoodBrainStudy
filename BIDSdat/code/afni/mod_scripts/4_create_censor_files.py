@@ -61,7 +61,7 @@ import re
 #input arguments setup
 parser=argparse.ArgumentParser()
 parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs="+")
-parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is .5', default=1.0, type=float)
+parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is 1.0', default=1.0, type=float)
 parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float)
 parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
 parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
@@ -242,6 +242,10 @@ else:
     censor_summary_allPar = pd.DataFrame(np.zeros((0, 8)))
     censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
+# create block censor summary dataframe
+blockcensor_sum = pd.DataFrame(np.zeros((0, 8)))
+blockcensor_sum.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
+
 ## Loop through subject_list and create onset files ##
 subs = list(subject_list)
 for sub in subs:
@@ -252,7 +256,7 @@ for sub in subs:
     # get number of runs -- Note: each confound file corresponds to 1 foodcue run
     nruns = len(confoundfiles)
 
-    # create censor data summary per participant
+    # create run censor data summary per participant
     censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
     censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
@@ -266,7 +270,7 @@ for sub in subs:
 
     # extract censor information for each run (each confoundfile)
     confoundfiles.sort()
-    for file in confoundfiles:
+    for file in confoundfiles: #loop through runs (each run has its own confoundfile)
 
         #load data
         confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
@@ -286,13 +290,16 @@ for sub in subs:
             confound_dat['non_steady_state_outlier00'] = 0
         
         ### Identify TRs in food blocks ###
-        # get onset files
+        # get onset files (note: there is 1 onset file per condition)
         orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
         # make empty list for block onsets
-        block_onsets = []
+        block_onsets_TR = []
 
-        # loop through onset files to get a list of block onset times in a run
+        # make dictionary for block onsets
+        block_onsets_TR_dict = {}
+
+        # loop through onset files to get block onset times
         for onsetfile in orig_onsetfiles:
             # get file name
             filename = onsetfile.stem
@@ -305,41 +312,74 @@ for sub in subs:
             #load file
             onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
 
-            # append block onset time for the given run (indexed by row) to block_onsets -- onset times are in seconds
-            block_onsets.append(onsetfile_dat.iloc[runnum-1, 0])
+            # get block onset time for the given run (indexed by row) -- onset times are in seconds
+            onset_time = (onsetfile_dat.iloc[runnum-1, 0])
 
-        # convert block onset times from seconds to TRs
-        TR = 2
-        block_onsets_TR = [x / TR for x in block_onsets]
-        block_onsets_TR = ([int(onset) for onset in block_onsets_TR]) # convert floats to integers
+            # convert onset time to TR
+            TR = 2
+            onset_TR = int(onset_time / TR)
+
+            # append block onset TR to list
+            block_onsets_TR.append(onset_TR)
+
+            # add condition and onset to dictionary
+            block_onsets_TR_dict[cond] = onset_TR
 
         # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
         r_int_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
-
-        for onset in block_onsets_TR:
+        for onset in block_onsets_TR: #loop through onsets
             offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
             r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
-        # run function to get censor information
+        # run function to get censor information by run
         res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold, r_int_info = r_int_list)
 
         #export run-specific censor file
-        censordata = res[0]
-        censor_data_df = pd.DataFrame(censordata)
-        #censor_data_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-r' + str(runnum) + '_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        run_censordata = res[0]
+        run_censor_data_df = pd.DataFrame(run_censordata)
+        #run_censor_data_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-r' + str(runnum) + '_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
-        # add censor data to overall censor file
-        censordata_allruns.extend(censordata)
+        # add run-specific censor data to overall censor file
+        censordata_allruns.extend(run_censordata)
         
-        # add regressor data to overall regressor file
+        # add run-specific regressor data to overall regressor file
         regress_run = confound_dat[regress_lev1].copy()
         regress_Pardat = regress_Pardat.append(regress_run)
+
+        ##########################
+        # get motion BY CONDITION
+        ##########################
+
+        # make dictionary for TR count
+        block_TRcount_dict = {}
+
+        for condition in block_onsets_TR_dict: #loop through condition keys
+
+            # get condition onset and offset
+            onset = block_onsets_TR_dict[condition]
+            offset = onset + 9
+
+            # extract censor info for TRs associated with the condition
+            cond_censor = run_censordata[onset:offset]
+
+            # count the number of uncensored TRs in the condition
+            cond_uncensor_count = sum(cond_censor)
+
+            # add to dictionary
+            block_TRcount_dict[condition] = cond_uncensor_count
+
+            # make dataframe
+            df = pd.DataFrame([block_TRcount_dict], columns=block_TRcount_dict.keys())
+
+        # Add motion by contion to summary dataframe - this will append 1 row per run, with 1 column per conditon
+        to_append = pd.DataFrame([[sub, runnum, block_TRcount_dict['HighLarge'], block_TRcount_dict['HighSmall'], block_TRcount_dict['LowLarge'], block_TRcount_dict['LowSmall'], block_TRcount_dict['OfficeLarge'], block_TRcount_dict['OfficeSmall']]], columns=['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall'])
+        blockcensor_sum = blockcensor_sum.append(to_append)
 
         # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
         deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
         regress_Pardat.loc[0, deriv_vars] = regress_Pardat.loc[0, deriv_vars].fillna(value=0)
 
-        # add run summary information to participant summary dataframe 
+        # add run-specific summary information to participant summary dataframe 
         # res[1] = number of TRs total; res[2] = number of TRs censored total, res[3] = % of TRs censored total
         # res[4] = number of TRs of interest; res[5] = number of TRs of interest censored , res[6] = % of TRs of interest censored
         df_len = len(censor_sum_Pardat)
@@ -367,7 +407,10 @@ for sub in subs:
     # Add participant summary dataframe to overall summary database
     censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
 
+
+    #####################################
     #### Make new onset timing files ####
+    #####################################
 
     # if thresholds are specified
     if (args.pthresh_r is not None) or (args.pthresh_b is not None):
@@ -457,7 +500,10 @@ for sub in subs:
 
 #write summary database
 #print(censor_summary_allPar)
+
 if std_dvars_threshold == 'none':
     censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 else:
     censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
