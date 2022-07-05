@@ -92,9 +92,6 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
         p_censored_int (integer) - percentage of TRs/volumes of interest to be censored
     """
 
-    # get number of volumes in Confound Data
-    nvol = len(Confound_Data)
-
     Confound_Data = Confound_Data.reset_index()  # make sure indexes pair with number of rows
 
     # censor TR if: 
@@ -125,6 +122,14 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
             censor_info.append(1)
 
     censor_info_df = pd.DataFrame(censor_info)
+
+    ## Get censor information for all TRs (excluding dummy scans!) ###
+
+    # remove first 2 rows (dummy volumes) from censor_info_df
+    censor_info_df = censor_info_df.iloc[2: , :]
+
+    # count number of volumes (excluding dummy scans)
+    nvol = len(censor_info_df)
 
     # count number of censored TRs
     n_censored = (censor_info_df[0] == 0).sum()
