@@ -56,14 +56,14 @@ bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/fo
 bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
 #find all censor summary files
-censorsum_files = list(Path(bids_fmriprep_path).rglob('task-foodcue*censorsummary*'))
+censorsum_files = list(Path(bids_fmriprep_path).rglob('task-foodcue_censorsummary*'))
 
 #make motion count summary table
 mot_sum = pd.DataFrame(np.zeros((len(censorsum_files), 7)))
 mot_sum.columns = ['censorsum','n_total', 'n_r20thresh', 'n_b20thresh', 'n_b25thresh', 'n_r10b20thresh', 'n_r20b20thresh']
 
 # set minimum number of acceptable runs for inclusion in analyses
-nrun_min = 3
+nrun_min = 2
 
 for i in range(len(censorsum_files)):
 
