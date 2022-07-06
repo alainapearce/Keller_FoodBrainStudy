@@ -61,6 +61,9 @@ censorsum_files = list(Path(bids_fmriprep_path).rglob('task-foodcue_bycond-censo
 #make empty block count summary dataframe -- this table will have 1 row per person, 1 column per condition
 nblock_sum = pd.DataFrame(columns=['sub','HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall'])
 
+#make empty subject count summary dataframe -- this table will have 1 row per censor threshold
+nsub_sum = pd.DataFrame(columns=['censorsum','HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall', 'all4food', 'bothHighED', 'bothLowED', 'bothLarge', 'bothSmall' ])
+
 # specify list of conditions
 conditions = ['HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall']
 
@@ -73,6 +76,7 @@ min_blockTR = 7
 
 for i in range(len(censorsum_files)):
 
+    # get file name
     file = censorsum_files[i]
 
     # load file
@@ -111,12 +115,15 @@ for i in range(len(censorsum_files)):
             #add summary to table
             nblock_sum.at[s, condition] = block_count
 
-############################################################
-#### Get number of subjects with N blocks per condition ####
-############################################################
+    ############################################################
+    #### Get number of subjects with N blocks per condition ####
+    ############################################################
 
-# loop through conditions
-for condition in conditions:
+    #add file name to table in row i
+    nsub_sum.at[i, 'censorsum'] = filename
+
+    # loop through conditions
+    for condition in conditions:
 
         # select column for condition
         column = nblock_sum[condition]
@@ -124,31 +131,28 @@ for condition in conditions:
         # count number of subjects with 3 or more blocks
         sub_count = column[column >= 3].count()
 
-        print(condition)
-        print(sub_count)
+        #add summary to table
+        nsub_sum.at[i, condition] = sub_count
+
+        # print condition and count to terminal
+        #print(condition, ": ", sub_count)
 
 
-# set minimum number of blocks per condition
-min_block = 3
+    # set minimum number of blocks per condition
+    min_block = 3
 
-all4foods = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block) & (nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
-bothHigh = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block)]
-bothLow = nblock_sum[(nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
-bothLarge = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['LowLarge'] >= min_block)]
-bothSmall = nblock_sum[(nblock_sum['HighSmall'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
+    # Compute number of participants with enough good blocks for combinations of conditions
+    all4foods = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block) & (nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
+    bothHigh = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block)]
+    bothLow = nblock_sum[(nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
+    bothLarge = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['LowLarge'] >= min_block)]
+    bothSmall = nblock_sum[(nblock_sum['HighSmall'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
 
+    #add summary to table
+    nsub_sum.at[i, 'all4food'] = len(all4foods)
+    nsub_sum.at[i, 'bothHighED'] = len(bothHigh)
+    nsub_sum.at[i, 'bothLowED'] = len(bothLow)
+    nsub_sum.at[i, 'bothLarge'] = len(bothLarge)
+    nsub_sum.at[i, 'bothSmall'] = len(bothSmall)
 
-print("all 4 food conditions")
-print(len(all4foods))
-
-print("both HighED food conditions")
-print(len(bothHigh))
-
-print("both LowED food conditions")
-print(len(bothLow))
-
-print("both Large Portion food conditions")
-print(len(bothLarge))
-
-print("both Small Portion food conditions")
-print(len(bothSmall))
+print(nsub_sum)
