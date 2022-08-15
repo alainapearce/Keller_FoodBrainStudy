@@ -95,6 +95,9 @@ else:
 
 ###### get list of subjects with N acceptable runs ######
 
+# subset data to remove sub 999 
+censor_summary_allPar = censor_summary_allPar[censor_summary_allPar["sub"] != 999]
+
 # subset data to remove runs with less than RuncensorCriteria acceptable TRs
 
 # if censoring based on blocks of interest
