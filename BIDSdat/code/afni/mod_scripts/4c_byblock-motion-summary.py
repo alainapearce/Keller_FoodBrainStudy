@@ -62,7 +62,7 @@ censorsum_files = list(Path(bids_fmriprep_path).rglob('task-foodcue_bycond-censo
 nblock_sum = pd.DataFrame(columns=['sub','HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall'])
 
 #make empty subject count summary dataframe -- this table will have 1 row per censor threshold
-nsub_sum = pd.DataFrame(columns=['censorsum','HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall', 'all4food', 'bothHighED', 'bothLowED', 'bothLarge', 'bothSmall' ])
+nsub_sum = pd.DataFrame(columns=['censorsum','HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall', 'all4food', 'atleast1food', 'bothHighED', 'bothLowED', 'bothLarge', 'bothSmall' ])
 
 # specify list of conditions
 conditions = ['HighLarge','HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall']
@@ -143,6 +143,7 @@ for i in range(len(censorsum_files)):
 
     # Compute number of participants with enough good blocks for combinations of conditions
     all4foods = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block) & (nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
+    atleast1food = nblock_sum[(nblock_sum['HighLarge'] >= min_block) | (nblock_sum['HighSmall'] >= min_block) | (nblock_sum['LowLarge'] >= min_block) | (nblock_sum['LowSmall'] >= min_block)]
     bothHigh = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['HighSmall'] >= min_block)]
     bothLow = nblock_sum[(nblock_sum['LowLarge'] >= min_block) & (nblock_sum['LowSmall'] >= min_block)]
     bothLarge = nblock_sum[(nblock_sum['HighLarge'] >= min_block) & (nblock_sum['LowLarge'] >= min_block)]
@@ -150,6 +151,7 @@ for i in range(len(censorsum_files)):
 
     #add summary to table
     nsub_sum.at[i, 'all4food'] = len(all4foods)
+    nsub_sum.at[i, 'atleast1food'] = len(atleast1food)
     nsub_sum.at[i, 'bothHighED'] = len(bothHigh)
     nsub_sum.at[i, 'bothLowED'] = len(bothLow)
     nsub_sum.at[i, 'bothLarge'] = len(bothLarge)
