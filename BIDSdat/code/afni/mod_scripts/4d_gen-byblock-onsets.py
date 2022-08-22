@@ -128,7 +128,7 @@ for sub in subs:
         ## output new onsetfile ##
 
         # set path to new onset directory
-        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_by-block')
+        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_by-block_' + str(min_blockTR))
 
         # Check whether the onset directory exists or not
         isExist = os.path.exists(new_onset_path)
