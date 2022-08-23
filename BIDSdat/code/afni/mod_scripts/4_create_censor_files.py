@@ -46,6 +46,8 @@ from scipy.stats.morestats import shapiro
 from pathlib import Path
 import re
 
+from sqlalchemy import false
+
 ##############################################################################
 ####                                                                      ####
 ####                        Set up script function                        ####
@@ -65,6 +67,7 @@ parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censor
 parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float)
 parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
 parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
+parser.add_argument('--cen_prev_tr', '-cpt', help='if argument is present, censor TRs based on FD in the subsequent TR', action='store_true', default=False, required=False)
 args=parser.parse_args()
 
 ##############################################################################
@@ -73,7 +76,7 @@ args=parser.parse_args()
 ####                                                                      ####
 ##############################################################################
 
-def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
+def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
     Inputs:
         Confound_Data (dataframe) - data from a -desc-confounds_timeseries.tsv file
@@ -81,6 +84,7 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
         std_dvars_thresh ('none' or float) - std_dvars threshold
         r_int_info (list) - length equal to number of TRs in Confound_Data; 
             0 = TR is of non-interest, 1 = TR of interest
+        cen_prev_TR (True or False) -- boolean input to indicate whether to censor a TR based on the subquent TR's FD
     Outputs:
         censor_info (list) - length equal to number of TRs in input dataset; 
             0 = TR is to be censored, 1 = TR is to be included in analyses
@@ -96,10 +100,10 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
 
     # censor TR if: 
     #   (1) First or second TR (datapoints 0 and 1)
-    #   (2) std_dvars > std_dvars_thresh, if a threshold is specified
-    #   (3) framewise_displacement > FD_thresh
-    #   (4) TR was detected by fmriprep as a steady state outlier
-    #   (5) framewise_displacement on the next TR > FD_thresh
+    #   (2) framewise_displacement > FD_thresh
+    #   (3) TR was detected by fmriprep as a steady state outlier
+    #   (4) std_dvars > std_dvars_thresh, if a threshold is specified
+    #   (5) framewise_displacement on the next TR > FD_thresh, if cen_prev_TR = True
     
     censor_info = []
     for index, row in Confound_Data.iterrows():
@@ -109,7 +113,8 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info):
         # if fd > threshold
         elif (row['framewise_displacement'] > FD_thresh):
             censor_info.append(0) # censor current TR
-            censor_info[index-1] = 0 # censor previous TR
+            if cen_prev_TR is True:
+                censor_info[index-1] = 0 # censor previous TR
         # if steady state outlier
         elif (row['non_steady_state_outlier00'] == 1):
             censor_info.append(0)
@@ -235,6 +240,9 @@ if args.stdvars is None:
 else:
     std_dvars_threshold = args.stdvars
 
+# set cen_prev_tr flag 
+cen_prev_tr_flag = args.cen_prev_tr
+
 # Import or create a database to write censor summary data to
 censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')
 # if database exists
@@ -311,6 +319,7 @@ for sub in subs:
             # get condition 
             cond = re.split('_|-',filename)[2]
 
+            ## Uncomment this and indent loop if want to only consider food blocks and not office supply blocks
             # if condition contains High or Low string 
             #if ('High' in cond) or ('Low' in cond):
 
@@ -337,7 +346,7 @@ for sub in subs:
             r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
         # run function to get censor information by run
-        res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold, r_int_info = r_int_list)
+        res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold, r_int_info = r_int_list, cen_prev_TR=cen_prev_tr_flag)
 
         #export run-specific censor file
         run_censordata = res[0]
@@ -394,11 +403,18 @@ for sub in subs:
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
     censordata_allruns_df.columns = ['header']
-    if std_dvars_threshold == 'none':
-        censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
-    else:
-        censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
+    if cen_prev_tr_flag is True:
+        if std_dvars_threshold == 'none':
+            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+        else:
+            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+    else: #cen_prev_tr_flag is False
+        if std_dvars_threshold == 'none':
+            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+        else:
+            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+   
     # Export participant regressor file with and without columns names
     regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
     regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
@@ -473,27 +489,45 @@ for sub in subs:
                 onsetfile_dat[0].iloc[0] = '*'
 
             ## output new onsetfile ##
+            
             # set path to onset directory
 
             # if thresholding based on blocks only
             if (args.pthresh_b is not None) and (args.pthresh_r is None):
-                if std_dvars_threshold == 'none':
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_b' + str(p_thresh_block))
-                else:
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_b' + str(p_thresh_block))
+                if cen_prev_tr_flag is True:
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_b' + str(p_thresh_block))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_b' + str(p_thresh_block))
+                else: #cen_prev_tr_flag is False
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_b' + str(p_thresh_block))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_b' + str(p_thresh_block))
             # if thresholding based on runs only
             elif (args.pthresh_r is not None) and (args.pthresh_b is None):
-                if std_dvars_threshold == 'none':
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run))
-                else:
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run))
+                if cen_prev_tr_flag is True:
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_r' + str(p_thresh_run))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_r' + str(p_thresh_run))
+                else: #cen_prev_tr_flag is False
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run))
             # if thresholding based on block and run
             elif (args.pthresh_r is not None) and (args.pthresh_b is not None):
-                if std_dvars_threshold == 'none':
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
-                else:
-                    new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
-
+                if cen_prev_tr_flag is True:
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
+                else: #cen_prev_tr_flag is F
+                    if std_dvars_threshold == 'none':
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
+                    else:
+                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))  
             # Check whether the onset directory exists or not
             isExist = os.path.exists(new_onset_path)
             if not isExist:
@@ -503,12 +537,21 @@ for sub in subs:
             # write file
             onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
 
-#write summary database
-#print(censor_summary_allPar)
+#######################################
+#### Write censor summary database ####
+#######################################
 
-if std_dvars_threshold == 'none':
-    censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-    blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-else:
-    censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-    blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+if cen_prev_tr_flag is True:
+    if std_dvars_threshold == 'none':
+        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    else:
+        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+else: #cen_prev_tr_flag is False
+    if std_dvars_threshold == 'none':
+        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    else:
+        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
