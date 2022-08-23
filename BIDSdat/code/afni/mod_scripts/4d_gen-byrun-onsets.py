@@ -86,6 +86,7 @@ if censor_summary_path.is_file(): # if database exists
     censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
 else:
     print("censor summary file does not exist")
+    exit
 
 # subset data to remove sub 999 
 censor_summary_allPar = censor_summary_allPar[censor_summary_allPar["sub"] != 999]
@@ -108,8 +109,8 @@ for sub in subs:
         if args.pthresh_b is not None:
             p_thresh_block = args.pthresh_b
         
-        # get original onset files
-        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+        # get original onset files -- sub needs to be padded with leading zeros
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub).zfill(3) + '*AFNIonsets.txt'))
 
         # Loop through onset files (there is 1 onset file per condition)
         for onsetfile in orig_onsetfiles:
