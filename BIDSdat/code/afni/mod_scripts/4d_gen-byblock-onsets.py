@@ -48,7 +48,7 @@ import re
 
 #input arguments setup
 parser=argparse.ArgumentParser()
-parser.add_argument('--framewisedisplacement', '-fd', help='threshold used to censor TRs', default=1.0, type=float)
+parser.add_argument('--censorsumfile', '-c', help='name of censor summary file (e.g., task-foodcue_bycond-censorsummary_fd-1.0.tsv', type=str)
 parser.add_argument('--minblockTR', '-m', help='minimum number of uncensored TRs for a block to be included', type=int)
 args=parser.parse_args()
 
@@ -73,14 +73,18 @@ bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/fo
 bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
 # Import censor summary database
-FD_threshold = args.framewisedisplacement
-censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '.tsv')
+censorsummary_file = args.censorsumfile
+censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsummary_file))
 
 if censor_summary_path.is_file(): # if database exists
     # import database
     censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
 else:
     print("censor summary file does not exist")
+
+# extract criteria used to censor TRs based on censor summary database name
+substring = censorsummary_file.split("summary_",1)[1]
+TR_cen_critera = substring.split(".tsv",1)[0]
 
 # set minimum number of TRs per block
 min_blockTR = args.minblockTR
@@ -128,7 +132,7 @@ for sub in subs:
         ## output new onsetfile ##
 
         # set path to new onset directory
-        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_by-block_' + str(min_blockTR))
+        new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + '_by-block_' + str(min_blockTR))
 
         # Check whether the onset directory exists or not
         isExist = os.path.exists(new_onset_path)
