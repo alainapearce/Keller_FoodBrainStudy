@@ -6,8 +6,7 @@ The following steps will occur:
     (1) determine which TRs need to be censored from each run
     (2) output a censor file that indicates which TRs to censor across all runs -- will be used by AFNI in first-level analyses
     (3) output a regressor file containing regressor information for all runs -- will be used by AFNI in first-level analyses
-    (4) make new onsetfiles that exclude runs with >threshold % TRs censored -- will be used by AFNI in first-level analyses
-    (5) output summary data that indicates % of TRs censored per run (total and for blocks of interest)
+    (4) output summary data that indicates % of TRs censored per run (total and for blocks of interest)
 
 Written by Bari Fuchs in Spring 2022
 
@@ -63,11 +62,12 @@ from sqlalchemy import false
 #input arguments setup
 parser=argparse.ArgumentParser()
 parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs="+")
+
+# input arguments related to censoring TRs
 parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is 1.0', default=1.0, type=float)
 parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float)
-parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
-parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
 parser.add_argument('--cen_prev_tr', '-cpt', help='if argument is present, censor TRs based on FD in the subsequent TR', action='store_true', default=False, required=False)
+
 args=parser.parse_args()
 
 ##############################################################################
@@ -428,114 +428,6 @@ for sub in subs:
     # Add participant summary dataframe to overall summary database
     censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
 
-
-    #####################################
-    #### Make new onset timing files ####
-    #####################################
-
-    # if thresholds are specified
-    if (args.pthresh_r is not None) or (args.pthresh_b is not None):
-        # set thresholds for censoring runs
-        if args.pthresh_r is not None:
-            p_thresh_run = args.pthresh_r
-
-        if args.pthresh_b is not None:
-            p_thresh_block = args.pthresh_b
-        
-        # get original onset files
-        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
-        for onsetfile in orig_onsetfiles:
-
-            #get filename
-            filename = str(onsetfile).rsplit('/',1)[-1]
-
-            #load file
-            onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
-
-            # change onset times to '*' for runs with >p_thresh TRs censored
-            for i in range(len(onsetfile_dat)):
-
-                # if censoring based on blocks of interest
-                if (args.pthresh_b is not None) and (args.pthresh_r is None):
-                    # if % of TRs censored across all blocks of interest in a run (row i) is > threshold
-                    if censor_sum_Pardat['p_censor_interest'].iloc[i] > p_thresh_block:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-                # if censoring based on total run only
-                if (args.pthresh_b is None) and (args.pthresh_r is not None):
-
-                    # if % of TRs censored in run (row i) is > threshold
-                    if censor_sum_Pardat['p_censor'].iloc[i] > p_thresh_run:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-                # if censoring based on total run and blocks of interest
-                if (args.pthresh_b is not None) and (args.pthresh_r is not None):
-
-                    # if % of TRs censored in across blocks of interest or in a run (row i) is > threshold
-                    if censor_sum_Pardat['p_censor'].iloc[i] > p_thresh_run or censor_sum_Pardat['p_censor_interest'].iloc[i] > p_thresh_block:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-            # for subject 49, exclude run 1 due to triggering issues between scanner and eprime experiment 
-            if sub == '049':
-                onsetfile_dat[0].iloc[0] = '*'
-
-            ## output new onsetfile ##
-            
-            # set path to onset directory
-
-            # if thresholding based on blocks only
-            if (args.pthresh_b is not None) and (args.pthresh_r is None):
-                if cen_prev_tr_flag is True:
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_b' + str(p_thresh_block))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_b' + str(p_thresh_block))
-                else: #cen_prev_tr_flag is False
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_b' + str(p_thresh_block))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_b' + str(p_thresh_block))
-            # if thresholding based on runs only
-            elif (args.pthresh_r is not None) and (args.pthresh_b is None):
-                if cen_prev_tr_flag is True:
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_r' + str(p_thresh_run))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_r' + str(p_thresh_run))
-                else: #cen_prev_tr_flag is False
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run))
-            # if thresholding based on block and run
-            elif (args.pthresh_r is not None) and (args.pthresh_b is not None):
-                if cen_prev_tr_flag is True:
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_cpt_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
-                else: #cen_prev_tr_flag is F
-                    if std_dvars_threshold == 'none':
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))
-                    else:
-                        new_onset_path = Path(bids_onset_path).joinpath('fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_r' + str(p_thresh_run) + '_b' + str(p_thresh_block))  
-            # Check whether the onset directory exists or not
-            isExist = os.path.exists(new_onset_path)
-            if not isExist:
-                # make new path
-                os.makedirs(new_onset_path)
-            
-            # write file
-            onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
 
 #######################################
 #### Write censor summary database ####
