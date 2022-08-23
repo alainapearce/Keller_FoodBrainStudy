@@ -157,4 +157,5 @@ for i in range(len(censorsum_files)):
     nsub_sum.at[i, 'bothLarge'] = len(bothLarge)
     nsub_sum.at[i, 'bothSmall'] = len(bothSmall)
 
-print(nsub_sum)
+# export dataframe
+nsub_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_motion-summary_byblock.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
