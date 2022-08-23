@@ -141,4 +141,4 @@ for sub in subs:
             os.makedirs(new_onset_path)
             
         # write file
-        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename + '.txt')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
