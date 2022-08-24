@@ -74,6 +74,7 @@ min_blockTR = 7
 #### Get number of blocks per condition for each subject ###
 ############################################################
 
+
 for i in range(len(censorsum_files)):
 
     # get file name
@@ -84,6 +85,9 @@ for i in range(len(censorsum_files)):
 
     # extract file name without .tsv
     filename = os.path.basename(file).split('.tsv')[0]
+
+    # subset data to remove sub 999 
+    censorsum_df = censorsum_df[censorsum_df["sub"] != 999]
 
     # get unique subjects
     subs = censorsum_df['sub'].unique()
