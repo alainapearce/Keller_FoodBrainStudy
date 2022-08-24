@@ -106,6 +106,9 @@ subs = censor_summary_allPar['sub'].unique() # get list of unique subjects to lo
 
 ###### get list of subjects with N acceptable blocks ######
 
+######################################
+#### Make index files by condition ###
+######################################
 
 for condition in (['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall']):
 
@@ -113,7 +116,6 @@ for condition in (['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarg
     temp = []
 
     for sub in subs:
-
         # select rows for subject
         sub_df = censor_summary_allPar.loc[censor_summary_allPar['sub'] == sub]
 
@@ -130,8 +132,42 @@ for condition in (['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarg
 
     # define output path
     file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + condition + '_' + str(TR_cen_critera) + "_" + str(min_blockTR) + 'tr-' + str(min_block) + 'b.txt')
-    
+        
     # write to file
     with open(file, 'w') as indexFile:
         joined_list = "  ".join(temp)
         print(joined_list , file = indexFile)
+
+############################################################
+#### Make index file for subs with all 4 food conditions ###
+############################################################
+
+# initiate empty list to append subjects to
+all_food_indexlist = []
+
+for sub in subs:
+
+    # select rows for subject
+    sub_df = censor_summary_allPar.loc[censor_summary_allPar['sub'] == sub]
+
+    if ((sub_df['HighLarge'][sub_df['HighLarge'] >= min_blockTR].count() >= min_block) & 
+        (sub_df['HighSmall'][sub_df['HighSmall'] >= min_blockTR].count() >= min_block) &
+        (sub_df['LowLarge'][sub_df['LowLarge'] >= min_blockTR].count() >= min_block) &
+        (sub_df['LowSmall'][sub_df['LowSmall'] >= min_blockTR].count() >= min_block) ):
+
+        # append ID to list
+        all_food_indexlist.append(sub)
+
+# format IDs -- pad with zeros to 3 digits 
+all_food_indexlist = [str(sub).zfill(3) for sub in all_food_indexlist]
+
+# define output path 
+file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-4foodconds_' + str(TR_cen_critera) + "_" + str(min_blockTR) + 'tr-' + str(min_block) + 'b.txt')
+        
+# write to file
+with open(file, 'w') as indexFile:
+    joined_list = "  ".join(all_food_indexlist)
+    print(joined_list , file = indexFile)
+
+
+
