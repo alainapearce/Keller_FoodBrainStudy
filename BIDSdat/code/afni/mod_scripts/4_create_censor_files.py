@@ -65,7 +65,7 @@ parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs
 
 # input arguments related to censoring TRs
 parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is 1.0', default=1.0, type=float)
-parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float)
+parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float, required=False)
 parser.add_argument('--cen_prev_tr', '-cpt', help='if argument is present, censor TRs based on FD in the subsequent TR', action='store_true', default=False, required=False)
 
 args=parser.parse_args()
