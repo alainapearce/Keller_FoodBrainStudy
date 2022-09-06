@@ -96,7 +96,8 @@ def p1_getonsets(par_id, overwrite = False):
     raw_files = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
 
     if len(raw_files) < 1:
-        sys.exit('No Files found for sub ' + str(sub)) 
+        print('No *events.tsv files found for sub ' + str(sub))
+        raise Exception()
         
     ## if no overwrite option selected, remove IDs from subject list that already have onset files ##
     if overwrite is False:
@@ -115,7 +116,8 @@ def p1_getonsets(par_id, overwrite = False):
 
         # Exit of sub already has orig onsets
         if sub in subs_exist_str:
-            sys.exit('Skipping sub-' + str(sub) + ' - orig onset files already exist. Use overwrite = True to overwrite')
+            print(str(sub) + ' - orig onset files already exist. Use overwrite = True to overwrite')
+            raise Exception()
 
     ##########################
     ### Create onset files ###

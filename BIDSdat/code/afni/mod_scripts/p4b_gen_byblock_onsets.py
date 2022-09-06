@@ -49,7 +49,7 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
     """Function to generate onset files that censor blocks with excessive motion based on specified threshold
     Inputs:
         par_id (int): participant ID 
-        censorsumfile (string): name of censor summary file (e.g., task-foodcue_censorsummary_fd-1.0.tsv
+        censorsumfile (string): name of censor summary file (e.g., task-foodcue_bycond-censorsummary_fd-1.0.tsv
         minblockTR (int): threshold for censoring blocks. This is the minimum number of uncensored TRs for a block to be included
     Outputs:
         onsetfile_dat: 1 onset dataframe per condition, exported as a csv. Onsets for blocks with motion that exceeds
@@ -80,16 +80,16 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
     TR_cen_critera = substring.split(".tsv",1)[0]
 
     if censor_summary_path.is_file(): # if database exists
-        # import database
-        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
+        # import database --- converting 'sub' to string will maintain leading zeros
+        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
 
         # check that subject ID is in censor_summary_allPar
         if (sub not in set(censor_summary_allPar['sub'])):
-            print(sub + "has no data in in censorsum_file")
-            exit
+            print("sub_" + sub + " has no data in task-foodcue_bycond-censorsummary file")
+            raise Exception()
     else:
-        print("censor summary file does not exist")
-        exit
+        print(censor_summary_path + "does not exist. Exiting p4b_gen_byblock_onsets")
+        raise Exception()
 
     #########################################
     #### Generate new onset timing files ####

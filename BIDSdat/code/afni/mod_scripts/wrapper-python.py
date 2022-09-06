@@ -29,15 +29,17 @@ or raw data configurations.
 """
 
 #set up packages    
-from email import header
 from pickle import TRUE
 from aem import con
-from scipy.stats.morestats import shapiro
 from pathlib import Path
+import os
 
 # import data processing functions
 import p1_getonsets
 import p2_create_censor_files
+import p4a_gen_byrun_onsets
+import p4b_gen_byblock_onsets
+
 
 ##############################################################################
 ####                                                                      ####
@@ -45,10 +47,64 @@ import p2_create_censor_files
 ####                                                                      ####
 ##############################################################################
 
-# get list of subs
-subs = ['001']
+##############
+### Set up ###
+##############
 
-# call functions for each sub
+# get script location
+script_path = Path(__file__).parent.resolve()
+
+# change directory to base directory (BIDSdat) and get path
+os.chdir(script_path)
+os.chdir('../../..')
+base_directory = Path(os.getcwd())
+
+#set specific paths
+bids_raw_path = Path(base_directory).joinpath('raw_data')
+bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+    
+
+###############################
+### Get list of subject IDs ###
+###############################
+
+#find all foodcue*events.tsv files
+foodcue_raw_files = list(Path(bids_raw_path).rglob('sub-*/ses-1/func/*foodcue*events.tsv'))
+
+# get unique ids from foodcue_raw_files
+##pathlib library -- .relative_to give all the path that follows raw_data_path
+##                  .parts[0] extracts the first directory in remaining path to get
+##                       list of subjects
+foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue_raw_files]
+
+##set is finding only unique values
+subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
+
+# For testing
+#subs = ['001', '002']
+
+###################################
+### call functions for each sub ###
+###################################
+
 for sub in subs:
-     p1_getonsets.p1_getonsets(par_id = sub, overwrite=True)
-     p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 1.0, std_vars=False, cen_prev_tr=False)
+
+     try:
+          p1_getonsets.p1_getonsets(par_id = sub, overwrite=False)
+     except:
+          print("Discontinuing p1_getonsets() for sub_" + sub)
+
+     try:
+          p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 0.9, std_vars=False, cen_prev_tr=False, overwrite=True)
+     except:
+          print("Discontinuing p2_create_censor_files() for sub_" + sub)
+
+     try:
+          p4a_gen_byrun_onsets.p4a_gen_byrun_onsets(par_id = sub, censorsum_file = 'task-foodcue_censorsummary_fd-0.9.tsv', p_thresh_run = False, p_thresh_block = 20)
+     except:
+          print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
+
+     try:
+          p4b_gen_byblock_onsets.p4b_gen_byblock_onsets(par_id = sub, censorsum_file = 'task-foodcue_bycond-censorsummary_fd-0.9.tsv', minblockTR = 7)
+     except:
+          print("Discontinuing p4b_gen_byblock_onsets() for sub_" + sub)
