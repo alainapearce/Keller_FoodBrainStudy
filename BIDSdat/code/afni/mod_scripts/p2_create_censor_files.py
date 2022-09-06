@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This script was created to process -desc-confounds_timeseries.tsv files (output from fmriprep) in preparation for first-level analyses in AFNI. 
+This function was created to process -desc-confounds_timeseries.tsv files (output from fmriprep) in preparation for first-level analyses in AFNI. 
 The following steps will occur:
     (1) determine which TRs need to be censored from each run
     (2) output a censor file that indicates which TRs to censor across all runs -- will be used by AFNI in first-level analyses
@@ -39,49 +39,25 @@ from aem import con
 import numpy as np
 import pandas as pd
 import os
-import sys, argparse
-#from scipy.stats import norm
+import sys
 from scipy.stats.morestats import shapiro
 from pathlib import Path
 import re
 
 from sqlalchemy import false
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
+#########################################################
+####                                                 ####
+####                  Subfunctions                   ####
+####                                                 ####
+#########################################################
 
-# to enter multiple subject arguments in terminal format like:
-#-p 2 3
-
-# to overwrite onsets of all input IDs, specify in terminal format like:
-#-f
-
-#input arguments setup
-parser=argparse.ArgumentParser()
-parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs="+")
-
-# input arguments related to censoring TRs
-parser.add_argument('--framewisedisplacement', '-fd', help='threshold for censoring TRs based on framewise displacement. default is 1.0', default=1.0, type=float)
-parser.add_argument('--stdvars', '-sdv', help='threshold for censoring TRs based on std_dvars', type=float, required=False)
-parser.add_argument('--cen_prev_tr', '-cpt', help='if argument is present, censor TRs based on FD in the subsequent TR', action='store_true', default=False, required=False)
-
-args=parser.parse_args()
-
-##############################################################################
-####                                                                      ####
-####                  Subfunctions called within script                   ####
-####                                                                      ####
-##############################################################################
-
-def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR):
+def _get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR_flag):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
     Inputs:
         Confound_Data (dataframe) - data from a -desc-confounds_timeseries.tsv file
         FD_thresh (float) - framewise displacement threshold
-        std_dvars_thresh ('none' or float) - std_dvars threshold
+        std_dvars_thresh ('False' or float) - std_dvars threshold
         r_int_info (list) - length equal to number of TRs in Confound_Data; 
             0 = TR is of non-interest, 1 = TR of interest
         cen_prev_TR (True or False) -- boolean input to indicate whether to censor a TR based on the subquent TR's FD
@@ -113,13 +89,13 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_
         # if fd > threshold
         elif (row['framewise_displacement'] > FD_thresh):
             censor_info.append(0) # censor current TR
-            if cen_prev_TR is True:
+            if cen_prev_TR_flag is True:
                 censor_info[index-1] = 0 # censor previous TR
         # if steady state outlier
         elif (row['non_steady_state_outlier00'] == 1):
             censor_info.append(0)
         # if std_dvars thresold a float (i.e., is specified)
-        elif isinstance(std_dvars_threshold, float):
+        elif isinstance(std_dvars_thresh, float):
             # if std_dvars is above thresold
             if (row['std_dvars'] > std_dvars_thresh):
                 censor_info.append(0)
@@ -165,109 +141,77 @@ def get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_
 
 ##############################################################################
 ####                                                                      ####
-####                             Core Script                              ####
+####                             Main Function                            ####
 ####                                                                      ####
 ##############################################################################
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False):
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-base_directory = Path(os.getcwd())
+    # get script location
+    script_path = Path(__file__).parent.resolve()
 
-#set specific paths
-bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
-bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+    # change directory to base directory (BIDSdat) and get path
+    os.chdir(script_path)
+    os.chdir('../../..')
+    base_directory = Path(os.getcwd())
 
-##check for input arguments and get initial list of subject IDs ##
+    #set specific paths
+    bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
-# if there is 1 or more parID argument
-if args.parIDs is not None and len(args.parIDs) >= 1:
+    #############################
+    ### Get participant files ###
+    #############################
+    
+    # set sub with leading zeros
+    sub = str(par_id).zfill(3)
+   
+    # get confound and onset files
+    confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
+    orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
-    #make sure have integers
-    subject_ids = list(map(int, args.parIDs))
+    # exit if no confound files or onset files
+    if len(confound_files) < 1:
+        print('No confound files found for sub-' + str(sub))
+        sys.exit('No Files found for participant ' + str(sub))
 
-    #get leading zeros
-    subject_list = [str(item).zfill(3) for item in subject_ids]
-        
-    #check for raw data
-    subs = list(subject_list)
+    if len(orig_onsetfiles) < 1:
+        print('No onset files found for sub-' + str(sub))
+        sys.exit('No Files found for participants' + str(sub))
+            
+    # set censor string 
+    if std_vars is False:
+        if cen_prev_tr is False: 
+            censor_str = 'fd-' + str(framewise_displacement)
+        else:
+            censor_str = 'fd-' + str(framewise_displacement) + '_cpt'
+    else:
+        if cen_prev_tr is False:
+            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars)
+        else:
+            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars) + '_cpt'
 
-    for sub in subs:
+    # Import or create a database to write censor summary data to
+    censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')
 
-        confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*confounds_timeseries.tsv'))
-        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+    # if database exists
+    if censor_summary_path.is_file():
+        # import database
+        #censor_summary_allPar = pd.read_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')), sep = '\t')
+        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
+    # if database does not exist
+    else:
+        # create new dataframe 
+        censor_summary_allPar = pd.DataFrame(np.zeros((0, 8)))
+        censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
-        if len(confound_files) < 1:
-            print('No confound files found for sub-' + str(sub))
-            subject_list.remove(sub)
+    # create block censor summary dataframe
+    blockcensor_sum = pd.DataFrame(np.zeros((0, 8)))
+    blockcensor_sum.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
 
-        if len(orig_onsetfiles) < 1:
-            print('No onset files found for sub-' + str(sub))
-            subject_list.remove(sub)
-        
-    #check if any files to process
-    if subject_list is None:
-        sys.exit('No Files found for participants' + args.parIDs)   
-
-# if there are no parID arguments entered
-else:
-    #find all foodcue*events.tsv files
-    confound_files = list(Path(bids_fmriprep_path).rglob('sub-*/ses-1/func/*confounds_timeseries.tsv'))
-
-    # get unique ids from confound_files
-    ##pathlib library -- .relative_to give all the path that follows raw_data_path
-    ##                  .parts[0] extracts the first directory in remaining path to get
-    ##                       list of subjects
-    fmriprep_subs = [item.relative_to(bids_fmriprep_path).parts[0] for item in confound_files]
-
-    ##set is finding only unique values
-    subject_list = list(set([item[4:7] for item in fmriprep_subs]))
-
-    for sub in subject_list:        
-        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
-        if len(orig_onsetfiles) < 1:
-            print('Confound files but no onset files found for sub-' + str(sub))
-            subject_list.remove(sub)
-
-# set framewise displacement and std_dvar threshold variables
-FD_threshold = args.framewisedisplacement
-if args.stdvars is None:
-    std_dvars_threshold = 'none'
-else:
-    std_dvars_threshold = args.stdvars
-
-# set cen_prev_tr flag 
-cen_prev_tr_flag = args.cen_prev_tr
-
-# Import or create a database to write censor summary data to
-censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')
-# if database exists
-if censor_summary_path.is_file():
-    # import database
-    censor_summary_allPar = pd.read_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t')
-# if database does not exist
-else:
-    # create new dataframe 
-    censor_summary_allPar = pd.DataFrame(np.zeros((0, 8)))
-    censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
-
-# create block censor summary dataframe
-blockcensor_sum = pd.DataFrame(np.zeros((0, 8)))
-blockcensor_sum.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
-
-## Loop through subject_list and create onset files ##
-subs = list(subject_list)
-for sub in subs:
-
-    # get confound files -- Note: each events file corresponds to 1 foodcue run
-    confoundfiles = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*confounds_timeseries.tsv'))
-
-    # get number of runs -- Note: each confound file corresponds to 1 foodcue run
-    nruns = len(confoundfiles)
+    #########################################
+    ### Create censor and regressor files ###
+    #########################################
 
     # create run censor data summary per participant
     censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
@@ -282,8 +226,8 @@ for sub in subs:
     censordata_allruns = []
 
     # extract censor information for each run (each confoundfile)
-    confoundfiles.sort()
-    for file in confoundfiles: #loop through runs (each run has its own confoundfile)
+    confound_files.sort()
+    for file in confound_files: #loop through runs (each run has its own confoundfile)
 
         #load data
         confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
@@ -346,12 +290,10 @@ for sub in subs:
             r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
         # run function to get censor information by run
-        res = get_censor_info(confound_dat, FD_thresh = FD_threshold, std_dvars_thresh = std_dvars_threshold, r_int_info = r_int_list, cen_prev_TR=cen_prev_tr_flag)
+        res = _get_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_int_info = r_int_list, cen_prev_TR_flag=cen_prev_tr)
 
         #export run-specific censor file
         run_censordata = res[0]
-        run_censor_data_df = pd.DataFrame(run_censordata)
-        #run_censor_data_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-r' + str(runnum) + '_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
         # add run-specific censor data to overall censor file
         censordata_allruns.extend(run_censordata)
@@ -360,9 +302,9 @@ for sub in subs:
         regress_run = confound_dat[regress_lev1].copy()
         regress_Pardat = regress_Pardat.append(regress_run)
 
-        ##########################
-        # get motion BY CONDITION
-        ##########################
+        #################################
+        # get motion BY CONDITION / BLOCK
+        #################################
 
         # make dictionary for TR count
         block_TRcount_dict = {}
@@ -400,50 +342,30 @@ for sub in subs:
         runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6]]
         censor_sum_Pardat.loc[df_len] = runsum
 
-    # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
-    censordata_allruns_df = pd.DataFrame(censordata_allruns)
-    censordata_allruns_df.columns = ['header']
+        # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
+        censordata_allruns_df = pd.DataFrame(censordata_allruns)
+        censordata_allruns_df.columns = ['header']
+        censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
-    if cen_prev_tr_flag is True:
-        if std_dvars_threshold == 'none':
-            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
-        else:
-            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
-    else: #cen_prev_tr_flag is False
-        if std_dvars_threshold == 'none':
-            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
-        else:
-            censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
-   
-    # Export participant regressor file with and without columns names
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+        # Export participant regressor file with and without columns names
+        regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+        regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
-    ## Add participant summary dataframe to overall summary database ##
+        ## Add participant summary dataframe to overall summary database ##
 
-    # if subject data already in censor_summary_allPar, remove existing rows
-    if sub in censor_summary_allPar['sub']:
-        censor_summary_allPar = censor_summary_allPar[censor_summary_allPar.sub != sub]
-    
-    # Add participant summary dataframe to overall summary database
-    censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
+        # if subject data already in censor_summary_allPar, remove existing rows
+        if sub in censor_summary_allPar['sub']:
+            censor_summary_allPar = censor_summary_allPar[censor_summary_allPar.sub != sub]
+        
+        # Add participant summary dataframe to overall summary database
+        censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
+
+    #######################################
+    #### Write censor summary database ####
+    #######################################
+    censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
 
-#######################################
-#### Write censor summary database ####
-#######################################
-
-if cen_prev_tr_flag is True:
-    if std_dvars_threshold == 'none':
-        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-    else:
-        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '_cpt.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-else: #cen_prev_tr_flag is False
-    if std_dvars_threshold == 'none':
-        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-    else:
-        censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-        blockcensor_sum.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_fd-' + str(FD_threshold) + '_stddvar-' + str(std_dvars_threshold) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+#if __name__ == "__main__":
+#    p2_create_censor_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
