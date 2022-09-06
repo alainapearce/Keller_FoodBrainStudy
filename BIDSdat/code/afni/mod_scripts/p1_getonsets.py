@@ -32,37 +32,17 @@ import numpy as np
 import pandas as pd
 import os
 import sys, argparse
-#from scipy.stats import norm
-#from scipy.stats.morestats import shapiro
 from pathlib import Path
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
 
-# to enter multiple subject arguments in terminal format like:
-#-p 2 3
-
-# to overwrite onsets of all input IDs, specify in terminal format like:
-#-f
-
-#input arguments setup
-parser=argparse.ArgumentParser()
-parser.add_argument('--parIDs', '-p', help='participant list', type=float, nargs="+")
-parser.add_argument('--overwrite', '-f', help='force overwrite of existing data. all specified IDs will be overwritten', action='store_true')
-
-args=parser.parse_args()
-
-##############################################################################
-####                                                                      ####
-####                  Subfunctions called within script                   ####
-####                                                                      ####
-##############################################################################
+##########################################################
+####                                                  ####
+####                  Subfunctions                    ####
+####                                                  ####
+##########################################################
 
 # Function to get block onsets from foodcue_run_data --- this will be a run-specific events dataset (i.e., sub-XXX_task-foodcue_run-0X_bold_events.tsv)
-def get_blockOnsets(foodcue_run_data, onset_data):
+def _get_blockOnsets(foodcue_run_data, onset_data):
 
         ## Get run number   
         run_num = foodcue_run_data['run'].iloc[0]
@@ -86,139 +66,60 @@ def get_blockOnsets(foodcue_run_data, onset_data):
         
         return(onset_data)
 
-# Figure out this function
-#def get_fixOnsets
-#             if b == 1:
-#                 rb_start = rb_prev_row + b
-#                 rb_row = rb_start
-#                 if r == 1:
-#                     b_start_run = rb_prev_row + b
-
-#             if r==1 and b ==1:
-#                 #final block stim onset
-#                 fblock_onset = block_dat["stim_onset_rsync"].iloc[-1]
-#                 f_row = 1
-#                 f_start = f_row
-#             else:
-#                 if b == 1:
-#                     f_row = f_row + 1
-#                     f_start = f_row
-#                     fix_data["PrevBlock"].iloc[f_row] = nblocks
-# #                    fix_data.PrevBlock(f_row) = nblocks;
-# #                    #stim dur = 2.5 sec and inter-block-interval = 0.5
-#                     fix_data["FixAfterBlock"].iloc[f_row] = round(block_dat["stim_onset"].iloc[0]/1000) - (fblock_onset+2.5+.5)
-# #                    fix_data.FixAfterBlock(f_row) = round(block_dat.StimOnset(1)/1000) - (fblock_onset+2.5+.5);
-#                     fblock_onset = block_dat["stim_onset_rsync"].iloc[-1]
-#                 else:
-#                     f_row = f_row + 1
-#                     fix_data["PrevBlock"].iloc[f_row] = b - 1
-#                     #stim dur = 2.5 sec and inter-block-interval = 0.5
-#                     fix_data["FixAfterBlock"].iloc[f_row] = round(block_dat["stim_onset_rsync"].iloc[0]/1000) - (fblock_onset+2.5+.5)
-
-#                     if b == nblocks:
-#                         fblock_onset = round(block_dat["stim_onset"].iloc[-1]/1000)
-#                     else:
-#                         fblock_onset = round(block_dat["stim_onset_rsync"].iloc[-1]/1000)
-        return(onset_data, fix_data)
-
-
-
 ##############################################################################
 ####                                                                      ####
 ####                             Core Script                              ####
 ####                                                                      ####
 ##############################################################################
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+def p1_getonsets(par_id, overwrite = False):
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-base_directory = Path(os.getcwd())
+    # get script location
+    script_path = Path(__file__).parent.resolve()
 
-#set specific paths
-bids_raw_path = Path(base_directory).joinpath('raw_data')
-bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+    # change directory to base directory (BIDSdat) and get path
+    os.chdir(script_path)
+    os.chdir('../../..')
+    base_directory = Path(os.getcwd())
 
-##check for input arguments and get initial list of subject IDs ##
+    #set specific paths
+    bids_raw_path = Path(base_directory).joinpath('raw_data')
+    bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
 
-# if there is 1 or more parID argument
-if args.parIDs is not None and len(args.parIDs) >= 1:
+    #############################
+    ### Get participant files ###
+    #############################
 
-    #make sure have integers
-    subject_ids = list(map(int, args.parIDs))
+    # set sub with leading zeros
+    sub = str(par_id).zfill(3)
 
-    #get leading zeros
-    subject_list = [str(item).zfill(3) for item in subject_ids]
+    raw_files = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
+
+    if len(raw_files) < 1:
+        sys.exit('No Files found for sub ' + str(sub)) 
         
-    #check for raw data
-    subs = list(subject_list)
+    ## if no overwrite option selected, remove IDs from subject list that already have onset files ##
+    if overwrite is False:
 
-    for sub in subs:
+        # get list of existing onset files 
+        onset_files = list(Path(bids_deriv_onsetfiles).rglob('*AFNIonsets.txt'))
 
-        raw_files = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
-
-        if len(raw_files) < 1:
-            print('No Files found for sub-' + str(sub))
-            subject_list.remove(sub)
+        # get unique ids from onset_files
+        ##pathlib library -- .relative_to give all the path that follows bids_deriv_onsetfiles
+        #                   .parts[0] extracts the first directory in remaining path to get
+        #                       list of subjects
+        files_exist = [item.relative_to(bids_deriv_onsetfiles).parts[0] for item in onset_files]
         
-    #check if any files to process
-    if subject_list is None:
-        sys.exit('No Files found for participants' + args.parIDs)   
+        ##set is finding only unique values
+        subs_exist_str = list(set([item[4:7] for item in files_exist]))   
 
-# if there are no parID arguments entered
-else:
-    #find all foodcue*events.tsv files
-    foodcue_raw_files = list(Path(bids_raw_path).rglob('sub-*/ses-1/func/*foodcue*events.tsv'))
+        # Exit of sub already has orig onsets
+        if sub in subs_exist_str:
+            sys.exit('Skipping sub-' + str(sub) + ' - orig onset files already exist. Use overwrite = True to overwrite')
 
-    # get unique ids from foodcue_raw_files
-    ##pathlib library -- .relative_to give all the path that follows raw_data_path
-    ##                  .parts[0] extracts the first directory in remaining path to get
-    ##                       list of subjects
-    foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue_raw_files]
-
-    ##set is finding only unique values
-    subject_list = list(set([item[4:7] for item in foodcue_raw_subs]))   
-
-
-## if no overwrite option selected, remove IDs from subject list that already have onset files ##
-if args.overwrite is False:
-
-    # get list of existing onset files 
-    onset_files = list(Path(bids_deriv_onsetfiles).rglob('*AFNIonsets.txt'))
-
-    # get unique ids from onset_files
-    ##pathlib library -- .relative_to give all the path that follows bids_deriv_onsetfiles
-    #                   .parts[0] extracts the first directory in remaining path to get
-    #                       list of subjects
-    files_exist = [item.relative_to(bids_deriv_onsetfiles).parts[0] for item in onset_files]
-    
-    ##set is finding only unique values
-    subs_exist_str = list(set([item[4:7] for item in files_exist]))   
-
-    #compare subject_list to subs_exist
-
-    #get intersection
-    match_subs = list(set.intersection(set(subject_list), set(subs_exist_str)))
-    
-    #report
-    for sub in match_subs:
-        #remove sub if in list that exists in database already
-        print('Skipping sub-' + str(sub) + ' - original onset files already exist.')
-
-    #modify subject_list to remove IDs that already have onset files
-    subject_list = list(set(subject_list) -  set(match_subs))
-
-    #exit if there are no files to process
-    if len(subject_list) < 1:
-        #exit if no files exist
-        sys.exit('No new subjects to generate original onset files for')   
-
-
-## Loop through subject_list and create onset files ##
-subs = list(subject_list)
-for sub in subs:
+    ##########################
+    ### Create onset files ###
+    ##########################
 
     # get events files -- Note: each events fils corresponds to 1 foodcue run
     eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
@@ -257,12 +158,11 @@ for sub in subs:
         foodcue_RunDat.loc[foodcue_RunDat['condition'] == "LowLargeED", "condition"] = "LowLarge"
 
         #extract timing info
-        onsets_Pardat = get_blockOnsets(foodcue_RunDat, onsets_Pardat)
+        onsets_Pardat = _get_blockOnsets(foodcue_RunDat, onsets_Pardat)
         #fix_Pardat = get_fixOnsets(foodcue_ProcData, fix_Pardat)
 
     #output onsets
     for c in onsets_Pardat.columns:
-        onsets_cond_filename = Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_' + c + '-AFNIonsets.txt')
         onsets_cond = pd.DataFrame(np.zeros((nruns, 2)))
         onsets_cond.columns = ['cond', 'star']
         onsets_cond['cond'] = onsets_Pardat[c]
