@@ -39,76 +39,70 @@ from pathlib import Path
 import sys, argparse
 import re
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
-
-
-#input arguments setup
-parser=argparse.ArgumentParser()
-parser.add_argument('--censorsumfile', '-c', help='name of censor summary file (e.g., task-foodcue_censorsummary_fd-1.0.tsv', type=str)
-parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
-parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
-args=parser.parse_args()
-
 
 ##############################################################################
 ####                                                                      ####
-####                             Core Script                              ####
+####                             Main Function                            ####
 ####                                                                      ####
 ##############################################################################
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+def p4a_gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_block = False):
+    """Function to generate onset files that censor runs with excessive motion based on specified threshold
+    Inputs:
+        par_id (int): participant ID 
+        censorsumfile (string): name of censor summary file (e.g., task-foodcue_censorsummary_fd-1.0.tsv
+        p_thresh_run (int): threshold for censoring runs based on percent of TRs censored across the whole run
+        p_thresh_block (int): threshold for censoring runs based on percent of TRs censored in blocks of interest (food and office blocks)
+    Outputs:
+        onsetfile_dat: 1 onset dataframe per condition, exported as a csv. Onsets for runs with motion that exceeds
+            p_thresh_run or p_thresh_block will replaced with '*'
+    """
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-base_directory = Path(os.getcwd())
+    # get script location
+    script_path = Path(__file__).parent.resolve()
 
-#set specific paths
-bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
-bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+    # change directory to base directory (BIDSdat) and get path
+    os.chdir(script_path)
+    os.chdir('../../..')
+    base_directory = Path(os.getcwd())
 
-# Import censor summary database
-censorsummary_file = args.censorsumfile
-censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsummary_file))
+    #set specific paths
+    bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
+    bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
-# extract criteria used to censor TRs based on censor summary database name
-substring = censorsummary_file.split("summary_",1)[1]
-TR_cen_critera = substring.split(".tsv",1)[0]
+    # set sub with leading zeros
+    sub = str(par_id).zfill(3)
 
-if censor_summary_path.is_file(): # if database exists
-    # import database
-    censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
-else:
-    print("censor summary file does not exist")
-    exit
+    # Import censor summary database
+    censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsum_file))
 
-# subset data to remove sub 999 
-censor_summary_allPar = censor_summary_allPar[censor_summary_allPar["sub"] != 999]
+    # extract criteria used to censor TRs based on censor summary database name
+    substring = censorsum_file.split("summary_",1)[1]
+    TR_cen_critera = substring.split(".tsv",1)[0]
 
+    if censor_summary_path.is_file(): # if database exists
+        # import database
+        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
 
-#########################################
-#### Generate new onset timing files ####
-#########################################
+        # check that subject ID is in censor_summary_allPar
+        if (sub not in set(censor_summary_allPar['sub'])):
+            print(sub + "has no data in in censorsum_file")
+            exit
+    else:
+        print("censor summary file does not exist")
+        exit
 
-subs = censor_summary_allPar['sub'].unique() # get list of unique subjects to loop through
+    #########################################
+    #### Generate new onset timing files ####
+    #########################################
 
-for sub in subs:
+    # Exit if no thresholds are specified
+    if p_thresh_run is False and p_thresh_block is False:
+        sys.exit('No thresholds specified. Must specify pthresh_r and/or pthresh_b to run')
+    # else, continue with function
+    else:
 
-    # if thresholds are specified
-    if (args.pthresh_r is not None) or (args.pthresh_b is not None):
-        # set thresholds for censoring runs
-        if args.pthresh_r is not None:
-            p_thresh_run = args.pthresh_r
-
-        if args.pthresh_b is not None:
-            p_thresh_block = args.pthresh_b
-        
         # get original onset files -- sub needs to be padded with leading zeros
         orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub).zfill(3) + '*AFNIonsets.txt'))
 
@@ -133,7 +127,7 @@ for sub in subs:
                 run_p_censor = int(row['p_censor']) # % of TRs censored across entire run
 
                 # if censoring based on blocks of interest
-                if (args.pthresh_b is not None) and (args.pthresh_r is None):
+                if (p_thresh_block is not False) and (p_thresh_run is False):
 
                     # if % of TRs censored across all blocks of interest in a run is > threshold
                     if run_p_censor_interest > p_thresh_block:
@@ -143,7 +137,7 @@ for sub in subs:
                         onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
 
                 # if censoring based on total run only
-                if (args.pthresh_b is None) and (args.pthresh_r is not None):
+                if (p_thresh_block is False) and (p_thresh_run is not False):
 
                     # if % of TRs censored in run (row i) is > threshold
                     if run_p_censor > p_thresh_run:
@@ -153,7 +147,7 @@ for sub in subs:
                         onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
 
                 # if censoring based on total run and blocks of interest
-                if (args.pthresh_b is not None) and (args.pthresh_r is not None):
+                if (p_thresh_block is not False) and (p_thresh_run is not False):
 
                     # if % of TRs censored in across blocks of interest or in a run (row i) is > threshold
                     if run_p_censor > p_thresh_run or run_p_censor_interest > p_thresh_block:
@@ -173,15 +167,15 @@ for sub in subs:
             # set path to onset directory
 
             # if thresholding based on blocks only
-            if (args.pthresh_b is not None) and (args.pthresh_r is None):
+            if (p_thresh_block is not False) and (p_thresh_run is False):
                 new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + "_b" + str(p_thresh_block))
 
             # if thresholding based on runs only
-            elif (args.pthresh_r is not None) and (args.pthresh_b is None):
+            elif (p_thresh_run is not False) and (p_thresh_block is False):
                 new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + "_r" + str(p_thresh_run))
 
             # if thresholding based on block and run
-            elif (args.pthresh_r is not None) and (args.pthresh_b is not None):  
+            elif (p_thresh_run is not False) and (p_thresh_block is not False):  
                 new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + "_r" + str(p_thresh_run) + '_b' + str(p_thresh_block))
 
             # Check whether the onset directory exists or not

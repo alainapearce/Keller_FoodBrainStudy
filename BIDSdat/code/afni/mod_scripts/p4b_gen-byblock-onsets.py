@@ -32,25 +32,10 @@ or raw data configurations.
 from email import header
 from pickle import TRUE
 from aem import con
-import numpy as np
 import pandas as pd
 import os
 from pathlib import Path
-import sys, argparse
 import re
-
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
-
-
-#input arguments setup
-parser=argparse.ArgumentParser()
-parser.add_argument('--censorsumfile', '-c', help='name of censor summary file (e.g., task-foodcue_bycond-censorsummary_fd-1.0.tsv', type=str)
-parser.add_argument('--minblockTR', '-m', help='minimum number of uncensored TRs for a block to be included', type=int)
-args=parser.parse_args()
 
 
 ##############################################################################
@@ -59,43 +44,56 @@ args=parser.parse_args()
 ####                                                                      ####
 ##############################################################################
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-base_directory = Path(os.getcwd())
+    """Function to generate onset files that censor blocks with excessive motion based on specified threshold
+    Inputs:
+        par_id (int): participant ID 
+        censorsumfile (string): name of censor summary file (e.g., task-foodcue_censorsummary_fd-1.0.tsv
+        minblockTR (int): threshold for censoring blocks. This is the minimum number of uncensored TRs for a block to be included
+    Outputs:
+        onsetfile_dat: 1 onset dataframe per condition, exported as a csv. Onsets for blocks with motion that exceeds
+            minblockTR will replaced with '*'
+    """
 
-#set specific paths
-bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
-bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+    # get script location
+    script_path = Path(__file__).parent.resolve()
 
-# Import censor summary database
-censorsummary_file = args.censorsumfile
-censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsummary_file))
+    # change directory to base directory (BIDSdat) and get path
+    os.chdir(script_path)
+    os.chdir('../../..')
+    base_directory = Path(os.getcwd())
 
-if censor_summary_path.is_file(): # if database exists
-    # import database
-    censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
-else:
-    print("censor summary file does not exist")
+    #set specific paths
+    bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
+    bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
-# extract criteria used to censor TRs based on censor summary database name
-substring = censorsummary_file.split("summary_",1)[1]
-TR_cen_critera = substring.split(".tsv",1)[0]
+    # set sub with leading zeros
+    sub = str(par_id).zfill(3)
 
-# set minimum number of TRs per block
-min_blockTR = args.minblockTR
+    # Import censor summary database
+    censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsum_file))
 
-# subset data to remove sub 999 
-censor_summary_allPar = censor_summary_allPar[censor_summary_allPar["sub"] != 999]
+    # extract criteria used to censor TRs based on censor summary database name
+    substring = censorsum_file.split("summary_",1)[1]
+    TR_cen_critera = substring.split(".tsv",1)[0]
 
-## Loop through subject_list and create onset files ##
-subs = censor_summary_allPar['sub'].unique() # get list of unique subjects to loop through
+    if censor_summary_path.is_file(): # if database exists
+        # import database
+        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
 
-for sub in subs:
+        # check that subject ID is in censor_summary_allPar
+        if (sub not in set(censor_summary_allPar['sub'])):
+            print(sub + "has no data in in censorsum_file")
+            exit
+    else:
+        print("censor summary file does not exist")
+        exit
+
+    #########################################
+    #### Generate new onset timing files ####
+    #########################################
 
     # Get original onset files -- sub needs to be padded with leading zeros
     orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub).zfill(3) + '*AFNIonsets.txt'))
@@ -123,7 +121,7 @@ for sub in subs:
             block_goodTRs = int(row[cond]) #get value from column that matches condition
 
             ## if number of uncensored TRs < min_blockTR 
-            if block_goodTRs < min_blockTR:
+            if block_goodTRs < minblockTR:
 
                 # Change corresonding value in onset file to "*"
                 pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
@@ -132,7 +130,7 @@ for sub in subs:
         ## output new onsetfile ##
 
         # set path to new onset directory
-        new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + '_by-block-' + str(min_blockTR))
+        new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + '_by-block-' + str(minblockTR))
 
         # Check whether the onset directory exists or not
         isExist = os.path.exists(new_onset_path)
