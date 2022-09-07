@@ -39,6 +39,66 @@ from pathlib import Path
 import sys, argparse
 import re
 
+#########################################################
+####                                                 ####
+####                  Subfunctions                   ####
+####                                                 ####
+#########################################################
+
+def _gen_new_onset_file(sub, onsetfile_dat, censor_summary_allPar, p_thresh_block, p_thresh_run):
+    """Function to generate onset files that censor runs with excessive motion based on specified threshold
+    Inputs:
+        sub
+        onsetfile_dat
+        censor_summary_allPar
+        p_thresh_block
+        p_thresh_run
+    Outputs:
+    """
+    
+    # Loop through rows in onset file (row i corresponds to run i+1)
+    for i in range(len(onsetfile_dat)):
+
+        # get run number
+        runnum = i + 1
+
+        # get % of TRs censored in blocks of interest and across the run
+        row = censor_summary_allPar[(censor_summary_allPar['sub'] == sub) & (censor_summary_allPar['run'] == int(runnum))] #select row based on sub and runnum
+        run_p_censor_interest = int(row['p_censor_interest']) # % of TRs censored across all blocks of interest
+        run_p_censor = int(row['p_censor']) # % of TRs censored across entire run
+
+        # if censoring based on blocks of interest
+        if (p_thresh_block is not False) and (p_thresh_run is False):
+
+            # if % of TRs censored across all blocks of interest in a run is > threshold
+            if run_p_censor_interest > p_thresh_block:
+
+                # replace column zero, row i with *
+                pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+        # if censoring based on total run only
+        if (p_thresh_block is False) and (p_thresh_run is not False):
+
+            # if % of TRs censored in run (row i) is > threshold
+            if run_p_censor > p_thresh_run:
+
+                # replace column zero, row i with *
+                pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+        # if censoring based on total run and blocks of interest
+        if (p_thresh_block is not False) and (p_thresh_run is not False):
+
+            # if % of TRs censored in across blocks of interest or in a run (row i) is > threshold
+            if run_p_censor > p_thresh_run or run_p_censor_interest > p_thresh_block:
+
+                # replace column zero, row i with *
+                pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
+                onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+
+    return(onsetfile_dat)
+
 
 ##############################################################################
 ####                                                                      ####
@@ -115,49 +175,11 @@ def p4a_gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_
             #get filename
             filename = str(onsetfile).rsplit('/',1)[-1]
 
-            #load file
+            #load original file
             onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
-
-            # Loop through rows in onset file (row i corresponds to run i+1)
-            for i in range(len(onsetfile_dat)):
-
-                # get run number
-                runnum = i + 1
-
-                # get % of TRs censored in blocks of interest and across the run
-                row = censor_summary_allPar[(censor_summary_allPar['sub'] == sub) & (censor_summary_allPar['run'] == int(runnum))] #select row based on sub and runnum
-                run_p_censor_interest = int(row['p_censor_interest']) # % of TRs censored across all blocks of interest
-                run_p_censor = int(row['p_censor']) # % of TRs censored across entire run
-
-                # if censoring based on blocks of interest
-                if (p_thresh_block is not False) and (p_thresh_run is False):
-
-                    # if % of TRs censored across all blocks of interest in a run is > threshold
-                    if run_p_censor_interest > p_thresh_block:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-                # if censoring based on total run only
-                if (p_thresh_block is False) and (p_thresh_run is not False):
-
-                    # if % of TRs censored in run (row i) is > threshold
-                    if run_p_censor > p_thresh_run:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
-
-                # if censoring based on total run and blocks of interest
-                if (p_thresh_block is not False) and (p_thresh_run is not False):
-
-                    # if % of TRs censored in across blocks of interest or in a run (row i) is > threshold
-                    if run_p_censor > p_thresh_run or run_p_censor_interest > p_thresh_block:
-
-                        # replace column zero, row i with *
-                        pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
-                        onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
+            
+            # generate new onset file
+            _gen_new_onset_file(sub, onsetfile_dat, censor_summary_allPar, p_thresh_block, p_thresh_run)
 
             # for subject 49, exclude run 1 due to triggering issues between scanner and eprime experiment 
             if sub == '049':
