@@ -113,6 +113,30 @@ def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
 
     return(CenSum_allPar, CenSum_byCond_allPar)
 
+def _get_censorstr(framewise_displacement, std_vars, cen_prev_tr):
+    """Function to generate string to identify censor criteria 
+
+    Inputs:
+        framewise_displacement (float)
+        std_vars (float or False)
+        cen_prev_tr (bool)
+
+    Outputs:
+        censor_str (str)
+
+    """
+    if std_vars is False:
+        if cen_prev_tr is False: 
+            censor_str = 'fd-' + str(framewise_displacement)
+        else:
+            censor_str = 'fd-' + str(framewise_displacement) + '_cpt'
+    else:
+        if cen_prev_tr is False:
+            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars)
+        else:
+            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars) + '_cpt'
+    return(censor_str)
+
 def _gen_concatenated_regressor_file(confound_files):
     """Function to generate 1 regressor file 
     Inputs:
@@ -244,6 +268,8 @@ def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, 
             # if std_dvars is above thresold
             if (row['std_dvars'] > std_dvars_thresh):
                 censor_info.append(0)
+            else:
+                censor_info.append(1)
         else:
             censor_info.append(1)
 
@@ -364,23 +390,23 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         print("No onset files found for sub-'" + str(sub) + "Run p1_getonsets() before p2_create_censor_files()")
         raise Exception()
 
-    # make framewise displacement a float
-    framewise_displacement = float(framewise_displacement)
+    # check framewise_displacement input
+    if isinstance(framewise_displacement, int) or isinstance(framewise_displacement, float):
+            framewise_displacement = float(framewise_displacement)
+    else:
+        print("framewise_displacement must be integer or float")
+        raise Exception()
+    
+    # check std_vars input
+    if std_vars is not False:
+        if isinstance(std_vars, int) or isinstance(std_vars, float):
+            std_vars = float(std_vars)
+        else:
+            print("std_vars must be integer or float if specified")
+            raise Exception()
 
     # set censor string 
-    if std_vars is False:
-        if cen_prev_tr is False: 
-            censor_str = 'fd-' + str(framewise_displacement)
-        else:
-            censor_str = 'fd-' + str(framewise_displacement) + '_cpt'
-    else:
-        # make std_vars a float
-        std_vars = float(std_vars)
-
-        if cen_prev_tr is False:
-            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars)
-        else:
-            censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars) + '_cpt'
+    censor_str = _get_censorstr(framewise_displacement, std_vars, cen_prev_tr)
 
     ###############################################
     ### Import or generate censor summary files ###
