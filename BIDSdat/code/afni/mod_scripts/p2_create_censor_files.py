@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This function was created to process -desc-confounds_timeseries.tsv files (output from fmriprep) in preparation for first-level analyses in AFNI. 
-The following steps will occur:
-    (1) determine which TRs need to be censored from each run
-    (2) output a censor file that indicates which TRs to censor across all runs -- will be used by AFNI in first-level analyses
-    (3) output a regressor file containing regressor information for all runs -- will be used by AFNI in first-level analyses
-    (4) output summary data that indicates % of TRs censored per run (total and for blocks of interest)
-
 Written by Bari Fuchs in Spring 2022
 
 Copyright (C) 20120 Bari Fuchs
@@ -324,6 +317,24 @@ def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
 ##############################################################################
 
 def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False, overwrite = False):
+    """
+    This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
+    The following steps will occur:
+        (1) output a regressor file containing regressor information for all runs -- will be used by AFNI in first-level analyses
+        (2) determine which TRs need to be censored from each run based on input criteria
+        (3) output a censor file that indicates which TRs to censor across all runs -- will be used by AFNI in first-level analyses
+        (4) generate censor summary information by run (e.g, % of TRs censored across run and blocks of interest)
+        (5) generate censor summary information by block (e.g, # TRs censored per block per run)
+        (6) append participant censor summary info to an overall censor summary dataframe
+
+    Inputs:
+        par_id 
+        framewise_displacement (int or float)
+        std_vars (optional, int or float)
+        cen_prev_tr (bool)
+        overwrite (bool)
+        
+    """
 
     # get script location
     script_path = Path(__file__).parent.resolve()
@@ -337,18 +348,14 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
     bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
     bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
 
-    #############################
-    ### Get participant files ###
-    #############################
-    
     # set sub with leading zeros
     sub = str(par_id).zfill(3)
    
-    # get confound and onset files
+    # get participant confound and onset files
     confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
     orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
-    # exit if no confound files or onset files
+    # exit if no participant confound files or onset files
     if len(confound_files) < 1:
         print("No confound files found for sub-" + str(sub) + ". Unable to generate regressor and censor files")
         raise Exception()
@@ -357,6 +364,9 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         print("No onset files found for sub-'" + str(sub) + "Run p1_getonsets() before p2_create_censor_files()")
         raise Exception()
 
+    # make framewise displacement a float
+    framewise_displacement = float(framewise_displacement)
+
     # set censor string 
     if std_vars is False:
         if cen_prev_tr is False: 
@@ -364,6 +374,9 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         else:
             censor_str = 'fd-' + str(framewise_displacement) + '_cpt'
     else:
+        # make std_vars a float
+        std_vars = float(std_vars)
+
         if cen_prev_tr is False:
             censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars)
         else:
