@@ -51,10 +51,163 @@ from sqlalchemy import false
 ####                                                 ####
 #########################################################
 
-def _get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR_flag):
+def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
+    """Function to import or generate task-foodcue_censorsummary_* and task-foodcue_bycond-censorsummary_* files. 
+        Files will be imported if censorsummary file with specified CensorStr exists, otherwise they will be generated. 
+        If subject is already in censorsummary database and Overwrite = False, exception will be raised. 
+        If subject is already in censorsummary database and Overwrite != False, subject will be removed from summary database.
+
+    Inputs:
+        fMRIpreppath (list) - path to import file from
+        censor_str (str) - string that defines TR censor criteria 
+        sub (str) - subject ID
+        overwrite (bool) - True or False for overwriting subject data in censor summary files
+        
+    Outputs:
+        RegressPardat (pandas dataframe) - will contain 1 column per regressor variable and (number confound files * length of 1 confound file) rows
+    """
+
+    # Set paths to summary file
+    censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')
+
+    ### Manage censor_summary_path ###
+    if censor_summary_path.is_file(): # if database exists
+
+        # import database --- converting 'sub' to string will maintain leading zeros
+        CenSum_allPar = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
+
+        # check to see if subject already in database
+        if (sub in set(CenSum_allPar['sub'])):
+            if overwrite is False:
+                print("sub_" + sub + " already in foodcue_censorsummary file. Use overwrite = True to rerun")
+                raise Exception()
+            else: #overwrite is true
+                # remove subject rows from censor_summary_path
+                CenSum_allPar = CenSum_allPar[CenSum_allPar['sub'] != sub]
+
+    # if database does not exist
+    else:
+        # create new dataframe 
+        CenSum_allPar = pd.DataFrame(np.zeros((0, 8)))
+        CenSum_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
+
+    ########################################
+    ### Manage bycond-censorsummary file ###
+    ########################################
+
+    # Set paths to summary file
+    censor_summary_bycond_path = Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')
+
+    if censor_summary_bycond_path.is_file(): # if database exists
+
+        # import database --- converting 'sub' to string will maintain leading zeros
+        CenSum_byCond_allPar = pd.read_csv(str(censor_summary_bycond_path), sep = '\t', converters={'sub': lambda x: str(x)})
+
+        # check to see if subject already in database
+        if (sub in set(CenSum_byCond_allPar['sub'])):
+            if overwrite is False:
+                print("sub_" + sub + " already in foodcue_bycond-censorsummary file. Use overwrite = True to rerun")
+                raise Exception()
+            else: #overwrite is true
+                # remove subject rows from censor_summary_path
+                CenSum_byCond_allPar = CenSum_byCond_allPar[CenSum_byCond_allPar['sub'] != sub]
+
+    # if database does not exist
+    else:
+        # create new dataframe 
+        CenSum_byCond_allPar = pd.DataFrame(np.zeros((0, 8)))
+        CenSum_byCond_allPar.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
+
+    return(CenSum_allPar, CenSum_byCond_allPar)
+
+def _gen_concatenated_regressor_file(confound_files):
+    """Function to generate 1 regressor file 
+    Inputs:
+        confound_files (list) - list of counfound files from fmriprep. 1 confound file per run
+        
+    Outputs:
+        RegressPardat (pandas dataframe) - will contain 1 column per regressor variable and (number confound files * length of 1 confound file) rows
+    """
+    # Make list of variables to regress in Level 1 analyses
+    RegressLev1=['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'csf', 'white_matter', 'global_signal', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
+    
+    # create overall regressor dataframe for participant
+    RegressPardat = pd.DataFrame(np.zeros((0, len(RegressLev1))))
+    RegressPardat.columns = RegressLev1
+
+    confound_files.sort()
+    for file in confound_files: #loop through runs (each run has its own confoundfile)
+
+        #load data
+        confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
+
+        # add counfound file (i.e., run-specific) regressor data to overall regressor file
+        RegressRun = confound_dat_all[RegressLev1].copy()
+        RegressPardat = RegressPardat.append(RegressRun)
+
+    # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
+    deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
+    RegressPardat.loc[0, deriv_vars] = RegressPardat.loc[0, deriv_vars].fillna(value=0)
+
+    return(RegressPardat)
+
+def _gen_run_int_list(bids_origonset_path, sub, confound_dat, runnum):
+    """Function to generate 
+    Inputs:
+        
+    Outputs:
+
+    """
+
+    ### Identify TRs in food blocks ###
+    # get onset files (note: there is 1 onset file per condition)
+    orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+
+    # make empty list for block onsets
+    block_onsets_TR = []
+
+    # make dictionary for block onsets
+    block_onsets_TR_dict = {}
+
+    # loop through onset files to get block onset times
+    for onsetfile in orig_onsetfiles:
+        # get file name
+        filename = onsetfile.stem
+        # get condition 
+        cond = re.split('_|-',filename)[2]
+
+        ## Uncomment this and indent loop if want to only consider food blocks and not office supply blocks
+        # if condition contains High or Low string 
+        #if ('High' in cond) or ('Low' in cond):
+
+        #load file
+        onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
+
+        # get block onset time for the given run (indexed by row) -- onset times are in seconds
+        onset_time = (onsetfile_dat.iloc[runnum-1, 0])
+
+        # convert onset time to TR
+        TR = 2
+        onset_TR = int(onset_time / TR)
+
+        # append block onset TR to list
+        block_onsets_TR.append(onset_TR)
+
+        # add condition and onset to dictionary
+        block_onsets_TR_dict[cond] = onset_TR
+
+    # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
+    r_int_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
+    for onset in block_onsets_TR: #loop through onsets
+        offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
+        r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
+
+    return(r_int_list, block_onsets_TR_dict)
+
+def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR_flag):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
     Inputs:
-        Confound_Data (dataframe) - data from a -desc-confounds_timeseries.tsv file
+        confound_dat (dataframe) - data from a -desc-confounds_timeseries.tsv file
         FD_thresh (float) - framewise displacement threshold
         std_dvars_thresh ('False' or float) - std_dvars threshold
         r_int_info (list) - length equal to number of TRs in Confound_Data; 
@@ -71,7 +224,7 @@ def _get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen
         p_censored_int (integer) - percentage of TRs/volumes of interest to be censored
     """
 
-    Confound_Data = Confound_Data.reset_index()  # make sure indexes pair with number of rows
+    confound_dat = confound_dat.reset_index()  # make sure indexes pair with number of rows
 
     # censor TR if: 
     #   (1) First or second TR (datapoints 0 and 1)
@@ -81,7 +234,7 @@ def _get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen
     #   (5) framewise_displacement on the next TR > FD_thresh, if cen_prev_TR = True
     
     censor_info = []
-    for index, row in Confound_Data.iterrows():
+    for index, row in confound_dat.iterrows():
         # if first or second TR
         if (index < 2):
             censor_info.append(0)
@@ -138,6 +291,32 @@ def _get_censor_info(Confound_Data, FD_thresh, std_dvars_thresh, r_int_info, cen
 
     return(censor_info, nvol, n_censored, p_censored, nvol_int, n_censored_int, p_censored_int)
 
+def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
+
+    # make dictionary for TR count
+    block_TRcount_dict = {}
+
+    for condition in block_onsets_TR_dict: #loop through condition keys
+
+        # get condition onset and offset
+        onset = block_onsets_TR_dict[condition]
+        offset = onset + 9
+
+        # extract censor info for TRs associated with the condition
+        cond_censor = run_censordata[onset:offset]
+
+        # count the number of uncensored TRs in the condition
+        cond_uncensor_count = sum(cond_censor)
+
+        # add to dictionary
+        block_TRcount_dict[condition] = cond_uncensor_count
+
+    # Generate a dataframe row that indicates how many TRs are good per condition (block) in a run
+    bycond_run_row = pd.DataFrame([[sub, runnum, block_TRcount_dict['HighLarge'], block_TRcount_dict['HighSmall'], block_TRcount_dict['LowLarge'], block_TRcount_dict['LowSmall'], block_TRcount_dict['OfficeLarge'], block_TRcount_dict['OfficeSmall']]], columns=['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall'])
+
+    return(bycond_run_row)
+    
+
 ##############################################################################
 ####                                                                      ####
 ####                             Main Function                            ####
@@ -190,81 +369,36 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         else:
             censor_str = 'fd-' + str(framewise_displacement) + '_stddvar-' + str(std_vars) + '_cpt'
 
+    ###############################################
+    ### Import or generate censor summary files ###
+    ###############################################
 
-    #################################
-    ### Magage censorsummary file ###
-    #################################
+    censor_summary_allPar, censor_summary_bycond_allPar = _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite)
 
-    # Set paths to summary file
-    censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')
+    ##############################
+    ### Create regressor files ###
+    ##############################
 
-    ### Manage censor_summary_path ###
-    if censor_summary_path.is_file(): # if database exists
+    # run function to generate concatenated level-1-regressor dataframe
+    regress_Pardat = _gen_concatenated_regressor_file(confound_files)
 
-        # import database --- converting 'sub' to string will maintain leading zeros
-        censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
+    # Export participant regressor file with and without columns names
+    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
-        # check to see if subject already in database
-        if (sub in set(censor_summary_allPar['sub'])):
-            if overwrite is False:
-                print("sub_" + sub + " already in foodcue_censorsummary file. Use overwrite = True to rerun")
-                raise Exception()
-            else: #overwrite is true
-                # remove subject rows from censor_summary_path
-                censor_summary_allPar = censor_summary_allPar[censor_summary_allPar['sub'] != sub]
-
-    # if database does not exist
-    else:
-        # create new dataframe 
-        censor_summary_allPar = pd.DataFrame(np.zeros((0, 8)))
-        censor_summary_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
-
-    ########################################
-    ### Magage bycond-censorsummary file ###
-    ########################################
-
-    # Set paths to summary file
-    censor_summary_bycond_path = Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')
-
-    if censor_summary_bycond_path.is_file(): # if database exists
-
-        # import database --- converting 'sub' to string will maintain leading zeros
-        censor_summary_bycond_allPar = pd.read_csv(str(censor_summary_bycond_path), sep = '\t', converters={'sub': lambda x: str(x)})
-
-        # check to see if subject already in database
-        if (sub in set(censor_summary_bycond_allPar['sub'])):
-            if overwrite is False:
-                print("sub_" + sub + " already in foodcue_bycond-censorsummary file. Use overwrite = True to rerun")
-                raise Exception()
-            else: #overwrite is true
-                # remove subject rows from censor_summary_path
-                censor_summary_bycond_allPar = censor_summary_bycond_allPar[censor_summary_bycond_allPar['sub'] != sub]
-
-    # if database does not exist
-    else:
-        # create new dataframe 
-        censor_summary_bycond_allPar = pd.DataFrame(np.zeros((0, 8)))
-        censor_summary_bycond_allPar.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
-
-    #########################################
-    ### Create censor and regressor files ###
-    #########################################
+    ###########################
+    ### Create censor files ###
+    ###########################
 
     # create run censor data summary per participant
     censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
     censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
-    # create overall regressor dataframe participant
-    regress_lev1=['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'csf', 'white_matter', 'global_signal', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
-    regress_Pardat = pd.DataFrame(np.zeros((0, len(regress_lev1))))
-    regress_Pardat.columns = regress_lev1
-
     # create empty list for censor data
     censordata_allruns = []
 
-    # extract censor information for each run (each confoundfile)
     confound_files.sort()
-    for file in confound_files: #loop through runs (each run has its own confoundfile)
+    for file in confound_files:
 
         #load data
         confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
@@ -272,106 +406,25 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         # get run number
         runnum = int(str(file).rsplit('/',1)[-1][31:32])
 
-        # select variables for processing data
-        confound_dat = confound_dat_all[['framewise_displacement', 'std_dvars', 'dvars' ,'trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z',
-                                        'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 
-                                        'rot_y_derivative1', 'rot_z_derivative1', 'csf', 'white_matter', 'global_signal']].copy()
+        # select variables generating censor files
+        confound_dat = confound_dat_all[['framewise_displacement', 'std_dvars']].copy()
 
         # add non-steady-state outlier column (only exists in confound.tsv files with non-steady-state outliers)
         if 'non_steady_state_outlier00' in confound_dat_all:
             confound_dat['non_steady_state_outlier00'] = confound_dat_all['non_steady_state_outlier00']
         else: 
             confound_dat['non_steady_state_outlier00'] = 0
-        
-        ### Identify TRs in food blocks ###
-        # get onset files (note: there is 1 onset file per condition)
-        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
-        # make empty list for block onsets
-        block_onsets_TR = []
-
-        # make dictionary for block onsets
-        block_onsets_TR_dict = {}
-
-        # loop through onset files to get block onset times
-        for onsetfile in orig_onsetfiles:
-            # get file name
-            filename = onsetfile.stem
-            # get condition 
-            cond = re.split('_|-',filename)[2]
-
-            ## Uncomment this and indent loop if want to only consider food blocks and not office supply blocks
-            # if condition contains High or Low string 
-            #if ('High' in cond) or ('Low' in cond):
-
-            #load file
-            onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
-
-            # get block onset time for the given run (indexed by row) -- onset times are in seconds
-            onset_time = (onsetfile_dat.iloc[runnum-1, 0])
-
-            # convert onset time to TR
-            TR = 2
-            onset_TR = int(onset_time / TR)
-
-            # append block onset TR to list
-            block_onsets_TR.append(onset_TR)
-
-            # add condition and onset to dictionary
-            block_onsets_TR_dict[cond] = onset_TR
-
-        # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
-        r_int_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
-        for onset in block_onsets_TR: #loop through onsets
-            offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
-            r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
+        # run function to generate XXXX
+        r_int_list, block_onsets_TR_dict = _gen_run_int_list(bids_origonset_path, sub, confound_dat, runnum)
 
         # run function to get censor information by run
-        res = _get_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_int_info = r_int_list, cen_prev_TR_flag=cen_prev_tr)
-
-        #export run-specific censor file
-        run_censordata = res[0]
+        res = _get_run_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_int_info = r_int_list, cen_prev_TR_flag=cen_prev_tr)
 
         # add run-specific censor data to overall censor file
+        run_censordata = res[0]
         censordata_allruns.extend(run_censordata)
         
-        # add run-specific regressor data to overall regressor file
-        regress_run = confound_dat[regress_lev1].copy()
-        regress_Pardat = regress_Pardat.append(regress_run)
-
-        #################################
-        # get motion BY CONDITION / BLOCK
-        #################################
-
-        # make dictionary for TR count
-        block_TRcount_dict = {}
-
-        for condition in block_onsets_TR_dict: #loop through condition keys
-
-            # get condition onset and offset
-            onset = block_onsets_TR_dict[condition]
-            offset = onset + 9
-
-            # extract censor info for TRs associated with the condition
-            cond_censor = run_censordata[onset:offset]
-
-            # count the number of uncensored TRs in the condition
-            cond_uncensor_count = sum(cond_censor)
-
-            # add to dictionary
-            block_TRcount_dict[condition] = cond_uncensor_count
-
-            # make dataframe
-            #df = pd.DataFrame([block_TRcount_dict], columns=block_TRcount_dict.keys())
-
-        # Add motion by contion to summary dataframe - this will append 1 row per run, with 1 column per conditon
-        to_append = pd.DataFrame([[sub, runnum, block_TRcount_dict['HighLarge'], block_TRcount_dict['HighSmall'], block_TRcount_dict['LowLarge'], block_TRcount_dict['LowSmall'], block_TRcount_dict['OfficeLarge'], block_TRcount_dict['OfficeSmall']]], columns=['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall'])
-        censor_summary_bycond_allPar = censor_summary_bycond_allPar.append(to_append)
-
-        # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
-        deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
-        regress_Pardat.loc[0, deriv_vars] = regress_Pardat.loc[0, deriv_vars].fillna(value=0)
-
         # add run-specific summary information to participant summary dataframe (censor_sum_Pardat)
         # res[1] = number of TRs total; res[2] = number of TRs censored total, res[3] = % of TRs censored total
         # res[4] = number of TRs of interest; res[5] = number of TRs of interest censored , res[6] = % of TRs of interest censored
@@ -379,22 +432,22 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6]]
         censor_sum_Pardat.loc[df_len] = runsum
 
-        # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
-        censordata_allruns_df = pd.DataFrame(censordata_allruns)
-        censordata_allruns_df.columns = ['header']
-        censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+        # get censor information by condition/block
+        bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum) 
+        
+        # append censor information by condition/block to summary_bycond dataframe
+        censor_summary_bycond_allPar = censor_summary_bycond_allPar.append(bycond_run_row)
 
-        # Export participant regressor file with and without columns names
-        regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
-        regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
-    #######################################
-    #### Write censor summary database ####
-    #######################################
+    # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
+    censordata_allruns_df = pd.DataFrame(censordata_allruns)
+    censordata_allruns_df.columns = ['header']
+    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
-    # Add participant summary dataframe to overall summary database
+    # Add participant censor summary dataframe to overall censor summary database
     censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
 
+    # Export overall censor summary databases
     censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
     censor_summary_bycond_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
