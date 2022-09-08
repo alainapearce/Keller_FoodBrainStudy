@@ -56,7 +56,7 @@ script_path = Path(__file__).parent.resolve()
 
 # change directory to base directory (BIDSdat) and get path
 os.chdir(script_path)
-os.chdir('../../..')
+os.chdir('../..')
 base_directory = Path(os.getcwd())
 
 #set specific paths
@@ -78,10 +78,10 @@ foodcue_raw_files = list(Path(bids_raw_path).rglob('sub-*/ses-1/func/*foodcue*ev
 foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue_raw_files]
 
 ##set is finding only unique values
-subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
+#subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
 
 # For testing
-#subs = ['001', '002']
+subs = ['001', '002']
 
 ###################################
 ### call functions for each sub ###
@@ -94,17 +94,17 @@ for sub in subs:
      except:
           print("Discontinuing p1_getonsets() for sub_" + sub)
 
-     try:
-          p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 1, std_vars = 1.0, cen_prev_tr=False, overwrite=True)
-     except:
-          print("Discontinuing p2_create_censor_files() for sub_" + sub)
+     # try:
+     #      p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 1, std_vars = 1.0, cen_prev_tr=False, overwrite=True)
+     # except:
+     #      print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
-     try:
-          p4a_gen_byrun_onsets.p4a_gen_byrun_onsets(par_id = sub, censorsum_file = 'task-foodcue_censorsummary_fd-0.9.tsv', p_thresh_run = False, p_thresh_block = 20)
-     except:
-          print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
+     # try:
+     #      p4a_gen_byrun_onsets.p4a_gen_byrun_onsets(par_id = sub, censorsum_file = 'task-foodcue_censorsummary_fd-0.9.tsv', p_thresh_run = False, p_thresh_block = 20)
+     # except:
+     #      print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
 
-     try:
-          p4b_gen_byblock_onsets.p4b_gen_byblock_onsets(par_id = sub, censorsum_file = 'task-foodcue_bycond-censorsummary_fd-0.9.tsv', minblockTR = 7)
-     except:
-          print("Discontinuing p4b_gen_byblock_onsets() for sub_" + sub)
+     # try:
+     #      p4b_gen_byblock_onsets.p4b_gen_byblock_onsets(par_id = sub, censorsum_file = 'task-foodcue_bycond-censorsummary_fd-0.9.tsv', minblockTR = 7)
+     # except:
+     #      print("Discontinuing p4b_gen_byblock_onsets() for sub_" + sub)

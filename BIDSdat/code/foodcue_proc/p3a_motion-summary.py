@@ -47,7 +47,7 @@ script_path = Path(__file__).parent.resolve()
 
 # change directory to base directory (BIDSdat) and get path
 os.chdir(script_path)
-os.chdir('../../..')
+os.chdir('../..')
 base_directory = Path(os.getcwd())
 
 #set specific paths

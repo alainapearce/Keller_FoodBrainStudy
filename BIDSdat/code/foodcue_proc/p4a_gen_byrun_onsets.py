@@ -124,7 +124,7 @@ def p4a_gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_
 
     # change directory to base directory (BIDSdat) and get path
     os.chdir(script_path)
-    os.chdir('../../..')
+    os.chdir('../..')
     base_directory = Path(os.getcwd())
 
     #set specific paths

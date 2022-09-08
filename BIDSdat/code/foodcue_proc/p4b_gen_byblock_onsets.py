@@ -61,7 +61,7 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
 
     # change directory to base directory (BIDSdat) and get path
     os.chdir(script_path)
-    os.chdir('../../..')
+    os.chdir('../..')
     base_directory = Path(os.getcwd())
 
     #set specific paths

@@ -367,7 +367,7 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
 
     # change directory to base directory (BIDSdat) and get path
     os.chdir(script_path)
-    os.chdir('../../..')
+    os.chdir('../..')
     base_directory = Path(os.getcwd())
 
     #set specific paths

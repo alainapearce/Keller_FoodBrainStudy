@@ -31,7 +31,6 @@ from pickle import TRUE
 import numpy as np
 import pandas as pd
 import os
-import sys, argparse
 from pathlib import Path
 
 
@@ -79,7 +78,7 @@ def p1_getonsets(par_id, overwrite = False):
 
     # change directory to base directory (BIDSdat) and get path
     os.chdir(script_path)
-    os.chdir('../../..')
+    os.chdir('../..')
     base_directory = Path(os.getcwd())
 
     #set specific paths
