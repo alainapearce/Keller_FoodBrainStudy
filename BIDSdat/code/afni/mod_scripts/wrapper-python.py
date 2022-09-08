@@ -95,7 +95,7 @@ for sub in subs:
           print("Discontinuing p1_getonsets() for sub_" + sub)
 
      try:
-          p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 0.9, std_vars=False, cen_prev_tr=False, overwrite=True)
+          p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 1, std_vars = 1.0, cen_prev_tr=False, overwrite=True)
      except:
           print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
