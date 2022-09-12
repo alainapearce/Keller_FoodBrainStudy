@@ -168,17 +168,20 @@ def _gen_concatenated_regressor_file(confound_files):
 
     return(RegressPardat)
 
-def _gen_run_int_list(bids_origonset_path, sub, confound_dat, runnum):
-    """Function to generate 
+def _gen_run_int_list(orig_onsetfiles, confound_dat, runnum):
+    """Function to generate r_int_list and block_onsets_TR_dict based on original onset files
     Inputs:
+        orig_onsetfiles (list) - list of PosixPaths to onset files
+        confound_dat (dataframe) - dataframe for a run with 1 row per TR
+        runnum (int) - run number 
         
     Outputs:
-
+        r_int_list (list) - a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
+        block_onsets_TR_dict (dictionary)
     """
 
     ### Identify TRs in food blocks ###
     # get onset files (note: there is 1 onset file per condition)
-    orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
     # make empty list for block onsets
     block_onsets_TR = []
@@ -286,7 +289,7 @@ def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, 
     # count number of censored TRs
     n_censored = (censor_info_df[0] == 0).sum()
 
-    # get percent of censored TRs, rounded to 2 decimals
+    # get percent of censored TRs, rounded to 1 decimals
     p_censored = round((n_censored/nvol)*100,1)
 
     ### Get censor information for TRs of interest ###
@@ -305,8 +308,8 @@ def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, 
     # count number of censored TRs of intrest
     n_censored_int = (censor_info_int_df[0] == 0).sum()
 
-    # get percent of censored TRs of interest, rounded to 2 decimals
-    p_censored_int = round((n_censored_int/nvol_int)*100,2)
+    # get percent of censored TRs of interest, rounded to 1 decimals
+    p_censored_int = round((n_censored_int/nvol_int)*100,1)
 
     return(censor_info, nvol, n_censored, p_censored, nvol_int, n_censored_int, p_censored_int)
 
@@ -433,6 +436,9 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
     censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
     censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
+    censor_sum_bycond_Pardat = pd.DataFrame(np.zeros((0, 8)))
+    censor_sum_bycond_Pardat.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
+
     # create empty list for censor data
     censordata_allruns = []
 
@@ -454,8 +460,11 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         else: 
             confound_dat['non_steady_state_outlier00'] = 0
 
-        # run function to generate XXXX
-        r_int_list, block_onsets_TR_dict = _gen_run_int_list(bids_origonset_path, sub, confound_dat, runnum)
+        # get orignal onset files for subject (note: there is 1 onset file per condition)
+        orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
+
+        # run function to generate r_int_list and a dictionary of block onset times (block_onsets_TR_dict)
+        r_int_list, block_onsets_TR_dict = _gen_run_int_list(orig_onsetfiles, confound_dat, runnum)
 
         # run function to get censor information by run
         res = _get_run_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_int_info = r_int_list, cen_prev_TR_flag=cen_prev_tr)
@@ -474,8 +483,8 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         # get censor information by condition/block
         bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum) 
         
-        # append censor information by condition/block to summary_bycond dataframe
-        censor_summary_bycond_allPar = censor_summary_bycond_allPar.append(bycond_run_row)
+        # append censor information by condition/block to censor_sum_bycond_Pardat dataframe
+        censor_sum_bycond_Pardat = censor_sum_bycond_Pardat.append(bycond_run_row)
 
 
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
@@ -483,13 +492,16 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
     censordata_allruns_df.columns = ['header']
     censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
-    # Add participant censor summary dataframe to overall censor summary database
+    # Add participant censor summarys to overall censor summary databases
     censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
+    censor_summary_bycond_allPar = censor_summary_bycond_allPar.append(censor_sum_bycond_Pardat)
 
     # Export overall censor summary databases
     censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
     censor_summary_bycond_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
+    # return particpant databases for integration testing
+    return censordata_allruns_df, censor_sum_bycond_Pardat
 
 #if __name__ == "__main__":
 #    p2_create_censor_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
