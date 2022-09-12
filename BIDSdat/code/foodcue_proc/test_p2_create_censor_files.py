@@ -6,12 +6,23 @@
 import pytest
 import pandas as pd
 import numpy as np
+from pathlib import Path
+import os
 
 # import functions to test
 from p2_create_censor_files import _gen_concatenated_regressor_file
 from p2_create_censor_files import _gen_run_int_list
 from p2_create_censor_files import _get_run_censor_info
 from p2_create_censor_files import _get_censorsum_bycond
+
+# get script location
+script_path = Path(__file__).parent.resolve()
+
+# change directory to base directory (BIDSdat) and get path
+os.chdir(script_path)
+os.chdir('../..')
+base_directory = Path(os.getcwd())
+bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
 
 ####################
 ##### Fixtures #####
@@ -42,6 +53,13 @@ def r_int_list_fixture():
     r_int_list[67:76] = [1, 1, 1, 1, 1, 1, 1, 1, 1]   #At indices 67:76 in r_int_list, set value to 1
 
     return r_int_list
+
+@pytest.fixture
+def block_onsets_TR_dict_fixture():
+    
+    block_onsets_TR_dict_999 = {'OfficeSmall': 67, 'LowLarge': 28, 'HighSmall': 15, 'HighLarge': 2, 'LowSmall': 41, 'OfficeLarge': 54}
+
+    return block_onsets_TR_dict_999
 
 @pytest.fixture
 def censor_info_fixture():
@@ -79,7 +97,6 @@ def censor_info_fixture():
 
     return censor_info_dict
 
-
 #################
 ##### Tests #####
 #################
@@ -95,13 +112,17 @@ def test_fixture(confound_dat_fixture):
 #     # check function output
 #     assert regress_Pardat == regress_pardat_fixture, "error"
 
-#def test_gen_run_int_list(confound_dat_fixture, r_int_list_fixture, block_onsets_TR_dict_fixture):
-#    # # run function
-#    r_int_list, block_onsets_TR_dict = _gen_run_int_list(bids_origonset_path, sub = 999, confound_dat_fixture, runnum)
+def test_gen_run_int_list(confound_dat_fixture, r_int_list_fixture, block_onsets_TR_dict_fixture):
 
-#     # check function output
-#    assert r_int_list == r_int_list_fixture, "r_int_list error"
-#    assert block_onsets_TR_dict == block_onsets_TR_dict_fixture, "block_onsets_TR_dict error"
+    # get original onset test data
+    orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-999*AFNIonsets.txt'))
+
+    # # run function
+    r_int_list, block_onsets_TR_dict = _gen_run_int_list(orig_onsetfiles, confound_dat_fixture, runnum = 1)
+
+    # check function output
+    assert r_int_list == r_int_list_fixture
+    assert block_onsets_TR_dict == block_onsets_TR_dict_fixture
 
 def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_info_fixture):
 
@@ -134,5 +155,6 @@ def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_in
 
 
 
-#def test_get_censorsum_bycond():
+#def test_get_censorsum_bycond(censor_info_fixture):
     #bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub = 999, runnum) 
+    #bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, censor_info_fixture["fd-1.0"], sub = 999, runnum) 
