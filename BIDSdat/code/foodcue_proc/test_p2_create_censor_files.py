@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 import os
+from pandas.testing import assert_frame_equal
 
 # import functions to test
 from p2_create_censor_files import _gen_concatenated_regressor_file
@@ -35,7 +36,7 @@ def confound_dat_fixture():
     confound_dat.columns = ['framewise_displacement','std_dvars', 'non_steady_state_outlier00']
     # use np.r_ to concatenate array slices. without np.r_, slices will be inclusive
     confound_dat.at[np.r_[:20, 40:46],["framewise_displacement"]] = 1.1 # set rows 0:20 & 40:46 to have framewise displacement of 1.1
-    confound_dat.at[np.r_[50:55],["std_dvars"]] = 1.1                   # set rows 50:55 to have std_dvars of 1.1
+    confound_dat.at[np.r_[50:60],["std_dvars"]] = 1.1                   # set rows 50:55 to have std_dvars of 1.1
     confound_dat.at[np.r_[75:79],["non_steady_state_outlier00"]] = 1    # set rows 75:79 to have framewise displacement of 1.1
 
     return confound_dat
@@ -77,7 +78,7 @@ def censor_info_fixture():
 
     # if censoring for framewise displacement > 1 and stddvar > 1
     fd1_stddvar1 = [1] * 80
-    index_list = list(range(0,20)) + list(range(40,46)) + list(range(75,79)) + list(range(50,55))
+    index_list = list(range(0,20)) + list(range(40,46)) + list(range(75,79)) + list(range(50,60))
     for i in range(len(fd1_stddvar1)):
             if i in index_list:
                 fd1_stddvar1[i] = 0
@@ -97,12 +98,28 @@ def censor_info_fixture():
 
     return censor_info_dict
 
+@pytest.fixture
+def bycond_run_row_fixture():
+
+    row_fd1 = {'sub':[999], 'run': [1], 'HighLarge': [0], 'HighSmall': [4], 'LowLarge': [9], 'LowSmall': [4], 'OfficeLarge': [9], 'OfficeSmall': [8]}
+    row_fd1_stddvar1 = {'sub':[999], 'run': [1], 'HighLarge': [0], 'HighSmall': [4], 'LowLarge': [9], 'LowSmall': [4], 'OfficeLarge': [3], 'OfficeSmall': [8]}
+    row_fd1_cpt = {'sub':[999], 'run': [1], 'HighLarge': [0], 'HighSmall': [4], 'LowLarge': [9], 'LowSmall': [4], 'OfficeLarge': [9], 'OfficeSmall': [8]}
+
+    bycond_row_fd1 = pd.DataFrame(data=row_fd1)
+    bycond_row_fd1_stddvar1 = pd.DataFrame(data=row_fd1_stddvar1)
+    bycond_row_fd1_cpt = pd.DataFrame(data=row_fd1_cpt)
+
+    # put dataframes into a dictionary
+    goodTR_bycond_dict = {} # make empty dictionary
+    goodTR_bycond_dict["fd-1.0"] = bycond_row_fd1
+    goodTR_bycond_dict["fd-1.0_stddvar-1.0"] = bycond_row_fd1_stddvar1
+    goodTR_bycond_dict["fd-1.0_cpt"] = bycond_row_fd1_cpt
+
+    return goodTR_bycond_dict
+    
 #################
 ##### Tests #####
 #################
-
-def test_fixture(confound_dat_fixture):
-    assert isinstance(confound_dat_fixture, pd.DataFrame) == True
 
 # def test_gen_concatenated_regressor_file(confound_files_fixture, regress_pardat_fixture):
 
@@ -126,24 +143,18 @@ def test_gen_run_int_list(confound_dat_fixture, r_int_list_fixture, block_onsets
 
 def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_info_fixture):
 
-    # run function w/F
+    # run function with 3 different censor criteria
     res = _get_run_censor_info(confound_dat_fixture, 
                                 FD_thresh = 1.0, 
                                 std_dvars_thresh = False, 
                                 r_int_info = r_int_list_fixture, 
                                 cen_prev_TR_flag=False)
-    # check function output
-    assert censor_info_fixture["fd-1.0"] == res[0]
 
-    # run function
     res2 = _get_run_censor_info(confound_dat_fixture, 
                                 FD_thresh = 1.0, 
                                 std_dvars_thresh = 1.0, 
                                 r_int_info = r_int_list_fixture, 
                                 cen_prev_TR_flag=False)
-    # check function output
-    assert censor_info_fixture["fd-1.0_stddvar-1.0"] == res2[0]
-
     # run function
     res3 = _get_run_censor_info(confound_dat_fixture, 
                                 FD_thresh = 1.0, 
@@ -151,10 +162,20 @@ def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_in
                                 r_int_info = r_int_list_fixture, 
                                 cen_prev_TR_flag=True)
     # check function output
+    assert censor_info_fixture["fd-1.0"] == res[0]
+    assert censor_info_fixture["fd-1.0_stddvar-1.0"] == res2[0]
     assert censor_info_fixture["fd-1.0_cpt"] == res3[0]
 
 
 
-#def test_get_censorsum_bycond(censor_info_fixture):
-    #bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub = 999, runnum) 
-    #bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, censor_info_fixture["fd-1.0"], sub = 999, runnum) 
+def test_get_censorsum_bycond(censor_info_fixture, block_onsets_TR_dict_fixture, bycond_run_row_fixture):
+
+    # run function with 3 different censor criteria
+    bycond_row_fd1 = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0"], sub = 999, runnum = 1)
+    bycond_row_fd1_stddvar1 = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_stddvar-1.0"], sub = 999, runnum = 1)
+    bycond_row_fd1_cpt = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_cpt"], sub = 999, runnum = 1)
+
+    # check function output -- use assert_frame_equal to compare dataframes
+    assert_frame_equal(bycond_row_fd1,bycond_run_row_fixture["fd-1.0"])
+    assert_frame_equal(bycond_row_fd1_stddvar1,bycond_run_row_fixture["fd-1.0_stddvar-1.0"])
+    assert_frame_equal(bycond_row_fd1_cpt,bycond_run_row_fixture["fd-1.0_cpt"])
