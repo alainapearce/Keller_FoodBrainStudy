@@ -161,10 +161,21 @@ def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_in
                                 std_dvars_thresh = False, 
                                 r_int_info = r_int_list_fixture, 
                                 cen_prev_TR_flag=True)
-    # check function output
+
+    # check function censor_info output
     assert censor_info_fixture["fd-1.0"] == res[0]
     assert censor_info_fixture["fd-1.0_stddvar-1.0"] == res2[0]
     assert censor_info_fixture["fd-1.0_cpt"] == res3[0]
+
+    # check function p_censored output res[3] -- see test_censor_tr_count.xlsx for expected value calculations
+    assert 35.9 == res[3]
+    assert 48.7 == res2[3]
+    assert 37.2 == res3[3]
+
+    # check function p_censored_int output res[6] -- see test_censor_tr_count.xlsx for expected value calculations 
+    assert 37.0 == res[6]
+    assert 48.1 == res2[6]
+    assert 37.0 == res3[6]
 
 
 
