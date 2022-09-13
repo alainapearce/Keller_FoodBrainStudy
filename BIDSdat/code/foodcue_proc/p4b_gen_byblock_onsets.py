@@ -44,7 +44,7 @@ import re
 ####                                                                      ####
 ##############################################################################
 
-def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
+def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR, preproc_path = False):
 
     """Function to generate onset files that censor blocks with excessive motion based on specified threshold
     Inputs:
@@ -56,18 +56,35 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
             minblockTR will replaced with '*'
     """
 
-    # get script location
-    script_path = Path(__file__).parent.resolve()
+    # set base_directory
+    if preproc_path is False:
 
-    # change directory to base directory (BIDSdat) and get path
-    os.chdir(script_path)
-    os.chdir('../..')
-    base_directory = Path(os.getcwd())
+        # get script location
+        script_path = Path(__file__).parent.resolve()
 
-    #set specific paths
-    bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
-    bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+        # change directory to base directory (BIDSdat) and get path
+        os.chdir(script_path)
+        os.chdir('../..')
+        base_directory = Path(os.getcwd())
+
+        #set specific paths
+        bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
+        bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+        bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+
+
+    elif isinstance(preproc_path, str):
+        # make input string a path
+        preprocessed_directory = Path(preproc_path)
+
+        #set specific paths
+        bids_onset_path = Path(preprocessed_directory).joinpath('foodcue_onsetfiles')
+        bids_origonset_path = Path(preprocessed_directory).joinpath('foodcue_onsetfiles/orig')
+        bids_fmriprep_path = Path(preprocessed_directory).joinpath('fmriprep')
+
+    else: 
+        print("preproc_path must be string")
+        raise Exception()
 
     # set sub with leading zeros
     sub = str(par_id).zfill(3)
@@ -94,6 +111,9 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
     #########################################
     #### Generate new onset timing files ####
     #########################################
+
+    # initialize dictionary
+    onset_dict = {}
 
     # Get original onset files -- sub needs to be padded with leading zeros
     orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub).zfill(3) + '*AFNIonsets.txt'))
@@ -127,7 +147,16 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
                 pd.options.mode.chained_assignment = None  # disable SettingWithCopyWarning
                 onsetfile_dat[0].iloc[i] = '*' ## gives SettingWithCopyWarning
 
-        ## output new onsetfile ##
+        # for subject 49, exclude run 1 due to triggering issues between scanner and eprime experiment 
+        if sub == '049':
+            onsetfile_dat[0].iloc[0] = '*'
+
+        # add to dictionary
+        onset_dict[cond] = onsetfile_dat
+
+        #######################################
+        #### Output new onset timing files ####
+        #######################################
 
         # set path to new onset directory
         new_onset_path = Path(bids_onset_path).joinpath(str(TR_cen_critera) + '_by-block-' + str(minblockTR))
@@ -140,3 +169,6 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR):
             
         # write file
         onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename + '.txt')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+
+    #return onset dictionary for integration testing
+    return onset_dict
