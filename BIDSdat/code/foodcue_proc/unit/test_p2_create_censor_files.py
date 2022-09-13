@@ -9,21 +9,13 @@ import numpy as np
 from pathlib import Path
 import os
 from pandas.testing import assert_frame_equal
+import sys
 
 # import functions to test
 from p2_create_censor_files import _gen_concatenated_regressor_file
 from p2_create_censor_files import _gen_run_int_list
 from p2_create_censor_files import _get_run_censor_info
 from p2_create_censor_files import _get_censorsum_bycond
-
-# get script location
-script_path = Path(__file__).parent.resolve()
-
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../..')
-base_directory = Path(os.getcwd())
-bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
 
 ####################
 ##### Fixtures #####
@@ -130,6 +122,9 @@ def bycond_run_row_fixture():
 #     assert regress_Pardat == regress_pardat_fixture, "error"
 
 def test_gen_run_int_list(confound_dat_fixture, r_int_list_fixture, block_onsets_TR_dict_fixture):
+
+    # set path to fixture onset files
+    bids_origonset_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed/foodcue_onsetfiles/orig')
 
     # get original onset test data
     orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-999*AFNIonsets.txt'))

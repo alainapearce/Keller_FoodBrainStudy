@@ -345,7 +345,7 @@ def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
 ####                                                                      ####
 ##############################################################################
 
-def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False, overwrite = False):
+def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False, overwrite = False, preproc_path = False):
     """
     This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
     The following steps will occur:
@@ -362,20 +362,38 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
         std_vars (optional, int or float)
         cen_prev_tr (bool)
         overwrite (bool)
+        Path (str) - path to direcory that contains foodcue_onsetfiles/ and fmriprep/ directories.
         
     """
 
-    # get script location
-    script_path = Path(__file__).parent.resolve()
+    # set base_directory
+    if preproc_path is False:
 
-    # change directory to base directory (BIDSdat) and get path
-    os.chdir(script_path)
-    os.chdir('../..')
-    base_directory = Path(os.getcwd())
+        # get script location
+        script_path = Path(__file__).parent.resolve()
 
-    #set specific paths
-    bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+        # change directory to base directory (BIDSdat) and get path
+        os.chdir(script_path)
+        os.chdir('../..')
+        base_directory = Path(os.getcwd())
+
+        #set specific paths
+        bids_origonset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
+        bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+
+
+    elif isinstance(preproc_path, str):
+        # make input string a path
+        preprocessed_directory = Path(preproc_path)
+
+        #set specific paths
+        bids_origonset_path = Path(preprocessed_directory).joinpath('foodcue_onsetfiles/orig')
+        bids_fmriprep_path = Path(preprocessed_directory).joinpath('fmriprep')
+
+    else: 
+        print("preproc_path must be string")
+        raise Exception()
+
 
     # set sub with leading zeros
     sub = str(par_id).zfill(3)
@@ -501,7 +519,7 @@ def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_p
     censor_summary_bycond_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
     # return particpant databases for integration testing
-    return censordata_allruns_df, censor_sum_bycond_Pardat
+    return censordata_allruns_df, censor_sum_Pardat, censor_sum_bycond_Pardat
 
 #if __name__ == "__main__":
 #    p2_create_censor_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
