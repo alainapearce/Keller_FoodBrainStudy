@@ -44,7 +44,7 @@ import re
 ####                                                                      ####
 ##############################################################################
 
-def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR, preproc_path = False):
+def gen_byblock_onsets(par_id, censorsum_file, minblockTR, preproc_path = False):
 
     """Function to generate onset files that censor blocks with excessive motion based on specified threshold
     Inputs:
@@ -105,7 +105,7 @@ def p4b_gen_byblock_onsets(par_id, censorsum_file, minblockTR, preproc_path = Fa
             print("sub_" + sub + " has no data in task-foodcue_bycond-censorsummary file")
             raise Exception()
     else:
-        print(censor_summary_path + "does not exist. Exiting p4b_gen_byblock_onsets")
+        print("censor summary file does not exist. Exiting p4b_gen_byblock_onsets")
         raise Exception()
 
     #########################################

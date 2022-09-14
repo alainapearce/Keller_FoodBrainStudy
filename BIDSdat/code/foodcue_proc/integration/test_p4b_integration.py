@@ -57,8 +57,8 @@ def test_p4b(onset_dict_byblock_fixture):
     preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
 
     # run function
-    onset_dict = p4b_gen_byblock_onsets.p4b_gen_byblock_onsets(par_id = 999, 
-                                                        censorsum_file = 'fixture_task-foodcue_censorsummary_fd-1.0.tsv', 
+    onset_dict = p4b_gen_byblock_onsets.gen_byblock_onsets(par_id = 999, 
+                                                        censorsum_file = 'fixture_task-foodcue_bycond-censorsummary_fd-1.0.tsv', 
                                                         minblockTR = 7, 
                                                         preproc_path=preproc_path)
 

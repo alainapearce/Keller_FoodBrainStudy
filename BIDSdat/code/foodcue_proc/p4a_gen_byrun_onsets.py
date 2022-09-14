@@ -106,7 +106,7 @@ def _gen_new_onset_file(sub, onsetfile_dat, censor_summary_allPar, p_thresh_bloc
 ####                                                                      ####
 ##############################################################################
 
-def p4a_gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_block = False, preproc_path = False):
+def gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_block = False, preproc_path = False):
     """Function to generate onset files that censor runs with excessive motion based on specified threshold
     Inputs:
         par_id (int): participant ID 

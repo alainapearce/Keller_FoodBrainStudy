@@ -345,7 +345,7 @@ def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
 ####                                                                      ####
 ##############################################################################
 
-def p2_create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False, overwrite = False, preproc_path = False):
+def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev_tr=False, overwrite = False, preproc_path = False):
     """
     This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
     The following steps will occur:

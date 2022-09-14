@@ -69,7 +69,7 @@ def test_p2(censordata_allruns_df_fixture, censor_sum_Pardat_fixture, censor_sum
     preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
 
     # run function
-    censordata_allruns_df, censor_sum_Pardat, censor_sum_bycond_Pardat = p2_create_censor_files.p2_create_censor_files(par_id = 999, 
+    censordata_allruns_df, censor_sum_Pardat, censor_sum_bycond_Pardat = p2_create_censor_files.create_censor_files(par_id = 999, 
                                                                                                                         framewise_displacement = 1, 
                                                                                                                         std_vars = False, 
                                                                                                                         cen_prev_tr=False, 

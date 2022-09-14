@@ -57,7 +57,7 @@ def test_p4a(onset_dict_fixture):
     preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
 
     # run function
-    onset_dict = p4a_gen_byrun_onsets.p4a_gen_byrun_onsets(par_id = 999, 
+    onset_dict = p4a_gen_byrun_onsets.gen_byrun_onsets(par_id = 999, 
                                                         censorsum_file = 'fixture_task-foodcue_censorsummary_fd-1.0.tsv', 
                                                         p_thresh_run = False, 
                                                         p_thresh_block=20,
