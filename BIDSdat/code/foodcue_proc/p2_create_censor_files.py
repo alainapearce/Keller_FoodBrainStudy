@@ -26,13 +26,9 @@ or raw data configurations.
 """
 
 #set up packages    
-from email import header
-from pickle import TRUE
-from aem import con
 import numpy as np
 import pandas as pd
 import os
-from scipy.stats.morestats import shapiro
 from pathlib import Path
 import re
 
@@ -45,7 +41,7 @@ from sqlalchemy import false
 #########################################################
 
 def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
-    """Function to import or generate task-foodcue_censorsummary_* and task-foodcue_bycond-censorsummary_* files. 
+    """Function to import or generate task-foodcue_censorsummary_* and task-foodcue_byblock-censorsummary_* files. 
         Files will be imported if censorsummary file with specified CensorStr exists, otherwise they will be generated. 
         If subject is already in censorsummary database and Overwrite = False, exception will be raised. 
         If subject is already in censorsummary database and Overwrite != False, subject will be removed from summary database.
@@ -60,22 +56,26 @@ def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
         RegressPardat (pandas dataframe) - will contain 1 column per regressor variable and (number confound files * length of 1 confound file) rows
     """
 
+    ########################################
+    ### Manage byrun-censorsummary file ###
+    ########################################
+
     # Set paths to summary file
-    censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')
+    censor_summary_byrun_path = Path(bids_fmriprep_path).joinpath('task-foodcue_byrun-censorsummary_' + str(censor_str) + '.tsv')
 
     ### Manage censor_summary_path ###
-    if censor_summary_path.is_file(): # if database exists
+    if censor_summary_byrun_path.is_file(): # if database exists
 
         # import database --- converting 'sub' to string will maintain leading zeros
-        CenSum_allPar = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
+        CenSum_allPar = pd.read_csv(str(censor_summary_byrun_path), sep = '\t', converters={'sub': lambda x: str(x)})
 
         # check to see if subject already in database
         if (sub in set(CenSum_allPar['sub'])):
             if overwrite is False:
-                print("sub_" + sub + " already in foodcue_censorsummary file. Use overwrite = True to rerun")
+                print("sub_" + sub + " already in foodcue_byrun-censorsummary file. Use overwrite = True to rerun")
                 raise Exception()
             else: #overwrite is true
-                # remove subject rows from censor_summary_path
+                # remove subject rows from censor_summary_byrun_path
                 CenSum_allPar = CenSum_allPar[CenSum_allPar['sub'] != sub]
 
     # if database does not exist
@@ -85,33 +85,33 @@ def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
         CenSum_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
     ########################################
-    ### Manage bycond-censorsummary file ###
+    ### Manage byblock-censorsummary file ###
     ########################################
 
     # Set paths to summary file
-    censor_summary_bycond_path = Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')
+    censor_summary_byblock_path = Path(bids_fmriprep_path).joinpath('task-foodcue_byblock-censorsummary_' + str(censor_str) + '.tsv')
 
-    if censor_summary_bycond_path.is_file(): # if database exists
+    if censor_summary_byblock_path.is_file(): # if database exists
 
         # import database --- converting 'sub' to string will maintain leading zeros
-        CenSum_byCond_allPar = pd.read_csv(str(censor_summary_bycond_path), sep = '\t', converters={'sub': lambda x: str(x)})
+        CenSum_byBlock_allPar = pd.read_csv(str(censor_summary_byblock_path), sep = '\t', converters={'sub': lambda x: str(x)})
 
         # check to see if subject already in database
-        if (sub in set(CenSum_byCond_allPar['sub'])):
+        if (sub in set(CenSum_byBlock_allPar['sub'])):
             if overwrite is False:
-                print("sub_" + sub + " already in foodcue_bycond-censorsummary file. Use overwrite = True to rerun")
+                print("sub_" + sub + " already in foodcue_byblock-censorsummary file. Use overwrite = True to rerun")
                 raise Exception()
             else: #overwrite is true
                 # remove subject rows from censor_summary_path
-                CenSum_byCond_allPar = CenSum_byCond_allPar[CenSum_byCond_allPar['sub'] != sub]
+                CenSum_byBlock_allPar = CenSum_byBlock_allPar[CenSum_byBlock_allPar['sub'] != sub]
 
     # if database does not exist
     else:
         # create new dataframe 
-        CenSum_byCond_allPar = pd.DataFrame(np.zeros((0, 8)))
-        CenSum_byCond_allPar.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
+        CenSum_byBlock_allPar = pd.DataFrame(np.zeros((0, 8)))
+        CenSum_byBlock_allPar.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
 
-    return(CenSum_allPar, CenSum_byCond_allPar)
+    return(CenSum_allPar, CenSum_byBlock_allPar)
 
 def _get_censorstr(framewise_displacement, std_vars, cen_prev_tr):
     """Function to generate string to identify censor criteria 
@@ -313,7 +313,7 @@ def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, 
 
     return(censor_info, nvol, n_censored, p_censored, nvol_int, n_censored_int, p_censored_int)
 
-def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
+def _get_censorsum_byblock(block_onsets_TR_dict, run_censordata, sub, runnum):
 
     # make dictionary for TR count
     block_TRcount_dict = {}
@@ -334,9 +334,9 @@ def _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum):
         block_TRcount_dict[condition] = cond_uncensor_count
 
     # Generate a dataframe row that indicates how many TRs are good per condition (block) in a run
-    bycond_run_row = pd.DataFrame([[sub, runnum, block_TRcount_dict['HighLarge'], block_TRcount_dict['HighSmall'], block_TRcount_dict['LowLarge'], block_TRcount_dict['LowSmall'], block_TRcount_dict['OfficeLarge'], block_TRcount_dict['OfficeSmall']]], columns=['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall'])
+    byblock_run_row = pd.DataFrame([[sub, runnum, block_TRcount_dict['HighLarge'], block_TRcount_dict['HighSmall'], block_TRcount_dict['LowLarge'], block_TRcount_dict['LowSmall'], block_TRcount_dict['OfficeLarge'], block_TRcount_dict['OfficeSmall']]], columns=['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall'])
 
-    return(bycond_run_row)
+    return(byblock_run_row)
     
 
 ##############################################################################
@@ -433,7 +433,7 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     ### Import or generate censor summary files ###
     ###############################################
 
-    censor_summary_allPar, censor_summary_bycond_allPar = _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite)
+    censor_summary_byrun_allPar, censor_summary_byblock_allPar = _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite)
 
     ##############################
     ### Create regressor files ###
@@ -451,11 +451,11 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     ###########################
 
     # create run censor data summary per participant
-    censor_sum_Pardat = pd.DataFrame(np.zeros((0, 8)))
-    censor_sum_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
+    censor_sum_byrun_Pardat = pd.DataFrame(np.zeros((0, 8)))
+    censor_sum_byrun_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
 
-    censor_sum_bycond_Pardat = pd.DataFrame(np.zeros((0, 8)))
-    censor_sum_bycond_Pardat.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
+    censor_sum_byblock_Pardat = pd.DataFrame(np.zeros((0, 8)))
+    censor_sum_byblock_Pardat.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
 
     # create empty list for censor data
     censordata_allruns = []
@@ -491,18 +491,18 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
         run_censordata = res[0]
         censordata_allruns.extend(run_censordata)
         
-        # add run-specific summary information to participant summary dataframe (censor_sum_Pardat)
+        # add run-specific summary information to participant summary dataframe (censor_sum_byrun_Pardat)
         # res[1] = number of TRs total; res[2] = number of TRs censored total, res[3] = % of TRs censored total
         # res[4] = number of TRs of interest; res[5] = number of TRs of interest censored , res[6] = % of TRs of interest censored
-        df_len = len(censor_sum_Pardat)
+        df_len = len(censor_sum_byrun_Pardat)
         runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6]]
-        censor_sum_Pardat.loc[df_len] = runsum
+        censor_sum_byrun_Pardat.loc[df_len] = runsum
 
         # get censor information by condition/block
-        bycond_run_row = _get_censorsum_bycond(block_onsets_TR_dict, run_censordata, sub, runnum) 
+        byblock_run_row = _get_censorsum_byblock(block_onsets_TR_dict, run_censordata, sub, runnum) 
         
-        # append censor information by condition/block to censor_sum_bycond_Pardat dataframe
-        censor_sum_bycond_Pardat = censor_sum_bycond_Pardat.append(bycond_run_row)
+        # append censor information by condition/block to censor_sum_byblock_Pardat dataframe
+        censor_sum_byblock_Pardat = censor_sum_byblock_Pardat.append(byblock_run_row)
 
 
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
@@ -511,15 +511,15 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
     # Add participant censor summarys to overall censor summary databases
-    censor_summary_allPar = censor_summary_allPar.append(censor_sum_Pardat)
-    censor_summary_bycond_allPar = censor_summary_bycond_allPar.append(censor_sum_bycond_Pardat)
+    censor_summary_byrun_allPar = censor_summary_byrun_allPar.append(censor_sum_byrun_Pardat)
+    censor_summary_byblock_allPar = censor_summary_byblock_allPar.append(censor_sum_byblock_Pardat)
 
     # Export overall censor summary databases
-    censor_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
-    censor_summary_bycond_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_bycond-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    censor_summary_byrun_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_byrun-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    censor_summary_byblock_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_byblock-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
     # return particpant databases for integration testing
-    return censordata_allruns_df, censor_sum_Pardat, censor_sum_bycond_Pardat
+    return censordata_allruns_df, censor_sum_byrun_Pardat, censor_sum_byblock_Pardat
 
 #if __name__ == "__main__":
 #    p2_create_censor_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])

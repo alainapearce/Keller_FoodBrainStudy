@@ -29,8 +29,6 @@ or raw data configurations.
 """
 
 #set up packages    
-from pickle import TRUE
-from aem import con
 from pathlib import Path
 import os
 
@@ -78,10 +76,13 @@ foodcue_raw_files = list(Path(bids_raw_path).rglob('sub-*/ses-1/func/*foodcue*ev
 foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue_raw_files]
 
 ##set is finding only unique values
-#subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
+subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
 
 # For testing
-subs = ['001', '002']
+#subs = ['001']
+
+## For testing with test fixtures
+#subs = ['999']
 
 ###################################
 ### call functions for each sub ###
@@ -89,22 +90,33 @@ subs = ['001', '002']
 
 for sub in subs:
 
+     # set inputs
+     if sub == '999':
+          preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
+          censorsum_file_byrun = str('fixture_task_byrun-foodcue_censorsummary_fd-1.0.tsv')
+          censorsum_file_bycond = str('fixture_task-foodcue_bycond-censorsummary_fd-1.0.tsv')
+
+     else:
+          preproc_path = False
+          censorsum_file_byrun = str('task-foodcue_byrun-censorsummary_fd-1.0.tsv')
+          censorsum_file_bycond = str('task-foodcue_bycond-censorsummary_fd-1.0.tsv')
+
      try:
           p1_getonsets.p1_getonsets(par_id = sub, overwrite=False)
      except:
           print("Discontinuing p1_getonsets() for sub_" + sub)
 
-     # try:
-     #      p2_create_censor_files.p2_create_censor_files(par_id = sub, framewise_displacement = 1, std_vars = 1.0, cen_prev_tr=False, overwrite=True)
-     # except:
-     #      print("Discontinuing p2_create_censor_files() for sub_" + sub)
+     try:
+          p2_create_censor_files.create_censor_files(par_id = sub, framewise_displacement = 1, std_vars = False, cen_prev_tr=False, overwrite=True, preproc_path=preproc_path)
+     except:
+          print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
-     # try:
-     #      p4a_gen_byrun_onsets.p4a_gen_byrun_onsets(par_id = sub, censorsum_file = 'task-foodcue_censorsummary_fd-0.9.tsv', p_thresh_run = False, p_thresh_block = 20)
-     # except:
-     #      print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
+     try:
+          p4a_gen_byrun_onsets.gen_byrun_onsets(par_id = sub, censorsum_file = censorsum_file_byrun, p_thresh_run = False, p_thresh_block = 20, preproc_path=preproc_path)
+     except:
+          print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
 
-     # try:
-     #      p4b_gen_byblock_onsets.p4b_gen_byblock_onsets(par_id = sub, censorsum_file = 'task-foodcue_bycond-censorsummary_fd-0.9.tsv', minblockTR = 7)
-     # except:
-     #      print("Discontinuing p4b_gen_byblock_onsets() for sub_" + sub)
+     try:
+          p4b_gen_byblock_onsets.gen_byblock_onsets(par_id = sub, censorsum_file = censorsum_file_bycond, minblockTR = 7, preproc_path=preproc_path)
+     except:
+          print("Discontinuing p4b_gen_byblock_onsets() for sub_" + sub)
