@@ -15,11 +15,30 @@ import sys
 from p2_create_censor_files import _gen_concatenated_regressor_file
 from p2_create_censor_files import _gen_run_int_list
 from p2_create_censor_files import _get_run_censor_info
-from p2_create_censor_files import _get_censorsum_bycond
+from p2_create_censor_files import _get_censorsum_byblock
 
 ####################
 ##### Fixtures #####
 ####################
+
+@pytest.fixture
+def confounds_list_fixture():
+
+    preproc_path = Path('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
+    bids_fmriprep_path = Path(preproc_path).joinpath('fmriprep')
+    confound_files = list(Path(bids_fmriprep_path).rglob('sub-999/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
+
+    return confound_files
+
+@pytest.fixture
+def regress_pardat_fixture():
+
+    preproc_path = Path('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
+    regress_pardat = Path(preproc_path).joinpath('fmriprep/sub-999/ses-1/func/fixture_sub-999_foodcue-allruns_confounds-header.tsv')
+    regress_pardat = pd.read_csv(str(regress_pardat), sep = '\t', encoding = 'utf-8-sig', engine='python')
+
+    return regress_pardat
+
 
 @pytest.fixture
 def confound_dat_fixture():
@@ -108,18 +127,18 @@ def bycond_run_row_fixture():
     goodTR_bycond_dict["fd-1.0_cpt"] = bycond_row_fd1_cpt
 
     return goodTR_bycond_dict
-    
+  
 #################
 ##### Tests #####
 #################
 
-# def test_gen_concatenated_regressor_file(confound_files_fixture, regress_pardat_fixture):
-
-#     # run function
-#     regress_Pardat = _gen_concatenated_regressor_file(confound_files_fixture)
+def test_gen_concatenated_regressor_file(confounds_list_fixture, regress_pardat_fixture):
     
-#     # check function output
-#     assert regress_Pardat == regress_pardat_fixture, "error"
+    # run function
+    regress_Pardat = _gen_concatenated_regressor_file(confounds_list_fixture)
+    
+    # check function output
+    assert_frame_equal(regress_Pardat.reset_index(drop=True), regress_pardat_fixture.reset_index(drop=True)) #drop index since we dont care about that being equal
 
 def test_gen_run_int_list(confound_dat_fixture, r_int_list_fixture, block_onsets_TR_dict_fixture):
 
@@ -162,7 +181,7 @@ def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_in
     assert censor_info_fixture["fd-1.0_stddvar-1.0"] == res2[0]
     assert censor_info_fixture["fd-1.0_cpt"] == res3[0]
 
-    # check function p_censored output res[3] -- see test_censor_tr_count.xlsx for expected value calculations
+    # check function p_1censored output res[3] -- see test_censor_tr_count.xlsx for expected value calculations
     assert 35.9 == res[3]
     assert 48.7 == res2[3]
     assert 37.2 == res3[3]
@@ -177,9 +196,9 @@ def test_get_run_censor_info(confound_dat_fixture, r_int_list_fixture, censor_in
 def test_get_censorsum_bycond(censor_info_fixture, block_onsets_TR_dict_fixture, bycond_run_row_fixture):
 
     # run function with 3 different censor criteria
-    bycond_row_fd1 = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0"], sub = 999, runnum = 1)
-    bycond_row_fd1_stddvar1 = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_stddvar-1.0"], sub = 999, runnum = 1)
-    bycond_row_fd1_cpt = _get_censorsum_bycond(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_cpt"], sub = 999, runnum = 1)
+    bycond_row_fd1 = _get_censorsum_byblock(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0"], sub = 999, runnum = 1)
+    bycond_row_fd1_stddvar1 = _get_censorsum_byblock(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_stddvar-1.0"], sub = 999, runnum = 1)
+    bycond_row_fd1_cpt = _get_censorsum_byblock(block_onsets_TR_dict_fixture, censor_info_fixture["fd-1.0_cpt"], sub = 999, runnum = 1)
 
     # check function output -- use assert_frame_equal to compare dataframes
     assert_frame_equal(bycond_row_fd1,bycond_run_row_fixture["fd-1.0"])
