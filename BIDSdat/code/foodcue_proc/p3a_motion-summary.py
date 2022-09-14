@@ -28,9 +28,6 @@ or raw data configurations.
 """
 
 #set up packages    
-from email import header
-from pickle import TRUE
-from aem import con
 import numpy as np
 import pandas as pd
 import os

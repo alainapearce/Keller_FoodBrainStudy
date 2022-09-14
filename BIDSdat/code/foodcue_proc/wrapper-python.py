@@ -102,7 +102,7 @@ for sub in subs:
           censorsum_file_bycond = str('task-foodcue_bycond-censorsummary_fd-1.0.tsv')
 
      try:
-          p1_getonsets.p1_getonsets(par_id = sub, overwrite=False)
+          p1_getonsets.getonsets(par_id = sub, overwrite=False)
      except:
           print("Discontinuing p1_getonsets() for sub_" + sub)
 

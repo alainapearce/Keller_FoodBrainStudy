@@ -29,7 +29,6 @@ or raw data configurations.
 """
 
 #set up packages    
-import numpy as np
 import pandas as pd
 import os
 from pathlib import Path

@@ -48,7 +48,6 @@ def _get_blockOnsets(foodcue_run_data, onset_data):
 
         #get all non-duplicate blocks in run
         blocks = foodcue_run_data['block'].unique()
-        nblocks = len(blocks)
 
         #loop through blocks
         for b in blocks:
@@ -71,7 +70,7 @@ def _get_blockOnsets(foodcue_run_data, onset_data):
 ####                                                                      ####
 ##############################################################################
 
-def p1_getonsets(par_id, overwrite = False):
+def getonsets(par_id, overwrite = False):
 
     # get script location
     script_path = Path(__file__).parent.resolve()

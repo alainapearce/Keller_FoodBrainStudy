@@ -32,8 +32,6 @@ import os
 from pathlib import Path
 import re
 
-from sqlalchemy import false
-
 #########################################################
 ####                                                 ####
 ####                  Subfunctions                   ####
