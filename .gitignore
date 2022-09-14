@@ -1,7 +1,6 @@
 /Actigraph
 /BIDSdat/sourcedata
 /BIDSdat/raw_data
-/BIDSdat/derivatives/preprocessed/beh
 /DXA
 /Intake_Sheets
 /Interoception
@@ -9,6 +8,7 @@
 /untouchedRaw
 /WASI
 /zOldProtocol-DoNotUse
+
 
 zBIDSorgStatus.xlsx
 
@@ -18,3 +18,7 @@ zBIDSorgStatus.xlsx
 *.Rproj.user
 .Rproj.user
 .DS_Store
+BIDSdat/code/foodcue_proc/unit/__pycache__/
+
+__pycache__/
+*.py[cod]
