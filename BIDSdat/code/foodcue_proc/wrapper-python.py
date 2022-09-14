@@ -94,12 +94,12 @@ for sub in subs:
      if sub == '999':
           preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
           censorsum_file_byrun = str('fixture_task_byrun-foodcue_censorsummary_fd-1.0.tsv')
-          censorsum_file_bycond = str('fixture_task-foodcue_bycond-censorsummary_fd-1.0.tsv')
+          censorsum_file_bycond = str('fixture_task-foodcue_byblock-censorsummary_fd-1.0.tsv')
 
      else:
           preproc_path = False
           censorsum_file_byrun = str('task-foodcue_byrun-censorsummary_fd-1.0.tsv')
-          censorsum_file_bycond = str('task-foodcue_bycond-censorsummary_fd-1.0.tsv')
+          censorsum_file_bycond = str('task-foodcue_byblock-censorsummary_fd-1.0.tsv')
 
      try:
           p1_getonsets.getonsets(par_id = sub, overwrite=False)
