@@ -113,9 +113,15 @@ endif
 
 ############# High Risk v Low Risk  ##############
 
+#### 3dTtest ####
+
 #set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
-set models = ( HighLarge HighSmall LowLarge LowSmall Large-Small_allED_GLT High-Low_allPS_GLT )
-set runnum = ( 2 3 )
+#set models = ( HighLarge HighSmall LowLarge LowSmall Large-Small_allED_GLT High-Low_allPS_GLT )
+set models = ( Large-Small_allED_GLT High-Low_allPS_GLT )
+
+#set runnum = ( 2 3 )
+set runnum = ( 3 )
+
 
 foreach m ( $models )
 	set output_name = "$m"
@@ -131,9 +137,9 @@ foreach m ( $models )
     		gen_group_command.py -command 3dttest++                                        \
 	    		-write_script $map_folder/${fileG}_2sampleT++_${output_name}           \
 	    		-prefix  ${fileG}_2sampleT++_${output_name}                            \
-            		-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
+            		-dsets $lev1_dir/*/$results_folder/stats.sub-???+tlrc.HEAD                    \
 	   	 	-dset_sid_list $HRindex                                                \
-            		-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                    \
+            		-dsets $lev1_dir/*/$results_folder/stats.sub-???+tlrc.HEAD                    \
 	    		-dset_sid_list $LRindex						   \
 	    		-set_labels highrisk lowrisk					   \
 	    		-subs_betas "${m}"'#'0_Coef					   \
@@ -148,6 +154,47 @@ foreach m ( $models )
     		endif
 	end
 end
+
+#### 3dMEMA ####
+
+# note: REML output does not contain 'GLT' for contrasts
+set models = ( Large-Small_allED High-Low_allPS )
+
+foreach m ( $models )
+        set output_name = "$m"
+
+        foreach runthresh ($runnum)
+
+                set fileG = "HR_v_LR_${runthresh}run"
+
+                set HRindex = `cat $index_dir/index-highrisk_${runthresh}runs_${TRcen}_${runcen}.txt`
+                set LRindex = `cat $index_dir/index-lowrisk_${runthresh}runs_${TRcen}_${runcen}.txt`
+                #toz-when using zskip need to convert t to z because voxel
+                #may have different number of samples
+		#switch order of set_labels to be consistent with 3dttest. 3dMEMA does group B - group A	
+                gen_group_command.py -command 3dMEMA                                        \
+                        -write_script $map_folder/${fileG}_3dMEMA_${output_name}           \
+                        -prefix  ${fileG}_3dMEMA_${output_name}                            \
+                        -dsets $lev1_dir/*/$results_folder/stats.sub-???_REML+tlrc.HEAD    \
+                        -dset_sid_list $LRindex                                            \
+                        -dsets $lev1_dir/*/$results_folder/stats.sub-???_REML+tlrc.HEAD          \
+                        -dset_sid_list $HRindex                                            \
+                        -set_labels lowrisk highrisk                                      \
+                        -subs_betas "${m}"'#'0_Coef                                        \
+			-subs_tstats "${m}"'#'0_Tstat
+                        -options                                                                   \
+                                -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
+
+                 chmod 775 $map_folder/${fileG}_3dMEMA_${output_name}
+
+                if ( "$3" == "run" ) then
+                        cd $map_folder
+                        tcsh ${fileG}_3dMEMA_${output_name}
+                endif
+        end
+end
+
+
 
 # Copy base template into results folder 
 if ( ! -f $basedset ) then

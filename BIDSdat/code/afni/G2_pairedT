@@ -195,6 +195,25 @@ foreach g ( $groups )
         	tcsh ${fileG}_2sampleT++_${output_name}
     	endif
 
+
+    ###################### Food_v_Office PS contrast ######################
+	set output_name = "Food_v_Office_PScon"
+
+	#toz-when using zskip need to convert t to z because voxel
+        #may have different number of samples
+        gen_group_command.py -command 3dttest++                                            \
+                    -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
+                    -prefix  ${fileG}_2sampleT++_${output_name}                       \
+                    -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
+                    -dset_sid_list $index                                               \
+               #     -set_labels LargeHigh-Low SmallHigh-Low                             \
+               #     -subs_betas LargeHigh-Low_GLT'#'0_Coef SmallHigh-Low_GLT'#'0_Coef   \
+                    -options                                                               \
+                        -paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+
+
+
+
 end
 
 # Copy base template into results folder 

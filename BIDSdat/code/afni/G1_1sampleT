@@ -130,7 +130,7 @@ endif
 
 set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT HighLarge-Small_GLT LowLarge-Small_GLT )
 #set groups = ( WholeGroup HighRisk LowRisk )
-set groups = ( WholeGroup_2runs WholeGroup_3runs )
+set groups = ( WholeGroup_3runs )
 
 foreach m ( $maps )
 	set output_name = $m
