@@ -30,12 +30,13 @@ import pandas as pd
 import os
 from pathlib import Path
 import re
+import sys
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
+#########################################################
+####                                                 ####
+####                  Subfunctions                   ####
+####                                                 ####
+#########################################################
 
 def _represents_float(s):
     try: 
@@ -47,7 +48,7 @@ def _represents_float(s):
 
 ##############################################################################
 ####                                                                      ####
-####                             Core Script                              ####
+####                             Main Function                            ####
 ####                                                                      ####
 ##############################################################################
 
@@ -73,7 +74,7 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
 
         # change directory to base directory (BIDSdat) and get path
         os.chdir(script_path)
-        os.chdir('../../..')
+        os.chdir('../..')
         base_directory = Path(os.getcwd())
 
         # set path to onset files
@@ -111,7 +112,6 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     ###########################################
 
     # get list of subjects with onset files
-
     onsetfiles = []
     for file in onset_directory.rglob('*'):  # loop recursively over all subdirectories
         onsetfiles.append(file.name)
@@ -163,22 +163,27 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     highrisk = [str(sub) for sub in high_risk_df['id']]
     lowrisk = [str(sub) for sub in low_risk_df['id']]
 
+    # add lists to dictionary
+    index_dict = {}
+    index_dict['all'] = all
+    index_dict['highrisk'] = highrisk
+    index_dict['lowrisk'] = lowrisk
+
+
     ###########################################
     #### Generate index files for each list ###
     ###########################################
 
-    for group in (['all', 'highrisk', 'lowrisk']):
+    # define output path
+    censor_string = str(onset_dir)
 
-        # get list of IDs 
-        list = globals()[group]
-
-        # define output path
-        censor_string = str(onset_dir)
-
-        file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + group + '_' + str(censor_string) + '_' + str(nruns) + 'runs.txt')
-        # write to file
+    # loop through groups 
+    for group in index_dict:
+        
+        # set file name
+        file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_' + group + '_' + str(censor_string) + '_' + str(nruns) + 'runs.txt')
+       
+       # write ids to file
         with open(file, 'w') as indexFile:
-            joined_list = "  ".join(list)
+            joined_list = "  ".join(index_dict[group])
             print(joined_list , file = indexFile)
-
-
