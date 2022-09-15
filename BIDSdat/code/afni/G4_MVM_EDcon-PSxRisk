@@ -1,0 +1,116 @@
+#!/bin/tcsh
+#
+#useage: G4_MVM  $1         $2             $3				$4
+#		template    session   TR-Censor-criteria     Run censor criteria           
+#                
+#
+# The purpose of this script run linear mixed effects model for
+# ED contrast by PS and Risk for Food and Brain study
+# Written by Bari Fuchs Fall 2022
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+ 
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+ 
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+cd ../../
+set bidsdir = "$cwd"
+
+#set lev1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+
+#set dataframe dir
+set df_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/
+
+#set group level 3dMVM dir
+set group_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/MVM
+
+if ( ! -d $group_dir ) then
+    mkdir -p $group_dir
+endif
+
+#set output name
+set today = `date +%m-%d-%y`
+ 
+# set censor criteria
+set TRcen = $3
+set runcen = $4
+
+# set path to templates
+set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+
+#Get template specific variables
+if ( "$1" == "MNI" ) then
+        ##Get MNI template used in fmriprep
+        set basedset = $tpath/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz
+        set basedset_name = "tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz"
+        # set string
+        set temp = "MNI152NLin2009cAsym"
+        set tempst = "MNI"
+else
+        #Get pediatric template used in fmriprep
+        set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+        set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+        # set strings
+	set temp = "MNIPediatricAsym_cohort-3"
+	set tempst = "ped"
+endif
+
+#check to see if have 'Old' directory, 
+#if do, check for and clean up old directories,
+#if not, create all folders in that path    
+#if ( -d $group_dir/MVM/Old ) then
+#    set old_folders = `( ls -d $group_dir/MVM/*/ )`
+#    foreach old ( $old_folders )
+#        if ( "$old" != "$group_dir/MVM/Old/" ) then
+#            mv $old $group_dir/MVM/Old
+#        endif
+#    end
+#else
+#     mkdir -p $group_dir/MVM/Old
+#endif
+
+#set map folder
+set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
+
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+endif
+
+#copy datatable into map directory
+cp $df_dir/datatable_EDcontrast.txt $map_folder 
+
+## Use this if masks are in fmriprep dir
+#make mask with 80% of participants overlapping
+if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
+    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
+            -prefix $map_folder/mask0.8_${today}+tlrc              \
+            -frac 0.8
+endif
+
+## can use num_glt and glt to specify specific contrasts -- but I belive the main effects will be automatically reported
+
+3dMVM -prefix $map_folder/MVM_${today}_EDcontrast -jobs 1	\
+      -wsVars PS					\
+      -bsVars risk	    \
+      -SS_type 3 	  \
+      -GES 		\
+      -mask $map_folder/mask0.8_${today}+tlrc       \
+      -dataTable @$map_folder/datatable_EDcontrast.txt	    
+    
+#  end
+
+if ( "$tpath" == '' ) then
+     echo "***** Failed to find $basedset :("
+     exit 1
+else
+    if ( ! -f $map_folder/$basedset ) then
+       cp $tpath/$basedset $map_folder
+    endif
+endif
