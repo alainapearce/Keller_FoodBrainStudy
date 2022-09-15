@@ -3,9 +3,9 @@
 """
 This script was created to (1) count the number of subjects to be included in analyses 
 based on motion threshold and (2) generate subject index files for AFNI analyses using 
-the output of 4_create_censor_files.py. Index files will list subject IDs that should be 
-included in analyses, based on the desired motion threshold. Index files be generated 
-for the whole group and separete risk groups.
+task-foodcue..censorsummary_$censorcritera.tsv files (output of 4_create_censor_files.py). 
+Index files will list subject IDs that should be included in analyses, based on the desired motion threshold. 
+Index files be generated for the whole group, and can be generated for risk groups using the -byrisk input arg
 
 Written by Bari Fuchs in Spring 2022
 
@@ -149,7 +149,11 @@ all_2runs = [str(sub).zfill(3) for sub in sub_include_2runs['id']]
 highrisk_2runs = [str(sub).zfill(3) for sub in high_risk_df_2runs['id']]
 lowrisk_2runs = [str(sub).zfill(3) for sub in low_risk_df_2runs['id']]
 
-# count total number of subjects to include
+
+###########################################
+#### Output summary numbers to terminal ###
+###########################################
+
 print("N evaluated:", censor_summary_allPar['sub'].nunique())
 print("")
 print("N with at least 3 good runs:", len(all_3runs))
@@ -160,7 +164,10 @@ print("N with at least 2 good runs:", len(all_2runs))
 print("N high risk with at least 2 good runs:", len(highrisk_2runs))
 print("N low risk with at least 2 good runs:", len(lowrisk_2runs))
 
-# Generate index files for each list
+###########################################
+#### Generate index files for each list ###
+###########################################
+
 for name in (['all_3runs', 'highrisk_3runs', 'lowrisk_3runs', 'all_2runs', 'highrisk_2runs', 'lowrisk_2runs']):
     print(name)
     # get group name
