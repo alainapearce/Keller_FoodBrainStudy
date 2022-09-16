@@ -28,17 +28,21 @@ or raw data configurations.
 @author: baf44
 """
 
-#set up packages    
-
 # import data processing functions
 import make_index_byrun
 import make_index_byblock
+import make_3dmvm_dataframe
 
-
-###################################
-### call functions ###
-###################################
+############################
+### generate index files ###
+############################
 
 make_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
-
 make_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
+
+###############################
+### generate MVM datatables ###
+###############################
+
+make_3dmvm_dataframe.gen_dataframe(index_file = 'index_all_fd-0.9_by-block-7_3blocks.txt')
+make_3dmvm_dataframe.gen_dataframe(index_file = 'index_all_fd-0.9_b20_3runs.txt')
