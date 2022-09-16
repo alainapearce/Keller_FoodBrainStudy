@@ -34,118 +34,92 @@ or raw data configurations.
 """
 
 #set up packages    
-from email import header
-from pickle import TRUE
-from aem import con
-import numpy as np
 import pandas as pd
 import os
-import sys, argparse
-#from scipy.stats import norm
-from scipy.stats.morestats import shapiro
 from pathlib import Path
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
-
-# to overwrite onsets of all input IDs, specify in terminal format like:
-#-f
-
-#input arguments setup
-#parser=argparse.ArgumentParser()
-#parser.add_argument('--indexfile', '-i', help='name of index file (e.g., XXX )', type=str)
-#parser.add_argument('--pthresh_r', '-r', help='threshold for censoring runs based on percent of TRs censored across the whole run', type=int)
-#parser.add_argument('--pthresh_b', '-b', help='threshold for censoring runs based on percent of TRs censored in blocks of interest', type=int)
-#args=parser.parse_args()
 
 ##############################################################################
 ####                                                                      ####
 ####                             Core Script                              ####
 ####                                                                      ####
 ##############################################################################
+def gen_dataframe(index_file):
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+    # get script location
+    script_path = Path(__file__).parent.resolve()
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-pardata_directory = Path(os.getcwd())
-#bids_directory = Path(os.getcwd())
+    # change directory to base directory (BIDSdat) and get path
+    os.chdir(script_path)
+    os.chdir('../../..')
+    pardata_directory = Path(os.getcwd())
+    #bids_directory = Path(os.getcwd())
 
-#set specific paths
-bids_path = Path(pardata_directory).joinpath('BIDSdat')
-bids_indexpath = Path(pardata_directory).joinpath('BIDSdat/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/')
-database_path = Path(pardata_directory).joinpath('Databases')
+    #set specific paths
+    bids_path = Path(pardata_directory).joinpath('BIDSdat')
+    bids_indexpath = Path(pardata_directory).joinpath('BIDSdat/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/')
+    database_path = Path(pardata_directory).joinpath('Databases')
 
-# set indexfile
-#indexfile = args.indexfile
+    # Import index file
+    indexfile_path = Path(bids_indexpath).joinpath( str(index_file))
 
-indexfile_name = 'index-all_3runs_fd-1.0_b20.txt'
+    # if database exists
+    if indexfile_path.is_file():
+        indexfile = open(indexfile_path, "r") #open file
+        subs_str = indexfile.read() #read file
+        subs_str = subs_str.strip() #strip /n from string
+        subs_list = subs_str.split("  ") #split string into list
+        indexfile.close() #close file
+    else:
+        print("index file does not exist")
 
-# Import index file
-indexfile_path = Path(bids_indexpath).joinpath( str(indexfile_name))
+    ## Make a dataframe with subjects for analyses
+    sub_include = pd.DataFrame() #create empty dataframe
+    sub_include['id'] = subs_list #add subjects to column sub
 
-# if database exists
-if indexfile_path.is_file():
-    indexfile = open(indexfile_path, "r") #open file
-    subs_str = indexfile.read() #read file
-    subs_str = subs_str.strip() #strip /n from string
-    subs_list = subs_str.split("  ") #split string into list
-    indexfile.close() #close file
-else:
-    print("index file does not exist")
+    # Add risk information to sub_include
+    anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav')) # import anthro database
+    anthro_df['id'] = anthro_df['id'].astype(int) # get rid of decimal place
+    anthro_df['id'] = anthro_df['id'].astype(str) # convert to string -- needed for zfill
+    anthro_df['id'] = anthro_df['id'].str.zfill(3) # add leading zeros
 
-## Make a dataframe with subjects for analyses
-sub_include = pd.DataFrame() #create empty dataframe
-sub_include['id'] = subs_list #add subjects to column sub
+    sub_include = pd.merge(sub_include,anthro_df[['id','risk_status_mom']],on='id', how='left')
 
-# Add risk information to sub_include
-anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav')) # import anthro database
-anthro_df['id'] = anthro_df['id'].astype(int) # get rid of decimal place
-anthro_df['id'] = anthro_df['id'].astype(str) # convert to string -- needed for zfill
-anthro_df['id'] = anthro_df['id'].str.zfill(3) # add leading zeros
+    ################################################################
+    #### Generate DataTable for 3dMVM -- ED contrast x PS x risk ###
+    ################################################################
+    MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile', '\\'])
 
-sub_include = pd.merge(sub_include,anthro_df[['id','risk_status_mom']],on='id', how='left')
+    for i in range(len(sub_include)):
 
-################################################################
-#### Generate DataTable for 3dMVM -- ED contrast x PS x risk ###
-################################################################
-MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile', '\\'])
+        # get subject
+        id_nozeros = int(sub_include.loc[i,['id']])
+        sub_id = str(id_nozeros).zfill(3)
 
-for i in range(len(sub_include)):
+        # get risk status
+        risk = sub_include.loc[i,['risk_status_mom']][0]
+        if risk == 'High Risk':
+            risk = 'High'
+        if risk == 'Low Risk':
+            risk = 'Low'
 
-    # get subject
-    id_nozeros = int(sub_include.loc[i,['id']])
-    sub_id = str(id_nozeros).zfill(3)
+        # level 1 folder
+        folder = 'ped_fd-1.0_b20'
 
-    # get risk status
-    risk = sub_include.loc[i,['risk_status_mom']][0]
-    if risk == 'High Risk':
-        risk = 'High'
-    if risk == 'Low Risk':
-        risk = 'Low'
+        # create and append row for Large PS ED contrast
+        Largepath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[LargeHigh-Low_GLT#0_Coef]'
+        LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
+        MVMdatatable = MVMdatatable.append(pd.DataFrame([LargePSrow],
+            columns=['sub','PS', 'risk', 'InputFile', '\\']),
+            ignore_index=True)
 
-    # level 1 folder
-    folder = 'ped_fd-1.0_b20'
+        # create and append row for Small PS ED contrast
+        Smallpath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[SmallHigh-Low_GLT#0_Coef]'
+        SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
+        MVMdatatable = MVMdatatable.append(pd.DataFrame([SmallPSrow],
+            columns=['sub','PS', 'risk', 'InputFile', '\\']),
+            ignore_index=True)
 
-    # create and append row for Large PS ED contrast
-    Largepath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[LargeHigh-Low_GLT#0_Coef]'
-    LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
-    MVMdatatable = MVMdatatable.append(pd.DataFrame([LargePSrow],
-        columns=['sub','PS', 'risk', 'InputFile', '\\']),
-        ignore_index=True)
-
-    # create and append row for Small PS ED contrast
-    Smallpath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[SmallHigh-Low_GLT#0_Coef]'
-    SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
-    MVMdatatable = MVMdatatable.append(pd.DataFrame([SmallPSrow],
-        columns=['sub','PS', 'risk', 'InputFile', '\\']),
-        ignore_index=True)
-
-# write dataframe
-MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-fd-1.0_b20.txt')), sep = '\t', encoding='utf-8-sig', index = False)
+    # write dataframe
+    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-fd-1.0_b20.txt')), sep = '\t', encoding='utf-8-sig', index = False)
 
