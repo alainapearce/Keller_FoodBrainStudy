@@ -1,14 +1,14 @@
 #!/bin/tcsh
 #
-#useage: G2_2sample-pairedT   $1         $2       $3        $4				$5
-#		     	template	session	  execute?  TR-Censor-criteria	   Run censor criteria
+#useage: G2_2sample-pairedT   $1         $2       $3        $4
+#		     	template	session	  execute?  entire censor string 
 #
 # The purpose of this script is to create and run 2 sample paired t-tests of all conditions of interest
 # $1: ped or MNI
 # $2: 1 or 2
 # $3 run or no
-# $4 e.g., fd-1.0_stddvar-1.8 fd-1.0 (or other criteria used in future)
-# $5 e.g. b20 (or other criteria used in future)
+# $4 e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs
+
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
 setenv AFNI_DONT_LOGFILE YES
@@ -27,8 +27,8 @@ set bidsdir = "$cwd"
 #set level1 dir
 set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
 
-#set group level dir
-set group_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/2sample-pairedT
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/2sample-pairedT
 
 # set index dir
 set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}
@@ -36,9 +36,8 @@ set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_
 #set output name
 set today = `date +%m-%d-%y`
 
-# set censor criteria
-set TRcen = $4
-set runcen = $5
+# set censor string
+set censor_str = $4
 
 # set path to templates
 set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
@@ -62,16 +61,16 @@ endif
 
 
 # set results folder
-set results_folder = ${tempst}_${TRcen}_${runcen}
+set results_folder = ${tempst}_${censor_str}
 
 
 #check to see if have 'Old' directory, 
 #if do, check for and clean up old directories,
 #if not, create all folders in that path    
-if ( -d $group_dir/Old ) then
-    set old_folders = `( ls -d $group_dir/* )`
+if ( -d $test_dir/Old ) then
+    set old_folders = `( ls -d $test_dir/* )`
 
-    #if file path $group_dir/$old in loop not same direct file link to $group_dir/Old
+    #if file path $test_dir/$old in loop not same direct file link to $test_dir/Old
     foreach old ( $old_folders )
 
         #get just dirname
@@ -80,23 +79,23 @@ if ( -d $group_dir/Old ) then
         #if not the 'Old' directory
         if ( "$dname" != "Old" ) then
 
-            #if $group_dir/$old hasn't been moved to $group_dir/Old
-            if ( ! -d $group_dir/Old/$dname ) then
-                mv $old $group_dir/Old/
+            #if $test_dir/$old hasn't been moved to $test_dir/Old
+            if ( ! -d $test_dir/Old/$dname ) then
+                mv $old $test_dir/Old/
 
             #else update/copy and remove
             else
-                cp -u $old $group_dir/Old/
+                cp -u $old $test_dir/Old/
                 rm -r $old
             endif
         endif
     end
 else
-    mkdir -p $group_dir/Old
+    mkdir -p $test_dir/Old
 endif
 
 #set map folder
-set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
+set map_folder = $test_dir/${tempst}_${censor_str}_${today}
 
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
@@ -124,30 +123,22 @@ endif
 
 ###################### generate scripts  ########################
 #loop though all conditions/contrasts of interest
-#set groups = ( WholeGroup HighRisk LowRisk )
 
-set groups = ( WholeGroup_2runs WholeGroup_3runs )
+set groups = ( WholeGroup HighRisk LowRisk )
 
-foreach g ( $groups )
+foreach group ( $groups )
 
-        # set index list
-	if ( "$g" == "WholeGroup" ) then
-		set fileG = "WG"
-		set index = `cat $index_dir/all_subjects.txt`
-	else if ( "$g" == "WholeGroup_2runs" ) then
-		set fileG = "WG-2runs"
-		set index = `cat $index_dir/index-all_2runs_${TRcen}_${runcen}.txt`
-	else if ( "$g" == "WholeGroup_3runs" ) then
-                set fileG = "WG-3runs"
-                set index = `cat $index_dir/index-all_3runs_${TRcen}_${runcen}.txt`
-        else if ( "$g" == "HighRisk" ) then
-                set index = `cat $index_dir/highrisk_subjects.txt`
-                set fileG = "HR"
-        else if ( "$g" == "LowRisk" ) then
-                set index = `cat $index_dir/lowrisk_subjects.txt`
-                set fileG = "LR"
-
-	endif
+		# set index list
+	        if ( "$group" == "WholeGroup" ) then
+                	set fileG = "WG"
+                	set index = `cat $index_dir/index_all_${censor_str}.txt`
+        	else if ( "$g" == "HighRisk" ) then
+                	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
+                	set fileG = "HR"
+        	else if ( "$g" == "LowRisk" ) then
+                	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
+                	set fileG = "LR"
+			endif
 
 	echo $index    	
 

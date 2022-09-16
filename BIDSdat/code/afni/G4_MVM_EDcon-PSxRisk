@@ -28,11 +28,11 @@ set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
 #set dataframe dir
 set df_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/
 
-#set group level 3dMVM dir
-set group_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/MVM
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/MVM
 
-if ( ! -d $group_dir ) then
-    mkdir -p $group_dir
+if ( ! -d $test_dir ) then
+    mkdir -p $test_dir
 endif
 
 #set output name
@@ -64,19 +64,19 @@ endif
 #check to see if have 'Old' directory, 
 #if do, check for and clean up old directories,
 #if not, create all folders in that path    
-#if ( -d $group_dir/MVM/Old ) then
-#    set old_folders = `( ls -d $group_dir/MVM/*/ )`
+#if ( -d $test_dir/MVM/Old ) then
+#    set old_folders = `( ls -d $test_dir/MVM/*/ )`
 #    foreach old ( $old_folders )
-#        if ( "$old" != "$group_dir/MVM/Old/" ) then
-#            mv $old $group_dir/MVM/Old
+#        if ( "$old" != "$test_dir/MVM/Old/" ) then
+#            mv $old $test_dir/MVM/Old
 #        endif
 #    end
 #else
-#     mkdir -p $group_dir/MVM/Old
+#     mkdir -p $test_dir/MVM/Old
 #endif
 
 #set map directory
-set map_dir = $group_dir/${tempst}_${censor_str}_${today}
+set map_dir = $test_dir/${tempst}_${censor_str}_${today}
 
 # set datatable name
 set data_table = datatable-EDcon-${censor_str}.txt
