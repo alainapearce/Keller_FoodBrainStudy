@@ -62,8 +62,7 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
         nruns (int): minimum number of "good" runs that a subject needs to be included in analyses
         minblockTR (int): threshold for censoring blocks. This is the minimum number of uncensored TRs for a block to be included
     Outputs:
-        onsetfile_dat: 1 onset dataframe per condition, exported as a csv. Onsets for blocks with motion that exceeds
-            minblockTR will replaced with '*'
+
     """
 
     # set base_directory
@@ -98,6 +97,11 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     else: 
         print("preproc_path must be string")
         raise Exception()
+
+    # check onset_dir does not 'by-block' string
+    if 'by-block' in onset_dir:        
+        print("onset_dir must NOT contain 'by-block'")
+        raise Exception
 
     # Set onset directory
     onset_directory = Path(bids_onset_path).joinpath( str(onset_dir))
