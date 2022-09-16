@@ -32,27 +32,31 @@ or raw data configurations.
 """
 
 #set up packages    
-from email import header
-from pickle import TRUE
-from aem import con
-import numpy as np
 import pandas as pd
 import os
-import sys, argparse
-#from scipy.stats import norm
-from scipy.stats.morestats import shapiro
 from pathlib import Path
+import re
 
-##############################################################################
-####                                                                      ####
-####                        Set up script function                        ####
-####                                                                      ####
-##############################################################################
+#########################################################
+####                                                 ####
+####                  Subfunctions                   ####
+####                                                 ####
+#########################################################
 
-#input arguments setup
-parser=argparse.ArgumentParser()
-parser.add_argument('--censorsumfile', '-c', help='name of censor summary file (e.g., task-foodcue_bycond-censorsummary_fd-1.0.tsv', type=str)
-args=parser.parse_args()
+def _represents_float(s):
+    try: 
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+def _count_food_conditions(condition_index_dir, sub):
+    cond_count = 0 # set conditon count to 0
+    conditions = ['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall']
+    for condition in conditions:
+        if sub in condition_index_dir[condition]:
+            cond_count = cond_count + 1
+    return cond_count
 
 ##############################################################################
 ####                                                                      ####
@@ -60,114 +64,144 @@ args=parser.parse_args()
 ####                                                                      ####
 ##############################################################################
 
-# get script location
-script_path = Path(__file__).parent.resolve()
+def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
 
-# change directory to base directory (BIDSdat) and get path
-os.chdir(script_path)
-os.chdir('../../..')
-pardata_directory = Path(os.getcwd())
-#bids_directory = Path(os.getcwd())
+    """Function to generate an index files for AFNI analyses that lists subjects with a
+    sufficient number of good blocks (nblocks) to be included in analyses. 
+    Index files will be generated for the whole group
+    Inputs:
+        onset_dir (string): name of directory where censored onsetfiles are located (e.g., 'fd-0.9_by-block-7')
+        nblocks (int): minimum number of "good" blocks needed for a block to be included in analyses
+    Outputs:
 
-#set specific paths
-bids_path = Path(pardata_directory).joinpath('BIDSdat')
-bids_fmriprep_path = Path(pardata_directory).joinpath('BIDSdat/derivatives/preprocessed/fmriprep')
-database_path = Path(pardata_directory).joinpath('Databases')
+    """
 
-# set framewise displacement and std_dvar threshold variables
-censorsummary_file = args.censorsumfile
+    # set base_directory
+    if preproc_path is False:
 
-# Import censor summary database for TR censor criteria
-censor_summary_path = Path(bids_fmriprep_path).joinpath( str(censorsummary_file))
+        # get script location
+        script_path = Path(__file__).parent.resolve()
 
-# if database exists
-if censor_summary_path.is_file():
-    # import database
-    censor_summary_allPar = pd.read_csv(str(censor_summary_path), sep = '\t')
-else:
-    print("censor summary file does not exist")
+        # change directory to base directory (BIDSdat) and get path
+        os.chdir(script_path)
+        os.chdir('../..')
+        base_directory = Path(os.getcwd())
 
-# extract criteria used to censor TRs based on censor summary database name
-substring = censorsummary_file.split("summary_",1)[1]
-TR_cen_critera = substring.split(".tsv",1)[0]
+        # set path to onset files
+        bids_onset_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles')
 
-# set minimum number of TRs per block
-#min_blockTR = args.minblockTR
-min_blockTR = 7
+        # change directory to Databases and get path
+        os.chdir('../Databases')
+        database_path = Path(os.getcwd())
 
-# set minimum number of blocks for condition to be used
-min_block = 3
+    elif isinstance(preproc_path, str):
+        # make input string a path
+        preprocessed_directory = Path(preproc_path)
 
-# subset data to remove sub 999 
-censor_summary_allPar = censor_summary_allPar[censor_summary_allPar["sub"] != 999]
+        #set specific paths
+        bids_onset_path = Path(preprocessed_directory).joinpath('foodcue_onsetfiles')
 
-## Loop through subject_list and create onset files ##
-subs = censor_summary_allPar['sub'].unique() # get list of unique subjects to loop through
+        # change directory to Databases and get path
+        os.chdir('../Databases')
+        database_path = Path(os.getcwd())
 
-###### get list of subjects with N acceptable blocks ######
+    else: 
+        print("preproc_path must be string")
+        raise Exception()
 
-######################################
-#### Make index files by condition ###
-######################################
+    # check onset_dir contains 'by-block' string
+    if 'by-block' not in onset_dir:        
+        print("onset_dir must contain 'by-block'")
+        raise Exception
 
-for condition in (['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall']):
+    # Set onset directory
+    onset_directory = Path(bids_onset_path).joinpath( str(onset_dir))
 
-    # initiate empty list to append subjects to
-    temp = []
+    # check onset directory exists
+    if onset_directory.is_dir() is False:
+        print("onset directory does not exist")
+        raise Exception
+
+
+    ######################################
+    #### Make index files by condition ###
+    ######################################
+
+    # get list of subjects with onset files
+    onsetfiles = []
+    for file in onset_directory.rglob('*'):  # loop recursively over all subdirectories
+        onsetfiles.append(file.name)
+
+    onsetfiles = [file.stem for file in onset_directory.rglob('*')]
+    subs = [re.split('_|-',file)[1] for file in onsetfiles]
+    subs = list(set(subs)) # get unique list of subjects
+    subs = (sorted(subs))
+
+    # initialize dictionary
+    condition_index_dir = {}
+
+    for condition in (['HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge', 'OfficeSmall']):
+
+        # initiate empty list to append subjects to
+        cond_sub_list = []
+
+        for sub in subs:
+   
+            # read in condition onset file
+            onset_path = Path(onset_directory).joinpath('sub-' + str(sub) + '_' + str(condition) + '-AFNIonsets.txt')
+            onset_file = pd.read_csv(onset_path, sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
+
+            nblocks_cond = 0
+            # Loop through rows in onset file (row i corresponds to run i+1)
+            for i in range(len(onset_file)):
+                if _represents_float(onset_file[0].iloc[i]):
+                    nblocks_cond = nblocks_cond + 1
+            
+            if nblocks_cond >= nblocks:
+                cond_sub_list.append(sub)
+        
+        # add list to dictionary
+        condition_index_dir[condition] = cond_sub_list
+
+    #############################################
+    #### Write index files for each condition ###
+    #############################################
+
+    # loop through groups 
+    for condition in condition_index_dir:
+        
+        # set file name
+        file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + condition + '_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+
+       # write ids to file
+        with open(file, 'w') as indexFile:
+            joined_list = "  ".join(condition_index_dir[condition])
+            print(joined_list , file = indexFile)
+
+
+    ############################################################
+    #### Make index file for subs with all 4 food conditions ###
+    ############################################################
+
+    # # initiate empty list to append subjects to
+    all_food_indexlist = []
 
     for sub in subs:
-        # select rows for subject
-        sub_df = censor_summary_allPar.loc[censor_summary_allPar['sub'] == sub]
 
-        # count the number of blocks with good TRs > min_blockTR
-        column = sub_df[condition]
-        nblocks = column[column >= min_blockTR].count()
+        # count number of food conditions that child meets criteria for
+        cond_count = _count_food_conditions(condition_index_dir = condition_index_dir, sub = sub)
 
-        # if number of good blocks is above threshold, add ID to list
-        if nblocks >= min_block:
-            temp.append(sub)
+        if cond_count == 4:
+            # add child to all_food_indexlist
+            all_food_indexlist.append(sub)
 
-    # format IDs -- pad with zeros to 3 digits 
-    temp = [str(sub).zfill(3) for sub in temp]
-
-    # define output path
-    file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + condition + '_' + str(TR_cen_critera) + "_" + str(min_blockTR) + 'tr-' + str(min_block) + 'b.txt')
-        
+    # define output path 
+    file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+            
     # write to file
     with open(file, 'w') as indexFile:
-        joined_list = "  ".join(temp)
+        joined_list = "  ".join(all_food_indexlist)
         print(joined_list , file = indexFile)
-
-############################################################
-#### Make index file for subs with all 4 food conditions ###
-############################################################
-
-# initiate empty list to append subjects to
-all_food_indexlist = []
-
-for sub in subs:
-
-    # select rows for subject
-    sub_df = censor_summary_allPar.loc[censor_summary_allPar['sub'] == sub]
-
-    if ((sub_df['HighLarge'][sub_df['HighLarge'] >= min_blockTR].count() >= min_block) & 
-        (sub_df['HighSmall'][sub_df['HighSmall'] >= min_blockTR].count() >= min_block) &
-        (sub_df['LowLarge'][sub_df['LowLarge'] >= min_blockTR].count() >= min_block) &
-        (sub_df['LowSmall'][sub_df['LowSmall'] >= min_blockTR].count() >= min_block) ):
-
-        # append ID to list
-        all_food_indexlist.append(sub)
-
-# format IDs -- pad with zeros to 3 digits 
-all_food_indexlist = [str(sub).zfill(3) for sub in all_food_indexlist]
-
-# define output path 
-file = bids_path.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-4foodconds_' + str(TR_cen_critera) + "_" + str(min_blockTR) + 'tr-' + str(min_block) + 'b.txt')
-        
-# write to file
-with open(file, 'w') as indexFile:
-    joined_list = "  ".join(all_food_indexlist)
-    print(joined_list , file = indexFile)
 
 
 
