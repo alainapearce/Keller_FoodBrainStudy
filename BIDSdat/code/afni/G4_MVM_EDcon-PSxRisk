@@ -1,7 +1,7 @@
 #!/bin/tcsh
 #
-#useage: G4_MVM  $1         $2             $3				$4
-#		template    session   TR-Censor-criteria     Run censor criteria           
+#useage: G4_MVM  $1         $2             $3
+#		        template    session   entire censor string (e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs)          
 #                
 #
 # The purpose of this script run linear mixed effects model for
@@ -39,8 +39,7 @@ endif
 set today = `date +%m-%d-%y`
  
 # set censor criteria
-set TRcen = $3
-set runcen = $4
+set censor_str = $3
 
 # set path to templates
 set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
@@ -76,33 +75,32 @@ endif
 #     mkdir -p $group_dir/MVM/Old
 #endif
 
-#set map folder
-set map_folder = $group_dir/${tempst}_${TRcen}_${runcen}_${today}
+#set map directory
+set map_dir = $group_dir/${tempst}_${censor_str}_${today}
 
-if ( ! -d $map_folder ) then
-    mkdir -p $map_folder
-endif
+# set datatable name
+set data_table = datatable-EDcon-${censor_str}.txt
 
 #copy datatable into map directory
-cp $df_dir/datatable_EDcontrast.txt $map_folder 
+cp $df_dir/$data_table $map_dir 
 
 ## Use this if masks are in fmriprep dir
 #make mask with 80% of participants overlapping
-if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
+if ( ! -f $map_dir/Session${2}_mask0.8_${today}+tlrc ) then
     3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
-            -prefix $map_folder/mask0.8_${today}+tlrc              \
+            -prefix $map_dir/mask0.8_${today}+tlrc              \
             -frac 0.8
 endif
 
 ## can use num_glt and glt to specify specific contrasts -- but I belive the main effects will be automatically reported
 
-3dMVM -prefix $map_folder/MVM_${today}_EDcontrast -jobs 1	\
+3dMVM -prefix $map_dir/MVM_${today}_EDcontrast -jobs 1	\
       -wsVars PS					\
       -bsVars risk	    \
       -SS_type 3 	  \
       -GES 		\
-      -mask $map_folder/mask0.8_${today}+tlrc       \
-      -dataTable @$map_folder/datatable_EDcontrast.txt	    
+      -mask $map_dir/mask0.8_${today}+tlrc       \
+      -dataTable @$map_dir/$data_table	    
     
 #  end
 
@@ -110,7 +108,7 @@ if ( "$tpath" == '' ) then
      echo "***** Failed to find $basedset :("
      exit 1
 else
-    if ( ! -f $map_folder/$basedset ) then
-       cp $tpath/$basedset $map_folder
+    if ( ! -f $map_dir/$basedset ) then
+       cp $tpath/$basedset $map_dir
     endif
 endif

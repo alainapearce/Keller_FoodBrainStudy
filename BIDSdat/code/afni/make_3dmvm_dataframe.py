@@ -37,6 +37,7 @@ or raw data configurations.
 import pandas as pd
 import os
 from pathlib import Path
+import re
 
 
 ##############################################################################
@@ -72,6 +73,7 @@ def gen_dataframe(index_file):
         indexfile.close() #close file
     else:
         print("index file does not exist")
+        raise Exception()
 
     ## Make a dataframe with subjects for analyses
     sub_include = pd.DataFrame() #create empty dataframe
@@ -120,6 +122,9 @@ def gen_dataframe(index_file):
             columns=['sub','PS', 'risk', 'InputFile', '\\']),
             ignore_index=True)
 
+    # get censor string from index file name, with .txt at the end
+    censor_str = re.split('index_all_',index_file)[1]
+
     # write dataframe
-    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-fd-1.0_b20.txt')), sep = '\t', encoding='utf-8-sig', index = False)
+    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str))), sep = '\t', encoding='utf-8-sig', index = False)
 

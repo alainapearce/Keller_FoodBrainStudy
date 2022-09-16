@@ -196,7 +196,7 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
             all_food_indexlist.append(sub)
 
     # define output path 
-    file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_all_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
             
     # write to file
     with open(file, 'w') as indexFile:
