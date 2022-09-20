@@ -37,12 +37,12 @@ import make_3dmvm_dataframe
 ### generate index files ###
 ############################
 
-make_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
-make_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
+#make_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
+#make_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
 
 ###############################
 ### generate MVM datatables ###
 ###############################
 
-make_3dmvm_dataframe.gen_dataframe(index_file = 'index_all_fd-0.9_by-block-7_3blocks.txt')
-make_3dmvm_dataframe.gen_dataframe(index_file = 'index_all_fd-0.9_b20_3runs.txt')
+make_3dmvm_dataframe.gen_dataframe(template = 'ped', index_file = 'index_all_fd-0.9_by-block-7_3blocks.txt')
+make_3dmvm_dataframe.gen_dataframe(template = 'ped', index_file = 'index_all_fd-0.9_b20_3runs.txt')
