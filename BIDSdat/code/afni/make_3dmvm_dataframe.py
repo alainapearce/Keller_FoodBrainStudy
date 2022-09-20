@@ -45,7 +45,7 @@ import re
 ####                             Core Script                              ####
 ####                                                                      ####
 ##############################################################################
-def gen_dataframe(index_file):
+def gen_dataframe(template, index_file):
 
     # get script location
     script_path = Path(__file__).parent.resolve()
@@ -74,6 +74,11 @@ def gen_dataframe(index_file):
     else:
         print("index file does not exist")
         raise Exception()
+
+    # get level1 folder from index_file
+    index_split = index_file.split("_") # split index_file by '_' into a list
+    lev1_censor_str = "_".join(index_split[2:4]) # join the 2nd and 3rd items from temp
+    folder = str(template) + '_' + str(lev1_censor_str)
 
     ## Make a dataframe with subjects for analyses
     sub_include = pd.DataFrame() #create empty dataframe
@@ -105,24 +110,24 @@ def gen_dataframe(index_file):
         if risk == 'Low Risk':
             risk = 'Low'
 
-        # level 1 folder
-        folder = 'ped_fd-1.0_b20'
-
         # create and append row for Large PS ED contrast
         Largepath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[LargeHigh-Low_GLT#0_Coef]'
         LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
         MVMdatatable = MVMdatatable.append(pd.DataFrame([LargePSrow],
-            columns=['sub','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'InputFile', '\\']),
             ignore_index=True)
 
         # create and append row for Small PS ED contrast
         Smallpath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[SmallHigh-Low_GLT#0_Coef]'
         SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
         MVMdatatable = MVMdatatable.append(pd.DataFrame([SmallPSrow],
-            columns=['sub','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'InputFile', '\\']),
             ignore_index=True)
 
-    # get censor string from index file name, with .txt at the end
+    # remove '\' from last row in datatable
+    MVMdatatable.loc[MVMdatatable.index[-1], '\\']= ""
+
+    # get full censor string from index file name, with .txt at the end
     censor_str = re.split('index_all_',index_file)[1]
 
     # write dataframe
