@@ -59,7 +59,7 @@ else
 endif
 
 # set same of level1 results folder
-set results_folder = ${tempst}_${TRcen}_${runcen}
+set results_folder = ${tempst}_${censor_str}
 
 #check to see if have 'Old' directory, 
 #if do, check for and clean up old directories,
@@ -92,11 +92,15 @@ else
 endif
 
 #set map folder
-set map_folder = $test_dir/${tempst}_${TRcen}_${runcen}_${today}
+set map_folder = $test_dir/${tempst}_${censor_str}_${today}
 
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
 endif
+
+# set lev1 results directory name
+set lev1censor = ($censor_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
 
 ## Use this if masks are in fmriprep dir
 #make mask with 80% of participants overlapping
@@ -130,9 +134,9 @@ foreach m ( $models )
         gen_group_command.py -command 3dttest++                                     \
             -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
             -prefix  ${fileG}_2sampleT++_${output_name}                             \
-            -dsets $lev1_dir/*/$results_folder/stats.sub-???+tlrc.HEAD              \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
             -dset_sid_list $HRindex                                                 \
-            -dsets $lev1_dir/*/$results_folder/stats.sub-???+tlrc.HEAD              \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
             -dset_sid_list $LRindex						                            \
             -set_labels highrisk lowrisk					                        \
             -subs_betas "${m}"'#'0_Coef					                            \
@@ -142,8 +146,8 @@ foreach m ( $models )
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
         if ( "$3" == "run" ) then
-        cd $map_folder
-        tcsh ${fileG}_2sampleT++_${output_name}
+       		cd $map_folder
+        	tcsh ${fileG}_2sampleT++_${output_name}
         endif
 end
 
@@ -165,9 +169,9 @@ foreach m ( $models )
         gen_group_command.py -command 3dMEMA                                        \
                 -write_script $map_folder/${fileG}_3dMEMA_${output_name}            \
                 -prefix  ${fileG}_3dMEMA_${output_name}                             \
-                -dsets $lev1_dir/*/$results_folder/stats.sub-???_REML+tlrc.HEAD     \
+                -dsets $lev1_dir/*/$lev1_results/stats.sub-???_REML+tlrc.HEAD     \
                 -dset_sid_list $LRindex                                             \
-                -dsets $lev1_dir/*/$results_folder/stats.sub-???_REML+tlrc.HEAD     \
+                -dsets $lev1_dir/*/$lev1_results/stats.sub-???_REML+tlrc.HEAD     \
                 -dset_sid_list $HRindex                                             \
                 -set_labels lowrisk highrisk                                        \
                 -subs_betas "${m}"'#'0_Coef                                         \

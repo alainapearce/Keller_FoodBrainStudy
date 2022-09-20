@@ -60,10 +60,6 @@ else
 endif
 
 
-# set results folder
-set results_folder = ${tempst}_${censor_str}
-
-
 #check to see if have 'Old' directory, 
 #if do, check for and clean up old directories,
 #if not, create all folders in that path    
@@ -101,8 +97,10 @@ if ( ! -d $map_folder ) then
     mkdir -p $map_folder
 endif
 
+# set lev1 results directory name
+set lev1censor = ($censor_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
 
-echo "${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask*${temp}*+tlrc.HEAD"
 
 ## Use this if masks are in fmriprep dir
 #make mask with 80% of participants overlapping
@@ -124,7 +122,8 @@ endif
 ###################### generate scripts  ########################
 #loop though all conditions/contrasts of interest
 
-set groups = ( WholeGroup HighRisk LowRisk )
+#set groups = ( WholeGroup HighRisk LowRisk )
+set groups = ( WholeGroup )
 
 foreach group ( $groups )
 
@@ -132,15 +131,14 @@ foreach group ( $groups )
 	        if ( "$group" == "WholeGroup" ) then
                 	set fileG = "WG"
                 	set index = `cat $index_dir/index_all_${censor_str}.txt`
-        	else if ( "$g" == "HighRisk" ) then
+        	else if ( "$group" == "HighRisk" ) then
                 	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
                 	set fileG = "HR"
-        	else if ( "$g" == "LowRisk" ) then
+        	else if ( "$group" == "LowRisk" ) then
                 	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
                 	set fileG = "LR"
 			endif
 
-	echo $index    	
 
 	###################### High_v_Low PS contrast ######################
 	set output_name = "High_v_Low_PScon"
@@ -150,7 +148,7 @@ foreach group ( $groups )
 	gen_group_command.py -command 3dttest++                                            \
 		    -write_script $map_folder/${fileG}_2sampleT++_${output_name}           \
 		    -prefix  ${fileG}_2sampleT++_${output_name}                           \
-		    -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
+		    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
 		    -dset_sid_list $index						   \
 		    -set_labels HighLarge-Small LowLarge-Small                             \
 		    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
@@ -172,7 +170,7 @@ foreach group ( $groups )
         gen_group_command.py -command 3dttest++                                            \
                     -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
                     -prefix  ${fileG}_2sampleT++_${output_name}                       \
-                    -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
+                    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD                    \
                     -dset_sid_list $index                                               \
                     -set_labels LargeHigh-Low SmallHigh-Low                             \
                     -subs_betas LargeHigh-Low_GLT'#'0_Coef SmallHigh-Low_GLT'#'0_Coef   \
@@ -185,24 +183,6 @@ foreach group ( $groups )
         	cd $map_folder
         	tcsh ${fileG}_2sampleT++_${output_name}
     	endif
-
-
-    ###################### Food_v_Office PS contrast ######################
-	set output_name = "Food_v_Office_PScon"
-
-	#toz-when using zskip need to convert t to z because voxel
-        #may have different number of samples
-        gen_group_command.py -command 3dttest++                                            \
-                    -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
-                    -prefix  ${fileG}_2sampleT++_${output_name}                       \
-                    -dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD                     \
-                    -dset_sid_list $index                                               \
-               #     -set_labels LargeHigh-Low SmallHigh-Low                             \
-               #     -subs_betas LargeHigh-Low_GLT'#'0_Coef SmallHigh-Low_GLT'#'0_Coef   \
-                    -options                                                               \
-                        -paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-
-
 
 
 end

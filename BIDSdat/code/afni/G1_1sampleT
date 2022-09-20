@@ -1,7 +1,7 @@
 #!/bin/tcsh
 #
 #useage: G2_2sample-pairedT   $1         $2       $3        	$4
-#		     				template	session	  execute?  	entire censor string 
+#		     	template	session	  execute?  	entire censor string 
 #
 # The purpose of this script is to create and run 1sample t-tests of all conditions of interest
 # $1: ped or MNI
@@ -59,10 +59,6 @@ else
 endif
 
 
-# set results folder
-set results_folder = ${tempst}_${censor_str}
-
-
 # #check to see if have 'Old' directory, 
 # #if do, check for and clean up old directories,
 # #if not, create all folders in that path    
@@ -92,6 +88,11 @@ set results_folder = ${tempst}_${censor_str}
 # else
 #     mkdir -p $test_dir/Old
 # endif
+
+# set lev1 results directory name
+set lev1censor = ($censor_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
+
 
 #set map folder
 set map_folder = $test_dir/${tempst}_${censor_str}_${today}
@@ -123,18 +124,18 @@ endif
 
 ###################### generate scripts  ########################
 
-#loop though all conditions/contrasts of interest
+# maps for all conditions/contrasts of interest
 #set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
 
-set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT HighLarge-Small_GLT LowLarge-Small_GLT Food-Office_GLT)
-
+# maps for main effects
+set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT)
 set groups = ( WholeGroup HighRisk LowRisk )
 
 foreach map ( $maps )
-	set output_name = $map
-	
-	foreach group ( $groups )
 
+	set output_name = $map
+
+	foreach group ( $groups )
 		# set index list
 	        if ( "$group" == "WholeGroup" ) then
                 	set fileG = "WG"
@@ -146,6 +147,7 @@ foreach map ( $maps )
                 	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
                 	set fileG = "LR"
 			endif
+	
 		
 		# generate t-test script
 
@@ -154,13 +156,13 @@ foreach map ( $maps )
     		#may have different number of samples
 		# add -Clustsim option to run 3dClustSim
     		gen_group_command.py -command 3dttest++                                             \
-                	        -write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
-                	        -prefix  ${fileG}_1sampleT++_${output_name}                          \
-                        	-dsets $lev1_dir/*/$results_folder/stats*+tlrc.HEAD            \
+				-write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
+				-prefix  ${fileG}_1sampleT++_${output_name}                          \
+				-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
                          	-dset_sid_list $index 					\
 			 	-set_labels $map                                                 \
                          	-subs_betas "${map}"'#'0_Coef                                    \
-                         	-options                                                       \
+				-options                                                       \
                             		-mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
 
 		
