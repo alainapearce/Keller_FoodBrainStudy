@@ -69,8 +69,8 @@ do
     #loop through all needed scripts.
     
     #list of all script names
-    proc_scripts=(wrapper wrapper.pbs )
-     
+    proc_scripts=(wrapper-afni wrapper-afni.pbs )
+ 
     for script in "${proc_scripts[@]}"
     do
 	#set script name

@@ -78,8 +78,12 @@ endif
 #set map directory
 set map_dir = $test_dir/${tempst}_${censor_str}_${today}
 
+if ( ! -d $map_dir ) then
+    mkdir -p $map_dir
+endif
+
 # set datatable name
-set data_table = datatable-EDcon-${censor_str}.txt
+set data_table = dataframe-EDcon-${censor_str}.txt
 
 #copy datatable into map directory
 cp $df_dir/$data_table $map_dir 
