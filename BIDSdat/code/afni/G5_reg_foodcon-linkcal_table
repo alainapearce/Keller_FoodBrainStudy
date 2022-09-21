@@ -1,0 +1,167 @@
+#!/bin/tcsh
+#
+#useage: G4_MVM  $1         $2             $3
+#		        template    session   entire censor string (e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs)          
+#                
+#
+# The purpose of this script run linear mixed effects model for
+# ED contrast by PS and Risk for Food and Brain study
+# Written by Bari Fuchs Fall 2022
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+ 
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+ 
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+cd ../../
+set bidsdir = "$cwd"
+
+#set lev1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+
+#set dataframe dir
+set df_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/
+
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/RegAna
+
+if ( ! -d $test_dir ) then
+    mkdir -p $test_dir
+endif
+
+#set output name
+set today = `date +%m-%d-%y`
+ 
+# set censor criteria
+set censor_str = $3
+
+# set path to templates
+set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+
+#Get template specific variables
+if ( "$1" == "MNI" ) then
+        ##Get MNI template used in fmriprep
+        set basedset = $tpath/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz
+        set basedset_name = "tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz"
+        # set string
+        set temp = "MNI152NLin2009cAsym"
+        set tempst = "MNI"
+else
+        #Get pediatric template used in fmriprep
+        set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+        set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+        # set strings
+	set temp = "MNIPediatricAsym_cohort-3"
+	set tempst = "ped"
+endif
+
+#check to see if have 'Old' directory, 
+#if do, check for and clean up old directories,
+#if not, create all folders in that path    
+#if ( -d $test_dir/MVM/Old ) then
+#    set old_folders = `( ls -d $test_dir/MVM/*/ )`
+#    foreach old ( $old_folders )
+#        if ( "$old" != "$test_dir/MVM/Old/" ) then
+#            mv $old $test_dir/MVM/Old
+#        endif
+#    end
+#else
+#     mkdir -p $test_dir/MVM/Old
+#endif
+
+#set map directory
+set map_dir = $test_dir/${tempst}_${censor_str}_${today}
+
+if ( ! -d $map_dir ) then
+    mkdir -p $map_dir
+endif
+
+## Use this if masks are in fmriprep dir
+#make mask with 80% of participants overlapping
+if ( ! -f $map_dir/Session${2}_mask0.8_${today}+tlrc ) then
+    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
+            -prefix $map_dir/mask0.8_${today}+tlrc              \
+            -frac 0.8
+endif
+
+## can use num_glt and glt to specify specific contrasts -- but I belive the main effects will be automatically reported
+
+3dRegAna -rows 60 -cols 1	\
+    -xydata	-226.4827751	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-001/ped_fd-0.9_b20/stats.sub-001+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	85.80778823	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-002/ped_fd-0.9_b20/stats.sub-002+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	120.8072837	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-003/ped_fd-0.9_b20/stats.sub-003+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	514.3804775	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-004/ped_fd-0.9_b20/stats.sub-004+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	352.7891832	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-005/ped_fd-0.9_b20/stats.sub-005+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	230.4157663	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-011/ped_fd-0.9_b20/stats.sub-011+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-62.8952666	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-017/ped_fd-0.9_b20/stats.sub-017+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-55.78779071	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-020/ped_fd-0.9_b20/stats.sub-020+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	282.2279309	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-021/ped_fd-0.9_b20/stats.sub-021+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-4.092918691	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-022/ped_fd-0.9_b20/stats.sub-022+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	221.1462855	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-023/ped_fd-0.9_b20/stats.sub-023+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	380.2872365	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-026/ped_fd-0.9_b20/stats.sub-026+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-6.85919004	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-028/ped_fd-0.9_b20/stats.sub-028+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	301.0211311	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-030/ped_fd-0.9_b20/stats.sub-030+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-33.34281063	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-033/ped_fd-0.9_b20/stats.sub-033+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-60.83828448	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-036/ped_fd-0.9_b20/stats.sub-036+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	136.1634995	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-037/ped_fd-0.9_b20/stats.sub-037+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	218.9442666	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-038/ped_fd-0.9_b20/stats.sub-038+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	19.22022113	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-039/ped_fd-0.9_b20/stats.sub-039+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-149.2260013	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-040/ped_fd-0.9_b20/stats.sub-040+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-13.54324524	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-041/ped_fd-0.9_b20/stats.sub-041+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	370.6266566	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-043/ped_fd-0.9_b20/stats.sub-043+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	220.876477	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-045/ped_fd-0.9_b20/stats.sub-045+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	108.6305058	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-047/ped_fd-0.9_b20/stats.sub-047+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	429.6272633	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-048/ped_fd-0.9_b20/stats.sub-048+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-141.303647	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-049/ped_fd-0.9_b20/stats.sub-049+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-77.08634449	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-051/ped_fd-0.9_b20/stats.sub-051+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	115.71113	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-054/ped_fd-0.9_b20/stats.sub-054+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	182.3082549	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-055/ped_fd-0.9_b20/stats.sub-055+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	314.8011398	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-056/ped_fd-0.9_b20/stats.sub-056+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	315.921858	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-058/ped_fd-0.9_b20/stats.sub-058+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	97.02762507	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-070/ped_fd-0.9_b20/stats.sub-070+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-125.5533968	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-071/ped_fd-0.9_b20/stats.sub-071+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-22.99709935	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-073/ped_fd-0.9_b20/stats.sub-073+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	195.2719168	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-074/ped_fd-0.9_b20/stats.sub-074+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	336.4562376	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-075/ped_fd-0.9_b20/stats.sub-075+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	42.5163469	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-078/ped_fd-0.9_b20/stats.sub-078+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	31.38696219	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-080/ped_fd-0.9_b20/stats.sub-080+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	255.0525407	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-084/ped_fd-0.9_b20/stats.sub-084+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	274.3059472	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-089/ped_fd-0.9_b20/stats.sub-089+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	404.2207215	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-090/ped_fd-0.9_b20/stats.sub-090+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-211.4078748	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-094/ped_fd-0.9_b20/stats.sub-094+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	116.5806253	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-095/ped_fd-0.9_b20/stats.sub-095+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-76.55017797	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-096/ped_fd-0.9_b20/stats.sub-096+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	93.16251312	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-101/ped_fd-0.9_b20/stats.sub-101+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	106.1308483	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-103/ped_fd-0.9_b20/stats.sub-103+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	80.90833836	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-104/ped_fd-0.9_b20/stats.sub-104+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-24.65422134	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-105/ped_fd-0.9_b20/stats.sub-105+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	274.5545267	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-109/ped_fd-0.9_b20/stats.sub-109+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	57.90892007	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-110/ped_fd-0.9_b20/stats.sub-110+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-20.95942895	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-111/ped_fd-0.9_b20/stats.sub-111+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	365.2765885	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-116/ped_fd-0.9_b20/stats.sub-116+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	109.8707429	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-118/ped_fd-0.9_b20/stats.sub-118+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	125.5883622	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-119/ped_fd-0.9_b20/stats.sub-119+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	381.4801775	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-121/ped_fd-0.9_b20/stats.sub-121+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	629.910905	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-126/ped_fd-0.9_b20/stats.sub-126+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	193.0877598	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-129/ped_fd-0.9_b20/stats.sub-129+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	172.2356451	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-131/ped_fd-0.9_b20/stats.sub-131+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	28.70841933	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-132/ped_fd-0.9_b20/stats.sub-132+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -xydata	-14.48466729	/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-133/ped_fd-0.9_b20/stats.sub-133+tlrc'[Food-Office_GLT#0_Coef]'	\
+    -model 1 : 0 -bucket 0 $map_dir/corr_kcal_lin
+    
+#  end
+
+if ( "$tpath" == '' ) then
+     echo "***** Failed to find $basedset :("
+     exit 1
+else
+    if ( ! -f $map_dir/$basedset ) then
+       cp $tpath/$basedset $map_dir
+    endif
+endif

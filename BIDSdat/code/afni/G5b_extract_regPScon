@@ -1,0 +1,51 @@
+#!/bin/tcsh
+#
+#useage: G5b_
+
+# The purpose of this script is to extrat beta values for a previously defined cluster
+# Written by Bari Fuchs Fall 2022
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+ 
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+ 
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+cd ../../
+set bidsdir = "$cwd"
+
+#set lev1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+
+#set dataframe/index dir
+set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/
+
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/RegAna
+
+if ( ! -d $test_dir ) then
+    mkdir -p $test_dir
+endif
+
+#set map directory
+set map_dir = $test_dir/PScon_ped_fd-0.9_b20_3runs_09-20-22
+
+if ( ! -d $map_dir ) then
+    echo "failed to find $map_dir"
+endif
+
+# delete beta text file 
+if ( -f $map_dir/insula_betas.txt ) then
+	rm $map_dir/insula_betas.txt
+endif
+
+# loop through subjects
+foreach i ( `cat $index_dir/index_regana_PScon-intake-fd-0.9_b20_3runs.txt ` )
+	set sub = $i
+	set beta = `3dmaskave -mask $map_dir/insula_mask+tlrc. $lev1_dir/sub-$sub/ped_fd-0.9_b20/stats.sub-$sub+tlrc'[Large-Small_allED_GLT#0_Coef]'`
+	echo $sub ' \t ' $beta >> $map_dir/insula_betas.txt 
+end
