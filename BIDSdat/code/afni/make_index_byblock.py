@@ -179,12 +179,19 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
             print(joined_list , file = indexFile)
 
 
-    ############################################################
-    #### Make index file for subs with all 4 food conditions ###
-    ############################################################
+    ##############################################################################
+    #### Make index file for subs (all and by risk) with all 4 food conditions ###
+    ##############################################################################
+    
+    anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav'))
+    anthro_df['id']= anthro_df['id'].astype(int) #change to integer to remove decimals
+    anthro_df['id']= anthro_df['id'].astype(str) #change to string
+    anthro_df['id'] = anthro_df['id'].str.zfill(3) #add leading zeros
 
     # # initiate empty list to append subjects to
     all_food_indexlist = []
+    hr_food_indexlist = []
+    lr_food_indexlist = []
 
     for sub in subs:
 
@@ -195,12 +202,34 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
             # add child to all_food_indexlist
             all_food_indexlist.append(sub)
 
-    # define output path 
-    file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_all_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
-            
-    # write to file
-    with open(file, 'w') as indexFile:
+            # if subject is high risk ## Fix if statement
+            if anthro_df.loc[anthro_df['id'] == sub, 'risk_status_mom'].squeeze() == "High Risk":
+                hr_food_indexlist.append(sub)
+
+            # if subject is low risk ## Fix if statement
+            if anthro_df.loc[anthro_df['id'] == sub, 'risk_status_mom'].squeeze() == "Low Risk":
+                lr_food_indexlist.append(sub)
+
+
+
+    # define output paths
+    all_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_all_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    hr_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_highrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    lr_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_lowrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+
+    # write all sub to file
+    with open(all_sub_file, 'w') as indexFile:
         joined_list = "  ".join(all_food_indexlist)
+        print(joined_list , file = indexFile)
+
+    # write high risk to file
+    with open(hr_sub_file, 'w') as indexFile:
+        joined_list = "  ".join(hr_food_indexlist)
+        print(joined_list , file = indexFile)
+
+    # write low risk to file
+    with open(lr_sub_file, 'w') as indexFile:
+        joined_list = "  ".join(lr_food_indexlist)
         print(joined_list , file = indexFile)
 
 
