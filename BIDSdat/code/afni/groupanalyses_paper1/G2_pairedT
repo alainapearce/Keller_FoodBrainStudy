@@ -102,23 +102,6 @@ set lev1censor = ($censor_str:as/_/ /)
 set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
 
 
-## Use this if masks are in fmriprep dir
-#make mask with 80% of participants overlapping
-if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
-    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
-            -prefix $map_folder/Session${2}_mask0.8_${today}+tlrc              \
-            -frac 0.8
-endif
-
-## Use this if masks are in lev1 dir
-#make mask with 80% of participants overlapping
-#if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
-#   3dmask_tool -input $lev1_dir/*/$results_folder/full_mask*+tlrc.HEAD \
-#	    -prefix $map_folder/Session${2}_mask0.8_${today}+tlrc              \
-#	    -frac 0.8
-#endif
-
-
 ###################### generate scripts  ########################
 #loop though all conditions/contrasts of interest
 
@@ -127,18 +110,35 @@ set groups = ( WholeGroup )
 
 foreach group ( $groups )
 
-		# set index list
-	        if ( "$group" == "WholeGroup" ) then
-                	set fileG = "WG"
-                	set index = `cat $index_dir/index_all_${censor_str}.txt`
-        	else if ( "$group" == "HighRisk" ) then
-                	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
-                	set fileG = "HR"
-        	else if ( "$group" == "LowRisk" ) then
-                	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
-                	set fileG = "LR"
-			endif
+	# set index list
+	if ( "$group" == "WholeGroup" ) then
+       		set fileG = "WG"
+               	set index = `cat $index_dir/index_all_${censor_str}.txt`
+        else if ( "$group" == "HighRisk" ) then
+               	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
+               	set fileG = "HR"
+        else if ( "$group" == "LowRisk" ) then
+                set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
+               	set fileG = "LR"
+	endif
 
+	# generate mask for analyses if it doesnt exist
+	if (! -f $map_folder/${fileG}_mask0.8+tlrc.HEAD ) then
+		
+		# make temporary directory with participant masks for subjects included in analyses
+		mkdir $map_folder/temp_mask
+        	foreach sub ( $index )
+			cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+                end
+
+		# generate mask with 80% of participants overlapping
+		3dmask_tool -input $map_folder/temp_mask/mask* \
+                              -prefix $map_folder/${fileG}_mask0.8+tlrc              \
+                              -frac 0.8
+
+                # remove temporary directory
+                rm -r $map_folder/temp_mask
+	endif
 
 	###################### High_v_Low PS contrast ######################
 	set output_name = "High_v_Low_PScon"

@@ -102,14 +102,24 @@ endif
 set lev1censor = ($censor_str:as/_/ /)
 set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
 
-## Use this if masks are in fmriprep dir
-#make mask with 80% of participants overlapping
-if ( ! -f $map_folder/Session${2}_mask0.8_${today}+tlrc ) then
-    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
-	    -prefix $map_folder/Session${2}_mask0.8_${today}+tlrc              \
-	    -frac 0.8
-endif
 
+###################### generate mask for analyses  ########################
+# get list of all subjects
+set WG_index = `cat $index_dir/index_all_${censor_str}.txt`
+
+# make temporary directory with participant masks for subjects included in analyses
+mkdir $map_folder/temp_mask
+foreach sub ( $WG_index )
+	cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+end
+
+# generate mask with 80% of participants overlapping
+3dmask_tool -input $map_folder/temp_mask/mask* \
+	-prefix $map_folder/WG_mask0.8+tlrc              \
+        -frac 0.8
+
+# remove temporary directory
+rm -r $map_folder/temp_mask
 
 ###################### generate scripts  ########################
 
@@ -137,11 +147,11 @@ foreach m ( $models )
             -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
             -dset_sid_list $HRindex                                                 \
             -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
-            -dset_sid_list $LRindex						                            \
-            -set_labels highrisk lowrisk					                        \
-            -subs_betas "${m}"'#'0_Coef					                            \
-            -options								                                \
-                -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
+            -dset_sid_list $LRindex			                           \
+            -set_labels highrisk lowrisk		                        \
+            -subs_betas "${m}"'#'0_Coef			                          \
+            -options				                             \
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz
 
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
@@ -153,7 +163,7 @@ end
 
 #### 3dMEMA ####
 
-# note: REML output does not contain 'GLT' for contrasts
+# note: REML output does not contain 'GLT' string for contrasts
 set models = ( Large-Small_allED High-Low_allPS )
 
 foreach m ( $models )
@@ -165,7 +175,7 @@ foreach m ( $models )
 
         #toz-when using zskip need to convert t to z because voxel
         #may have different number of samples
-#switch order of set_labels to be consistent with 3dttest. 3dMEMA does group B - group A	
+	#switch order of set_labels to be consistent with 3dttest. 3dMEMA does group B - group A	
         gen_group_command.py -command 3dMEMA                                        \
                 -write_script $map_folder/${fileG}_3dMEMA_${output_name}            \
                 -prefix  ${fileG}_3dMEMA_${output_name}                             \
@@ -177,7 +187,7 @@ foreach m ( $models )
                 -subs_betas "${m}"'#'0_Coef                                         \
                 -subs_tstats "${m}"'#'0_Tstat                                       \
                 -options                                                            \
-                        -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD -toz
+                        -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz
 
             chmod 775 $map_folder/${fileG}_3dMEMA_${output_name}
 
