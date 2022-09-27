@@ -20,7 +20,7 @@ setenv AFNI_COMPRESSOR NONE
 
 ###################### setup and check directories  ###########################   
 #go to and set BIDS main directory
-cd ../../
+cd ../../../
 set bidsdir = "$cwd"
 
 #set level1 dir

@@ -20,7 +20,7 @@ setenv ANFI_VRSION_CHECK NO
 setenv AFNI_COMPRESSOR NONE
 
 ###################### setup and check directories  ###########################   
-cd ../../
+cd ../../../
 set bidsdir = "$cwd"
 
 #set level1 dir
