@@ -165,7 +165,7 @@ def gen_byblock_onsets(par_id, censorsum_file, minblockTR, preproc_path = False)
             os.makedirs(new_onset_path)
             
         # write file
-        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename + '.txt')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename + '.txt')), sep = '\t', encoding='ascii', index = False, header=False)
 
     #return onset dictionary for integration testing
     return onset_dict

@@ -125,4 +125,4 @@ def gen_dataframe(template, censor_str):
     lme_df.loc[lme_df.index[-1], '\\']= ""
 
     # write dataframe
-    lme_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/lme_ED-PS_' + str(censor_str) + '.txt')), sep = '\t', encoding='utf-8-sig', index = False)
+    lme_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/lme_ED-PS_' + str(censor_str) + '.txt')), sep = '\t', encoding='ascii', index = False)

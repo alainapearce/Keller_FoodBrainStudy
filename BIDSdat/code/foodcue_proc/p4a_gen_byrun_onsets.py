@@ -233,7 +233,7 @@ def gen_byrun_onsets(par_id, censorsum_file, p_thresh_run = False, p_thresh_bloc
                 os.makedirs(new_onset_path)
             
             # write file
-            onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+            onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(filename)), sep = '\t', encoding='ascii', index = False, header=False)
 
     #return onset dictionary for integration testing
     return onset_dict

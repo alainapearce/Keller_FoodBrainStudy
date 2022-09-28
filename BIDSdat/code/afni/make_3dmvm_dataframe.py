@@ -95,7 +95,8 @@ def gen_dataframe(template, index_file):
     ################################################################
     #### Generate DataTable for 3dMVM -- ED contrast x PS x risk ###
     ################################################################
-    MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile', '\\'])
+    #MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile', '\\'])
+    MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile'])
 
     for i in range(len(sub_include)):
 
@@ -112,24 +113,29 @@ def gen_dataframe(template, index_file):
 
         # create and append row for Large PS ED contrast
         Largepath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[LargeHigh-Low_GLT#0_Coef]'
-        LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
+        #LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
+        LargePSrow = [sub_id, 'Large', risk, Largepath]
         MVMdatatable = MVMdatatable.append(pd.DataFrame([LargePSrow],
-            columns=['Subj','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'InputFile']),
+            #columns=['Subj','PS', 'risk', 'InputFile', '\\']),
             ignore_index=True)
 
         # create and append row for Small PS ED contrast
         Smallpath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[SmallHigh-Low_GLT#0_Coef]'
-        SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
+        #SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
+        SmallPSrow = [sub_id, 'Small', risk, Smallpath]
         MVMdatatable = MVMdatatable.append(pd.DataFrame([SmallPSrow],
-            columns=['Subj','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'InputFile']),
+            #columns=['Subj','PS', 'risk', 'InputFile', '\\']),
             ignore_index=True)
 
     # remove '\' from last row in datatable
-    MVMdatatable.loc[MVMdatatable.index[-1], '\\']= ""
+    #MVMdatatable.loc[MVMdatatable.index[-1], '\\']= ""
 
     # get full censor string from index file name, with .txt at the end
-    censor_str = re.split('index_all_',index_file)[1]
+    censor_str_txt = re.split('index_all_',index_file)[1]
+    censor_str = re.split('.txt',index_file)[0]
 
     # write dataframe
-    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str))), sep = '\t', encoding='utf-8-sig', index = False)
+    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str) + '.csv')), sep = '\t', encoding='ascii', index = False)
 
