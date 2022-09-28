@@ -98,11 +98,15 @@ mkdir -p $output_dir
 # run the first-level regression analysis
 cd $output_dir
 
+# note: stim_times_subtract is set equal to TR/2 to adjust for how fmriprep does slice time correction
+# see https://reproducibility.stanford.edu/slice-timing-correction-in-fmriprep-and-linear-modeling/
+
 3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
    	-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
 	-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
     	-polort 2                                                               		\
 	-num_stimts 21                                                                          \
+	-stim_times_subtract 1									\
 	-stim_times 1 $onsetDir/${subID}_HighLarge*.txt 'BLOCK(18,1)'	\
 	-stim_label 1 HighLarge                  						\
 	-stim_times 2 $onsetDir/${subID}_HighSmall*.txt 'BLOCK(18,1)'    \
