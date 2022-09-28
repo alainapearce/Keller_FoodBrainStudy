@@ -84,6 +84,10 @@ def getonsets(par_id, overwrite = False):
     bids_raw_path = Path(base_directory).joinpath('raw_data')
     bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
 
+    # make orig directory if it doesnt exist
+    if os.path.exists(bids_deriv_onsetfiles) is False:
+        os.makedirs(bids_deriv_onsetfiles)
+
     #############################
     ### Get participant files ###
     #############################
@@ -135,10 +139,6 @@ def getonsets(par_id, overwrite = False):
     fix_Pardat = pd.DataFrame(np.zeros((nruns*6, 4)))
     fix_Pardat.columns = ['ParticipantID', 'Run', 'PrevBlock', 'FixAfterBlock']
     
-    # set variable to zero
-    r_prev_row = 0 #no runs yet
-    rb_prev_row = 0 #no runs/blocks yet
-
     # loop through eventsfiles
     for file in eventsfiles:
 
@@ -167,5 +167,5 @@ def getonsets(par_id, overwrite = False):
         onsets_cond.columns = ['cond', 'star']
         onsets_cond['cond'] = onsets_Pardat[c]
         onsets_cond['star'] = '*'
-        onsets_cond.to_csv(str(Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_' + c + '-AFNIonsets.txt')), sep = '\t', encoding='utf-8-sig', index = False, header=None)
+        onsets_cond.to_csv(str(Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_' + c + '-AFNIonsets.txt')), sep = '\t', encoding='ascii', index = False, header=None)
 
