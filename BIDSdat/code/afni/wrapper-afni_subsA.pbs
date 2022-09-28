@@ -1,0 +1,48 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=10
+#PBS -l pmem=12gb
+#PBS -l walltime=24:00:00
+#PBS -A klk37_b_g_bc_default
+#PBS -j oe
+#
+#Useage: qsub sub-001_session1_09_15_22_wrapper.pbs
+#
+#
+
+######## Set up inital variables ########
+
+#don't log AFNI programs in ~/.afni.log
+AFNI_DONT_LOGFILE="YES"
+
+#dont try version checks
+ANFI_VRSION_CHECK="NO"
+
+##don't auto-compress output files
+AFNI_COMPRESSOR="NONE"
+
+#set number of processors for AFNI to match the number of cores
+# see https://afni.nimh.nih.gov/pub/dist/doc/program_help/3dTfitter.html
+OMP_NUM_THREADS="10"
+
+#date
+today=`date +%m-%d-%y`
+
+#set top/base directory
+topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/"
+
+# make array of subs to process
+declare -a subs=(001 002 003 004 005 007 008 009 011 017 018 019 020 021 022 023 026 028 030 031 033 035 036 037 038 039 040 041 043 045 047 048 049 051 052 054 055 056 058 068 069 070)
+# loop through subs
+for sub in ${subs}; do
+
+
+	#write to output file
+	echo "## sub_${sub}_session1_09_15_22_wrapper was run on ${today}"
+	echo "## Job started: `date`"
+
+
+	#Load afni singularity and run afniscript
+	cd $topdir/code/afni/sub-${sub}
+	singularity exec /gpfs/group/klk37/default/sw/AFNI.simg bash sub-${sub}_session1_09_15_22_wrapper-afni
+
+done
