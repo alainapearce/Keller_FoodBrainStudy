@@ -70,8 +70,9 @@ def _get_summary_files(bids_fmriprep_path, sub, overwrite):
     # if database does not exist
     else:
         # create new dataframe 
-        fd_summary_allPar = pd.DataFrame(np.zeros((0, 7)))
-        fd_summary_allPar.columns = ['id','fd_avg_allruns','fd_avg_run1','fd_avg_run2','fd_avg_run3','fd_avg_run4','fd_avg_run5']
+        fd_summary_allPar = pd.DataFrame(np.zeros((0, 12)))
+        fd_summary_allPar.columns = ['id','fd_avg_allruns','fd_avg_run1','fd_avg_run2','fd_avg_run3','fd_avg_run4','fd_avg_run5',
+                                            'fd_max_run1', 'fd_max_run2', 'fd_max_run3', 'fd_max_run4', 'fd_max_run5']
 
     return(fd_summary_allPar)
 
@@ -91,6 +92,7 @@ def _compute_avg_fd_allruns(confound_files):
 
     # create dictionary to store average values in
     avg_fd = {'all': nan, 1: nan, 2:nan, 3:nan, 4:nan, 5:nan}
+    max_fd = {1: nan, 2:nan, 3:nan, 4:nan, 5:nan}
 
     # extract framewise displacement values from each run
     confound_files.sort()
@@ -109,6 +111,10 @@ def _compute_avg_fd_allruns(confound_files):
         run_avg_fd = fd_run["framewise_displacement"].mean()
         avg_fd[runnum] = round(run_avg_fd, 2)
 
+        # get max fd for run and add to dictionary
+        run_max_fd = fd_run["framewise_displacement"].max()
+        max_fd[runnum] = round(run_max_fd, 2)
+
         # add run-specific data to overall dataframe
         allruns_fd_df = allruns_fd_df.append(fd_run)
 
@@ -116,7 +122,7 @@ def _compute_avg_fd_allruns(confound_files):
     avg_fd_allruns = allruns_fd_df["framewise_displacement"].mean()
     avg_fd['all'] = round(avg_fd_allruns, 2)
 
-    return avg_fd
+    return avg_fd, max_fd
 
 
 def _compute_avg_fd_includedruns(confound_files, runlist):
@@ -189,13 +195,13 @@ def get_avg_fd(par_id, overwrite = False, preproc_path = False):
         raise Exception()
 
     # compute average framewise displacement across all runs
-    avg_fd = _compute_avg_fd_allruns(confound_files)
+    avg_fd, max_fd = _compute_avg_fd_allruns(confound_files)
 
     # add particpant to fd_summary_allPar
-    fd_summary_allPar.loc[len(fd_summary_allPar)] = [sub, avg_fd['all'], avg_fd[1], avg_fd[2], avg_fd[3], avg_fd[4], avg_fd[5]]
+    fd_summary_allPar.loc[len(fd_summary_allPar)] = [sub, avg_fd['all'], avg_fd[1], avg_fd[2], avg_fd[3], avg_fd[4], avg_fd[5], max_fd[1], max_fd[2], max_fd[3], max_fd[4], max_fd[5]]
 
     #Export summary dataframe
     fd_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_avg-fd.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
     #return onset dictionary for integration testing
-    return avg_fd
+    return avg_fd, max_fd
