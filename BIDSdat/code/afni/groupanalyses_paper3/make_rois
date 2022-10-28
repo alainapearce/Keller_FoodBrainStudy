@@ -16,6 +16,13 @@ set bidsdir = "$cwd"
 set tempdir = $bidsdir/derivatives/analyses/FoodCue-fmri/templates/tpl-MNIPediatricAsym/cohort-3
 set ped_temp = $tempdir/tpl-MNIPediatricAsym_cohort-3_res-2_T1w.nii.gz
 
+#set output directory for ROIs
+set roidir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/F31_EAH-connectivity/roi_spheres
+
+#make output directory for ROIs if it doesnt exist
+if ( ! -d $roidir ) then
+    mkdir -p $roidir
+
 ###################### make rois  ########################### 
 
 ## NOTE: resolution of mask dataset will equal that of -master. If $ped_temp is master, this will not match BOLD data resolution.
@@ -23,13 +30,13 @@ set ped_temp = $tempdir/tpl-MNIPediatricAsym_cohort-3_res-2_T1w.nii.gz
 #### resource for resampling: https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/rois_corr_vis/afni11_roi_cmds.html#resampling-regridding-rois 
 
 # L angular gyrus (Han et al. 2018)
-echo "-42 -64 42" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix l_angular_roi+tlrc -xyz -res
+echo "-42 -64 42" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix $roidir/l_angular_roi+tlrc -xyz -res
 
 # R supramarginal gyrus (Han et al. 2018)
-echo "46 -52 44" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix r_supmar_roi+tlrc -xyz -res
+echo "46 -52 44" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix $roidir/r_supmar_roi+tlrc -xyz -res
 
 # R mid frontal gyrus (Han et al. 2018)
-echo "44 14 38" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix r_mfg_roi+tlrc -xyz -res
+echo "44 14 38" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix $roidir/r_mfg_roi+tlrc -xyz -res
 
 # L dlpfc (Meng et al. 2020)
-echo "-30 22 40" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix l_dlpfc_roi+tlrc -xyz -res
+echo "-30 22 40" | 3dUndump -orient LPI -srad 4 -master $ped_temp -prefix $roidir/l_dlpfc_roi+tlrc -xyz -res
