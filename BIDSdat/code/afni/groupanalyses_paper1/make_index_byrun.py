@@ -73,7 +73,7 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
 
         # change directory to base directory (BIDSdat) and get path
         os.chdir(script_path)
-        os.chdir('../..')
+        os.chdir('../../..')
         base_directory = Path(os.getcwd())
 
         # set path to onset files
@@ -185,7 +185,7 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     for group in index_dict:
         
         # set file name
-        file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_' + group + '_' + str(censor_string) + '_' + str(nruns) + 'runs.txt')
+        file = base_directory.joinpath('derivatives/analyses/foodcue-paper1/level2/index_' + group + '_' + str(censor_string) + '_' + str(nruns) + 'runs.txt')
        
        # write ids to file
         with open(file, 'w') as indexFile:

@@ -84,7 +84,7 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
 
         # change directory to base directory (BIDSdat) and get path
         os.chdir(script_path)
-        os.chdir('../..')
+        os.chdir('../../..')
         base_directory = Path(os.getcwd())
 
         # set path to onset files
@@ -171,7 +171,7 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
     for condition in condition_index_dir:
         
         # set file name
-        file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index-' + condition + '_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+        file = base_directory.joinpath('derivatives/analyses/foodcue-paper1/level2/index-' + condition + '_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
 
        # write ids to file
         with open(file, 'w') as indexFile:
@@ -213,9 +213,9 @@ def gen_index_byblock(onset_dir, nblocks, preproc_path = False):
 
 
     # define output paths
-    all_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_all_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
-    hr_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_highrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
-    lr_sub_file = base_directory.joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_lowrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    all_sub_file = base_directory.joinpath('derivatives/analyses/foodcue-paper1/level2/index_all_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    hr_sub_file = base_directory.joinpath('derivatives/analyses/foodcue-paper1/level2/index_highrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
+    lr_sub_file = base_directory.joinpath('derivatives/analyses/foodcue-paper1/level2/index_lowrisk_' + str(onset_dir) + "_" + str(nblocks) + 'blocks.txt')
 
     # write all sub to file
     with open(all_sub_file, 'w') as indexFile:
