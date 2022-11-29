@@ -49,7 +49,7 @@ def gen_dataframe():
 
     # change directory to base directory (BIDSdat) and get path
     os.chdir(script_path)
-    os.chdir('../../..')
+    os.chdir('../../../../')
     pardata_directory = Path(os.getcwd())
     #bids_directory = Path(os.getcwd())
 
@@ -134,4 +134,4 @@ def gen_dataframe():
     #########################
 
     # write dataframe with covariates
-    covar_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/ttest-covariates.csv')), sep = '\t', encoding='ascii', index = False)
+    covar_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/ttest-covariates.txt')), sep = '\t', encoding='ascii', index = False)
