@@ -42,6 +42,8 @@ def gen_dataframe():
     
     Note, rows in COVAR_FILE whose first column don't match a dataset label (in analysis script) are ignored (silently). 
         Thus, all subjects can be included in the covariate dataframe, even if they will not be included in analyses
+
+        TO DO: add body fat %, and maternal weight 
     """
 
     # get script location
@@ -134,4 +136,4 @@ def gen_dataframe():
     #########################
 
     # write dataframe with covariates
-    covar_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/ttest-covariates.txt')), sep = '\t', encoding='ascii', index = False)
+    covar_df.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/foodcue-paper1/level2/ttest-covariates.txt')), sep = '\t', encoding='ascii', index = False)
