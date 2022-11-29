@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This script was created to generate a dataframe for analyses with 3dMVM. 
-
-(1) count the number of subjects to be included in analyses 
-based on motion threshold and (2) generate subject index files for AFNI analyses using 
-task-foodcue..censorsummary_$censorcritera.tsv files (output of 4_create_censor_files.py). 
-Index files will list subject IDs that should be included in analyses, based on the desired motion threshold. 
-Index files be generated for the whole group, and can be generated for risk groups using the -byrisk input arg
+This script was created to generate a dataframe for brain and intake analyses with 3dRegAna. 
 
 Written by Bari Fuchs in Spring 2022
 
