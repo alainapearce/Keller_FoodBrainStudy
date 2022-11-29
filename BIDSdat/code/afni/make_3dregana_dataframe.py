@@ -58,7 +58,7 @@ def gen_dataframe(template, index_file):
 
     #set specific paths
     bids_path = Path(pardata_directory).joinpath('BIDSdat')
-    bids_indexpath = Path(pardata_directory).joinpath('BIDSdat/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/')
+    bids_indexpath = Path(pardata_directory).joinpath('BIDSdat/derivatives/analyses/foodcue-paper2/level2')
     database_path = Path(pardata_directory).joinpath('Databases')
     intake_res_path = Path(pardata_directory).joinpath('BIDSdat/derivatives/analyses/intake/')
 
@@ -108,7 +108,7 @@ def gen_dataframe(template, index_file):
         kcal_ps_lin = sub_include.loc[i,['kcal_ps_lin']][0]
 
         # create and append row for Large PS ED contrast
-        input_file = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[Food-Office_GLT#0_Coef]'
+        input_file = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/foodcue-paper2/level1/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[Food-Office_GLT#0_Coef]'
         subject_row = ['-xydata', kcal_ps_lin, input_file, '\\' ]
         regana_table = regana_table.append(pd.DataFrame([subject_row],
             columns=['-xydata', 'kcal_lin', 'InputFile', '\\']),
@@ -121,14 +121,14 @@ def gen_dataframe(template, index_file):
     censor_str = re.split('index_all_',index_file)[1]
 
     # write dataframe
-    regana_table.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/regana_PScon-intake-' + str(censor_str))), sep = '\t', encoding='ascii', index = False)
+    regana_table.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/foodcue-paper2/level2/regana_PScon-intake-' + str(censor_str))), sep = '\t', encoding='ascii', index = False)
 
  
     # get list of subject ids 
     sub_list = list(sub_include['sub'])
 
     # set index file name
-    file = bids_path.joinpath(('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/index_regana_PScon-intake-' + str(censor_str) + '.txt'))
+    file = bids_path.joinpath(('derivatives/analyses/foodcue-paper2/level2/index_regana_PScon-intake-' + str(censor_str) + '.txt'))
 
     # write index file with subject IDs
     with open(file, 'w') as indexFile:
