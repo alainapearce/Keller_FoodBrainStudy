@@ -1,13 +1,12 @@
 #!/bin/tcsh
 #
-#useage: G2_2sample-pairedT   $1         $2       $3        	$4
-#		     	template	session	  execute?  	entire censor string 
+#useage: G2_2sample-pairedT   $1         $2       		$3
+#		     				template	execute?  	entire censor string 
 #
 # The purpose of this script is to create and run 1sample t-tests of all conditions of interest
 # $1: ped or MNI
-# $2: 1 or 2
-# $3 run or no
-# $4 e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs
+# $2 run or no
+# $3 e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
 setenv AFNI_DONT_LOGFILE YES
@@ -24,13 +23,13 @@ cd ../../../
 set bidsdir = "$cwd"
 
 #set level1 dir
-set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
 
 #set test directory
-set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/1sampleT
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/1sampleT
 
 # set index dir
-set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}
+set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 
 #set output name
 set today = `date +%m-%d-%y`
@@ -39,7 +38,7 @@ set today = `date +%m-%d-%y`
 set censor_str = $4
 
 # set path to templates
-set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+set tpath = $bidsdir/derivatives/templates
 
 ##Get template specific results folder
 if ( "$1" == "MNI" ) then
@@ -59,46 +58,20 @@ else
 endif
 
 
-# #check to see if have 'Old' directory, 
-# #if do, check for and clean up old directories,
-# #if not, create all folders in that path    
-# if ( -d $test_dir/Old ) then
-#     set old_folders = `( ls -d $test_dir/* )`
-
-#     #if file path $test_dir/$old in loop not same direct file link to $test_dir/Old
-#     foreach old ( $old_folders )
-
-#         #get just dirname
-#         set dname = `basename $old`
-
-#         #if not the 'Old' directory
-#         if ( "$dname" != "Old" ) then
-
-#             #if $test_dir/$old hasn't been moved to $test_dir/Old
-#             if ( ! -d $test_dir/Old/$dname ) then
-#                 mv $old $test_dir/Old/
-
-#             #else update/copy and remove
-#             else
-#                 cp -u $old $test_dir/Old/
-#                 rm -r $old
-#             endif
-#         endif
-#     end
-# else
-#     mkdir -p $test_dir/Old
-# endif
-
 # set lev1 results directory name
 set lev1censor = ($censor_str:as/_/ /)
-set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
-
+set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]_noGSR
 
 #set map folder
-set map_folder = $test_dir/${tempst}_${censor_str}_${today}
+set map_folder = $test_dir/${tempst}_${censor_str}_noGSR_${today}
 
+#create map folder
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
+else
+	# remove and create new map folder
+	rm -r $map_folder
+	mkdir -p $map_folder
 endif
 
 
@@ -107,10 +80,11 @@ endif
 
 # maps for all conditions/contrasts of interest
 #set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
+#set groups = ( WholeGroup HighRisk LowRisk )
 
 # maps for main effects
 set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT)
-set groups = ( WholeGroup HighRisk LowRisk )
+set groups = ( WholeGroup )
 
 foreach map ( $maps )
 	set output_name = $map
@@ -129,25 +103,23 @@ foreach map ( $maps )
                 	set fileG = "LR"
 			endif
 
-		# generate mask for analyses if it doesnt exist
-		if (! -f $map_folder/${fileG}_mask0.8+tlrc.HEAD ) then
-		
-			# make temporary directory with participant masks for subjects included in analyses
-			mkdir $map_folder/temp_mask
-			foreach sub ( $index )
-				cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
-			end
+		## generate mask for analyses ##
 
-			# generate mask with 80% of participants overlapping
-			3dmask_tool -input $map_folder/temp_mask/mask* \
+		# make temporary directory with participant masks for subjects included in analyses
+		mkdir $map_folder/temp_mask
+		foreach sub ( $index )
+			cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+		end
+
+		# generate mask with 80% of participants overlapping
+		3dmask_tool -input $map_folder/temp_mask/mask* \
            			-prefix $map_folder/${fileG}_mask0.8+tlrc              \
            			-frac 0.8
 	
-			# remove temporary directory
-			rm -r $map_folder/temp_mask
-		endif 
-
-		# generate t-test script
+		# remove temporary directory
+		rm -r $map_folder/temp_mask
+ 
+		## generate t-test script ##
 
     		#zskip-skip voxels if more than 20% of dsets have zero value
     		#toz-when using zskip need to convert t to z because voxel 
@@ -161,7 +133,7 @@ foreach map ( $maps )
 			 	-set_labels $map                                                 \
                          	-subs_betas "${map}"'#'0_Coef                                    \
 				-options                                                       \
-                            		-mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz
+                        -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.csv
 
 		
 		# set script permissions
