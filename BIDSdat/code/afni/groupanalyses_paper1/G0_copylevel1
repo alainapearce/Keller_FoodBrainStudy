@@ -1,0 +1,40 @@
+#!/bin/tcsh
+#
+#useage: G0_copylevel1
+
+# The purpose of this script is to copy level 1 analyses in paper-specific analysis folder
+
+###################### setup and check directories  ###########################   
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+# set shared level 1 dir
+set lev1_shared =  $bidsdir/derivatives/afni-level1
+
+#set project level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
+
+
+###################### copy folders  ########################
+# get list of subs based on subject folders in lev1_shared 
+set subs = ( `basename -a $lev1_shared/*` )
+
+# set list of folders
+set folders = ( ped_fd-0.9_b20_noGSR ped_fd-0.9_by-block-7_noGSR )
+
+# for each subject
+foreach sub ($subs)
+	
+	# for each level 1 folder
+	foreach folder ($folders)
+
+		# if not copied over, copy over
+		if ( ! -d $lev1_dir/$sub/$folder ) then
+			echo "copying over $sub/$folder"
+			mkdir -p $lev1_dir/$sub/$folder
+			cp -r $lev1_shared/$sub/$folder $lev1_dir/$sub/$folder
+		endif
+
+	end
+end
