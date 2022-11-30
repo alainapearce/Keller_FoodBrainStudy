@@ -147,6 +147,9 @@ def gen_dataframe():
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
+    # set column order so that the base covariates come first
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'mom_bmi']]
+
     #########################
     #### Export dataframe ###
     #########################
