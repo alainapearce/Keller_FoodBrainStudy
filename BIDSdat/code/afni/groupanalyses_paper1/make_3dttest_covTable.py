@@ -94,7 +94,7 @@ def gen_dataframe():
     covar_df['id'] = subs_list #add subjects to column sub
 
     # Add variables from anthro database to covar_df (risk, body fat %)
-    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex']],on='id', how='left')
+    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom', 'dxa_total_body_perc_fat', 'sr_mom_bmi', 'parent_bmi','parent_respondent' ]],on='id', how='left')
 
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
@@ -107,9 +107,12 @@ def gen_dataframe():
     ############################
 
     # encode sex as -1 for male and 1 for female so that the main effect will be the average between males and females
-    covar_df = covar_df.replace({'sex':{'Male':1, 'Female':-1}})
+    covar_df = covar_df.replace({'sex':{'Male':-1, 'Female':1}})
 
-    # make function to determine  fulless_preMRI based on other ff variables
+    # encode risk as -1 for low and 1 for high so that the main effect will be the average between males and females
+    covar_df = covar_df.replace({'risk_status_mom':{'Low Risk':-1, 'High Risk':1}})
+
+    # make function to determine fulless_preMRI based on other ff variables
     def get_preMRI_ff(row):
         # if post-snack2 is not null, use post-snack2 rating
         if pd.isnull(row['ff_postmri_snack2']) is False:
@@ -125,8 +128,21 @@ def gen_dataframe():
     # apply get_preMRI_ff()
     covar_df['ff_premri'] = covar_df.apply(get_preMRI_ff, axis=1)
 
+        # make function to maternal BMI
+    def get_mom_bmi(row):
+        # if parent_respondent is Mother, use measured BMI
+        if (row['parent_respondent'] == 'Mother'):
+            mom_bmi = row['parent_bmi']
+        # else, use self report bmi
+        else:
+            mom_bmi = row['sr_mom_bmi']
+        return mom_bmi
+
+    # apply get_mom_bmi()
+    covar_df['mom_bmi'] = covar_df.apply(get_mom_bmi, axis=1)
+
     # remove variables that are not covariates in analyses
-    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2'], axis = 1, inplace = True)
+    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2', 'sr_mom_bmi', 'parent_respondent', 'parent_bmi'], axis = 1, inplace = True)
 
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
