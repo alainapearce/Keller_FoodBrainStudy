@@ -92,16 +92,16 @@ foreach map ( $maps )
 	foreach group ( $groups )
 
 		# set index list
-	        if ( "$group" == "WholeGroup" ) then
-                	set fileG = "WG"
-                	set index = `cat $index_dir/index_all_${censor_str}.txt`
-        	else if ( "$group" == "HighRisk" ) then
-                	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
-                	set fileG = "HR"
-        	else if ( "$group" == "LowRisk" ) then
-                	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
-                	set fileG = "LR"
-			endif
+	    if ( "$group" == "WholeGroup" ) then
+            	set fileG = "WG"
+            	set index = `cat $index_dir/index_all_${censor_str}.txt`
+    	else if ( "$group" == "HighRisk" ) then
+            	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
+            	set fileG = "HR"
+    	else if ( "$group" == "LowRisk" ) then
+            	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
+            	set fileG = "LR"
+		endif
 
 		## generate mask for analyses ##
 
@@ -120,30 +120,57 @@ foreach map ( $maps )
 		rm -r $map_folder/temp_mask
  
 		## generate t-test script ##
-
-    		#zskip-skip voxels if more than 20% of dsets have zero value
-    		#toz-when using zskip need to convert t to z because voxel 
-    		#may have different number of samples
 		# add -Clustsim option to run 3dClustSim
-    		gen_group_command.py -command 3dttest++                                             \
-				-write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
-				-prefix  ${fileG}_1sampleT++_${output_name}                          \
-				-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-                         	-dset_sid_list $index 					\
-			 	-set_labels $map                                                 \
-                         	-subs_betas "${map}"'#'0_Coef                                    \
-				-options                                                       \
-                        -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.csv
+
+    	#zskip-skip voxels if more than 20% of dsets have zero value
+    	#toz-when using zskip need to convert t to z because voxel 
+		#may have different number of samples
+
+		# with base covariates
+    	gen_group_command.py -command 3dttest++                                             \
+			-write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
+			-prefix  ${fileG}_1sampleT++_${output_name}                          \
+			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+        	-dset_sid_list $index 					\
+		 	-set_labels $map                                                 \
+         	-subs_betas "${map}"'#'0_Coef                                    \
+			-options                                                       \
+                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt'[0,1,2,3]'
+
+		# with base covariates and body fat %
+    	gen_group_command.py -command 3dttest++                                             \
+			-write_script $map_folder/${fileG}_1sampleT++_${output_name}_bodyfat         \
+			-prefix  ${fileG}_1sampleT++_${output_name}                          \
+			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+        	-dset_sid_list $index 					\
+		 	-set_labels $map                                                 \
+         	-subs_betas "${map}"'#'0_Coef                                    \
+			-options                                                       \
+                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.csv'[0,1,2,3,4]'
+
+		# with base covariates and maternal weight status
+    	gen_group_command.py -command 3dttest++                                         \
+			-write_script $map_folder/${fileG}_1sampleT++_${output_name}_mombmi         \
+			-prefix  ${fileG}_1sampleT++_${output_name}                          \
+			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+        	-dset_sid_list $index 					\
+		 	-set_labels $map                                                 \
+         	-subs_betas "${map}"'#'0_Coef                                    \
+			-options                                                       \
+                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.csv'[0,1,2,3,5]'
 
 		
-		# set script permissions
-    		chmod 775 $map_folder/${fileG}_1sampleT++_${output_name}
+		# set permissions of map folder
+    	chmod 775 -R $map_folder
 
     		# Execute?
 		if ( "$3" == "run" ) then
-        		cd $map_folder
-        		tcsh ${fileG}_1sampleT++_${output_name}
-    		endif
+        	cd $map_folder
+        	tcsh ${fileG}_1sampleT++_${output_name}
+			tcsh ${fileG}_1sampleT++_${output_name}_bodyfat
+			tcsh ${fileG}_1sampleT++_${output_name}_mombmi
+		endif
+		
 	end
 end
 
