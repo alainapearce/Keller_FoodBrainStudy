@@ -54,14 +54,16 @@ def _represents_float(s):
 
 def gen_index_byrun(onset_dir, nruns, preproc_path = False):
 
-    """Function to generate an index file for AFNI analyses that lists subjects with a
-    sufficient number of good runs (nruns) to be included in analyses. 
-    Index files be generated for the whole group, and can be generated for risk groups using the -byrisk input arg
+    """Function to generate an index file that lists subjects with a sufficient 
+        number of good runs (nruns) to be included in analyses. 
+    
     Inputs:
-        onset_dir (string): name of directory where censored onsetfiles are located (e.g., 'fd-1.0_cpt_b20')
+        onset_dir (string): name of directory where censored onsetfiles are located (e.g., 'fd-0.9_b20')
         nruns (int): minimum number of "good" runs that a subject needs to be included in analyses
-        minblockTR (int): threshold for censoring blocks. This is the minimum number of uncensored TRs for a block to be included
+        preproc_path (string, optional): path to directory above foodcue_onsetfiles/
+
     Outputs:
+        3 "index files" (text files) with list of subject IDs -- 1 for whole sample, low risk sample, and high risk sample
 
     """
 
@@ -142,12 +144,20 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
         if nruns_sub >= nruns:
             subs_to_include.append(sub)
 
-    ##################################
-    #### Make lists by risk group ####
-    ##################################
+    #########################################
+    #### Remove subjects based on fmri QC ###
+    #########################################
 
     # make dataframe from subs_to_include list
     sub_include_df = pd.DataFrame({'id':subs_to_include})
+
+    # remove subjects from dataframe who should be excluded from analyses
+    sub_include_df = sub_include_df[sub_include_df['id'] != 105] # exclude due to extreme FOV cut-off in fmri data
+    sub_include_df = sub_include_df[sub_include_df['id'] != 119] # exclude due to extreme FOV cut-off in fmri data
+
+    ##################################
+    #### Make lists by risk group ####
+    ##################################
 
     # Import and format dataframe with risk info
     anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav'))
@@ -162,6 +172,11 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     high_risk_df = sub_include_df[sub_include_df["risk_status_mom"] == "High Risk"]
     low_risk_df = sub_include_df[sub_include_df["risk_status_mom"] == "Low Risk"]
 
+
+    ################################################
+    #### Generate index files for each dataframe ###
+    ################################################
+
     # Convert dataframes to lists
     all = [str(sub) for sub in sub_include_df['id']]
     highrisk = [str(sub) for sub in high_risk_df['id']]
@@ -172,11 +187,6 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     index_dict['all'] = all
     index_dict['highrisk'] = highrisk
     index_dict['lowrisk'] = lowrisk
-
-
-    ###########################################
-    #### Generate index files for each list ###
-    ###########################################
 
     # define output path
     censor_string = str(onset_dir)
