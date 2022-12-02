@@ -29,11 +29,26 @@ foreach sub ($subs)
 	# for each level 1 folder
 	foreach folder ($folders)
 
-		# if not copied over, copy over
+	echo "$sub/$folder"
+
+		# make directory 
 		if ( ! -d $lev1_dir/$sub/$folder ) then
-			echo "copying over $sub/$folder"
 			mkdir -p $lev1_dir/$sub/$folder
-			cp -r $lev1_shared/$sub/$folder $lev1_dir/$sub/$folder
+		endif
+		
+		# copy .BRIK
+		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.BRIK ) then
+			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.BRIK $lev1_dir/$sub/$folder
+		endif
+
+		# copy .HEAD
+		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.HEAD ) then
+			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.HEAD $lev1_dir/$sub/$folder
+		endif
+
+		# copy mask
+		if ( ! -f $lev1_dir/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii ) then
+			cp $lev1_shared/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii $lev1_dir/$sub/$folder
 		endif
 
 	end
