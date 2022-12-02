@@ -1,13 +1,12 @@
 #!/bin/tcsh
 #
-#useage: G2_2sample-pairedT   $1         $2       $3        $4
-#		     	template	session	  execute?  entire censor string 
+#useage: G2_2sample-pairedT   $1            $2        $3
+#		     				template	  execute?  entire censor string 
 #
 # The purpose of this script is to create and run 2 sample paired t-tests of all conditions of interest
 # $1: ped or MNI
-# $2: 1 or 2
-# $3 run or no
-# $4 e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs
+# $2 run or no
+# $3 e.g., fd-0.9_by-block-7_3blocks, fd-0.9_b20_3runs
 
 ###################### set up initial variables  ###########################   
 #don't log AFNI programs in ~/.afni.log
@@ -25,19 +24,19 @@ cd ../../../
 set bidsdir = "$cwd"
 
 #set level1 dir
-set lev1_dir =  $bidsdir/derivatives/analyses/FoodCue-fmri/Level1GLM
+set lev1_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level1
 
 #set test directory
-set test_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}/2sample-pairedT
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/2sample-pairedT
 
 # set index dir
-set index_dir = $bidsdir/derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-${2}
+set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 
 #set output name
 set today = `date +%m-%d-%y`
 
 # set censor string
-set censor_str = $4
+set censor_str = $3
 
 # set path to templates
 set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
@@ -60,46 +59,21 @@ else
 endif
 
 
-#check to see if have 'Old' directory, 
-#if do, check for and clean up old directories,
-#if not, create all folders in that path    
-if ( -d $test_dir/Old ) then
-    set old_folders = `( ls -d $test_dir/* )`
-
-    #if file path $test_dir/$old in loop not same direct file link to $test_dir/Old
-    foreach old ( $old_folders )
-
-        #get just dirname
-        set dname = `basename $old`
-
-        #if not the 'Old' directory
-        if ( "$dname" != "Old" ) then
-
-            #if $test_dir/$old hasn't been moved to $test_dir/Old
-            if ( ! -d $test_dir/Old/$dname ) then
-                mv $old $test_dir/Old/
-
-            #else update/copy and remove
-            else
-                cp -u $old $test_dir/Old/
-                rm -r $old
-            endif
-        endif
-    end
-else
-    mkdir -p $test_dir/Old
-endif
-
-#set map folder
-set map_folder = $test_dir/${tempst}_${censor_str}_${today}
-
-if ( ! -d $map_folder ) then
-    mkdir -p $map_folder
-endif
-
 # set lev1 results directory name
 set lev1censor = ($censor_str:as/_/ /)
-set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
+set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]_noGSR
+
+#set map folder
+set map_folder = $test_dir/${tempst}_${censor_str}_noGSR_${today}
+
+#create map folder
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+else
+	# remove and create new map folder
+	rm -r $map_folder
+	mkdir -p $map_folder
+endif
 
 
 ###################### generate scripts  ########################
@@ -153,37 +127,14 @@ foreach group ( $groups )
 		    -set_labels HighLarge-Small LowLarge-Small                             \
 		    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
 		    -options								   \
-			-paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
+				-paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt'[0,1,2,3]'
 
 	chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
-	if ( "$3" == "run" ) then
+	if ( "$2" == "run" ) then
 		cd $map_folder
 		tcsh ${fileG}_2sampleT++_${output_name}
     	endif
-
-    ###################### Large_v_Small ED contrast ######################
-	set output_name = "Large_v_Small_EDcon"
-
-        #toz-when using zskip need to convert t to z because voxel
-        #may have different number of samples
-        gen_group_command.py -command 3dttest++                                            \
-                    -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
-                    -prefix  ${fileG}_2sampleT++_${output_name}                       \
-                    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD                    \
-                    -dset_sid_list $index                                               \
-                    -set_labels LargeHigh-Low SmallHigh-Low                             \
-                    -subs_betas LargeHigh-Low_GLT'#'0_Coef SmallHigh-Low_GLT'#'0_Coef   \
-                    -options                                                               \
-                        -paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz
-
-        chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
-
-	if ( "$3" == "run" ) then
-        	cd $map_folder
-        	tcsh ${fileG}_2sampleT++_${output_name}
-    	endif
-
 
 end
 

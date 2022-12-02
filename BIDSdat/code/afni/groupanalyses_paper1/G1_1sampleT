@@ -35,7 +35,7 @@ set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 set today = `date +%m-%d-%y`
 
 # set censor string
-set censor_str = $4
+set censor_str = $3
 
 # set path to templates
 set tpath = $bidsdir/derivatives/templates
@@ -164,13 +164,13 @@ foreach map ( $maps )
     	chmod 775 -R $map_folder
 
     		# Execute?
-		if ( "$3" == "run" ) then
+		if ( "$2" == "run" ) then
         	cd $map_folder
         	tcsh ${fileG}_1sampleT++_${output_name}
 			tcsh ${fileG}_1sampleT++_${output_name}_bodyfat
 			tcsh ${fileG}_1sampleT++_${output_name}_mombmi
 		endif
-		
+
 	end
 end
 
