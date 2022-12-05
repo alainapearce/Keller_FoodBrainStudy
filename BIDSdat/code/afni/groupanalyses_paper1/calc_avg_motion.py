@@ -160,7 +160,7 @@ def get_avg_fd(par_id, overwrite = False, preproc_path = False):
 
         # change directory to base directory (BIDSdat) and get path
         os.chdir(script_path)
-        os.chdir('../..')
+        os.chdir('../../..')
         base_directory = Path(os.getcwd())
 
         #set specific paths
