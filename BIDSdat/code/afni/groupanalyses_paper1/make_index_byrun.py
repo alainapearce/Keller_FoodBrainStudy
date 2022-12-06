@@ -152,8 +152,8 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     sub_include_df = pd.DataFrame({'id':subs_to_include})
 
     # remove subjects from dataframe who should be excluded from analyses
-    sub_include_df = sub_include_df[sub_include_df['id'] != 105] # exclude due to extreme FOV cut-off in fmri data
-    sub_include_df = sub_include_df[sub_include_df['id'] != 119] # exclude due to extreme FOV cut-off in fmri data
+    sub_include_df = sub_include_df[sub_include_df['id'] != '105'] # exclude due to extreme FOV cut-off in fmri data
+    sub_include_df = sub_include_df[sub_include_df['id'] != '119'] # exclude due to extreme FOV cut-off in fmri data
 
     ##################################
     #### Make lists by risk group ####
