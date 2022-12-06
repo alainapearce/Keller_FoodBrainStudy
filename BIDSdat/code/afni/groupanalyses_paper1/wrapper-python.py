@@ -27,15 +27,54 @@ or raw data configurations.
 @author: baf44
 """
 
-# import data processing functions
+#set up packages    
+from pathlib import Path
+import os
+
+# import functions
 import make_index_byrun
 import make_index_byblock
+import calc_avg_motion
 import make_3dttest_covTable
+
+#########################################################
+### Get list of subjects with processed fmriprep data ###
+#########################################################
+
+# get script location
+script_path = Path(__file__).parent.resolve()
+
+# change directory to base directory (BIDSdat) and get path
+os.chdir(script_path)
+os.chdir('../../..')
+base_directory = Path(os.getcwd())
+
+#set specific paths
+bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+lev1 = Path(base_directory).joinpath('derivatives/analyses/foodcue_paper1/level1/')
+
+#find all confounds_timeseries.tsv
+confound_files = list(Path(bids_fmriprep_path).rglob('sub-*/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
+
+# get unique ids from foodcue_raw_files that start with 'sub'
+confound_subs = [item.relative_to(bids_fmriprep_path).parts[0] for item in confound_files]
+confound_subs_clean = [x for x in confound_subs if x.startswith('sub')]
+
+##set is finding only unique values
+subs = list(set([item[4:7] for item in confound_subs_clean]))   
+
+#####################
+### Run functions ###
+#####################
 
 # Generate index files
 
 #make_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
 #make_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
+
+# Calculate average motion variables -- included in covariate table by make_3dttest_covTable()
+for sub in subs:
+     calc_avg_motion.get_avg_fd(par_id = sub, preproc_path=False)
 
 # Generate covariate table
 make_3dttest_covTable.gen_dataframe()
