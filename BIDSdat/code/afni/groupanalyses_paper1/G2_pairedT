@@ -127,7 +127,7 @@ foreach group ( $groups )
 		    -set_labels HighLarge-Small LowLarge-Small                             \
 		    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
 		    -options								   \
-				-paired -mask $map_folder/Session${2}_mask0.8_${today}+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt'[0,1,2,3]'
+				-paired -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3]'"
 
 	chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
