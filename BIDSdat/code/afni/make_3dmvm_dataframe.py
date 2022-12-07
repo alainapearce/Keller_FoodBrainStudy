@@ -9,7 +9,7 @@ task-foodcue..censorsummary_$censorcritera.tsv files (output of 4_create_censor_
 Index files will list subject IDs that should be included in analyses, based on the desired motion threshold. 
 Index files be generated for the whole group, and can be generated for risk groups using the -byrisk input arg
 
-Written by Bari Fuchs in Spring 2022
+Written by Bari Fuchs in Fall 2022
 
 Copyright (C) 20120 Bari Fuchs
 
@@ -84,19 +84,37 @@ def gen_dataframe(template, index_file):
     sub_include = pd.DataFrame() #create empty dataframe
     sub_include['id'] = subs_list #add subjects to column sub
 
-    # Add risk information to sub_include
+    # import anthro database and format 'id' column for merging 
     anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav')) # import anthro database
     anthro_df['id'] = anthro_df['id'].astype(int) # get rid of decimal place
     anthro_df['id'] = anthro_df['id'].astype(str) # convert to string -- needed for zfill
     anthro_df['id'] = anthro_df['id'].str.zfill(3) # add leading zeros
 
-    sub_include = pd.merge(sub_include,anthro_df[['id','risk_status_mom']],on='id', how='left')
+    # import motion database and format 'id' column for merging 
+    mot_df = pd.read_spss(Path(database_path).joinpath('foodcue_motion_data.sav')) # import motion database
+    mot_df['id'] = mot_df['id'].astype(int) # get rid of decimal place
+    mot_df['id'] = mot_df['id'].astype(str) # convert to string -- needed for zfill
+    mot_df['id'] = mot_df['id'].str.zfill(3) # add leading zeros
+
+    # import v6 database and format 'id' column for merging 
+    v6_df = pd.read_spss(Path(database_path).joinpath('foodcue_motion_data.sav')) # import motion database
+    v6_df['id'] = v6_df['id'].astype(int) # get rid of decimal place
+    v6_df['id'] = v6_df['id'].astype(str) # convert to string -- needed for zfill
+    v6_df['id'] = v6_df['id'].str.zfill(3) # add leading zeros
+
+    # Add variables from anthro database to sub_include (risk, body fat %)
+    sub_include = pd.merge(sub_include,anthro_df[['id','risk_status_mom', 'dxa_total_body_perc_fat']],on='id', how='left')
+
+    # Add variable from motion database to sub_include
+    sub_include = pd.merge(sub_include,mot_df[['id','fd_avg']],on='id', how='left')
+
+    # Add fullness variable from v6 database to sub_include
+    sub_include = pd.merge(sub_include,mot_df[['id','VARIABLE']],on='id', how='left')
 
     ################################################################
     #### Generate DataTable for 3dMVM -- ED contrast x PS x risk ###
     ################################################################
-    #MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile', '\\'])
-    MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'InputFile'])
+    MVMdatatable = pd.DataFrame(columns=['Subj','PS', 'risk', 'bodyfat_p', 'fulless_preMRI', 'fd_avg','InputFile'])
 
     for i in range(len(sub_include)):
 
@@ -104,38 +122,42 @@ def gen_dataframe(template, index_file):
         id_nozeros = int(sub_include.loc[i,['id']])
         sub_id = str(id_nozeros).zfill(3)
 
-        # get risk status
+        # get subject risk and covariate values
         risk = sub_include.loc[i,['risk_status_mom']][0]
         if risk == 'High Risk':
             risk = 'High'
         if risk == 'Low Risk':
             risk = 'Low'
 
+        bf_p = sub_include.loc[i,['dxa_total_body_perc_fat']][0] # get body fat percent
+        ff_premri = sub_include.loc[i,['VARIABLE']][0] # get pre-mri freddy fullness
+        fd_avg = sub_include.loc[i,['fd_avg']][0] # get average FD
+
+
         # create and append row for Large PS ED contrast
         Largepath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[LargeHigh-Low_GLT#0_Coef]'
-        #LargePSrow = [sub_id, 'Large', risk, Largepath, '\\' ]
-        LargePSrow = [sub_id, 'Large', risk, Largepath]
+        LargePSrow = [sub_id, 'Large', risk, bf_p, ff_premri, fd_avg, Largepath]
         MVMdatatable = MVMdatatable.append(pd.DataFrame([LargePSrow],
-            columns=['Subj','PS', 'risk', 'InputFile']),
-            #columns=['Subj','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'bodyfat_p', 'fulless_preMRI', 'fd_avg','InputFile']),
             ignore_index=True)
 
         # create and append row for Small PS ED contrast
         Smallpath = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/FoodCue-fmri/Level1GLM/sub-' + sub_id + '/' + folder + '/stats.sub-' + sub_id + '+tlrc.HEAD[SmallHigh-Low_GLT#0_Coef]'
-        #SmallPSrow = [sub_id, 'Small', risk, Smallpath, '\\']
-        SmallPSrow = [sub_id, 'Small', risk, Smallpath]
+        SmallPSrow = [sub_id, 'Small', risk, bf_p, ff_premri, fd_avg, Smallpath]
         MVMdatatable = MVMdatatable.append(pd.DataFrame([SmallPSrow],
-            columns=['Subj','PS', 'risk', 'InputFile']),
-            #columns=['Subj','PS', 'risk', 'InputFile', '\\']),
+            columns=['Subj','PS', 'risk', 'bodyfat_p', 'fulless_preMRI', 'fd_avg','InputFile']),
             ignore_index=True)
-
-    # remove '\' from last row in datatable
-    #MVMdatatable.loc[MVMdatatable.index[-1], '\\']= ""
 
     # get full censor string from index file name, with .txt at the end
     censor_str_txt = re.split('index_all_',index_file)[1]
-    censor_str = re.split('.txt',index_file)[0]
+    censor_str = re.split('.txt',censor_str_txt)[0]
 
-    # write dataframe
-    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str) + '.csv')), sep = '\t', encoding='ascii', index = False)
+    # generate second MVMdatatable without covariates 
+    MVMdatatable_nocov = MVMdatatable.drop(columns=['bodyfat_p', 'fulless_preMRI', 'fd_avg'])
+
+    # write dataframe with covariates
+    MVMdatatable.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str) + '_covariates.csv')), sep = '\t', encoding='ascii', index = False)
+
+    # write dataframe without covariates
+    MVMdatatable_nocov.to_csv(str(Path(bids_path).joinpath('derivatives/analyses/FoodCue-fmri/Level2GLM/Activation_Univariate/ses-1/dataframe-EDcon-' + str(censor_str) + '.csv')), sep = '\t', encoding='ascii', index = False)
 
