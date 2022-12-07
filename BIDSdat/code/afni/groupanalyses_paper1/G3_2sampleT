@@ -38,7 +38,7 @@ set today = `date +%m-%d-%y`
 set lev1_str = $3
 
 # set path to templates
-set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+set tpath = $bidsdir/derivatives/templates/
 
 #Get template specific variables
  if ( "$1" == "MNI" ) then

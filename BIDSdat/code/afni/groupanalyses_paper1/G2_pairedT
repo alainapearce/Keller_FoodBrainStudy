@@ -39,7 +39,7 @@ set today = `date +%m-%d-%y`
 set censor_str = $3
 
 # set path to templates
-set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
+set tpath = $bidsdir/derivatives/templates/
 
 ##Get template specific results folder
 if ( "$1" == "MNI" ) then
