@@ -82,37 +82,33 @@ if ( ! -d $map_dir ) then
     mkdir -p $map_dir
 endif
 
-# set datatable name
-set data_table = dataframe-EDcon-${censor_str}.txt
-
-#copy datatable into map directory
-cp $df_dir/$data_table $map_dir 
+# copy datatable into map directory
+set data_table_orig_loc = $df_dir/dataframe-EDcon-${censor_str}.txt
+cp $data_table_orig_loc $map_dir 
+set data_table = $map_dir/dataframe-EDcon-${censor_str}.txt
 
 ## Use this if masks are in fmriprep dir
 #make mask with 80% of participants overlapping
-if ( ! -f $map_dir/Session${2}_mask0.8_${today}+tlrc ) then
-    3dmask_tool -input ${bidsdir}/derivatives/preprocessed/fmriprep/*/ses-1/func/foodcue_full_mask-${temp}*.nii \
-            -prefix $map_dir/mask0.8_${today}+tlrc              \
-            -frac 0.8
-endif
+
+
 
 ## can use num_glt and glt to specify specific contrasts -- but I belive the main effects will be automatically reported
-
-3dMVM -prefix $map_dir/MVM_${today}_EDcontrast -jobs 1	\
+cd $map_dir
+3dMVM -prefix $map_dir/MVM_EDcontrast -jobs 1	\
       -wsVars PS					\
       -bsVars risk	    \
       -SS_type 3 	  \
       -GES 		\
-      -mask $map_dir/mask0.8_${today}+tlrc       \
-      -dataTable @$map_dir/$data_table	    
+      #-mask $map_dir/mask0.8_${today}+tlrc       \
+      -dataTable @${data_table}
     
 #  end
 
 if ( "$tpath" == '' ) then
-     echo "***** Failed to find $basedset :("
-     exit 1
+	echo "***** Failed to find $basedset :("
+	exit 1
 else
-    if ( ! -f $map_dir/$basedset ) then
-       cp $tpath/$basedset $map_dir
-    endif
+	if ( ! -f $map_dir/$basedset_name ) then
+		cp $basedset $map_dir
+	endif
 endif
