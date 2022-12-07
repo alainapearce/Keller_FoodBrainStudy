@@ -35,7 +35,7 @@ set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 set today = `date +%m-%d-%y`
 
 # set censor string
-set censor_str = $3
+set lev1_str = $3
 
 # set path to templates
 set tpath = $bidsdir/derivatives/analyses/FoodCue-fmri/templates
@@ -68,8 +68,14 @@ if ( ! -d $map_folder ) then
 endif
 
 # set lev1 results directory name
-set lev1censor = ($censor_str:as/_/ /)
-set lev1_results = ${tempst}_$lev1censor[1]_$lev1censor[2]
+set lev1split = ($lev1_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]
+
+# get censor str for index file
+set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
+
+#set map folder
+set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
 
 
 ###################### generate mask for analyses  ########################
@@ -120,7 +126,7 @@ foreach m ( $models )
             -set_labels highrisk lowrisk		                        \
             -subs_betas "${m}"'#'0_Coef			                          \
             -options				                             \
-                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz -covariates $index_dir/ttest-covariates.txt'[0,1,2,3]'
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3]'"
 
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 

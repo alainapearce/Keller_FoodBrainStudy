@@ -34,7 +34,7 @@ set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 #set output name
 set today = `date +%m-%d-%y`
 
-# set censor string
+# set level1 string
 set lev1_str = $3
 
 # set path to templates
