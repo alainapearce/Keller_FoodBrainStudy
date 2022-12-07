@@ -73,73 +73,57 @@ set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
 else
-	# remove and create new map folder
-	rm -r $map_folder
-	mkdir -p $map_folder
+	echo "$map_folder already exists. delete or rename to re-run"
+	exit
 endif
 
+# set index list -- lists subjects to include in analyses
+set index = `cat $lev2_dir/index_all_${censor_str}.txt`
+	
+# copy index list and covariate file into output folder for reference
+cp $lev2_dir/index_all_${censor_str}.txt $map_folder
+cp $lev2_dir/ttest-covariates.txt $map_folder
 
-###################### generate scripts  ########################
-#loop though all conditions/contrasts of interest
+###################### generate mask for whole group (WG) ########################
 
-#set groups = ( WholeGroup HighRisk LowRisk )
-set groups = ( WholeGroup )
-
-foreach group ( $groups )
-
-	# set index list
-	if ( "$group" == "WholeGroup" ) then
-       		set fileG = "WG"
-               	set index = `cat $index_dir/index_all_${censor_str}.txt`
-        else if ( "$group" == "HighRisk" ) then
-               	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
-               	set fileG = "HR"
-        else if ( "$group" == "LowRisk" ) then
-                set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
-               	set fileG = "LR"
-	endif
-
-	# generate mask for analyses if it doesnt exist
-	if (! -f $map_folder/${fileG}_mask0.8+tlrc.HEAD ) then
-		
-		# make temporary directory with participant masks for subjects included in analyses
-		mkdir $map_folder/temp_mask
-        	foreach sub ( $index )
-			cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
-                end
-
-		# generate mask with 80% of participants overlapping
-		3dmask_tool -input $map_folder/temp_mask/mask* \
-                              -prefix $map_folder/${fileG}_mask0.8+tlrc              \
-                              -frac 0.8
-
-                # remove temporary directory
-                rm -r $map_folder/temp_mask
-	endif
-
-	###################### High_v_Low PS contrast ######################
-	set output_name = "High_v_Low_PScon"
-        
-	#toz-when using zskip need to convert t to z because voxel
-	#may have different number of samples
-	gen_group_command.py -command 3dttest++                                            \
-		    -write_script $map_folder/${fileG}_2sampleT++_${output_name}           \
-		    -prefix  ${fileG}_2sampleT++_${output_name}                           \
-		    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
-		    -dset_sid_list $index						   \
-		    -set_labels HighLarge-Small LowLarge-Small                             \
-		    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
-		    -options								   \
-
-				-paired -mask $map_folder/${fileG}_mask0.8+tlrc -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3]'"
-	chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
-
-	if ( "$2" == "run" ) then
-		cd $map_folder
-		tcsh ${fileG}_2sampleT++_${output_name}
-    	endif
-
+# make temporary directory with participant masks for subjects included in analyses
+mkdir $map_folder/temp_mask
+   
+foreach sub ( $index )
+	cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
 end
+
+# generate mask with 80% of participants overlapping
+3dmask_tool -input $map_folder/temp_mask/mask* \
+        -prefix $map_folder/WG_mask0.8+tlrc              \
+        -frac 0.8
+
+    # remove temporary directory
+rm -r $map_folder/temp_mask
+
+###################### generate t-test script  ########################
+set output_name = "High_v_Low_PScon"
+        
+#toz-when using zskip need to convert t to z because voxel
+#may have different number of samples
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name}           \
+	    -prefix  WG_2sampleT++_${output_name}                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels HighLarge-Small LowLarge-Small                             \
+	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3]'"
+
+# set permissions
+chmod 775 $map_folder/WG_2sampleT++_${output_name}
+
+# execute script?
+if ( "$2" == "run" ) then
+	cd $map_folder
+	tcsh WG_2sampleT++_${output_name}
+endif
 
 # Copy base template into results folder 
 
