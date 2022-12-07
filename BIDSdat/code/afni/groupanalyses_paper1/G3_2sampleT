@@ -67,14 +67,21 @@ set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
 #set map folder
 set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
 
+#create map folder
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
+else
+	echo "$map_folder already exists. delete or rename to re-run"
+	exit
 endif
 
+# copy index list and covariate file into output folder for reference
+cp $lev2_dir/index_all_${censor_str}.txt $map_folder
+cp $lev2_dir/ttest-covariates.txt $map_folder
 
 ###################### generate mask for analyses  ########################
-# get list of all subjects
-set WG_index = `cat $index_dir/index_all_${censor_str}.txt`
+# set whole group index list -- lists subjects to include in mask
+set WG_index = `cat $lev2_dir/index_all_${censor_str}.txt`
 
 # make temporary directory with participant masks for subjects included in analyses
 mkdir $map_folder/temp_mask
@@ -91,13 +98,6 @@ end
 rm -r $map_folder/temp_mask
 
 ###################### generate scripts  ########################
-
-############# High Risk v Low Risk  ##############
-
-#### 3dTtest ####
-
-#set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
-#set models = ( HighLarge HighSmall LowLarge LowSmall Large-Small_allED_GLT High-Low_allPS_GLT )
 
 set models = ( Large-Small_allED_GLT High-Low_allPS_GLT Food-Office_GLT)
 
