@@ -57,16 +57,6 @@ else
 	set tempst = "ped"
 endif
 
-# set same of level1 results folder
-set results_folder = ${tempst}_${censor_str}
-
-#set map folder
-set map_folder = $test_dir/${tempst}_${censor_str}_${today}
-
-if ( ! -d $map_folder ) then
-    mkdir -p $map_folder
-endif
-
 # set lev1 results directory name
 set lev1split = ($lev1_str:as/_/ /)
 set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]
@@ -76,6 +66,10 @@ set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
 
 #set map folder
 set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
+
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+endif
 
 
 ###################### generate mask for analyses  ########################
@@ -105,7 +99,7 @@ rm -r $map_folder/temp_mask
 #set models = ( HighLarge HighSmall LowLarge LowSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
 #set models = ( HighLarge HighSmall LowLarge LowSmall Large-Small_allED_GLT High-Low_allPS_GLT )
 
-set models = ( Large-Small_allED_GLT High-Low_allPS_GLT )
+set models = ( Large-Small_allED_GLT High-Low_allPS_GLT Food-Office_GLT)
 
 foreach m ( $models )
 	set output_name = "$m"
