@@ -56,8 +56,8 @@ def gen_dataframe():
     #bids_directory = Path(os.getcwd())
 
     #set specific paths
-    bids_path = Path(pardata_directory).joinpath('BIDSdat')
-    fmriprep_path = Path(pardata_directory).joinpath('BIDSdat/derivatives/preprocessed/fmriprep')
+    bids_path = Path(pardata_directory).joinpath('BIDSdat') #just 'BIDS' on ROAR
+    fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
     database_path = Path(pardata_directory).joinpath('Databases')
 
     #########################################
