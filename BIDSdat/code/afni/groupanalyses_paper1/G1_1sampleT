@@ -29,7 +29,7 @@ set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
 set test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/1sampleT
 
 # set index dir
-set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
+set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 
 #set output name
 set today = `date +%m-%d-%y`
@@ -77,108 +77,89 @@ else
 	mkdir -p $map_folder
 endif
 
+# set index list -- lists subjects to include in analyses
+set index = `cat $lev2_dir/index_all_${censor_str}.txt`
+	
+# copy index list and covariate file into output folder for reference
+cp $lev2_dir/index_all_${censor_str}.txt $map_folder
+cp $lev2_dir/ttest-covariates.txt $map_folder
 
+###################### generate whole group (WG) mask  ########################
+if ( ! -f $map_folder/WG_mask0.8+tlrc) then
+	
+	# make temporary directory with participant masks for subjects included in analyses
+	mkdir $map_folder/temp_mask
+	foreach sub ( $index )
+		cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+	end
 
-###################### generate scripts  ########################
+	# generate mask with 80% of participants overlapping
+	3dmask_tool -input $map_folder/temp_mask/mask* \
+     				-prefix $map_folder/WG_mask0.8+tlrc              \
+      				-frac 0.8
 
-# maps for all conditions/contrasts of interest
-#set maps = ( HighLarge HighSmall LowLarge LowSmall OfficeLarge OfficeSmall HighLarge-Small_GLT LowLarge-Small_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT Large-Small_allED_GLT High-Low_allPS_GLT )
-#set groups = ( WholeGroup HighRisk LowRisk )
+	# remove temporary directory
+	rm -r $map_folder/temp_mask
+endif
 
+###################### generate t-test scripts  ########################
 # maps for main effects
 set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT)
-set groups = ( WholeGroup )
 
 foreach map ( $maps )
 	set output_name = $map
 
-	foreach group ( $groups )
+	# add -Clustsim option to run 3dClustSim
 
-		# set index list
-	    if ( "$group" == "WholeGroup" ) then
-            	set fileG = "WG"
-            	set index = `cat $index_dir/index_all_${censor_str}.txt`
-    	else if ( "$group" == "HighRisk" ) then
-            	set index = `cat $index_dir/index_highrisk_${censor_str}.txt`
-            	set fileG = "HR"
-    	else if ( "$group" == "LowRisk" ) then
-            	set index = `cat $index_dir/index_lowrisk_${censor_str}.txt`
-            	set fileG = "LR"
-		endif
+    #zskip-skip voxels if more than 20% of dsets have zero value
+	#toz-when using zskip need to convert t to z because voxel 
+	#may have different number of samples
 
-		## generate mask for analyses ##
+	# with base covariates
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name}         \
+		-prefix  WG_1sampleT++_${output_name}                          \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..3]'"
 
-		if ( ! -f $map_folder/${fileG}_mask0.8+tlrc) then
-			
-			# make temporary directory with participant masks for subjects included in analyses
-			mkdir $map_folder/temp_mask
-			foreach sub ( $index )
-				cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
-			end
+	# with base covariates and body fat %
+    gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_bodyfat         \
+		-prefix  WG_1sampleT++_${output_name}_bodyfat                          \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+       	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+        -subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3,4]'"
 
-			# generate mask with 80% of participants overlapping
-			3dmask_tool -input $map_folder/temp_mask/mask* \
-           				-prefix $map_folder/${fileG}_mask0.8+tlrc              \
-           				-frac 0.8
-	
-			# remove temporary directory
-			rm -r $map_folder/temp_mask
- 		endif
-	
-		## generate t-test script ##
-		# add -Clustsim option to run 3dClustSim
-
-    	#zskip-skip voxels if more than 20% of dsets have zero value
-    	#toz-when using zskip need to convert t to z because voxel 
-		#may have different number of samples
-
-		# with base covariates
-    	gen_group_command.py -command 3dttest++                                             \
-			-write_script $map_folder/${fileG}_1sampleT++_${output_name}         \
-			-prefix  ${fileG}_1sampleT++_${output_name}                          \
-			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-        	-dset_sid_list $index 					\
-		 	-set_labels $map                                                 \
-         	-subs_betas "${map}"'#'0_Coef                                    \
-			-options                                                       \
-                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $index_dir/ttest-covariates.txt"'[0..3]'"
-
-		# with base covariates and body fat %
-    	gen_group_command.py -command 3dttest++                                             \
-			-write_script $map_folder/${fileG}_1sampleT++_${output_name}_bodyfat         \
-			-prefix  ${fileG}_1sampleT++_${output_name}_bodyfat                          \
-			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-        	-dset_sid_list $index 					\
-		 	-set_labels $map                                                 \
-         	-subs_betas "${map}"'#'0_Coef                                    \
-			-options                                                       \
-                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3,4]'"
-
-		# with base covariates and maternal weight status
-    	gen_group_command.py -command 3dttest++                                         \
-			-write_script $map_folder/${fileG}_1sampleT++_${output_name}_mombmi         \
-			-prefix  ${fileG}_1sampleT++_${output_name}_mombmi                        \
-			-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-        	-dset_sid_list $index 					\
-		 	-set_labels $map                                                 \
-         	-subs_betas "${map}"'#'0_Coef                                    \
-			-options                                                       \
-                -mask $map_folder/${fileG}_mask0.8+tlrc.HEAD  -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3,5]'"
-
+	# with base covariates and maternal weight status
+    gen_group_command.py -command 3dttest++                                         \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_mombmi         \
+		-prefix  WG_1sampleT++_${output_name}_mombmi                        \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+       	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+    	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3,5]'"
 		
-		# set permissions of map folder
-    	chmod 775 -R $map_folder
+	# set permissions of map folder
+    chmod 775 -R $map_folder
 
-    		# Execute?
-		if ( "$2" == "run" ) then
-        	cd $map_folder
-        	tcsh ${fileG}_1sampleT++_${output_name}
-			#tcsh ${fileG}_1sampleT++_${output_name}_bodyfat
-			tcsh ${fileG}_1sampleT++_${output_name}_mombmi
-		endif
+	# Execute?
+	if ( "$2" == "run" ) then
+    	cd $map_folder
+    	tcsh WG_1sampleT++_${output_name}
+		#tcsh WG_1sampleT++_${output_name}_bodyfat
+		tcsh WG_1sampleT++_${output_name}_mombmi
+	endif
 
-	end
 end
 
 
