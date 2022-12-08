@@ -28,8 +28,8 @@ set lev1_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level1
 #set test directory
 set test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/2sampleT
 
-# set index dir
-set index_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
+# set level 2 dir
+set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 
 #set output name
 set today = `date +%m-%d-%y`
@@ -104,9 +104,9 @@ set models = ( Large-Small_allED_GLT High-Low_allPS_GLT Food-Office_GLT)
 foreach m ( $models )
 	set output_name = "$m"
 
-    set fileG = "HR_v_LR_${censor_str}"
-    set HRindex = `cat $index_dir/index_highrisk_${censor_str}.txt`
-    set LRindex = `cat $index_dir/index_lowrisk_${censor_str}.txt`
+    set fileG = "HR_v_LR"
+    set HRindex = `cat $lev2_dir/index_highrisk_${censor_str}.txt`
+    set LRindex = `cat $lev2_dir/index_lowrisk_${censor_str}.txt`
     
     #toz-when using zskip need to convert t to z because voxel
         #may have different number of samples
@@ -120,7 +120,7 @@ foreach m ( $models )
             -set_labels highrisk lowrisk		                        \
             -subs_betas "${m}"'#'0_Coef			                          \
             -options				                             \
-                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz -covariates $index_dir/ttest-covariates.txt"'[0,1,2,3]'"
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
 
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
