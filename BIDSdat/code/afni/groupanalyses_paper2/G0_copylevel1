@@ -1,0 +1,55 @@
+#!/bin/tcsh
+#
+#useage: G0_copylevel1
+
+# The purpose of this script is to copy level 1 analyses in paper-specific analysis folder
+
+###################### setup and check directories  ###########################   
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+# set shared level 1 dir
+set lev1_shared =  $bidsdir/derivatives/afni-level1
+
+#set project level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper2/level1
+
+
+###################### copy folders  ########################
+# get list of subs based on subject folders in lev1_shared 
+set subs = ( `basename -a $lev1_shared/*` )
+
+# set list of folders
+set folders = ( ped_fd-0.9_b20_noGSR )
+
+# for each subject
+foreach sub ($subs)
+	
+	# for each level 1 folder
+	foreach folder ($folders)
+
+	echo "$sub/$folder"
+
+		# make directory 
+		if ( ! -d $lev1_dir/$sub/$folder ) then
+			mkdir -p $lev1_dir/$sub/$folder
+		endif
+		
+		# copy .BRIK
+		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.BRIK ) then
+			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.BRIK $lev1_dir/$sub/$folder
+		endif
+
+		# copy .HEAD
+		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.HEAD ) then
+			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.HEAD $lev1_dir/$sub/$folder
+		endif
+
+		# copy mask
+		if ( ! -f $lev1_dir/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii ) then
+			cp $lev1_shared/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii $lev1_dir/$sub/$folder
+		endif
+
+	end
+end
