@@ -46,8 +46,8 @@ def _gen_new_onset_file(sub, onsetfile_dat, censor_summary_allPar, p_thresh_bloc
         sub
         onsetfile_dat
         censor_summary_allPar
-        p_thresh_block
-        p_thresh_run
+        p_thresh_block: threshold if censoring based on blocks of interest
+        p_thresh_run: thresold if censoring based on all TRs in a run
     Outputs:
     """
     
@@ -59,8 +59,8 @@ def _gen_new_onset_file(sub, onsetfile_dat, censor_summary_allPar, p_thresh_bloc
 
         # get % of TRs censored in blocks of interest and across the run
         row = censor_summary_allPar[(censor_summary_allPar['sub'] == sub) & (censor_summary_allPar['run'] == int(runnum))] #select row based on sub and runnum
-        run_p_censor_interest = int(row['p_censor_interest']) # % of TRs censored across all blocks of interest
-        run_p_censor = int(row['p_censor']) # % of TRs censored across entire run
+        run_p_censor_interest = float(row['p_censor_interest']) # % of TRs censored across all blocks of interest
+        run_p_censor = float(row['p_censor']) # % of TRs censored across entire run
 
         # if censoring based on blocks of interest
         if (p_thresh_block is not False) and (p_thresh_run is False):
