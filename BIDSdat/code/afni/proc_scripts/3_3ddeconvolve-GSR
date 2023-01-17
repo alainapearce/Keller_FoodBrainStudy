@@ -55,7 +55,7 @@ onsetDir="$topdir/derivatives/preprocessed/foodcue_onsetfiles/${TRcen}_${runcen}
 parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2"
 
 #set output directory
-output_dir="$topdir/derivatives/analyses/FoodCue-fmri/Level1GLM/${subID}/${tempst}_${TRcen}_${runcen}"
+output_dir="$topdir/derivatives/afni-level1/${subID}/${tempst}_${TRcen}_${runcen}_GSR"
  
 # verify that the results directory with output does not yet exist
 if [ -d $output_dir ]
