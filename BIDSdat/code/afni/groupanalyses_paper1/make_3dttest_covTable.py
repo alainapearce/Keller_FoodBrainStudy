@@ -57,7 +57,7 @@ def gen_dataframe():
 
     #set specific paths
     bids_path = Path(pardata_directory).joinpath('BIDSdat') #just 'BIDS' on ROAR
-    fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
+    fmriprep_path = Path(pardata_directory).joinpath('BIDSdat/derivatives/preprocessed/fmriprep')
     database_path = Path(pardata_directory).joinpath('Databases')
 
     #########################################
@@ -93,8 +93,8 @@ def gen_dataframe():
     covar_df = pd.DataFrame() #create empty dataframe
     covar_df['id'] = subs_list #add subjects to column sub
 
-    # Add variables from anthro database to covar_df (risk, body fat %)
-    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom', 'dxa_total_body_perc_fat', 'sr_mom_bmi', 'parent_bmi','parent_respondent' ]],on='id', how='left')
+    # Add variables from anthro database to covar_df (risk, fat mass)
+    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom', 'height_avg', 'dxa_total_fat_mass', 'sr_mom_bmi', 'parent_bmi','parent_respondent' ]],on='id', how='left')
 
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
@@ -105,6 +105,11 @@ def gen_dataframe():
     ############################
     #### Clean up covariates ###
     ############################
+
+    # compute fat mass index
+    covar_df['dxa_total_fat_mass'] = covar_df['dxa_total_fat_mass'].astype(str).astype(float) #convert to string, then float
+    covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
+    covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
 
     # encode sex as -1 for male and 1 for female so that the main effect will be the average between males and females
     covar_df = covar_df.replace({'sex':{'Male':-1, 'Female':1}})
@@ -128,7 +133,7 @@ def gen_dataframe():
     # apply get_preMRI_ff()
     covar_df['ff_premri'] = covar_df.apply(get_preMRI_ff, axis=1)
 
-        # make function to maternal BMI
+    # make function to maternal BMI
     def get_mom_bmi(row):
         # if parent_respondent is Mother, use measured BMI
         if (row['parent_respondent'] == 'Mother'):
@@ -142,13 +147,13 @@ def gen_dataframe():
     covar_df['mom_bmi'] = covar_df.apply(get_mom_bmi, axis=1)
 
     # remove variables that are not covariates in analyses
-    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2', 'sr_mom_bmi', 'parent_respondent', 'parent_bmi'], axis = 1, inplace = True)
+    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2', 'dxa_total_fat_mass', 'height_avg', 'sr_mom_bmi', 'parent_respondent', 'parent_bmi'], axis = 1, inplace = True)
 
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'mom_bmi']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','fmi', 'mom_bmi']]
 
     #########################
     #### Export dataframe ###
