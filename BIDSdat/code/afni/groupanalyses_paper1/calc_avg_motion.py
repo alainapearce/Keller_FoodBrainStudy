@@ -55,17 +55,25 @@ def _get_summary_files(bids_fmriprep_path, sub, overwrite):
     ### Manage censor_summary_path ###
     if fd_summary_path.is_file(): # if database exists
 
-        # import database --- converting 'sub' to string will maintain leading zeros
-        fd_summary_allPar = pd.read_csv(str(fd_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
+        # import database
+        fd_summary_allPar = pd.read_csv(str(fd_summary_path), sep = '\t')
+
+        # convert int to string, then add leading zeros
+        fd_summary_allPar['id'] = fd_summary_allPar['id'].astype(str).str.zfill(3)
 
         # check to see if subject already in database
         if (sub in set(fd_summary_allPar['id'])):
             if overwrite is False:
                 print("sub_" + sub + " already in foodcue_byrun-censorsummary file. Use overwrite = True to rerun")
                 raise Exception()
-            else: #overwrite is true
+            
+            if overwrite is True: #overwrite is true
                 # remove subject rows from censor_summary_byrun_path
+                print("overwriting for sub_" + sub)
                 fd_summary_allPar = fd_summary_allPar[fd_summary_allPar['id'] != sub]
+
+        else:
+            print("avg motion for sub_" + sub + " not in foodcue_byrun-censorsummary file. Calculating...")
 
     # if database does not exist
     else:
@@ -73,6 +81,8 @@ def _get_summary_files(bids_fmriprep_path, sub, overwrite):
         fd_summary_allPar = pd.DataFrame(np.zeros((0, 12)))
         fd_summary_allPar.columns = ['id','fd_avg_allruns','fd_avg_run1','fd_avg_run2','fd_avg_run3','fd_avg_run4','fd_avg_run5',
                                             'fd_max_run1', 'fd_max_run2', 'fd_max_run3', 'fd_max_run4', 'fd_max_run5']
+
+    nrow_postfunc = fd_summary_allPar.shape[0]
 
     return(fd_summary_allPar)
 
@@ -197,8 +207,13 @@ def get_avg_fd(par_id, overwrite = False, preproc_path = False):
     # compute average framewise displacement across all runs
     avg_fd, max_fd = _compute_avg_fd_allruns(confound_files)
 
-    # add particpant to fd_summary_allPar
-    fd_summary_allPar.loc[len(fd_summary_allPar)] = [sub, avg_fd['all'], avg_fd[1], avg_fd[2], avg_fd[3], avg_fd[4], avg_fd[5], max_fd[1], max_fd[2], max_fd[3], max_fd[4], max_fd[5]]
+    # make dataframe row of participant data to add to fd_summary_allPar
+    row_append = pd.DataFrame(data=[sub, avg_fd['all'], avg_fd[1], avg_fd[2], avg_fd[3], avg_fd[4], avg_fd[5], max_fd[1], max_fd[2], max_fd[3], max_fd[4], max_fd[5]]).T
+    row_append.columns = ['id','fd_avg_allruns','fd_avg_run1','fd_avg_run2','fd_avg_run3','fd_avg_run4','fd_avg_run5',
+                                            'fd_max_run1', 'fd_max_run2', 'fd_max_run3', 'fd_max_run4', 'fd_max_run5']
+    
+    # add particpant data to fd_summary_allPar
+    fd_summary_allPar = pd.concat([fd_summary_allPar, row_append])
 
     #Export summary dataframe
     fd_summary_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_avg-fd.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
