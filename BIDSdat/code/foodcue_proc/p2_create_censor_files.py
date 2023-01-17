@@ -401,6 +401,10 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
     # exit if no participant confound files or onset files
+    if len(confound_files) > 5:
+        print("sub-" + str(sub) + " has more than 5 confound files. Should have 1 per run at most")
+        raise Exception()
+
     if len(confound_files) < 1:
         print("No confound files found for sub-" + str(sub) + ". Unable to generate regressor and censor files")
         raise Exception()
