@@ -39,7 +39,7 @@ echo ""
 cd $topdir/code/afni/proc_scripts
 
 #run 1_smooth-scale script
-bash 1_smooth-scale PARNUM SESNUM
+bash 1_smooth-scale PARNUM 1
 
 
 
@@ -52,7 +52,7 @@ echo ""
 cd $topdir/code/afni/proc_scripts
 
 #run 2_createmask script
-bash 2_createmask PARNUM SESNUM 
+bash 2_createmask PARNUM 1
 
 
 ######## 3: Run first-level analyses (3_3ddeconvolve) ########
@@ -65,14 +65,10 @@ echo ""
 cd $topdir/code/afni/proc_scripts
 
 #run 5_3ddeconvolve script
-#bash 3_3ddeconvolve PARNUM SESNUM Ped fd-1.0_cpt b20
 
-#bash 3_3ddeconvolve PARNUM SESNUM Ped fd-1.0 b20
+bash 3_3ddeconvolve-noGSR PARNUM 1 Ped fd-0.9 b20
 
-bash 3_3ddeconvolve PARNUM SESNUM Ped fd-0.9 b20
-
-bash 3_3ddeconvolve PARNUM SESNUM Ped fd-0.9 by-block-7
-
+#bash 3_3ddeconvolve-noGSR PARNUM 1 Ped fd-0.9 by-block-7
 
 
 #insert ending time for this section
