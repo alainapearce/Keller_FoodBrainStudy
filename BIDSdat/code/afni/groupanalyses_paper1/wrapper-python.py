@@ -74,7 +74,11 @@ subs = list(set([item[4:7] for item in confound_subs_clean]))
 
 # Calculate average motion variables -- included in covariate table by make_3dttest_covTable()
 for sub in subs:
-     calc_avg_motion.get_avg_fd(par_id = sub, preproc_path=False)
+
+     try:
+          calc_avg_motion.get_avg_fd(par_id = sub, preproc_path=False, overwrite=False)
+     except:
+           print("Discontinuing calc_avg_motion() for sub_" + sub)
 
 # Generate covariate table
 make_3dttest_covTable.gen_dataframe()
