@@ -20,12 +20,6 @@ ID=`printf %03d $ID_nozero`
 subID="sub-$ID"
 session="Session$2"
 
-echo "script: 1_smooth-scale"
-echo "par arg: $1"
-echo "no zero: $ID_nozero"
-echo "ID: $ID"
-echo "subID: $subID"
-
 ###################### setup and check directories  ###########################
 #go to and set BIDs as main directory
 cd ../../../
