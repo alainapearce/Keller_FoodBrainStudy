@@ -21,7 +21,7 @@ set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
 set subs = ( `basename -a $lev1_shared/*` )
 
 # set list of folders
-set folders = ( ped_fd-0.9_b20_noGSR ped_fd-0.9_by-block-7_noGSR )
+set folders = ( ped_fd-0.9_b20_noGSR )
 
 # for each subject
 foreach sub ($subs)
