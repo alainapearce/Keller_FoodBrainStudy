@@ -141,8 +141,9 @@ cd $output_dir
         -gltsym 'SYM: HighLarge LowLarge -HighSmall -LowSmall' -glt_label 5 Large-Small_allED   \
         -gltsym 'SYM: HighLarge HighSmall -LowLarge -LowSmall' -glt_label 6 High-Low_allPS      \
         -gltsym 'SYM: .5*HighLarge .5*HighSmall .5*LowLarge .5*LowSmall -OfficeLarge -OfficeSmall' -glt_label 7 Food-Office 	\
+		-gltsym 'SYM: OfficeLarge -OfficeSmall' -glt_label 8 OfficeLarge-Small 	\
     	-jobs 8                                                    				\
-    	-fout -tout -x1D X.xmat.1D -xjpeg X.jpg                                  		\
+    	-fout -tout -x1D X.xmat.1D -xjpeg X.jpg -xsave                                  		\
     	-x1D_uncensored X.nocensor.xmat.1D                                       		\
     	-fitts fitts.$subID                                                       		\
     	-errts errts.$subID                                                     		\

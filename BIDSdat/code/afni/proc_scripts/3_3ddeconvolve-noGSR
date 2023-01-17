@@ -125,27 +125,28 @@ cd $output_dir
 	-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 10 -stim_label 10 rot_x_01  		\
 	-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 11 -stim_label 11 rot_y_01   		\
 	-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 12 -stim_label 12 rot_z_01   		\
-        -stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 13 -stim_label 13 csf             \
-        -stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 14 -stim_label 14 white_matter             \
-        -stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 15 -stim_label 15 trans_x_02        \
-        -stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 16 -stim_label 16 trans_y_02                \
-        -stim_file 17 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 17 -stim_label 17 trans_z_02        \
-        -stim_file 18 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 18 -stim_label 18 rot_x_02          \
-        -stim_file 19 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 19 -stim_label 19 rot_y_02         \
-        -stim_file 20 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 20 -stim_label 20 rot_z_02         \
+    -stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 13 -stim_label 13 csf             \
+    -stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 14 -stim_label 14 white_matter             \
+    -stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 15 -stim_label 15 trans_x_02        \
+    -stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 16 -stim_label 16 trans_y_02                \
+    -stim_file 17 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 17 -stim_label 17 trans_z_02        \
+    -stim_file 18 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 18 -stim_label 18 rot_x_02          \
+    -stim_file 19 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 19 -stim_label 19 rot_y_02         \
+    -stim_file 20 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 20 -stim_label 20 rot_z_02         \
 	-gltsym 'SYM: HighLarge -HighSmall' -glt_label 1 HighLarge-Small                        \
 	-gltsym 'SYM: LowLarge -LowSmall' -glt_label 2 LowLarge-Small                           \
-        -gltsym 'SYM: HighLarge -LowLarge' -glt_label 3 LargeHigh-Low                           \
-        -gltsym 'SYM: HighSmall -LowSmall' -glt_label 4 SmallHigh-Low                           \
-        -gltsym 'SYM: HighLarge LowLarge -HighSmall -LowSmall' -glt_label 5 Large-Small_allED   \
-        -gltsym 'SYM: HighLarge HighSmall -LowLarge -LowSmall' -glt_label 6 High-Low_allPS      \
-        -gltsym 'SYM: .5*HighLarge .5*HighSmall .5*LowLarge .5*LowSmall -OfficeLarge -OfficeSmall' -glt_label 7 Food-Office 	\
-    	-jobs 8                                                    				\
-    	-fout -tout -x1D X.xmat.1D -xjpeg X.jpg                                  		\
-    	-x1D_uncensored X.nocensor.xmat.1D                                       		\
-    	-fitts fitts.$subID                                                       		\
-    	-errts errts.$subID                                                     		\
-    	-bucket stats.$subID
+    -gltsym 'SYM: HighLarge -LowLarge' -glt_label 3 LargeHigh-Low                           \
+    -gltsym 'SYM: HighSmall -LowSmall' -glt_label 4 SmallHigh-Low                           \
+    -gltsym 'SYM: HighLarge LowLarge -HighSmall -LowSmall' -glt_label 5 Large-Small_allED   \
+    -gltsym 'SYM: HighLarge HighSmall -LowLarge -LowSmall' -glt_label 6 High-Low_allPS      \
+    -gltsym 'SYM: .5*HighLarge .5*HighSmall .5*LowLarge .5*LowSmall -OfficeLarge -OfficeSmall' -glt_label 7 Food-Office 	\
+	-gltsym 'SYM: OfficeLarge -OfficeSmall' -glt_label 8 OfficeLarge-Small 	\
+    -jobs 8                                                    				\
+    -fout -tout -x1D X.xmat.1D -xjpeg X.jpg -xsave                             		\
+    -x1D_uncensored X.nocensor.xmat.1D                                       		\
+    -fitts fitts.$subID                                                       		\
+    -errts errts.$subID                                                     		\
+    -bucket stats.$subID
 
 # execute the 3dREMLfit script, written by 3Ddeconvolve
 tcsh -x stats.REML_cmd
