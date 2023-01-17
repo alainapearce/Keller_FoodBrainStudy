@@ -64,7 +64,7 @@ def _get_summary_files(bids_fmriprep_path, sub, overwrite):
         # check to see if subject already in database
         if (sub in set(fd_summary_allPar['id'])):
             if overwrite is False:
-                print("sub_" + sub + " already in foodcue_byrun-censorsummary file. Use overwrite = True to rerun")
+                print("sub_" + sub + " already in task-foodcue_avg-fd.csv -- Use overwrite = True to rerun")
                 raise Exception()
             
             if overwrite is True: #overwrite is true
@@ -73,7 +73,7 @@ def _get_summary_files(bids_fmriprep_path, sub, overwrite):
                 fd_summary_allPar = fd_summary_allPar[fd_summary_allPar['id'] != sub]
 
         else:
-            print("avg motion for sub_" + sub + " not in foodcue_byrun-censorsummary file. Calculating...")
+            print("avg motion for sub_" + sub + " not in task-foodcue_avg-fd.csv -- Calculating...")
 
     # if database does not exist
     else:
