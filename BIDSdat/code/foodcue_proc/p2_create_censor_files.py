@@ -158,7 +158,7 @@ def _gen_concatenated_regressor_file(confound_files):
 
         # add counfound file (i.e., run-specific) regressor data to overall regressor file
         RegressRun = confound_dat_all[RegressLev1].copy()
-        RegressPardat = RegressPardat.append(RegressRun)
+        RegressPardat = pd.concat([RegressPardat, RegressRun ])
 
     # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
     deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
@@ -497,11 +497,10 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
         censor_sum_byrun_Pardat.loc[df_len] = runsum
 
         # get censor information by condition/block
-        byblock_run_row = _get_censorsum_byblock(block_onsets_TR_dict, run_censordata, sub, runnum) 
+        byblock_run_row = pd.DataFrame(_get_censorsum_byblock(block_onsets_TR_dict, run_censordata, sub, runnum))
         
         # append censor information by condition/block to censor_sum_byblock_Pardat dataframe
-        censor_sum_byblock_Pardat = censor_sum_byblock_Pardat.append(byblock_run_row)
-
+        censor_sum_byblock_Pardat = pd.concat([censor_sum_byblock_Pardat, byblock_run_row])
 
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
@@ -509,8 +508,8 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
     # Add participant censor summarys to overall censor summary databases
-    censor_summary_byrun_allPar = censor_summary_byrun_allPar.append(censor_sum_byrun_Pardat)
-    censor_summary_byblock_allPar = censor_summary_byblock_allPar.append(censor_sum_byblock_Pardat)
+    censor_summary_byrun_allPar = pd.concat([censor_summary_byrun_allPar, censor_sum_byrun_Pardat])
+    censor_summary_byblock_allPar = pd.concat([censor_summary_byblock_allPar, censor_sum_byblock_Pardat])
 
     # Export overall censor summary databases
     censor_summary_byrun_allPar.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_byrun-censorsummary_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
