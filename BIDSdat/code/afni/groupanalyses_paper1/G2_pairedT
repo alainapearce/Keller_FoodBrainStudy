@@ -3,7 +3,7 @@
 #useage: G2_2sample-pairedT   $1            $2        $3
 #		     				template	  execute?  level 1 folder string
 #
-# The purpose of this script is to create and run 2 sample paired t-tests of all conditions of interest
+# The purpose of this script is to create and run 2 sample paired t-tests on the Portion Size response
 # $1: ped or MNI
 # $2 run or no
 # $3 e.g., fd-0.9_by-block-7_3blocks_noGSR, ped_fd-0.9_b20_noGSR
@@ -101,14 +101,14 @@ end
     # remove temporary directory
 rm -r $map_folder/temp_mask
 
-###################### generate t-test script  ########################
-set output_name = "High_v_Low_PScon"
+###################### generate t-test scripts  ########################
+set output_name_HvL = "High_v_Low_PScon"
         
 #toz-when using zskip need to convert t to z because voxel
 #may have different number of samples
 gen_group_command.py -command 3dttest++                                            \
-	    -write_script $map_folder/WG_2sampleT++_${output_name}           \
-	    -prefix  WG_2sampleT++_${output_name}                           \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}           \
+	    -prefix  WG_2sampleT++_${output_name_HvL}                           \
 	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
 	    -dset_sid_list $index						   \
 	    -set_labels HighLarge-Small LowLarge-Small                             \
@@ -116,13 +116,27 @@ gen_group_command.py -command 3dttest++                                         
 	    -options								   \
 			-paired -mask $map_folder/WG_mask0.8+tlrc -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
 
+set output_name_FvO = "Food_v_Office_PScon"
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_FvO}           \
+	    -prefix  WG_2sampleT++_${output_name_FvO}                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels Large-Small_allED OfficeLarge-Small                             \
+	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+
+
 # set permissions
-chmod 775 $map_folder/WG_2sampleT++_${output_name}
+chmod 775 $map_folder/WG_2sampleT++_${output_name_FvO}
+chmod 775 $map_folder/WG_2sampleT++_${output_name_FvO}
 
 # execute script?
 if ( "$2" == "run" ) then
 	cd $map_folder
-	tcsh WG_2sampleT++_${output_name}
+	tcsh WG_2sampleT++_${output_name_HvL}
+	tcsh WG_2sampleT++_${output_name_FvO}
 endif
 
 # Copy base template into results folder 
