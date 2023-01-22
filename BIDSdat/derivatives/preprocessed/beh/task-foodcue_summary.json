@@ -1,0 +1,41 @@
+{
+    "Food cue Task": {
+        "Description": "",
+        "DatasetType": "derivitive - summary data produced by code/foodcue_proc/p0_getbehavioral.py"
+    },
+    "sub": {
+        "Description": "Participant ID"
+    },
+    "run": {
+        "Description": "run number",
+        "Levels": {"1": "run 1",
+                    "2": "run 2",
+                    "3": "run 3",
+                    "4": "run 4",
+                    "5": "run 5"}
+    },
+    "cond": {
+        "Description": "condition",
+        "Levels": {"HighLarge": "high ED, large portion",
+            "LowLarge": "low ED, large portion",
+            "HighSmall": "high ED, small portion",
+            "LowSmall": "low ED, small portion",
+            "OfficeLarge": "office supplies, large portion",
+            "OfficeSmall": "office supplies, small portion"}
+    },
+    "n_trials": {
+        "Description": "number of trials in the block"
+    },
+    "n_responses": {
+        "Description": "number of responses made"
+    },
+    "n_omissions": {
+        "Description": "number of missed responses"
+    },
+    "n_want": {
+        "Description": "number of wanting responses"
+    },
+    "p_want_of_resp": {
+        "Description": "percent of wanting responses out of number of responses (n_want / n_responses)"
+    }
+}
