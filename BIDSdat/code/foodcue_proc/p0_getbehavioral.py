@@ -135,8 +135,11 @@ def _extract_behavior(file):
         # count number of wants (thumb responses -- a or d)
         n_want = len(cond_dat[(cond_dat['want_resp']=='d') | (cond_dat['want_resp']=='a')])
 
-        # percent want of responses made
-        p_want = round(n_want/n_responses, 2)
+        # percent want of responses made -- only calculate if has responses
+        if n_responses > 0:
+            p_want = round(n_want/n_responses, 2)
+        else:
+            p_want = 'NaN'
 
         # make a dataframe row with behavioral data
         beh_row = pd.DataFrame(data=[sub, run_num, condition, n_trials, n_responses, n_omissions, n_want, p_want]).T
@@ -190,7 +193,7 @@ def getbehavior(par_id, overwrite = False):
 
     # loop through eventsfiles (i.e, run data)
     for file in eventsfiles:
-
+        
         # extract behavioral data from each event file
         beh_run_sub = _extract_behavior(file)
 
