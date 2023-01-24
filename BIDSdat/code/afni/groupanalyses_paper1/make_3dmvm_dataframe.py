@@ -104,7 +104,7 @@ def gen_dataframe(l1_res_folder, index_file):
 
         # create and append row for office cue, portion size contrast
         office_path = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/foodcue-paper1/level1/sub-' + id + '/' + l1_res_folder + '/stats.sub-' + id + '+tlrc.HEAD[OfficeLarge-Small_GLT#0_Coef]'
-        office_row = pd.DataFrame(data=[id, 'lED', sex, ff, fd, office_path]).T
+        office_row = pd.DataFrame(data=[id, 'office', sex, ff, fd, office_path]).T
         office_row.columns = ['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']
         MVMdatatable = pd.concat([MVMdatatable, office_row])
 
