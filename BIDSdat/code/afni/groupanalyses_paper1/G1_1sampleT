@@ -104,6 +104,9 @@ if ( ! -f $map_folder/WG_mask0.8+tlrc) then
 endif
 
 ###################### generate t-test scripts  ########################
+
+### T-tests for main effects of Food Cue, ED, PS and with covariates of interest ###
+
 # maps for main effects
 set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT)
 
@@ -149,16 +152,54 @@ foreach map ( $maps )
     	-subs_betas "${map}"'#'0_Coef                                    \
 		-options                                                       \
             -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3,5]'"
-		
+
 	# set permissions of map folder
     chmod 775 -R $map_folder
 
 	# Execute?
 	if ( "$2" == "run" ) then
     	cd $map_folder
-    	tcsh WG_1sampleT++_${output_name}
+    	#tcsh WG_1sampleT++_${output_name}
 		#tcsh WG_1sampleT++_${output_name}_bodyfat
-		tcsh WG_1sampleT++_${output_name}_mombmi
+		#tcsh WG_1sampleT++_${output_name}_mombmi
+	endif
+
+end
+
+### T-tests for PS contrast by condition ###
+
+# set maps for PS contrast for High ED, Low ED, and Office
+set maps_bycond = ( HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
+
+foreach map ( $maps_bycond )
+	set output_name_bycond = $map
+
+	# add -Clustsim option to run 3dClustSim
+
+    #zskip-skip voxels if more than 20% of dsets have zero value
+	#toz-when using zskip need to convert t to z because voxel 
+	#may have different number of samples
+
+	# with base covariates
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name_bycond}         \
+		-prefix  WG_1sampleT++_${output_name_bycond}                          \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..3]'"
+
+
+	# set permissions of map folder
+    chmod 775 -R $map_folder
+
+	# Execute?
+	if ( "$2" == "run" ) then
+    	cd $map_folder
+    	tcsh WG_1sampleT++_${output_name_bycond}
 	endif
 
 end
