@@ -159,7 +159,7 @@ foreach map ( $maps )
 	# Execute?
 	if ( "$2" == "run" ) then
     	cd $map_folder
-    	#tcsh WG_1sampleT++_${output_name}
+    	tcsh WG_1sampleT++_${output_name}
 		#tcsh WG_1sampleT++_${output_name}_bodyfat
 		#tcsh WG_1sampleT++_${output_name}_mombmi
 	endif
@@ -168,8 +168,8 @@ end
 
 ### T-tests for PS contrast by condition ###
 
-# set maps for PS contrast for High ED, Low ED, and Office
-set maps_bycond = ( HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
+# set maps for PS contrast for High ED/Low ED/Office and ED contrast by large/small
+set maps_bycond = ( LargeHigh-Low SmallHigh-Low HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
 
 foreach map ( $maps_bycond )
 	set output_name_bycond = $map
