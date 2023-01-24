@@ -92,24 +92,21 @@ def gen_dataframe(l1_res_folder, index_file):
 
         # create and append row for high ED cue, portion size contrast
         hED_path = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/foodcue-paper1/level1/sub-' + id + '/' + l1_res_folder + '/stats.sub-' + id + '+tlrc.HEAD[HighLarge-Small_GLT#0_Coef]'
-        hED_row = [id, 'hED', sex, ff, fd, hED_path]
-        MVMdatatable = MVMdatatable.append(pd.DataFrame([hED_row],
-            columns=['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']),
-            ignore_index=True)
+        hED_row = pd.DataFrame(data=[id, 'hED', sex, ff, fd, hED_path]).T
+        hED_row.columns = ['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']
+        MVMdatatable = pd.concat([MVMdatatable, hED_row])
 
         # create and append row for low ED cue, portion size contrast
         lED_path = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/foodcue-paper1/level1/sub-' + id + '/' + l1_res_folder + '/stats.sub-' + id + '+tlrc.HEAD[LowLarge-Small_GLT#0_Coef]'
-        lED_row = [id, 'lED', sex, ff, fd, lED_path]
-        MVMdatatable = MVMdatatable.append(pd.DataFrame([lED_row],
-            columns=['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']),
-            ignore_index=True)
+        lED_row = pd.DataFrame(data=[id, 'lED', sex, ff, fd, lED_path]).T
+        lED_row.columns = ['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']
+        MVMdatatable = pd.concat([MVMdatatable, lED_row])
 
-        # create and append row for low ED cue, portion size contrast
+        # create and append row for office cue, portion size contrast
         office_path = '/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/analyses/foodcue-paper1/level1/sub-' + id + '/' + l1_res_folder + '/stats.sub-' + id + '+tlrc.HEAD[OfficeLarge-Small_GLT#0_Coef]'
-        office_row = [id, 'office', sex, ff, fd, office_path]
-        MVMdatatable = MVMdatatable.append(pd.DataFrame([office_row],
-            columns=['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']),
-            ignore_index=True)
+        office_row = pd.DataFrame(data=[id, 'lED', sex, ff, fd, office_path]).T
+        office_row.columns = ['Subj','cuetype', 'sex', 'ff_premri', 'fd_avg','InputFile']
+        MVMdatatable = pd.concat([MVMdatatable, office_row])
 
     # get full censor string from index file name, with .txt at the end
     censor_str_txt = re.split('index_all_',index_file)[1]
