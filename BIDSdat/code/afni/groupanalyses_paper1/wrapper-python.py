@@ -32,10 +32,10 @@ from pathlib import Path
 import os
 
 # import functions
-import make_index_byrun
-import make_index_byblock
-import calc_avg_motion
-import make_3dttest_covTable
+import prep_index_byrun
+import prep_index_byblock
+import prep_avg_motion
+import prep_3dttest_covTable
 
 #########################################################
 ### Get list of subjects with processed fmriprep data ###
@@ -69,17 +69,17 @@ subs = list(set([item[4:7] for item in confound_subs_clean]))
 
 # Generate index files
 
-#make_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
-#make_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
+#prep_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
+#prep_index_byblock.gen_index_byblock(onset_dir = 'fd-0.9_by-block-7', nblocks = 3, preproc_path = False)
 
 # Calculate average motion variables -- included in covariate table by make_3dttest_covTable()
 for sub in subs:
 
      try:
-          calc_avg_motion.get_avg_fd(par_id = sub, preproc_path=False, overwrite=False)
+          prep_avg_motion.get_avg_fd(par_id = sub, preproc_path=False, overwrite=False)
      except:
            print("Discontinuing calc_avg_motion() for sub_" + sub)
 
 # Generate covariate table
-make_3dttest_covTable.gen_dataframe()
+prep_3dttest_covTable.gen_dataframe()
 
