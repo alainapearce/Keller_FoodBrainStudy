@@ -4,8 +4,8 @@
 #                           results directory (e.g., ped_fd-0.9_b20_3runs_noGSR_01-22-23) 
 #  	                    
 #
-#The purpose of this script is to get a conjunction map of 
-#regions with PS responses for High ED, Low ED, and office images
+#The purpose of this script is to generate conjuction masks that show distinct
+#and unique overlap for PS and ED contrasts
 #Adapted from scripts by Alaina Peace by Bari Fuchs Fall 2023.
 #
 ###################### set up initial variables  ###########################
@@ -33,12 +33,16 @@ set res_dir = $test_dir/$1
 cd $res_dir
 
 # Make masks of results that survive cluster thresholding 
-# mask names: Clust_mask-PScon_hED, Clust_mask-PScon_lED, Clust_mask-PScon_office
+# PS contrast masks: Clust_mask-PScon_hED, Clust_mask-PScon_lED, Clust_mask-PScon_office
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1000 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1000 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1000 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office
 
-###################### Make conjunction masks  ###########################
+# ED contrast masks: Clust_mask-EDcon_large, Clust_mask-EDcon_small
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1000 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1000 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small
+
+###################### Make portion size contrast conjunction masks  ###########################
 
 #1- hED only
 #2- lED only
@@ -54,5 +58,18 @@ cd $res_dir
 
 gunzip PScon_conjunctionMask.gz
 3dAFNItoNIFTI PScon_conjunctionMask+tlrc
+
+###################### Make ED contrast conjunction masks  ###########################
+
+#1- large only
+#2- small only
+#3- large and small
+
+3dcalc -a Clust_mask-EDcon_large+tlrc -b Clust_mask-EDcon_small+tlrc  \
+   -expr 'step(a)+2*step(b)+4*step(c)' -prefix EDcon_conjunctionMask
+
+gunzip EDcon_conjunctionMask.gz
+3dAFNItoNIFTI EDcon_conjunctionMask+tlrc
+
 
 
