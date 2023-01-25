@@ -129,7 +129,7 @@ gen_group_command.py -command 3dttest++                                         
 
 
 # set permissions
-chmod 775 $map_folder/WG_2sampleT++_${output_name_FvO}
+chmod 775 $map_folder/WG_2sampleT++_${output_name_HvL}
 chmod 775 $map_folder/WG_2sampleT++_${output_name_FvO}
 
 # execute script?

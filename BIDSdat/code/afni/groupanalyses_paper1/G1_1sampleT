@@ -169,7 +169,7 @@ end
 ### T-tests for PS contrast by condition ###
 
 # set maps for PS contrast for High ED/Low ED/Office and ED contrast by large/small
-set maps_bycond = ( LargeHigh-Low SmallHigh-Low HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
+set maps_bycond = ( LargeHigh-Low_GLT SmallHigh-Low_GLT HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
 
 foreach map ( $maps_bycond )
 	set output_name_bycond = $map
