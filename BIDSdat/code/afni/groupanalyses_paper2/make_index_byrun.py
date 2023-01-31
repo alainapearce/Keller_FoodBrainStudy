@@ -154,6 +154,8 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     # remove subjects from dataframe who should be excluded from analyses
     sub_include_df = sub_include_df[sub_include_df['id'] != '105'] # exclude due to extreme FOV cut-off in fmri data
     sub_include_df = sub_include_df[sub_include_df['id'] != '119'] # exclude due to extreme FOV cut-off in fmri data
+    sub_include_df = sub_include_df[sub_include_df['id'] != '031'] # exclude due to ADHD diagnosis
+    sub_include_df = sub_include_df[sub_include_df['id'] != '034'] # exclude due to ADHD diagnosis
 
 
     ################################################
