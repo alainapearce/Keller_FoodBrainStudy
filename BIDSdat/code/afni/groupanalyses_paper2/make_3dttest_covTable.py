@@ -5,7 +5,7 @@ This script was created to generate a dataframe with covariates for group-level 
 
 Written by Bari Fuchs in Fall 2022
 
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ def gen_dataframe():
     Note, rows in COVAR_FILE whose first column don't match a dataset label (in analysis script) are ignored (silently). 
         Thus, all subjects can be included in the covariate dataframe, even if they will not be included in analyses
 
-        TO DO: add REE instead of body fat %
+    Covariates include control variables (sex, body fat, motion, pre-mri fullness) and FEIS intake variables 
     """
 
     # get script location
@@ -77,13 +77,13 @@ def gen_dataframe():
     mot_df['id'] = mot_df['id'].str.zfill(3) # add leading zeros
 
     # import v6 database and format 'id' column for merging 
-    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import motion database
+    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import v6 database
     v6_df['id'] = v6_df['id'].astype(int) # get rid of decimal place
     v6_df['id'] = v6_df['id'].astype(str) # convert to string -- needed for zfill
     v6_df['id'] = v6_df['id'].str.zfill(3) # add leading zeros
 
     # impart intake database
-    intake_df = pd.read_csv(Path(intake_path).joinpath('intake_feis.csv')) # import motion database
+    intake_df = pd.read_csv(Path(intake_path).joinpath('intake_feis.csv')) # import intake database
     intake_df.rename(columns = {'sub':'id'}, inplace = True) # change 'sub' column name to 'id'
     intake_df['id'] = intake_df['id'].astype(str) # convert to string -- needed for zfill
     intake_df['id'] = intake_df['id'].str.zfill(3) # add leading zeros
@@ -109,7 +109,9 @@ def gen_dataframe():
     covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2']],on='id', how='left')
 
     # Add variable from intake database to covar_df
-    covar_df = pd.merge(covar_df,intake_df[['id','grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin']],on='id', how='left')
+    covar_df = pd.merge(covar_df,intake_df[['id','grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin','led_grams_int', 'led_grams_ps_lin',
+                                            'led_kcal_int', 'led_kcal_ps_lin', 'hed_grams_int', 'hed_grams_ps_lin',
+                                            'hed_kcal_int', 'hed_kcal_ps_lin']],on='id', how='left')
 
     ############################
     #### Clean up covariates ###
@@ -141,7 +143,9 @@ def gen_dataframe():
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin', 
+                                            'led_grams_int', 'led_grams_ps_lin','led_kcal_int', 'led_kcal_ps_lin', 
+                                            'hed_grams_int', 'hed_grams_ps_lin','hed_kcal_int', 'hed_kcal_ps_lin']]
 
     #########################
     #### Export dataframe ###
