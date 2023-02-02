@@ -126,7 +126,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..6]'"
 
 		# Low ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
@@ -138,8 +138,15 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,7,8]'"
+
+		# Execute?
+		if ( "$2" == "run" ) then
+    		cd $map_folder
+			tcsh WG_1sampleT++_${output_name}_led_grams
+			tcsh WG_1sampleT++_${output_name}_led_kcal
+		endif
 	endif
 	
 	if ( $map == "HighLarge-Small_GLT" ) then
@@ -152,7 +159,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,9,10]'"
 
 		# High ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
@@ -164,22 +171,19 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,11,12]'"
-	endif
 
+		# Execute?
+		if ( "$2" == "run" ) then
+			cd $map_folder
+			tcsh WG_1sampleT++_${output_name}_hed_grams
+			tcsh WG_1sampleT++_${output_name}_hed_kcal
+		endif
+	endif
 
 	# set permissions of map folder
     chmod 775 -R $map_folder
-
-	# Execute?
-	if ( "$2" == "run" ) then
-    	cd $map_folder
-		tcsh WG_1sampleT++_${output_name}_led_grams
-		tcsh WG_1sampleT++_${output_name}_led_kcal
-		tcsh WG_1sampleT++_${output_name}_hed_grams
-		tcsh WG_1sampleT++_${output_name}_hed_kcal
-	endif
 
 end
 
