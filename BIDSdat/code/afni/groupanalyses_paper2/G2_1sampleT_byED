@@ -127,7 +127,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,10,11]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..6]'"
 
 		# Low ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
 		gen_group_command.py -command 3dttest++                                             \
@@ -139,7 +139,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,12,13]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,7,8]'"
 	endif
 	
 	if ( $map == "HighLarge-Small_GLT" ) then
@@ -153,7 +153,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,14,15]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,9,10]'"
 
 		# High ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
 		gen_group_command.py -command 3dttest++                                             \
@@ -165,7 +165,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,16,17]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,11,12]'"
 	endif
 
 

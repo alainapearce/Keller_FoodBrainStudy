@@ -55,7 +55,7 @@ def gen_dataframe():
     pardata_directory = Path(os.getcwd())
 
     #set specific paths
-    bids_path = Path(pardata_directory).joinpath('BIDS') #just 'BIDS' on ROAR
+    bids_path = Path(pardata_directory).joinpath('BIDSdat') #just 'BIDS' on ROAR
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
     database_path = Path(pardata_directory).joinpath('Databases')
     intake_path = Path(bids_path).joinpath('derivatives/analyses/intake_feis')
@@ -143,9 +143,10 @@ def gen_dataframe():
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin', 
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 
                                             'led_grams_int', 'led_grams_ps_lin','led_kcal_int', 'led_kcal_ps_lin', 
-                                            'hed_grams_int', 'hed_grams_ps_lin','hed_kcal_int', 'hed_kcal_ps_lin']]
+                                            'hed_grams_int', 'hed_grams_ps_lin','hed_kcal_int', 'hed_kcal_ps_lin',
+                                            'kcal_int', 'kcal_ps_lin', 'grams_int', 'grams_ps_lin', 'grams_ps_quad']]
 
     #########################
     #### Export dataframe ###
