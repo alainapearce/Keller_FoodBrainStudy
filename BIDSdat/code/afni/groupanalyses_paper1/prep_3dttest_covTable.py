@@ -99,8 +99,8 @@ def gen_dataframe():
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
 
-    # Add fullness variables from v6 database to covar_df
-    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2']],on='id', how='left')
+    # Add fullness and pre-mri cams variables from v6 database to covar_df
+    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2', 'cams_pre_mri']],on='id', how='left')
 
     ############################
     #### Clean up covariates ###
@@ -153,7 +153,7 @@ def gen_dataframe():
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','fmi', 'mom_bmi']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','fmi', 'mom_bmi', 'cams_pre_mri']]
 
     #########################
     #### Export dataframe ###
