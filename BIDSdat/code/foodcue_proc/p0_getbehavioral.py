@@ -93,10 +93,10 @@ def _extract_behavior(file):
     foodcue_run_dat = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
 
     # select variables for processing
-    foodcue_run_dat = foodcue_run_dat[['sub', 'block', 'condition', 'filename', 'stimslide_resp', 'stimslide_rt']]
+    foodcue_run_dat = foodcue_run_dat[['experiment_name','sub', 'block', 'condition', 'procedure_trial', 'filename', 'stimslide_resp', 'stimslide_rt']]
     
     # rename columns (note: block becomes run)
-    foodcue_run_dat.columns = ['sub', 'run', 'condition', 'stim', 'want_resp', 'want_rt']
+    foodcue_run_dat.columns = ['experiment_name', 'sub', 'run', 'condition', 'block_proc', 'stim', 'want_resp', 'want_rt']
 
     # Modify stimulus condition names
     foodcue_run_dat['condition'].mask(foodcue_run_dat['condition'] == 'HighSmallED', 'HighSmall' , inplace=True )
@@ -105,11 +105,14 @@ def _extract_behavior(file):
     foodcue_run_dat['condition'].mask(foodcue_run_dat['condition'] == 'LowLargeED', 'LowLarge' , inplace=True )
 
     # make participant dataframe
-    beh_run_sub = pd.DataFrame(np.zeros((0, 8)))
-    beh_run_sub.columns = ['id','run','cond', 'n_trials', 'n_responses', 'n_omissions', 'n_want', 'p_want_of_resp']
+    beh_run_sub = pd.DataFrame(np.zeros((0, 10)))
+    beh_run_sub.columns = ['id','task_ver', 'run', 'block_proc', 'cond', 'n_trials', 'n_responses', 'n_omissions', 'n_want', 'p_want_of_resp']
 
     # get sub number
     sub = foodcue_run_dat['sub'].iloc[0]
+
+    # get task ver (the 9th character in experiment_name)
+    ver = (foodcue_run_dat['experiment_name'].iloc[0])[9]
 
     # get run number   
     run_num = foodcue_run_dat['run'].iloc[0]
@@ -122,6 +125,9 @@ def _extract_behavior(file):
 
         #subset condition data from foodcue_data
         cond_dat = foodcue_run_dat[foodcue_run_dat['condition'] == condition]
+
+        # get block_proc (first 2 characters of 'block_proc')
+        block_proc = (cond_dat['block_proc'].iloc[0])[0:2]
 
         # count number of trials 
         n_trials = len(cond_dat)
@@ -142,8 +148,8 @@ def _extract_behavior(file):
             p_want = 'NaN'
 
         # make a dataframe row with behavioral data
-        beh_row = pd.DataFrame(data=[sub, run_num, condition, n_trials, n_responses, n_omissions, n_want, p_want]).T
-        beh_row.columns = ['id','run','cond', 'n_trials', 'n_responses', 'n_omissions', 'n_want', 'p_want_of_resp']
+        beh_row = pd.DataFrame(data=[sub, ver, run_num, block_proc, condition, n_trials, n_responses, n_omissions, n_want, p_want]).T
+        beh_row.columns = ['id','task_ver', 'run', 'block_proc', 'cond', 'n_trials', 'n_responses', 'n_omissions', 'n_want', 'p_want_of_resp']
     
         # add row to beh_run_sub
         beh_run_sub = pd.concat([beh_run_sub, beh_row])
