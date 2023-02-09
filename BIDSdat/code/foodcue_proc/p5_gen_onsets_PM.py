@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-This script was created to generate onset files with parametric modulator using
-previously generated onset files and behavioral data
+This script was created to generate onset files with behavioral data (p_want) as a 
+parametric modulator (PM) using previously generated onset files and behavioral data
 
 Written by Bari Fuchs in Fall 2023
 
@@ -145,9 +145,9 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
         raise Exception()
 
 
-    #########################################
-    #### Generate new onset timing files ####
-    #########################################
+    ##############################################
+    #### Combine onset and p_want information ####
+    ##############################################
 
     # dictionary to save data frames
     onset_dict={}
@@ -161,11 +161,15 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
         # add to dictionary
         onset_dict[cond] = onsetfile_dat
 
-    ## To do: make onset files that combine across conditions??? (e.g., all food cue onsets)
+    ## Combine onsets across conditions
+    onset_dict['HighED'] = pd.concat([onset_dict['HighLarge'][0], onset_dict['HighSmall'][0]], axis=1)
+    onset_dict['LowED'] = pd.concat([onset_dict['LowLarge'][0], onset_dict['LowSmall'][0]], axis=1)
+    onset_dict['LargePSfood'] = pd.concat([onset_dict['HighLarge'][0], onset_dict['LowLarge'][0]], axis=1)
+    onset_dict['SmallPSfood'] = pd.concat([onset_dict['HighSmall'][0], onset_dict['LowSmall'][0]], axis=1)
 
-    #######################################
-    #### Output new onset timing files ####
-    #######################################
+    ######################################
+    #### Output PM onset timing files ####
+    ######################################
 
     # set path to PM onset directory
     new_onset_path = Path(bids_onset_path).joinpath(str(onset_folder) + "_PM")
@@ -178,14 +182,16 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
             
     # loop through keys in dictionary 
     for condition_key in onset_dict:
-        # set output name
-        outputname = "sub-" + sub + "_" + condition_key + "-AFNIonsets.txt"
 
-        # extract onset info
-        onsetfile_dat = onset_dict[condition_key]
+        if condition_key in ['HighED', 'LowED', 'LargePSfood', 'SmallPSfood']:
+            # set output name
+            outputname = "sub-" + sub + "_" + condition_key + "-AFNIonsets.txt"
 
-        # write file
-        onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(outputname)), sep = '\t', encoding='ascii', index = False, header=False)
+            # extract onset info
+            onsetfile_dat = onset_dict[condition_key]
+
+            # write file
+            onsetfile_dat.to_csv(str(Path(new_onset_path).joinpath(outputname)), sep = '\t', encoding='ascii', index = False, header=False)
 
     #return onset dictionary for integration testing
     #return onset_dict
