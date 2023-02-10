@@ -72,9 +72,14 @@ def _gen_new_onset_file(sub, file, foodcue_beh_dat):
             row = foodcue_beh_dat[(foodcue_beh_dat['id'] == sub) & (foodcue_beh_dat['run'] == int(runnum)) & (foodcue_beh_dat['cond'] == cond)] #select row based on sub, runnum, and condition
             p_want = float(row['p_want_of_resp'])
 
-            # add p_want to onsetfile_dat
-            onset = onsetfile_dat.at[i, 0]
-            onsetfile_dat.at[i, 0] = str(onset) + "*" + str(p_want)
+            # exit if p_want is missing (nan)
+            if pd.isna(p_want):
+                print ("sub " + sub + " has missing data for p_want. Quitting")
+                raise Exception
+            # else add p_want to onsetfile_dat
+            else:
+                onset = onsetfile_dat.at[i, 0]
+                onsetfile_dat.at[i, 0] = str(onset) + "*" + str(p_want)
 
     return(cond, onsetfile_dat)
 
@@ -137,9 +142,15 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
 
     # Import foodcue task behavior file
     if foodcue_beh_path.is_file(): # if database exists
-        # import database --- converting 'sub' to string will maintain leading zeros
-        foodcue_beh_dat = pd.read_csv(str(foodcue_beh_path), sep = '\t', converters={'id': lambda x: str(x)})
-        # DO THIS: Check that subject exists in beh data base -- else raise Exception()
+        # import database
+        foodcue_beh_dat = pd.read_csv(str(foodcue_beh_path), sep = '\t')
+        # convert id to string and add leading zeros
+        foodcue_beh_dat['id'] = foodcue_beh_dat['id'].astype(str).str.zfill(3)
+
+        # raise exception if subject not in database
+        if sub not in foodcue_beh_dat['id'].values:
+            print("sub " + sub + " not found in task-foodcue_summary.tsv. Quitting")  
+            raise Exception()
     else:
         print("task-foodcue_summary.tsv not found. Quitting")        
         raise Exception()
