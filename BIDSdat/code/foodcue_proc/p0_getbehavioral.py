@@ -111,8 +111,11 @@ def _extract_behavior(file):
     # get sub number
     sub = foodcue_run_dat['sub'].iloc[0]
 
-    # get task ver (the 9th character in experiment_name)
-    ver = (foodcue_run_dat['experiment_name'].iloc[0])[9]
+    # get task ver
+    if 'VA' in foodcue_run_dat['experiment_name'].iloc[0]:
+        ver = 'A'
+    elif 'VB' in foodcue_run_dat['experiment_name'].iloc[0]:
+        ver = 'B'
 
     # get run number   
     run_num = foodcue_run_dat['run'].iloc[0]
