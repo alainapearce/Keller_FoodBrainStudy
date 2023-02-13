@@ -21,7 +21,7 @@ set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
 set subs = ( `basename -a $lev1_shared/*` )
 
 # set list of folders
-set folders = ( ped_fd-0.9_b20_noGSR )
+set folders = ( ped_fd-0.9_b20_noGSR ped_fd-0.9_b20_PM)
 
 # for each subject
 foreach sub ($subs)
@@ -31,25 +31,53 @@ foreach sub ($subs)
 
 	echo "$sub/$folder"
 
-		# make directory 
-		if ( ! -d $lev1_dir/$sub/$folder ) then
-			mkdir -p $lev1_dir/$sub/$folder
-		endif
-		
-		# copy .BRIK
-		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.BRIK ) then
-			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.BRIK $lev1_dir/$sub/$folder
-		endif
+		# project folder if shared folder exists and project folder not created
+		if ( -d $lev1_shared/$sub/$folder ) then # if shared directory exists
+			if ( ! -d $lev1_dir/$sub/$folder ) then # if project directory does not exist 
+				mkdir -p $lev1_dir/$sub/$folder # make directory
+			endif
 
-		# copy .HEAD
-		if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.HEAD ) then
-			cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.HEAD $lev1_dir/$sub/$folder
-		endif
+			# if level1 parametric analyses folder
+			if ( $folder =~ *PM* ) then
 
-		# copy mask
-		if ( ! -f $lev1_dir/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii ) then
-			cp $lev1_shared/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii $lev1_dir/$sub/$folder
-		endif
+				foreach cond ('ED' 'PS')
 
+					# if subject has stats file from parametric analyses -- not all will due to behavioral data
+					if ( -f $lev1_shared/$sub/$folder/${cond}_stats.$sub+tlrc.BRIK ) then
+						# if not copied over
+						if ( ! -f $lev1_dir/$sub/$folder/${cond}_stats.$sub+tlrc.BRIK ) then
+							# copy .BRIK
+							cp $lev1_shared/$sub/$folder/${cond}_stats.$sub+tlrc.BRIK $lev1_dir/$sub/$folder
+						endif
+					endif
+
+					# if subject has stats file from parametric analyses -- not all will due to behavioral data
+					if ( -f $lev1_shared/$sub/$folder/${cond}_stats.$sub+tlrc.HEAD ) then
+						# if not copied over
+						if ( ! -f $lev1_dir/$sub/$folder/${cond}_stats.$sub+tlrc.HEAD ) then
+							# copy .HEAD
+							cp $lev1_shared/$sub/$folder/${cond}_stats.$sub+tlrc.HEAD $lev1_dir/$sub/$folder
+						endif
+					endif
+				end
+				
+			else # else (not parametric analyses folder)
+
+				# copy .BRIK
+				if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.BRIK ) then
+					cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.BRIK $lev1_dir/$sub/$folder
+				endif
+
+				# copy .HEAD
+				if ( ! -f $lev1_dir/$sub/$folder/stats.$sub+tlrc.HEAD ) then
+					cp $lev1_shared/$sub/$folder/stats.$sub+tlrc.HEAD $lev1_dir/$sub/$folder
+				endif
+			endif 
+
+			# copy mask
+			if ( ! -f $lev1_dir/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii ) then
+				cp $lev1_shared/$sub/$folder/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii $lev1_dir/$sub/$folder
+			endif
+		endif
 	end
 end
