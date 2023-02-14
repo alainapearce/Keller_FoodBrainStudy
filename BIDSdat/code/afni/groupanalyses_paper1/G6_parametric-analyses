@@ -60,7 +60,8 @@ endif
 
 # set lev1 results directory name
 set lev1split = ($lev1_str:as/_/ /)
-set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]_PM
+set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]
+
 
 # get censor str for index file
 set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
@@ -69,12 +70,12 @@ set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
 set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
 
 #create map folder
-#if ( ! -d $map_folder ) then
-#    mkdir -p $map_folder
-#else
-#	echo "$map_folder already exists. delete or rename to re-run"
-#	exit
-#endif
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+else
+	echo "$map_folder already exists. delete or rename to re-run"
+	exit
+endif
 
 
 # copy index lists and covariate file into output folder for reference
@@ -85,7 +86,6 @@ cp $lev2_dir/ttest-covariates.txt $map_folder
 ###################### generate masks  ########################
 
 foreach cond ( 'PS' 'ED' )
-
 	# set variables
 	if ( $cond == 'PS' ) then
 		set index = `cat $map_folder/index_${censor_str}_PM-PS.txt`
@@ -112,7 +112,7 @@ foreach cond ( 'PS' 'ED' )
 		# remove temporary directory
 		rm -r $map_folder/temp_mask_${cond}
 	endif 
-
+end
 ###################### generate t-test scripts  ########################
 
 ### Paired T-tests for ED and PS conditions with covariates of interest ###
