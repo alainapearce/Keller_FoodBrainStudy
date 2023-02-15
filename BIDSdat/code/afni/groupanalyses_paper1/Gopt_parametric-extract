@@ -1,0 +1,52 @@
+#!/bin/tcsh
+#
+#useage: 
+
+# The purpose of this script is to extrat beta values for a previously defined cluster
+# Written by Bari Fuchs Spring 2023
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+ 
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+ 
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+cd ../../../
+set bidsdir = "$cwd"
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
+
+# set level2 dir
+set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
+
+#set test directory
+set test_dir = $lev2_dir/parametric
+
+#set map directory
+set map_dir = $test_dir/ped_fd-0.9_b20_3runs_PM_02-14-23
+
+if ( ! -d $map_dir ) then
+	echo "failed to find $map_dir"
+	exit
+endif
+
+# delete beta text file 
+if ( -f $map_dir/PM-ED_rfusiform_betas.txt ) then
+	rm $map_dir/PM-ED_rfusiform_betas.txt
+endif
+
+# add headers to new file
+echo sub ' \t ' high_beta ' \t ' low_beta >> $map_dir/PM-ED_rfusiform_betas.txt
+
+# loop through subjects
+foreach i ( `cat $map_dir/index_fd-0.9_b20_3runs_PM-ED.txt ` )
+	set sub = $i
+	set high_beta = `3dmaskave -mask $map_dir/r_fusiform-ED+tlrc. $lev1_dir/sub-$sub/ped_fd-0.9_b20_PM/ED_stats.sub-$sub+tlrc'[HighED#1_Coef]'`
+	set low_beta = `3dmaskave -mask $map_dir/r_fusiform-ED+tlrc. $lev1_dir/sub-$sub/ped_fd-0.9_b20_PM/ED_stats.sub-$sub+tlrc'[LowED#1_Coef]'`
+	echo $sub ' \t ' $high_beta ' \t ' $low_beta >> $map_dir/PM-ED_rfusiform_betas.txt
+end
