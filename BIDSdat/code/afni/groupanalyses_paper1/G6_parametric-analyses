@@ -114,6 +114,8 @@ foreach cond ( 'PS' 'ED' )
 	endif 
 end
 ###################### generate t-test scripts  ########################
+# gen_group_command.py settings:
+	# add -Clustsim option to run 3dClustSim
 
 ### Paired T-tests for ED and PS conditions with covariates of interest ###
 
@@ -127,8 +129,8 @@ gen_group_command.py -command 3dttest++                                         
 		-set_labels LargePS SmallPS                          \
 		-subs_betas 'LargePSfood#1_Coef' 'SmallPSfood#1_Coef'   \
 		-options								   \
-			-paired -mask $map_folder/PS_mask0.8+tlrc -toz \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+			-paired -mask $map_folder/PS_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
 
 
 ### For energy density ###
@@ -141,8 +143,8 @@ gen_group_command.py -command 3dttest++                                         
 		-set_labels HighED LowED                          \
 		-subs_betas 'HighED#1_Coef' 'LowED#1_Coef'   \
 		-options								   \
-			-paired -mask $map_folder/ED_mask0.8+tlrc -toz \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+			-paired -mask $map_folder/ED_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
 
 
 #set permissions of map folder
