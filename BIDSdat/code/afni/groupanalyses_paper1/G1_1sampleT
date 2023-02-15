@@ -105,21 +105,19 @@ endif
 
 ###################### generate t-test scripts  ########################
 
-### T-tests for main effects of Food Cue, ED, PS and with covariates of interest ###
+# gen_group_command.py settings:
+	# add -Clustsim option to run 3dClustSim
 
-# maps for main effects
-set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT)
+# set contrast maps
+	# High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT -- used to assess main effects of cue type, energy density, and portion size
+	# LargeHigh-Low_GLT SmallHigh-Low_GLT HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT -- will be used for conjuction maps
+
+set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT LargeHigh-Low_GLT SmallHigh-Low_GLT HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
 
 foreach map ( $maps )
 	set output_name = $map
 
-	# add -Clustsim option to run 3dClustSim
-
-    #zskip-skip voxels if more than 20% of dsets have zero value
-	#toz-when using zskip need to convert t to z because voxel 
-	#may have different number of samples
-
-	# with base covariates
+	# generate ttest script
 	gen_group_command.py -command 3dttest++                                             \
 		-write_script $map_folder/WG_1sampleT++_${output_name}         \
 		-prefix  WG_1sampleT++_${output_name}                          \
@@ -128,30 +126,8 @@ foreach map ( $maps )
 	 	-set_labels $map                                                 \
      	-subs_betas "${map}"'#'0_Coef                                    \
 		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..3]'"
-
-	# with base covariates and body fat %
-    gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_bodyfat         \
-		-prefix  WG_1sampleT++_${output_name}_bodyfat                          \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-       	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-        -subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3,4]'"
-
-	# with base covariates and maternal weight status
-    gen_group_command.py -command 3dttest++                                         \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_mombmi         \
-		-prefix  WG_1sampleT++_${output_name}_mombmi                        \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-       	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-    	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3,5]'"
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
 
 	# set permissions of map folder
     chmod 775 -R $map_folder
@@ -160,46 +136,6 @@ foreach map ( $maps )
 	if ( "$2" == "run" ) then
     	cd $map_folder
     	tcsh WG_1sampleT++_${output_name}
-		#tcsh WG_1sampleT++_${output_name}_bodyfat
-		#tcsh WG_1sampleT++_${output_name}_mombmi
-	endif
-
-end
-
-### T-tests for PS contrast by condition ###
-
-# set maps for PS contrast for High ED/Low ED/Office and ED contrast by large/small
-set maps_bycond = ( LargeHigh-Low_GLT SmallHigh-Low_GLT HighLarge-Small_GLT LowLarge-Small_GLT OfficeLarge-Small_GLT)
-
-foreach map ( $maps_bycond )
-	set output_name_bycond = $map
-
-	# add -Clustsim option to run 3dClustSim
-
-    #zskip-skip voxels if more than 20% of dsets have zero value
-	#toz-when using zskip need to convert t to z because voxel 
-	#may have different number of samples
-
-	# with base covariates
-	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name_bycond}         \
-		-prefix  WG_1sampleT++_${output_name_bycond}                          \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-    	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-     	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..3]'"
-
-
-	# set permissions of map folder
-    chmod 775 -R $map_folder
-
-	# Execute?
-	if ( "$2" == "run" ) then
-    	cd $map_folder
-    	tcsh WG_1sampleT++_${output_name_bycond}
 	endif
 
 end
