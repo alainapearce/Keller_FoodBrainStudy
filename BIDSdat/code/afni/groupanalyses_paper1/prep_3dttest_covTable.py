@@ -38,33 +38,34 @@ from pathlib import Path
 ####                                                                      ####
 ##############################################################################
 def gen_dataframe():
-    """Function to generate covariate dataframe with 1 row per subject and 1 column per covariate.
+    """Function to generate txt file with 1 row per subject and 1 column per covariate for use with 3dttest++ in AFNI. 
+        Covariates to include in analyses can be specified via AFNI using column indexing.
     
-    Note, rows in COVAR_FILE whose first column don't match a dataset label (in analysis script) are ignored (silently). 
+    Rows in COVAR_FILE whose first column don't match a dataset label (e.g., in AFNI's gen_group_command.py for 3dttest++) are ignored (silently). 
         Thus, all subjects can be included in the covariate dataframe, even if they will not be included in analyses
-
-        TO DO: add body fat %, and maternal weight 
     """
 
     # get script location
     script_path = Path(__file__).parent.resolve()
 
-    # change directory to base directory (BIDSdat) and get path
+    # change directory to bids and get path
     os.chdir(script_path)
-    os.chdir('../../../../')
-    pardata_directory = Path(os.getcwd())
-    #bids_directory = Path(os.getcwd())
+    os.chdir('../../../')
+    bids_path = Path(os.getcwd())
+
+    # change directory project directory
+    os.chdir('../')
+    proj_path = Path(os.getcwd())
 
     #set specific paths
-    bids_path = Path(pardata_directory).joinpath('BIDS') #just 'BIDS' on ROAR
-    fmriprep_path = Path(pardata_directory).joinpath('BIDS/derivatives/preprocessed/fmriprep')
-    database_path = Path(pardata_directory).joinpath('Databases')
+    fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
+    database_path = Path(proj_path).joinpath('Databases')
 
     #########################################
     #### Import databases with covariates ###
     #########################################
 
-    # import anthro database and format 'id' column for merging 
+    # import anthro database and format 'id' column for merging ``
     anthro_df = pd.read_spss(Path(database_path).joinpath('anthro_data.sav')) # import anthro database
     anthro_df['id'] = anthro_df['id'].astype(int) # get rid of decimal place
     anthro_df['id'] = anthro_df['id'].astype(str) # convert to string -- needed for zfill
@@ -77,7 +78,7 @@ def gen_dataframe():
     mot_df['id'] = mot_df['id'].str.zfill(3) # add leading zeros
 
     # import v6 database and format 'id' column for merging 
-    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import motion database
+    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import v6 database
     v6_df['id'] = v6_df['id'].astype(int) # get rid of decimal place
     v6_df['id'] = v6_df['id'].astype(str) # convert to string -- needed for zfill
     v6_df['id'] = v6_df['id'].str.zfill(3) # add leading zeros
@@ -153,7 +154,7 @@ def gen_dataframe():
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','fmi', 'mom_bmi', 'cams_pre_mri']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri', 'cams_pre_mri', 'risk_status_mom', 'fmi', 'mom_bmi']]
 
     #########################
     #### Export dataframe ###
