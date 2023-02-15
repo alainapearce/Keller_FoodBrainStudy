@@ -102,10 +102,10 @@ end
 rm -r $map_folder/temp_mask
 
 ###################### generate t-test scripts  ########################
-set output_name_HvL = "High_v_Low_PScon"
-        
-#toz-when using zskip need to convert t to z because voxel
-#may have different number of samples
+# gen_group_command.py settings:
+	# add -Clustsim option to run 3dClustSim
+
+set output_name_HvL = "High_v_Low_PScon" 
 gen_group_command.py -command 3dttest++                                            \
 	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}           \
 	    -prefix  WG_2sampleT++_${output_name_HvL}                           \
@@ -114,7 +114,7 @@ gen_group_command.py -command 3dttest++                                         
 	    -set_labels HighLarge-Small LowLarge-Small                             \
 	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
 	    -options								   \
-			-paired -mask $map_folder/WG_mask0.8+tlrc -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
 
 set output_name_FvO = "Food_v_Office_PScon"
 gen_group_command.py -command 3dttest++                                            \
@@ -125,7 +125,7 @@ gen_group_command.py -command 3dttest++                                         
 	    -set_labels Large-Small_allED OfficeLarge-Small                             \
 	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
 	    -options								   \
-			-paired -mask $map_folder/WG_mask0.8+tlrc -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
 
 
 # set permissions
