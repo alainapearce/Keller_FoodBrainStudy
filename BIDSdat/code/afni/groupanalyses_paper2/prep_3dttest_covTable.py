@@ -31,6 +31,7 @@ or raw data configurations.
 import pandas as pd
 import os
 from pathlib import Path
+import numpy as np
 
 ##############################################################################
 ####                                                                      ####
@@ -43,21 +44,24 @@ def gen_dataframe():
     Note, rows in COVAR_FILE whose first column don't match a dataset label (in analysis script) are ignored (silently). 
         Thus, all subjects can be included in the covariate dataframe, even if they will not be included in analyses
 
-    Covariates include control variables (sex, body fat, motion, pre-mri fullness) and FEIS intake variables 
+    Covariates include control variables (sex, body fat, motion, pre-mri fullness, pre-mri CAMS) and FEIS intake variables 
     """
 
     # get script location
     script_path = Path(__file__).parent.resolve()
 
-    # change directory to base directory (BIDSdat) and get path
+    # change directory to bids and get path
     os.chdir(script_path)
-    os.chdir('../../../../')
-    pardata_directory = Path(os.getcwd())
+    os.chdir('../../../')
+    bids_path = Path(os.getcwd())
+
+    # change directory project directory
+    os.chdir('../')
+    proj_path = Path(os.getcwd())
 
     #set specific paths
-    bids_path = Path(pardata_directory).joinpath('BIDSdat') #just 'BIDS' on ROAR
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
-    database_path = Path(pardata_directory).joinpath('Databases')
+    database_path = Path(proj_path).joinpath('Databases')
     intake_path = Path(bids_path).joinpath('derivatives/analyses/intake_feis')
 
     #########################################
@@ -105,8 +109,8 @@ def gen_dataframe():
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
 
-    # Add fullness variables from v6 database to covar_df
-    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2']],on='id', how='left')
+    # Add fullness and pre-mri cams variables from v6 database to covar_df
+    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2', 'cams_pre_mri']],on='id', how='left')
 
     # Add variable from intake database to covar_df
     covar_df = pd.merge(covar_df,intake_df[['id','grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin','led_grams_int', 'led_grams_ps_lin',
@@ -142,8 +146,11 @@ def gen_dataframe():
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
+    # replace missing values with -999 -- otherwise columns will shift due to missing data in AFNI
+    covar_df.replace(np.nan, -999, inplace=True)
+
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'cams_pre_mri',
                                             'led_grams_int', 'led_grams_ps_lin','led_kcal_int', 'led_kcal_ps_lin', 
                                             'hed_grams_int', 'hed_grams_ps_lin','hed_kcal_int', 'hed_kcal_ps_lin',
                                             'kcal_int', 'kcal_ps_lin', 'grams_int', 'grams_ps_lin', 'grams_ps_quad']]
