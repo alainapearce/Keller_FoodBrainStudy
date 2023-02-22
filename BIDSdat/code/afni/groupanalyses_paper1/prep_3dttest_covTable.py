@@ -31,6 +31,7 @@ or raw data configurations.
 import pandas as pd
 import os
 from pathlib import Path
+import numpy as np
 
 ##############################################################################
 ####                                                                      ####
@@ -152,6 +153,9 @@ def gen_dataframe():
 
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
+
+    # replace missing values with -999 -- otherwise columns will shift due to missing data in AFNI
+    covar_df.replace(np.nan, -999, inplace=True)
 
     # set column order so that the base covariates come first
     covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri', 'cams_pre_mri', 'risk_status_mom', 'fmi', 'mom_bmi']]
