@@ -105,8 +105,8 @@ endif
 
 ###################### generate t-test scripts  ########################
 # maps for main effects
-#set maps = ( Large-Small_allED_GLT Food-Office_GLT)
-set maps = ( Large-Small_allED_GLT Food-Office_GLT High-Low_allPS_GLT)
+
+set maps = ( Large-Small_allED_GLT)
 
 foreach map ( $maps )
 	set output_name = $map
@@ -117,41 +117,29 @@ foreach map ( $maps )
 	#toz-when using zskip need to convert t to z because voxel 
 	#may have different number of samples
 
-	# with linear kcal variable only
+	# kcal model, includes covariates (sex, avg-motion, pre-fullness, body fat%, cams) and kcal variables (intercept, linear slope)
 	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_kcal-slope-nocovar         \
-		-prefix  WG_1sampleT++_${output_name}_kcal-slope-nocovar                      \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_kcal        \
+		-prefix  WG_1sampleT++_${output_name}_kcal                    \
 		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
     	-dset_sid_list $index 					\
 	 	-set_labels $map                                                 \
      	-subs_betas "${map}"'#'0_Coef                                    \
 		-options                                                       \
             -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0,9]'"
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..5,14,15]'"
 
-	# with base covariates (sex, avg-motion, pre-fullness, body fat%) and kcal variables (intercept, linear slope)
+	# grams model, includes covariates (sex, avg-motion, pre-fullness, body fat%, cams) and grams variables (intercept, linear slope, quad slope)
 	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_kcal-covar         \
-		-prefix  WG_1sampleT++_${output_name}_kcal-covar                     \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_grams        \
+		-prefix  WG_1sampleT++_${output_name}_grams           \
 		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
     	-dset_sid_list $index 					\
 	 	-set_labels $map                                                 \
      	-subs_betas "${map}"'#'0_Coef                                    \
 		-options                                                       \
             -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..4,8,9]'"
-
-	# with base covariates (sex, avg-motion, pre-fullness, body fat%) and gram variables (intercept, linear slope, quad)
-	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_grams-covar         \
-		-prefix  WG_1sampleT++_${output_name}_grams-covar            \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-    	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-     	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..7]'"
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..5,16..18]'"
 
 	# set permissions of map folder
     chmod 775 -R $map_folder
@@ -159,9 +147,8 @@ foreach map ( $maps )
 	# Execute?
 	if ( "$2" == "run" ) then
     	cd $map_folder
-		#tcsh WG_1sampleT++_${output_name}_kcal-slope-nocovar
-		tcsh WG_1sampleT++_${output_name}_kcal-covar
-		tcsh WG_1sampleT++_${output_name}_grams-covar 
+		tcsh WG_1sampleT++_${output_name}_kcal
+		tcsh WG_1sampleT++_${output_name}_grams 
 	endif
 
 end
