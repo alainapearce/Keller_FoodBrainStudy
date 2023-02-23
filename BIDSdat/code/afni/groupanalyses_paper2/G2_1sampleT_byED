@@ -78,7 +78,7 @@ endif
 
 
 # set index list -- lists subjects to include in analyses
-set index = `cat $lev2_dir/index_all_${censor_str}.txt`
+set index = `cat $lev2_dir/index_by-ED_${censor_str}.txt`
 	
 # copy index list and covariate file into output folder for reference
 cp $lev2_dir/index_all_${censor_str}.txt $map_folder

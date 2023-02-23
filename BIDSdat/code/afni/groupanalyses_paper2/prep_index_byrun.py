@@ -162,12 +162,19 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     #### Generate index files for each dataframe ###
     ################################################
 
-    # Convert dataframes to lists
-    all = [str(sub) for sub in sub_include_df['id']]
+    # Convert dataframe to list of subjects to include in analyses by energy density
+    by_ED = [str(sub) for sub in sub_include_df['id']]
+
+    # make overall list, excluding 2 subs who do not have overall intake values
+    overall = []
+    for sub in by_ED:
+        if sub not in ('128', '083'):
+            overall.append(sub)
 
     # add lists to dictionary
     index_dict = {}
-    index_dict['all'] = all
+    index_dict['by-ED'] = by_ED
+    index_dict['overall'] = overall
 
     # define output path
     censor_string = str(onset_dir)
