@@ -112,10 +112,6 @@ foreach map ( $maps )
 
 	# add -Clustsim option to run 3dClustSim
 
-    #zskip-skip voxels if more than 20% of dsets have zero value
-	#toz-when using zskip need to convert t to z because voxel 
-	#may have different number of samples
-
 	if ( $map == "LowLarge-Small_GLT" ) then
 		# Low ED grams variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
 		gen_group_command.py -command 3dttest++                                             \
@@ -126,7 +122,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD 	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,6,7]'"
 
 		# Low ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
@@ -138,7 +134,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD  \
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,8,9]'"
 
 		# Execute?
@@ -159,7 +155,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD 	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,10,11]'"
 
 		# High ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
@@ -171,7 +167,7 @@ foreach map ( $maps )
 			-set_labels $map                                                 \
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
-				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
+				-mask $map_folder/WG_mask0.8+tlrc.HEAD 	\
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,12,13]'"
 
 		# Execute?
