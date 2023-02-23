@@ -105,7 +105,7 @@ endif
 
 ###################### generate t-test scripts  ########################
 # maps for portion size response (Large-Small) for High ED and Low ED conditions
-set maps = ( HighLarge-Small_GLT LowLarge-Small_GLT)
+set maps = ( LowLarge-Small_GLT HighLarge-Small_GLT )
 
 foreach map ( $maps )
 	set output_name = $map
@@ -117,7 +117,7 @@ foreach map ( $maps )
 	#may have different number of samples
 
 	if ( $map == "LowLarge-Small_GLT" ) then
-		# Low ED grams variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
+		# Low ED grams variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
 		gen_group_command.py -command 3dttest++                                             \
 			-write_script $map_folder/WG_1sampleT++_${output_name}_led_grams         \
 			-prefix  WG_1sampleT++_${output_name}_led_grams                     \
@@ -127,9 +127,9 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..6]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,6,7]'"
 
-		# Low ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
+		# Low ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
 		gen_group_command.py -command 3dttest++                                             \
 			-write_script $map_folder/WG_1sampleT++_${output_name}_led_kcal        \
 			-prefix  WG_1sampleT++_${output_name}_led_kcal           \
@@ -139,7 +139,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,7,8]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,8,9]'"
 
 		# Execute?
 		if ( "$2" == "run" ) then
@@ -150,7 +150,7 @@ foreach map ( $maps )
 	endif
 	
 	if ( $map == "HighLarge-Small_GLT" ) then
-		# High ED grams variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
+		# High ED grams variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
 		gen_group_command.py -command 3dttest++                                             \
 			-write_script $map_folder/WG_1sampleT++_${output_name}_hed_grams       \
 			-prefix  WG_1sampleT++_${output_name}_hed_grams                     \
@@ -160,9 +160,9 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,9,10]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,10,11]'"
 
-		# High ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%)
+		# High ED kcal variables (intercept, linear slope) and covariates (sex, avg-motion, pre-fullness, body fat%, cams)
 		gen_group_command.py -command 3dttest++                                             \
 			-write_script $map_folder/WG_1sampleT++_${output_name}_hed_kcal         \
 			-prefix  WG_1sampleT++_${output_name}_hed_kcal          \
@@ -172,7 +172,7 @@ foreach map ( $maps )
 			-subs_betas "${map}"'#'0_Coef                                    \
 			-options                                                       \
 				-mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz -Clustsim	\
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..4,11,12]'"
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..5,12,13]'"
 
 		# Execute?
 		if ( "$2" == "run" ) then
