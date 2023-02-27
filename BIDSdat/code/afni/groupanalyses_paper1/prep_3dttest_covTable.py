@@ -60,6 +60,7 @@ def gen_dataframe():
 
     #set specific paths
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
+    v6covar_path = Path(bids_path).joinpath('derivatives/preprocessed/V6_covariates')
     database_path = Path(proj_path).joinpath('Databases')
 
     #########################################
@@ -79,7 +80,7 @@ def gen_dataframe():
     mot_df['id'] = mot_df['id'].str.zfill(3) # add leading zeros
 
     # import v6 database and format 'id' column for merging 
-    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import v6 database
+    v6_df = pd.read_csv(Path(v6covar_path).joinpath('V6_covariates.csv')) # import v6 database
     v6_df['id'] = v6_df['id'].astype(int) # get rid of decimal place
     v6_df['id'] = v6_df['id'].astype(str) # convert to string -- needed for zfill
     v6_df['id'] = v6_df['id'].str.zfill(3) # add leading zeros
@@ -95,23 +96,18 @@ def gen_dataframe():
     covar_df = pd.DataFrame() #create empty dataframe
     covar_df['id'] = subs_list #add subjects to column sub
 
-    # Add variables from anthro database to covar_df (risk, fat mass)
-    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom', 'height_avg', 'dxa_total_fat_mass', 'sr_mom_bmi', 'parent_bmi','parent_respondent' ]],on='id', how='left')
+    # Add variables from anthro database to covar_df (sex, risk)
+    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom']],on='id', how='left')
 
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
 
     # Add fullness and pre-mri cams variables from v6 database to covar_df
-    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2', 'cams_pre_mri']],on='id', how='left')
+    covar_df = pd.merge(covar_df,v6_df[['id','imp_med','imp_max', 'imp_min', 'cams_pre_mri']],on='id', how='left')
 
     ############################
     #### Clean up covariates ###
     ############################
-
-    # compute fat mass index
-    covar_df['dxa_total_fat_mass'] = covar_df['dxa_total_fat_mass'].astype(str).astype(float) #convert to string, then float
-    covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
-    covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
 
     # encode sex as -1 for male and 1 for female so that the main effect will be the average between males and females
     covar_df = covar_df.replace({'sex':{'Male':-1, 'Female':1}})
@@ -119,46 +115,14 @@ def gen_dataframe():
     # encode risk as -1 for low and 1 for high so that the main effect will be the average between males and females
     covar_df = covar_df.replace({'risk_status_mom':{'Low Risk':-1, 'High Risk':1}})
 
-    # make function to determine fulless_preMRI based on other ff variables
-    def get_preMRI_ff(row):
-        # if post-snack2 is not null, use post-snack2 rating
-        if pd.isnull(row['ff_postmri_snack2']) is False:
-            ff_premri = row['ff_postmri_snack2']
-        # else, if post-snack is not null, use post-snack rating
-        elif pd.isnull(row['ff_postmri_snack']) is False:
-            ff_premri = row['ff_postmri_snack']
-        # else, use pre-snack rating
-        else:
-            ff_premri = row['ff_premri_snack']
-        return ff_premri
-
-    # apply get_preMRI_ff()
-    covar_df['ff_premri'] = covar_df.apply(get_preMRI_ff, axis=1)
-
-    # make function to maternal BMI
-    def get_mom_bmi(row):
-        # if parent_respondent is Mother, use measured BMI
-        if (row['parent_respondent'] == 'Mother'):
-            mom_bmi = row['parent_bmi']
-        # else, use self report bmi
-        else:
-            mom_bmi = row['sr_mom_bmi']
-        return mom_bmi
-
-    # apply get_mom_bmi()
-    covar_df['mom_bmi'] = covar_df.apply(get_mom_bmi, axis=1)
-
-    # remove variables that are not covariates in analyses
-    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2', 'dxa_total_fat_mass', 'height_avg', 'sr_mom_bmi', 'parent_respondent', 'parent_bmi'], axis = 1, inplace = True)
-
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
 
-    # replace missing values with -999 -- otherwise columns will shift due to missing data in AFNI
-    covar_df.replace(np.nan, -999, inplace=True)
+    # rename pre-mri FF columns
+    covar_df.rename(columns={'imp_med': 'ff_medimp', 'imp_max': 'ff_maximp', 'imp_min': 'ff_minimp'}, inplace=True)
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri', 'cams_pre_mri', 'risk_status_mom', 'fmi', 'mom_bmi']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom']]
 
     #########################
     #### Export dataframe ###
