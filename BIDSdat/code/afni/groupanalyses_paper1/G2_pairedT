@@ -105,38 +105,86 @@ rm -r $map_folder/temp_mask
 # gen_group_command.py settings:
 	# add -Clustsim option to run 3dClustSim
 
-set output_name_HvL = "High_v_Low_PScon" 
+# set ouput names
+set output_name_HvL = "High_v_Low_PScon"
+set output_name_FvO = "Food_v_Office_PScon"
+
+# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 gen_group_command.py -command 3dttest++                                            \
-	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}           \
-	    -prefix  WG_2sampleT++_${output_name_HvL}                           \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}_medimp           \
+	    -prefix  WG_2sampleT++_${output_name_HvL}_medimp                           \
 	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
 	    -dset_sid_list $index						   \
 	    -set_labels HighLarge-Small LowLarge-Small                             \
 	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
 	    -options								   \
-			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"
 
-set output_name_FvO = "Food_v_Office_PScon"
 gen_group_command.py -command 3dttest++                                            \
-	    -write_script $map_folder/WG_2sampleT++_${output_name_FvO}           \
-	    -prefix  WG_2sampleT++_${output_name_FvO}                           \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_FvO}_medimp           \
+	    -prefix  WG_2sampleT++_${output_name_FvO}_medimp                           \
 	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
 	    -dset_sid_list $index						   \
 	    -set_labels Large-Small_allED OfficeLarge-Small                             \
 	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
 	    -options								   \
-			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"
+
+# generate ttest script -- use ff_maximp as covariate (contains maximum imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}_maximp           \
+	    -prefix  WG_2sampleT++_${output_name_HvL}_maximp                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels HighLarge-Small LowLarge-Small                             \
+	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"
+
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_FvO}_maximp           \
+	    -prefix  WG_2sampleT++_${output_name_FvO}_maximp                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels Large-Small_allED OfficeLarge-Small                             \
+	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"
+
+# generate ttest script -- use ff_minimp as covariate (contains minimum imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_HvL}_minimp           \
+	    -prefix  WG_2sampleT++_${output_name_HvL}_minimp                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels HighLarge-Small LowLarge-Small                             \
+	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
+
+gen_group_command.py -command 3dttest++                                            \
+	    -write_script $map_folder/WG_2sampleT++_${output_name_FvO}_minimp           \
+	    -prefix  WG_2sampleT++_${output_name_FvO}_minimp                           \
+	    -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD               \
+	    -dset_sid_list $index						   \
+	    -set_labels Large-Small_allED OfficeLarge-Small                             \
+	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
+	    -options								   \
+			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
 
 
 # set permissions
-chmod 775 $map_folder/WG_2sampleT++_${output_name_HvL}
-chmod 775 $map_folder/WG_2sampleT++_${output_name_FvO}
+chmod 775 $map_folder/*
 
 # execute script?
 if ( "$2" == "run" ) then
 	cd $map_folder
-	tcsh WG_2sampleT++_${output_name_HvL}
-	tcsh WG_2sampleT++_${output_name_FvO}
+	tcsh WG_2sampleT++_${output_name_HvL}_medimp
+	tcsh WG_2sampleT++_${output_name_FvO}_medimp
+	tcsh WG_2sampleT++_${output_name_HvL}_maximp
+	tcsh WG_2sampleT++_${output_name_FvO}_maximp
+	tcsh WG_2sampleT++_${output_name_HvL}_minimp
+	tcsh WG_2sampleT++_${output_name_FvO}_minimp
 endif
 
 # Copy base template into results folder 

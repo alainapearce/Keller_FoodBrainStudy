@@ -98,6 +98,8 @@ end
 rm -r $map_folder/temp_mask
 
 ###################### generate scripts  ########################
+# gen_group_command.py settings:
+	# add -Clustsim option to run 3dClustSim
 
 set models = ( Large-Small_allED_GLT High-Low_allPS_GLT Food-Office_GLT)
 
@@ -108,11 +110,10 @@ foreach m ( $models )
     set HRindex = `cat $lev2_dir/index_highrisk_${censor_str}.txt`
     set LRindex = `cat $lev2_dir/index_lowrisk_${censor_str}.txt`
     
-    #toz-when using zskip need to convert t to z because voxel
-        #may have different number of samples
+        # generate ttest script -- use ff_medimp as covariate (contains maximum imputed value for ID 54)
         gen_group_command.py -command 3dttest++                                     \
-            -write_script $map_folder/${fileG}_2sampleT++_${output_name}            \
-            -prefix  ${fileG}_2sampleT++_${output_name}                             \
+            -write_script $map_folder/${fileG}_2sampleT++_${output_name}_medimp             \
+            -prefix  ${fileG}_2sampleT++_${output_name}_medimp                              \
             -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
             -dset_sid_list $HRindex                                                 \
             -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
@@ -120,13 +121,40 @@ foreach m ( $models )
             -set_labels highrisk lowrisk		                        \
             -subs_betas "${m}"'#'0_Coef			                          \
             -options				                             \
-                -mask $map_folder/WG_mask0.8+tlrc.HEAD -toz -covariates $lev2_dir/ttest-covariates.txt"'[0,1,2,3]'"
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"
 
+        # generate ttest script -- use ff_maximp as covariate (contains minimum imputed value for ID 54)
+        gen_group_command.py -command 3dttest++                                     \
+            -write_script $map_folder/${fileG}_2sampleT++_${output_name}_maximp             \
+            -prefix  ${fileG}_2sampleT++_${output_name}_maximp                              \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
+            -dset_sid_list $HRindex                                                 \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
+            -dset_sid_list $LRindex			                           \
+            -set_labels highrisk lowrisk		                        \
+            -subs_betas "${m}"'#'0_Coef			                          \
+            -options				                             \
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"
+
+        # generate ttest script -- use ff_minimp as covariate (contains median imputed value for ID 54)
+        gen_group_command.py -command 3dttest++                                     \
+            -write_script $map_folder/${fileG}_2sampleT++_${output_name}_minimp             \
+            -prefix  ${fileG}_2sampleT++_${output_name}_minimp                              \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
+            -dset_sid_list $HRindex                                                 \
+            -dsets $lev1_dir/*/$lev1_results/stats.sub-???+tlrc.HEAD              \
+            -dset_sid_list $LRindex			                           \
+            -set_labels highrisk lowrisk		                        \
+            -subs_betas "${m}"'#'0_Coef			                          \
+            -options				                             \
+                -mask $map_folder/WG_mask0.8+tlrc.HEAD -covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
         chmod 775 $map_folder/${fileG}_2sampleT++_${output_name}
 
         if ( "$2" == "run" ) then
        		cd $map_folder
-        	tcsh ${fileG}_2sampleT++_${output_name}
+        	tcsh ${fileG}_2sampleT++_${output_name}_medimp
+            tcsh ${fileG}_2sampleT++_${output_name}_maximp
+            tcsh ${fileG}_2sampleT++_${output_name}_minimp
         endif
 end
 
