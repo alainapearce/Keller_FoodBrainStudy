@@ -35,23 +35,23 @@ cd $res_dir
 # Make masks of results that survive cluster thresholding 
 # PS contrast masks: Clust_mask-PScon_hED, Clust_mask-PScon_lED, Clust_mask-PScon_office
 # p-adjusted <.05
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1585 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED_p05
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1361 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p05
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1521 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p05
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1585 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED_p05
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1361 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p05
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1521 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p05
 
 # p-adjusted <.1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 947 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 847 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 937 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p1
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 947 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED_p1
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 847 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p1
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 937 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p1
 
 # ED contrast masks: Clust_mask-EDcon_large, Clust_mask-EDcon_small
 # p-adjusted <.05
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1438 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p05
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1541 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p05
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1438 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p05
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1541 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p05
 
 # p-adjusted <.1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 864 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 895 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p1
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 864 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p1
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 895 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p1
 
 ###################### Make portion size contrast conjunction masks  ###########################
 
