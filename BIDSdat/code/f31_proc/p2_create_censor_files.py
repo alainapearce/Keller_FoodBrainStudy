@@ -38,28 +38,23 @@ import re
 ####                                                 ####
 #########################################################
 
-def _get_censorstr(rmsd_thresh, std_vars_thresh, cen_add_tr):
+def _get_censorstr(rmsd_thresh, cen_add_tr):
     """Function to generate string to identify censor criteria 
 
     Inputs:
         rmsd (float)
-        std_vars (float or False)
-        cen_prev_tr (bool)
+        cen_add_tr (string or False)
 
     Outputs:
         censor_str (str)
 
     """
-    if std_vars_thresh is False:
-        if cen_add_tr is False: 
-            censor_str = 'rmsd-' + str(rmsd_thresh)
-        else:
-            censor_str = 'rmsd-' + str(rmsd_thresh) + '_cpt'
-    else:
-        if cen_add_tr is False:
-            censor_str = 'rmsd-' + str(rmsd_thresh) + '_stddvar-' + str(std_vars_thresh)
-        else:
-            censor_str = 'rmsd-' + str(rmsd_thresh) + '_stddvar-' + str(std_vars_thresh) + '_cpt'
+
+    if isinstance(cen_add_tr, str):
+        censor_str = 'rmsd-' + str(rmsd_thresh) + '_c-' + str(cen_add_tr)
+    elif cen_add_tr is False:
+        censor_str = 'rmsd-' + str(rmsd_thresh)
+
     return(censor_str)
 
 def _gen_concatenated_regressor_file(confound_files):
@@ -98,18 +93,12 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
     Inputs:
         confound_dat (dataframe) - data from a -desc-confounds_timeseries.tsv file
         rmsd_thresh (float) - rmsd threshold
-        r_int_info (list) - length equal to number of TRs in Confound_Data; 
-            0 = TR is of non-interest, 1 = TR of interest
-        cen_prev_TR (True or False) -- boolean input to indicate whether to censor a TR based on the subquent TR's FD
+        cen_add_TR (string)
+            'a' in string indicates censor TR *after* TR where rmsd exceeded
+            'b' in string indicates censor TR *before* TR where rmsd exceeded
     Outputs:
         censor_info (list) - length equal to number of TRs in input dataset; 
             0 = TR is to be censored, 1 = TR is to be included in analyses
-        nvol (integer) - number of TRs/volumes in the dataset (Confound_Data)
-        n_censored (integer) - number of TRs/volumes to be censored 
-        p_censored (integer) - percentage of TRs/volumes to be censored
-        nvol_int (integer) - number of TRs/volumes of interest in the dataset
-        n_censored_int (integer) - number of TRs/volumes of interest to be censored 
-        p_censored_int (integer) - percentage of TRs/volumes of interest to be censored
     """
 
     confound_dat = confound_dat.reset_index()  # make sure indexes pair with number of rows
@@ -117,25 +106,31 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
     # censor TR if: 
     #   (1) First or second TR (datapoints 0 and 1)
     #   (2) rmsd > rmsd_thresh
-    #   (3) TR was detected by fmriprep as a steady state outlier
-    #   (4) rmsd on the previous TR > rmsd, if cen_prev_TR = 'ba' ## NEED TO ADD THIS IN
-    #   (5) rmsd on the next TR > rmsd, if cen_prev_TR = 'b' or 'ba'
+    #   (3) rmsd on the previous TR > rmsd, if cen_add_TR contains 'a' string
+    #   (4) rmsd on the next TR > rmsd, if cen_add_TR contains 'b' string
+    #   (5) TR was detected by fmriprep as a steady state outlier
     
     censor_info = []
+
     for index, row in confound_dat.iterrows():
+
         # if first or second TR
         if (index < 2):
-            censor_info.append(0)
-        # if fd > threshold
+            censor_info.append(0) # censor TR
+        # else if rmsd of current TR > threshold
         elif (row['rmsd'] > rmsd_thresh):
-            censor_info.append(0) # censor current TR
-            if cen_add_tr is 'b':
-                censor_info[index-1] = 0 # censor previous TR
-        # if steady state outlier
+            censor_info.append(0) # censor TR
+        # else if rmsd of previous TR > threshold, and 'a' in cen_add_TR (indicates censoring the TR *after* a TR rmsd > rmsd_thresh)
+        elif ('a' in cen_add_tr) and (confound_dat.loc[index-1, 'rmsd']) > rmsd_thresh:
+            censor_info.append(0) # censor TR
+        # else if not final row, and rmsd of next TR > threshold, and 'b' in cen_add_TR (indicates censoring the TR *before* a TR rmsd > rmsd_thresh)
+        elif (index != len(confound_dat) - 1) and ('a' in cen_add_tr) and (confound_dat.loc[index+1, 'rmsd']) > rmsd_thresh:
+            censor_info.append(0) # censor TR
+        # else if steady state outlier
         elif (row['non_steady_state_outlier00'] == 1):
-            censor_info.append(0)
+            censor_info.append(0) # censor TR
         else:
-            censor_info.append(1)
+            censor_info.append(1) # do not censor TR
 
     return(censor_info)
 
@@ -147,7 +142,7 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
 ####                                                                      ####
 ##############################################################################
 
-def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_tr='ba', overwrite = False, preproc_path = False):
+def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = False, preproc_path = False):
     """
     This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
     The following steps will occur:
@@ -158,7 +153,6 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
     Inputs:
         par_id 
         rmsd_thresh (int or float): threshold for rmsd. Default set to .3 according to pre-registration
-        std_vars (optional, int or float). Default set to False according to pre-registration
         cen_add_tr (str): option for censoring TRs before or after TR exceeding movement threshold. Default set to 'ba' according to pre-registration
              'ba' = censor 1 before and 1 after, 'b' = censor 1 before, False = do not censor additional TRs
         overwrite (bool)
@@ -209,22 +203,14 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
         raise Exception()
 
     # check rmsd input
-    if isinstance(rmsd, int) or isinstance(rmsd, float):
-            rmsd = float(rmsd)
+    if isinstance(rmsd_thresh, int) or isinstance(rmsd_thresh, float):
+            rmsd_thresh = float(rmsd_thresh)
     else:
         print("rmsd must be integer or float")
         raise Exception()
-    
-    # check std_vars input
-    if std_vars is not False:
-        if isinstance(std_vars, int) or isinstance(std_vars, float):
-            std_vars = float(std_vars)
-        else:
-            print("std_vars must be integer or float if specified")
-            raise Exception()
 
     # set censor string 
-    censor_str = _get_censorstr(rmsd, std_vars, cen_prev_tr)
+    censor_str = _get_censorstr(rmsd_thresh, cen_add_tr)
 
     ##############################
     ### Create regressor files ###
@@ -234,8 +220,8 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
     regress_Pardat = _gen_concatenated_regressor_file(confound_files)
 
     # Export participant regressor file with and without columns names
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('F31_sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('F31_sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
     ###########################
     ### Create censor files ###
@@ -254,7 +240,7 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
         runnum = int(str(file).rsplit('/',1)[-1][31:32])
 
         # select variables generating censor files
-        confound_dat = confound_dat_all[['rmsd', 'std_dvars']].copy()
+        confound_dat = confound_dat_all[['rmsd']].copy()
 
         # add non-steady-state outlier column (only exists in confound.tsv files with non-steady-state outliers)
         if 'non_steady_state_outlier00' in confound_dat_all:
@@ -263,7 +249,7 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
             confound_dat['non_steady_state_outlier00'] = 0
 
         # run function to generate run censor data
-        run_censordata = _gen_run_censorfile(confound_dat, rmsd_thresh, std_dvars_thresh, cen_add_tr)
+        run_censordata = _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr)
         
         # add run-specific censor data to overall censor file
         censordata_allruns.extend(run_censordata)
@@ -271,7 +257,7 @@ def create_censor_files(par_id, rmsd_thresh=0.3, std_vars_thresh=False, cen_add_
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
     censordata_allruns_df.columns = ['header']
-    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('F31_sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
     # return particpant databases for integration testing
     return censordata_allruns_df
