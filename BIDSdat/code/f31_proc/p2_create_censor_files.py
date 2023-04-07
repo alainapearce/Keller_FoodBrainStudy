@@ -112,25 +112,18 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
     
     censor_info = []
 
-    for index, row in confound_dat.iterrows():
+    # Create a boolean mask for each condition
+    mask1 = np.arange(len(confound_dat)) < 2
+    mask2 = confound_dat['rmsd'] > rmsd_thresh
+    mask3 = ('a' in cen_add_tr) & (confound_dat['rmsd'].shift(1) > rmsd_thresh)
+    mask4 = ('b' in cen_add_tr) & (confound_dat['rmsd'].shift(-1) > rmsd_thresh) & (np.arange(len(confound_dat)) != len(confound_dat) - 1)
+    mask5 = confound_dat['non_steady_state_outlier00'] == 1
 
-        # if first or second TR
-        if (index < 2):
-            censor_info.append(0) # censor TR
-        # else if rmsd of current TR > threshold
-        elif (row['rmsd'] > rmsd_thresh):
-            censor_info.append(0) # censor TR
-        # else if rmsd of previous TR > threshold, and 'a' in cen_add_TR (indicates censoring the TR *after* a TR rmsd > rmsd_thresh)
-        elif ('a' in cen_add_tr) and (confound_dat.loc[index-1, 'rmsd']) > rmsd_thresh:
-            censor_info.append(0) # censor TR
-        # else if not final row, and rmsd of next TR > threshold, and 'b' in cen_add_TR (indicates censoring the TR *before* a TR rmsd > rmsd_thresh)
-        elif (index != len(confound_dat) - 1) and ('a' in cen_add_tr) and (confound_dat.loc[index+1, 'rmsd']) > rmsd_thresh:
-            censor_info.append(0) # censor TR
-        # else if steady state outlier
-        elif (row['non_steady_state_outlier00'] == 1):
-            censor_info.append(0) # censor TR
-        else:
-            censor_info.append(1) # do not censor TR
+    # Combine masks using the logical OR operation
+    combined_mask = mask1 | mask2 | mask3 | mask4 | mask5
+
+    # Use the combined mask to create the censor_info list
+    censor_info = (~combined_mask).astype(int).tolist()
 
     return(censor_info)
 
