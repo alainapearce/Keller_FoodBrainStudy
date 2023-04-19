@@ -61,6 +61,8 @@ def gen_dataframe():
 
     #set specific paths
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
+    risk_path = Path(bids_path).joinpath('derivatives/preprocessed/risk_scores')
+    v6covar_path = Path(bids_path).joinpath('derivatives/preprocessed/V6_covariates')
     database_path = Path(proj_path).joinpath('Databases')
     intake_path = Path(bids_path).joinpath('derivatives/analyses/intake_feis')
 
@@ -81,16 +83,21 @@ def gen_dataframe():
     mot_df['id'] = mot_df['id'].str.zfill(3) # add leading zeros
 
     # import v6 database and format 'id' column for merging 
-    v6_df = pd.read_spss(Path(database_path).joinpath('visit6_data.sav')) # import v6 database
+    v6_df = pd.read_csv(Path(v6covar_path).joinpath('V6_covariates.csv')) # import v6 database
     v6_df['id'] = v6_df['id'].astype(int) # get rid of decimal place
     v6_df['id'] = v6_df['id'].astype(str) # convert to string -- needed for zfill
     v6_df['id'] = v6_df['id'].str.zfill(3) # add leading zeros
 
-    # impart intake database
+    # import intake database
     intake_df = pd.read_csv(Path(intake_path).joinpath('intake_feis.csv')) # import intake database
     intake_df.rename(columns = {'sub':'id'}, inplace = True) # change 'sub' column name to 'id'
     intake_df['id'] = intake_df['id'].astype(str) # convert to string -- needed for zfill
     intake_df['id'] = intake_df['id'].str.zfill(3) # add leading zeros
+
+    # import riskscores database
+    riskscore_df = pd.read_csv(Path(risk_path).joinpath('risk_scores_updated.csv')) # import intake database
+    riskscore_df['id'] = riskscore_df['id'].astype(str) # convert to string -- needed for zfill
+    riskscore_df['id'] = riskscore_df['id'].str.zfill(3) # add leading zeros
 
     ###########################################
     #### Combine covariates into 1 database ###
@@ -110,12 +117,15 @@ def gen_dataframe():
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
 
     # Add fullness and pre-mri cams variables from v6 database to covar_df
-    covar_df = pd.merge(covar_df,v6_df[['id','ff_premri_snack','ff_postmri_snack', 'ff_postmri_snack2', 'cams_pre_mri']],on='id', how='left')
+    covar_df = pd.merge(covar_df,v6_df[['id','imp_med','imp_max', 'imp_min', 'cams_pre_mri']],on='id', how='left')
 
     # Add variable from intake database to covar_df
     covar_df = pd.merge(covar_df,intake_df[['id','grams_int', 'grams_ps_lin', 'grams_ps_quad', 'kcal_int', 'kcal_ps_lin','led_grams_int', 'led_grams_ps_lin',
                                             'led_kcal_int', 'led_kcal_ps_lin', 'hed_grams_int', 'hed_grams_ps_lin',
                                             'hed_kcal_int', 'hed_kcal_ps_lin']],on='id', how='left')
+
+    # Add risk score to covar_df
+    covar_df = pd.merge(covar_df,riskscore_df[['id','Risk2', 'Risk_imputed', 'eating_rate']],on='id', how='left')
 
     ############################
     #### Clean up covariates ###
@@ -124,33 +134,18 @@ def gen_dataframe():
     # encode sex as -1 for male and 1 for female so that the main effect will be the average between males and females
     covar_df = covar_df.replace({'sex':{'Male':-1, 'Female':1}})
 
-    # make function to determine fulless_preMRI based on other ff variables
-    def get_preMRI_ff(row):
-        # if post-snack2 is not null, use post-snack2 rating
-        if pd.isnull(row['ff_postmri_snack2']) is False:
-            ff_premri = row['ff_postmri_snack2']
-        # else, if post-snack is not null, use post-snack rating
-        elif pd.isnull(row['ff_postmri_snack']) is False:
-            ff_premri = row['ff_postmri_snack']
-        # else, use pre-snack rating
-        else:
-            ff_premri = row['ff_premri_snack']
-        return ff_premri
-
-    # apply get_preMRI_ff()
-    covar_df['ff_premri'] = covar_df.apply(get_preMRI_ff, axis=1)
-
-    # remove variables that are not covariates in analyses
-    covar_df.drop(['ff_premri_snack', 'ff_postmri_snack', 'ff_postmri_snack2'], axis = 1, inplace = True)
-
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
+
+    # rename pre-mri FF columns
+    covar_df.rename(columns={'imp_med': 'ff_medimp', 'imp_max': 'ff_maximp', 'imp_min': 'ff_minimp'}, inplace=True)
 
     # replace missing values with -999 -- otherwise columns will shift due to missing data in AFNI
     covar_df.replace(np.nan, -999, inplace=True)
 
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_premri','dxa_total_body_perc_fat', 'cams_pre_mri',
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'dxa_total_body_perc_fat', 'cams_pre_mri', 
+                                            'Risk2', 'Risk_imputed', 'eating_rate',
                                             'led_grams_int', 'led_grams_ps_lin','led_kcal_int', 'led_kcal_ps_lin', 
                                             'hed_grams_int', 'hed_grams_ps_lin','hed_kcal_int', 'hed_kcal_ps_lin',
                                             'kcal_int', 'kcal_ps_lin', 'grams_int', 'grams_ps_lin', 'grams_ps_quad']]
