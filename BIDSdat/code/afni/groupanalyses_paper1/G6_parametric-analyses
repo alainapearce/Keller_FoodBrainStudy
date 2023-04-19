@@ -121,30 +121,81 @@ end
 
 ### For portion size ###
 set index_ps = `cat $map_folder/index_${censor_str}_PM-PS.txt`
+
+# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/PS_PM-pairedT        \
-		-prefix  PS_PM-pairedT                          \
+		-write_script $map_folder/PS_PM-pairedT_medimp        \
+		-prefix  PS_PM-pairedT_medimp                          \
 		-dsets $lev1_dir/*/$lev1_results/PS_stats.sub-???+tlrc.HEAD               \
 		-dset_sid_list $index_ps						   \
 		-set_labels LargePS SmallPS                          \
 		-subs_betas 'LargePSfood#1_Coef' 'SmallPSfood#1_Coef'   \
 		-options								   \
 			-paired -mask $map_folder/PS_mask0.8+tlrc \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"
+
+# generate ttest script -- use ff_maximp as covariate (contains maximum imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+		-write_script $map_folder/PS_PM-pairedT_maximp        \
+		-prefix  PS_PM-pairedT_maximp                          \
+		-dsets $lev1_dir/*/$lev1_results/PS_stats.sub-???+tlrc.HEAD               \
+		-dset_sid_list $index_ps						   \
+		-set_labels LargePS SmallPS                          \
+		-subs_betas 'LargePSfood#1_Coef' 'SmallPSfood#1_Coef'   \
+		-options								   \
+			-paired -mask $map_folder/PS_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"
+
+# generate ttest script -- use ff_minimp as covariate (contains minimuim imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+		-write_script $map_folder/PS_PM-pairedT_minimp        \
+		-prefix  PS_PM-pairedT_minimp                         \
+		-dsets $lev1_dir/*/$lev1_results/PS_stats.sub-???+tlrc.HEAD               \
+		-dset_sid_list $index_ps						   \
+		-set_labels LargePS SmallPS                          \
+		-subs_betas 'LargePSfood#1_Coef' 'SmallPSfood#1_Coef'   \
+		-options								   \
+			-paired -mask $map_folder/PS_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
 
 
 ### For energy density ###
 set index_ed = `cat $map_folder/index_${censor_str}_PM-ED.txt`
+# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/ED_PM-pairedT         \
-		-prefix  ED_PM-pairedT                          \
+		-write_script $map_folder/ED_PM-pairedT_medimp        \
+		-prefix  ED_PM-pairedT_medimp                          \
 		-dsets $lev1_dir/*/$lev1_results/ED_stats.sub-???+tlrc.HEAD               \
 		-dset_sid_list $index_ed						   \
 		-set_labels HighED LowED                          \
 		-subs_betas 'HighED#1_Coef' 'LowED#1_Coef'   \
 		-options								   \
 			-paired -mask $map_folder/ED_mask0.8+tlrc \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..4]'"
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"
+
+# generate ttest script -- use ff_maximp as covariate (contains maximum imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+		-write_script $map_folder/ED_PM-pairedT_maximp         \
+		-prefix  ED_PM-pairedT_maximp                          \
+		-dsets $lev1_dir/*/$lev1_results/ED_stats.sub-???+tlrc.HEAD               \
+		-dset_sid_list $index_ed						   \
+		-set_labels HighED LowED                          \
+		-subs_betas 'HighED#1_Coef' 'LowED#1_Coef'   \
+		-options								   \
+			-paired -mask $map_folder/ED_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"
+
+# generate ttest script -- use ff_minimp as covariate (contains minimuim imputed value for ID 54)
+gen_group_command.py -command 3dttest++                                            \
+		-write_script $map_folder/ED_PM-pairedT_minimp         \
+		-prefix  ED_PM-pairedT_minimp                          \
+		-dsets $lev1_dir/*/$lev1_results/ED_stats.sub-???+tlrc.HEAD               \
+		-dset_sid_list $index_ed						   \
+		-set_labels HighED LowED                          \
+		-subs_betas 'HighED#1_Coef' 'LowED#1_Coef'   \
+		-options								   \
+			-paired -mask $map_folder/ED_mask0.8+tlrc \
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
 
 
 #set permissions of map folder
@@ -153,8 +204,12 @@ chmod 775 -R $map_folder
 # Execute?
 if ( "$2" == "run" ) then
 	cd $map_folder
-    tcsh PS_PM-pairedT
-    tcsh ED_PM-pairedT
+    tcsh PS_PM-pairedT_medimp
+	tcsh PS_PM-pairedT_maximp
+	tcsh PS_PM-pairedT_minimp
+    tcsh ED_PM-pairedT_medimp
+	tcsh ED_PM-pairedT_maximp
+	tcsh ED_PM-pairedT_minimp
 endif
 
 # Copy base template into results folder 
