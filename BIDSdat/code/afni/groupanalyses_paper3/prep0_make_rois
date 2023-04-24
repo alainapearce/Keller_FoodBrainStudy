@@ -1,0 +1,103 @@
+#!/bin/tcsh
+#
+#useage: make_rois
+#
+# This script creates 8mm diameter spheres around coordinates
+# Written by Bari Fuchs
+# resource: https://andysbrainbook.readthedocs.io/en/latest/AFNI/AFNI_Short_Course/AFNI_08_ROIAnalysis.html
+
+###################### setup and check directories  ########################### 
+
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set output directory for ROIs
+set roidir = $bidsdir/derivatives/analyses/foodcue-paper3/rois/
+
+#make output directory for ROIs if it doesnt exist
+if ( ! -d $roidir ) then
+    mkdir -p $roidir
+endif
+
+
+###################### make rois  ########################### 
+
+## NOTE: resolution of mask dataset will equal that of -master
+# set template to use as -master
+set bold_temp = $bidsdir/derivatives/analyses/foodcue-paper3/level1/sub-999/f31_GSR/stats.sub-001+tlrc
+
+## Reactive ROIs ##
+
+# Left lateral orbitofrontal cortex (-32, 34, -12) [from Van Meer et al. 2015 NeuroImage]
+echo "-32 -34 -12" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_ofc_roi+tlrc -xyz -
+
+# Right amygdala (24, -4, -16) [from Van Meer et al. 2015 NeuroImage]
+echo "24 -4 -16" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_amyg_roi+tlrc -xyz -
+
+# Left amygdala (-22, -2, -20) [from Van Meer et al. 2015 NeuroImage]
+echo "-22 -2 -20" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_amyg_roi+tlrc -xyz -
+
+# Right middle insula (40, 6, -12) [from Van Meer et al. 2015 NeuroImage]
+echo "40 6 -12" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_insula_roi+tlrc -xyz -
+
+# Left middle insula (-38, -10, 4) [from Van Meer et al. 2015 NeuroImage]
+echo "-38 -10 4" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_insula_roi+tlrc -xyz -
+
+# Left caudate (-8, 10, -8) [from Van Meer et al. 2015 NeuroImage]
+echo "-8 10 -8" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_caudate_roi+tlrc -xyz -
+
+## Regulatory ROIs ##
+
+# Right inferior frontal gyrus (52, 28, 2) [from Han et al. 2018 Physiology & Behavior]
+echo "52 28 2" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_ifg_roi+tlrc -xyz -
+
+# Left inferior frontal gyrus (-4, 22, 0) [from Han et al. 2018 Physiology & Behavior]
+echo "-4 22 0" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_ifg_roi+tlrc -xyz -
+
+# Right supramarginal gyrus (46, -52, 44) [from Han et al. 2018 Physiology & Behavior]
+echo "46 -52 -44" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_smarg_roi+tlrc -xyz -
+
+# Left angular gyrus (-42, -64, 42) [from Han et al. 2018 Physiology & Behavior]
+echo "-42 -64 42" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_ang_roi+tlrc -xyz -
+
+# Right middle frontal gyrus (44, 14, 38) [from Han et al. 2018 Physiology & Behavior]
+echo "44 14 38" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_mfg_roi+tlrc -xyz -
+
+# Left dorsolateral prefrontal cortex (-30, 22, 40) [from Meng et al. 2020, ORCP]
+echo "-30 22 40" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_dlpfc_roi+tlrc -xyz -
+
+
+###################### Combine ROIs with 3dMean ########################### 
+
+# Each input dset is a binary mask with voxel values only 0 or 1. 
+# Voxels in output mask will have value = 1 if they are included in 1 mask, value = 2 if they are included in 2 masks, etc.
+
+cd $roidir
+3dMean      \
+    -sum    \
+    -prefix 3dmean_rois \
+    l_ofc_roi+tlrc r_amyg_roi+tlrc l_amyg_roi+tlrc r_insula_roi+tlrc l_insula_roi+tlrc l_caudate_roi+tlrc \
+    r_ifg_roi+tlrc l_ifg_roi+tlrc r_smarg_roi+tlrc l_ang_roi+tlrc r_mfg_roi+tlrc l_dlpfc_roi+tlrc
+
+###################### check for overlap in ROIs  ########################### 
+# https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/rois_corr_vis/cat_netcorr.html#combine-rois-into-single-volume-with-integer-and-string-labels
+
+# check if there is ROI overlap 
+# is max($tsum) > 1?
+set sum_max = `3dinfo -dmax 3dmean_rois+tlrc`
+
+if ( ${sum_max} > 1 ) then
+    echo "** ERROR! overlapping ROI masks."
+    exit
+else
+    echo "++ OK: ROI masks don't appear to overlap"
+endif
+
+###################### Combine ROIs with step expression  ########################### 
+
+# use step expression so each ROI has a different value
+3dcalc -a l_ofc_roi+tlrc. -b r_amyg_roi+tlrc. -c l_amyg_roi+tlrc. -d r_insula_roi+tlrc. -e l_insula_roi+tlrc. -f l_caudate_roi+tlrc. \
+    -g r_ifg_roi+tlrc. -h l_ifg_roi+tlrc. -i r_smarg_roi+tlrc. -j l_ang_roi+tlrc. -k r_mfg_roi+tlrc. -l l_dlpfc_roi+tlrc. \
+    -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j) + 1024*step(k) + 2048*step(l)'  \
+    -prefix all_rois
