@@ -1,0 +1,61 @@
+#!/bin/tcsh
+#
+#useage:
+#
+# This script assesses whether subject has complete coverage of ROIs based on food cue mask
+# Written by Bari Fuchs
+# resource: https://andysbrainbook.readthedocs.io/en/latest/AFNI/AFNI_Short_Course/AFNI_08_ROIAnalysis.html
+
+###################### setup and check directories  ########################### 
+
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set roi directory
+#set roidir = $bidsdir/derivatives/analyses/foodcue-paper3/rois/
+set roidir = $bidsdir/derivatives/analyses/foodcue-paper3/test/
+
+set roicoveragedir = $bidsdir/derivatives/analyses/foodcue-paper3/roi_coverage/
+
+#check roi directory exists
+if ( ! -d $roidir ) then
+	echo "roi dir does not exist"
+	exit
+endif
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper3/level1/sub-999/
+
+set sub = "sub_999"
+###################### check ROI coverage ########################### 
+
+# set ROI values = -2
+3dcalc -a $roidir/3dmean_rois+tlrc. \
+    -expr '-2*step(a)'  \
+    -prefix $roidir/tmp_roi_mask
+
+
+# sum tmp_roi_mask and food cue mask
+
+# Output mask will have the following values:
+	# -2 = roi mask only
+	# 1 = food cue mask only
+	# -1 = in roi mask and food cue mask
+
+3dMean \
+    -sum    \
+    -prefix $roidir/${sub}_roi_coverage \
+    $roidir/tmp_roi_mask+tlrc $roidir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii \
+
+# check coverage 
+set sum_min = `3dinfo -din $roidir/${sub}_roi_coverage_mask+tlrc`
+echo $sum_min
+if ( ${sum_min} == -2 ) then
+    echo "** ERROR! Voxels in ROIs but not food cue mask"
+else
+    echo "++ OK: Full coverage of ROIs"
+endif
+
+# clean up
+rm $roidir/tmp_roi_mask*
