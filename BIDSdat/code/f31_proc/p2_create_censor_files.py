@@ -89,13 +89,14 @@ def _gen_concatenated_regressor_file(confound_files):
     return(RegressPardat)
 
 def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
-    """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
+    """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on rmsd threshold and cen_add_TR (censor additional TR) criteria
     Inputs:
         confound_dat (dataframe) - data from a -desc-confounds_timeseries.tsv file
         rmsd_thresh (float) - rmsd threshold
-        cen_add_TR (string)
+        cen_add_TR (string or FALSE)
             'a' in string indicates censor TR *after* TR where rmsd exceeded
             'b' in string indicates censor TR *before* TR where rmsd exceeded
+            FALSE indicates do not censor TRs before or after TR where rmsd exceeded
     Outputs:
         censor_info (list) - length equal to number of TRs in input dataset; 
             0 = TR is to be censored, 1 = TR is to be included in analyses
@@ -115,14 +116,18 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
     # Create a boolean mask for each condition
     mask1 = np.arange(len(confound_dat)) < 2
     mask2 = confound_dat['rmsd'] > rmsd_thresh
-    mask3 = ('a' in cen_add_tr) & (confound_dat['rmsd'].shift(1) > rmsd_thresh)
-    mask4 = ('b' in cen_add_tr) & (confound_dat['rmsd'].shift(-1) > rmsd_thresh) & (np.arange(len(confound_dat)) != len(confound_dat) - 1)
+    if isinstance(cen_add_tr, str):
+        mask3 = ('a' in cen_add_tr) & (confound_dat['rmsd'].shift(1) > rmsd_thresh)
+        mask4 = ('b' in cen_add_tr) & (confound_dat['rmsd'].shift(-1) > rmsd_thresh) & (np.arange(len(confound_dat)) != len(confound_dat) - 1)
+    else:
+        mask3 = False
+        mask4 = False
     mask5 = confound_dat['non_steady_state_outlier00'] == 1
 
-    # Combine masks using the logical OR operation
+    # Combine masks using the logical OR operation -- the resulting mask will have the value True wherever at least one of the individual masks has the value True.
     combined_mask = mask1 | mask2 | mask3 | mask4 | mask5
 
-    # Use the combined mask to create the censor_info list
+    # Use the combined mask to create the censor_info list -- the ~ (tilde) operator will negate the mask (True becomes False, vice versa)
     censor_info = (~combined_mask).astype(int).tolist()
 
     return(censor_info)
@@ -146,8 +151,8 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
     Inputs:
         par_id 
         rmsd_thresh (int or float): threshold for rmsd. Default set to .3 according to pre-registration
-        cen_add_tr (str): option for censoring TRs before or after TR exceeding movement threshold. Default set to 'ba' according to pre-registration
-             'ba' = censor 1 before and 1 after, 'b' = censor 1 before, False = do not censor additional TRs
+        cen_add_tr (str or FALSE): option for censoring TRs before or after TR exceeding movement threshold. Default set to 'ba' according to pre-registration
+             'ba' = censor 1 before and 1 after, 'b' = censor 1 before, FALSE = do not censor additional TRs
         overwrite (bool)
         Path (str) - path to direcory that contains fmriprep/ directory.
         
