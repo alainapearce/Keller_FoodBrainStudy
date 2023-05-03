@@ -94,10 +94,15 @@ else
     echo "++ OK: ROI masks don't appear to overlap"
 endif
 
-###################### Combine ROIs with step expression  ########################### 
+###################### Make additional masks with 3dcalc  ########################### 
+
+# make mask with ROI values = -2 -- this mask will be used to check ROI coverage 
+3dcalc -a $roidir/3dmean_rois+tlrc. \
+    -expr '-2*step(a)'  \
+    -prefix $roidir/rois_mask_neg2
 
 # use step expression so each ROI has a different value
 3dcalc -a l_ofc_roi+tlrc. -b r_amyg_roi+tlrc. -c l_amyg_roi+tlrc. -d r_insula_roi+tlrc. -e l_insula_roi+tlrc. -f l_caudate_roi+tlrc. \
     -g r_ifg_roi+tlrc. -h l_ifg_roi+tlrc. -i r_smarg_roi+tlrc. -j l_ang_roi+tlrc. -k r_mfg_roi+tlrc. -l l_dlpfc_roi+tlrc. \
     -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j) + 1024*step(k) + 2048*step(l)'  \
-    -prefix all_rois
+    -prefix rois_mask_diffvalues
