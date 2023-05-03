@@ -31,7 +31,7 @@ endif
 set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper3/level1/sub-999/
 
 set sub = "sub_999"
-###################### check ROI coverage ########################### 
+###################### Generate ROI coverage mask ########################### 
 
 # set ROI values = -2
 3dcalc -a $roidir/3dmean_rois+tlrc. \
@@ -50,14 +50,21 @@ set sub = "sub_999"
     -prefix $roidir/${sub}_roi_coverage \
     $roidir/tmp_roi_mask+tlrc $roidir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii \
 
+###################### check ROI coverage ########################### 
+
 # check coverage 
 set sum_min = `3dinfo -din $roidir/${sub}_roi_coverage_mask+tlrc`
-echo $sum_min
+
 if ( ${sum_min} == -2 ) then
     echo "** ERROR! Voxels in ROIs but not food cue mask"
+    set coverage_status = 0
 else
     echo "++ OK: Full coverage of ROIs"
+    set coverage_status = 1
 endif
+
+# save coverage status to tab delimited txt file
+echo "$sub\t$coverage_status" >> summary_coverage_status.txt
 
 # clean up
 rm $roidir/tmp_roi_mask*
