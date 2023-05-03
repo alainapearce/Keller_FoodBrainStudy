@@ -1,11 +1,9 @@
 #!/bin/bash
-#usage: ./1_check_roi_coverage     $1             
+#
+#useage: bash _1_check_roi_coverage     $1             
 #		                        ParicipantID
 #
-#
-#useage:
-#
-# This script assesses whether subject has complete coverage of ROIs based on food cue mask
+# This script assesses whether a given subject has complete coverage of ROIs based on their food cue mask
 # Written by Bari Fuchs
 
 ###################### set up initial variables  ###########################
@@ -29,7 +27,7 @@ bidsdir=$(pwd)
 roidir="$bidsdir/derivatives/analyses/foodcue-paper3/rois/" #directory with ROI spheres
 coveragedir="$roidir/coverage_masks/" #directory to store coverage masks
 
-#check roi directories exists
+#check if roi directories exists
 if [ ! -d "$roidir" ]; then
 	echo "roi dir does not exist"
 	exit
@@ -42,6 +40,17 @@ fi
 
 #set subjects level1 dir
 sub_lev1_dir="$bidsdir/derivatives/analyses/foodcue-paper3/level1/$subID/"
+
+# quit if no subject level 1 directory or food cue mask 
+if [ ! -d "$sub_lev1_dir" ]; then
+	echo "subject level 1 directory does not exist for $subID. quitting"
+	exit
+else
+    if [ ! -f "$sub_lev1_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii" ]; then
+	    echo "$subID food cue mask not in level 1 directory. quitting"
+	    exit
+    fi
+fi
 
 ###################### Generate ROI coverage mask ########################### 
 
