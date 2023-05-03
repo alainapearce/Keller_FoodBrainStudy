@@ -23,24 +23,25 @@ subID="sub-$ID"
 
 #go to and set BIDS main directory
 cd ../../../
-set bidsdir = "$cwd"
+bidsdir=$(pwd)
 
 #set roi directories
-set roidir = $bidsdir/derivatives/analyses/foodcue-paper3/rois/ #directory with ROI spheres
-set coveragedir = $roidir/coverage_masks/ #directory to store coverage masks
+roidir="$bidsdir/derivatives/analyses/foodcue-paper3/rois/" #directory with ROI spheres
+coveragedir="$roidir/coverage_masks/" #directory to store coverage masks
 
 #check roi directories exists
-if ( ! -d $roidir ) then
+if [ ! -d "$roidir" ]; then
 	echo "roi dir does not exist"
 	exit
 else
-	if ( ! -d $coveragedir ) then
-		mkdir $coveragedir
-	endif
-endif
+	if [ ! -d "$coveragedir" ]; then
+        echo "making mask coverage directory"
+		mkdir "$coveragedir"
+	fi
+fi
 
 #set subjects level1 dir
-set sub_lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper3/level1/$subID/
+sub_lev1_dir="$bidsdir/derivatives/analyses/foodcue-paper3/level1/$subID/"
 
 ###################### Generate ROI coverage mask ########################### 
 
@@ -50,42 +51,48 @@ set sub_lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper3/level1/$subID/
 #	 1 = food cue mask only
 #	-1 = in roi mask and food cue mask
 
-if ( ! -f $coveragedir/${subID}_roi_coverage_mask* ) then
+if [ ! -f "$coveragedir/${subID}_roi_coverage_mask+tlrc.BRIK" ]; then
+    echo "generating ROI coverage mask for $subID"
     3dMean \
         -sum    \
         -prefix $coveragedir/${subID}_roi_coverage_mask \
-        $roidir/rois_mask_neg2+tlrc $sub_lev1_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii \
+        $roidir/rois_mask_neg2+tlrc $sub_lev1_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii
 else
     echo "ROI coverage mask already exists for $subID"
-endif
+fi
 
-###################### check ROI coverage ########################### 
+# ###################### check ROI coverage ########################### 
+
+echo "checking ROI coverage for $subID"
 
 # extract the minimum value that exists in the roi_coverage mask 
-set sum_min = `3dinfo -min $coveragedir/${subID}_roi_coverage_mask+tlrc`
+sum_min=`3dinfo -min $coveragedir/${subID}_roi_coverage_mask+tlrc`
 
-if ( ${sum_min} == -2 ) then
-    echo "** ERROR! Voxels in ROIs but not food cue mask"
-    set coverage_status = 0
+# set coverage_status variable
+if [ "$sum_min" -eq -2 ]; then
+    coverage_status=0 # indicates incomplete coverage of ROIs
 else
-    echo "++ OK: Full coverage of ROIs"
-    set coverage_status = 1
-endif
+    coverage_status=1 # indicates full coverage of ROIs
+fi
 
 # save coverage status to tab delimited txt file
-if ( ! -f $coveragedir/summary_coverage_status.txt ) then
+if [ ! -f "$coveragedir/summary_coverage_status.txt" ]; then
+
+    # write columns names, -e  enables the interpretation of backslash escapes for \t as a tab separator.
+    echo -e "sub\tcoverage_status" > $coveragedir/summary_coverage_status.txt
 
     # export subID and coverage status 
-    echo "$subID\t$coverage_status" >> summary_coverage_status.txt
+    echo "writing coverage status for $subID"
+    echo -e "$subID\t$coverage_status" >> $coveragedir/summary_coverage_status.txt
 
 else
-    # Delete subect row if they already exist in summary_coverage_status.txt
-    #   awk checks the first column ($1) of each row and compares it to delete_num. 
-    #   If the first column is not equal to delete_num, awk prints the row to standard output. 
-    #   The output of awk is then redirected to a temporary file (tmpfile) using >
-    #   use mv to overwrite the original summary_coverage_status.txt file with the contents of tmpfile
-    awk -v delete_num="$subID" '$1 != delete_num' summary_coverage_status.txt > tmpfile && mv tmpfile summary_coverage_status.txt
+    # check if subID already in the summary file
+    if grep -q "^$subID" "$coveragedir/summary_coverage_status.txt"; then
+        # delete the row containing subID
+        sed -i "/^$subID/d" "$coveragedir/summary_coverage_status.txt"
+    fi
 
-    # export subID and coverage status 
-    echo "$subID\t$coverage_status" >> summary_coverage_status.txt
-endif
+    # append subID and coverage status 
+    echo "overwriting coverage status for $subID"
+    echo -e "$subID\t$coverage_status" >> $coveragedir/summary_coverage_status.txt
+fi
