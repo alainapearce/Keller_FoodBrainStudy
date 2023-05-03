@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-#useage: G0_copylevel1  $1
-# 					Participant
-
-# The purpose of this script is to copy level 1 analyses in paper-specific analysis folder
+#useage: bash _0_copylevel1  $1
+# 						Participant
+#
+# The script copies food cue masks and level 1 stats files in paper-specific analysis folder for a given subject
 
 
 ###################### set up initial variables  ###########################
