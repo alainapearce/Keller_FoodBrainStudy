@@ -5,7 +5,7 @@ This script was created to generate a dataframe with covariates for group-level 
 
 Written by Bari Fuchs in Fall 2022
 
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2022 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ or raw data configurations.
 import pandas as pd
 import os
 from pathlib import Path
-import numpy as np
 
 ##############################################################################
 ####                                                                      ####
@@ -97,7 +96,7 @@ def gen_dataframe():
     covar_df['id'] = subs_list #add subjects to column sub
 
     # Add variables from anthro database to covar_df (sex, risk)
-    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom']],on='id', how='left')
+    covar_df = pd.merge(covar_df,anthro_df[['id', 'sex', 'risk_status_mom', 'dxa_total_fat_mass', 'height_avg']],on='id', how='left')
 
     # Add variable from motion database to covar_df
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
@@ -121,8 +120,13 @@ def gen_dataframe():
     # rename pre-mri FF columns
     covar_df.rename(columns={'imp_med': 'ff_medimp', 'imp_max': 'ff_maximp', 'imp_min': 'ff_minimp'}, inplace=True)
 
+    # compute fat mass index
+    covar_df['dxa_total_fat_mass'] = covar_df['dxa_total_fat_mass'].astype(str).astype(float) #convert to string, then float
+    covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
+    covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
+
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom', 'fmi']]
 
     #########################
     #### Export dataframe ###
