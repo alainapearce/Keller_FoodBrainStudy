@@ -1,0 +1,179 @@
+#!/bin/tcsh
+#
+#useage: G2_2sample-pairedT   $1         $2       		$3
+#		     				template	execute?  	level 1 folder string 
+#
+# The purpose of this script is to create and run 1sample t-tests of all conditions of interest
+# $1: ped or MNI
+# $2 run or no
+# $3 e.g., fd-0.9_by-block-7_3blocks_noGSR, fd-0.9_b20_3runs_noGSR
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
+
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/FMI_1sampleT
+
+# set index dir
+set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
+
+#set output name
+set today = `date +%m-%d-%y`
+
+# set level1 string
+set lev1_str = $3
+
+# set path to templates
+set tpath = $bidsdir/derivatives/templates
+
+##Get template specific results folder
+if ( "$1" == "MNI" ) then
+	##Get MNI template impelemented in 1_sswarp_strct
+	set basedset = $tpath/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz
+	set basedset_name = "tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz"
+	# set string
+    	set temp = "MNI152NLin2009cAsym"
+	set tempst = "MNI"
+else
+	##Get pediatric template used in fmriprep
+	set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+	set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+	# set strings
+	set temp = "MNIPediatricAsym_cohort-3"
+	set tempst = "ped"
+endif
+
+
+# set lev1 results directory name
+set lev1split = ($lev1_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]
+
+# get censor str for index file
+set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
+
+#set map folder
+set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
+
+#create map folder
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+else
+	echo "$map_folder already exists. delete or rename to re-run"
+	exit
+endif
+
+
+# set index list -- lists subjects to include in analyses
+set index = `cat $lev2_dir/index_all_${censor_str}.txt`
+	
+# copy index list and covariate file into output folder for reference
+cp $lev2_dir/index_all_${censor_str}.txt $map_folder
+cp $lev2_dir/ttest-covariates.txt $map_folder
+
+
+###################### generate whole group (WG) mask  ########################
+if ( ! -f $map_folder/WG_mask0.8+tlrc) then
+	
+	# make temporary directory with participant masks for subjects included in analyses
+	mkdir $map_folder/temp_mask
+	foreach sub ( $index )
+		cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+	end
+
+	# generate mask with 80% of participants overlapping
+	3dmask_tool -input $map_folder/temp_mask/mask* \
+     				-prefix $map_folder/WG_mask0.8+tlrc              \
+      				-frac 0.8
+
+	# remove temporary directory
+	rm -r $map_folder/temp_mask
+endif
+
+###################### generate t-test scripts  ########################
+
+# gen_group_command.py settings:
+	# add -Clustsim option to run 3dClustSim
+
+# set contrast maps
+set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT )
+
+foreach map ( $maps )
+	set output_name = $map
+
+	# Column 8 in $lev2_dir/ttest-covariates.txt is FMI variable
+
+	# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_medimp         \
+		-prefix  WG_1sampleT++_${output_name}_medimp                    \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,8]'"
+
+	# generate ttest script -- use ff_maximp as covariate (contains maximum imputed value for ID 54)
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_maximp         \
+		-prefix  WG_1sampleT++_${output_name}_maximp                          \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6,8]'"
+
+	# generate ttest script -- use ff_minimp as covariate (contains minimum imputed value for ID 54)
+	gen_group_command.py -command 3dttest++                                             \
+		-write_script $map_folder/WG_1sampleT++_${output_name}_minimp         \
+		-prefix  WG_1sampleT++_${output_name}_minimp                          \
+		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+    	-dset_sid_list $index 					\
+	 	-set_labels $map                                                 \
+     	-subs_betas "${map}"'#'0_Coef                                    \
+		-options                                                       \
+            -mask $map_folder/WG_mask0.8+tlrc.HEAD	\
+			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6,8]'"
+
+	# set permissions of map folder
+    chmod 775 -R $map_folder
+
+	# Execute?
+	if ( "$2" == "run" ) then
+    	cd $map_folder
+    	tcsh WG_1sampleT++_${output_name}_medimp
+		tcsh WG_1sampleT++_${output_name}_maximp
+		tcsh WG_1sampleT++_${output_name}_minimp
+	endif
+
+end
+
+
+# Copy base template into results folder 
+
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    if ( ! -f $map_folder/$basedset_name ) then
+        cp ${basedset} $map_folder
+    endif
+endif
+
