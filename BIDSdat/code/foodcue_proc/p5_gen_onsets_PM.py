@@ -41,7 +41,7 @@ import re
 #########################################################
 
 def _gen_new_onset_file(sub, file, foodcue_beh_dat):
-    """Function to generate onset files that censor runs with excessive motion based on specified threshold
+    """Function to generate dataframe with 1 column for block onset and 1 column for block p_want_of_resp
     Inputs:
         sub
         file
@@ -91,7 +91,7 @@ def _gen_new_onset_file(sub, file, foodcue_beh_dat):
 ##############################################################################
 
 def gen_onsets(par_id, onset_folder, preproc_path = False):
-    """Function to generate onset files that censor runs with excessive motion based on specified threshold
+    """Function to generate onset files for parametric analyses
     Inputs:
         par_id (int): participant ID 
         onset_folder (str): name of folder in foodcue_onsetfiles that contains onset files to base off of (e.g., orig, fd-0.9_b20)
@@ -177,7 +177,8 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
     onset_dict['LowED'] = pd.concat([onset_dict['LowLarge'][0], onset_dict['LowSmall'][0]], axis=1)
     onset_dict['LargePSfood'] = pd.concat([onset_dict['HighLarge'][0], onset_dict['LowLarge'][0]], axis=1)
     onset_dict['SmallPSfood'] = pd.concat([onset_dict['HighSmall'][0], onset_dict['LowSmall'][0]], axis=1)
-
+    onset_dict['Office'] = pd.concat([onset_dict['OfficeLarge'][0], onset_dict['OfficeSmall'][0]], axis=1)
+    
     ######################################
     #### Output PM onset timing files ####
     ######################################
@@ -194,7 +195,7 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
     # loop through keys in dictionary 
     for condition_key in onset_dict:
 
-        if condition_key in ['HighED', 'LowED', 'LargePSfood', 'SmallPSfood']:
+        if condition_key in ['HighED', 'LowED', 'LargePSfood', 'SmallPSfood', 'Office']:
             # set output name
             outputname = "sub-" + sub + "_" + condition_key + "-AFNIonsets.txt"
 
