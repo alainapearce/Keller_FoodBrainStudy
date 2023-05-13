@@ -66,7 +66,7 @@ def _get_officeOnsets(foodcue_RunDat, onsets_Pardat):
         
         return(onsets_Pardat)
 
-def _get_fixOnsets(foodcue_RunDat, fix_Pardat):
+def _get_fixOnsets(foodcue_RunDat, fixation_Pardict):
 
         # ## make variable for IBI onset relative to run start
 
@@ -75,29 +75,28 @@ def _get_fixOnsets(foodcue_RunDat, fix_Pardat):
         # # should be equal to 4 + 18 (i.e., the block duration) = 22.
 
         stim1_onset = foodcue_RunDat['stim_onset'].iloc[0]
-        foodcue_RunDat['ibi_onset_unrounded'] = ((foodcue_RunDat['ibi_onset'] - stim1_onset)/1000) + 4
-        foodcue_RunDat['ibi_onset_adjusted'] = foodcue_RunDat.ibi_onset_unrounded.map(lambda x:round(x))
+
+        # make array of ibi_onsets
+        onsets_unadjusted_array = foodcue_RunDat['ibi_onset'].unique()
+
+        # remove nans from array
+        value_mask = ~np.isnan(onsets_unadjusted_array) # create a boolean mask where True corresponds to non-NaN values
+        onsets_unadjusted_array = onsets_unadjusted_array[value_mask] # index the array using the mask to remove the NaN values
+
+        # define a function to subtract stim1_onset, divide by 1000 (convert to seconds), and add 4 (adjust for 2 TRs)
+        def adjust_onset(x):
+            return round(((x - stim1_onset) / 1000) + 4)
+
+        # adjust onsets 
+        onsets_array = np.vectorize(adjust_onset)(onsets_unadjusted_array)
 
         ## Get run number   
         run_num = foodcue_RunDat['run'].iloc[0]
 
-        #get all non-duplicate blocks in run
-        blocks = foodcue_RunDat['block'].unique()
+        # assign array to fixation_Pardict at key run_num
+        fixation_Pardict[run_num] = onsets_array
 
-        #loop through blocks
-        for b in blocks:
-
-            #subset block data from foodcue_data
-            block_dat = foodcue_RunDat[foodcue_RunDat['block'] == b]
-
-            # Add run and block to fix_Pardat
-            fix_Pardat.at[(run_num-1)+ ((run_num-1)*5) + (b-1), 'run'] = block_dat['run'].iloc[0]
-            fix_Pardat.at[(run_num-1)+ ((run_num-1)*5) + (b-1), 'block'] = block_dat['block'].iloc[0]
-
-            # Add ibi_onset_adjusted to fix_Pardat
-            fix_Pardat.at[(run_num-1)+ ((run_num-1)*5) + (b-1), 'ibi_onset'] = block_dat['ibi_onset_adjusted'].iloc[0]
-
-        return(fix_Pardat)
+        return(fixation_Pardict)
 
 ##############################################################################
 ####                                                                      ####
@@ -117,9 +116,9 @@ def getonsets(par_id, overwrite = False):
 
     #set specific paths
     bids_raw_path = Path(base_directory).joinpath('raw_data')
-    bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/f31_onsetfiles')
+    bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/f31_onsetfiles') #path to onset files for F31 analyses
 
-    # make orig directory if it doesnt exist
+    # make onset directory if it doesnt exist
     if os.path.exists(bids_deriv_onsetfiles) is False:
         os.makedirs(bids_deriv_onsetfiles)
 
@@ -151,9 +150,9 @@ def getonsets(par_id, overwrite = False):
         ##set is finding only unique values
         subs_exist_str = list(set([item[4:7] for item in files_exist]))   
 
-        # Exit of sub already has orig onsets
+        # Exit if sub already has f31 onsets
         if sub in subs_exist_str:
-            print(str(sub) + ' - orig onset files already exist. Use overwrite = True to overwrite')
+            print(str(sub) + ' - f31 onset files already exist. Use overwrite = True to overwrite')
             raise Exception()
 
     ##########################
@@ -170,9 +169,12 @@ def getonsets(par_id, overwrite = False):
     onsets_Pardat = pd.DataFrame(np.zeros((nruns, 2)))
     onsets_Pardat.columns = ['OfficeLarge', 'OfficeSmall']
 
-    #create fixation data per participant
-    fix_Pardat = pd.DataFrame(np.zeros((nruns*6, 3)))
-    fix_Pardat.columns = ['run', 'block', 'ibi_onset']
+    #create fixation dictionary -- one key per run
+    #fix_Pardat = pd.DataFrame(np.zeros((nruns*6, 3)))
+    #fix_Pardat.columns = ['run', 'block', 'ibi_onset']
+    fixation_Pardict = dict.fromkeys(range(1, nruns+1))
+
+    #### Note: some subjects are missing a fixation period in 1 run, so not all runs have the same number of fixations. Change fix_Pardat to a dictionary?? keys for run, values of ibi_onsets
     
     # loop through eventsfiles
     for file in eventsfiles:
@@ -188,7 +190,7 @@ def getonsets(par_id, overwrite = False):
 
         #extract timing info
         onsets_Pardat = _get_officeOnsets(foodcue_RunDat, onsets_Pardat)
-        fix_Pardat = _get_fixOnsets(foodcue_RunDat, fix_Pardat)
+        fixation_Pardict = _get_fixOnsets(foodcue_RunDat, fixation_Pardict)
 
     #output Office block onsets
     for c in onsets_Pardat.columns:
@@ -198,12 +200,13 @@ def getonsets(par_id, overwrite = False):
         onsets_cond['star'] = '*'
         onsets_cond.to_csv(str(Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_' + c + '-AFNIonsets.txt')), sep = '\t', encoding='ascii', index = False, header=None)
 
-    # make fix_Pardat wide so there is 1 column per block, run column becomes index
-    fix_Pardat_wide = pd.pivot(fix_Pardat, index='run', columns='block', values='ibi_onset')
-
-    # sort by index
-    fix_Pardat_wide = fix_Pardat_wide.sort_index()
-
-    #output IBI fixation onsets
-    fix_Pardat_wide.to_csv(str(Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_IBI-AFNIonsets.txt')), sep = '\t', encoding='ascii', index = False, header=None)
+    # output fixation onsets
+    runnum_key_sorted = sorted(fixation_Pardict.keys()) # sort the keys of the dictionary in ascending order
+    fixation_onset_path = Path(bids_deriv_onsetfiles).joinpath('sub-' + sub + '_IBI-AFNIonsets.txt') # specify the path where the output file should be saved
+    with open(fixation_onset_path, 'w') as file:  # open a text file for writing
+        # iterate over the sorted keys and write each row to the file
+        for key in runnum_key_sorted:
+            ibi_values = fixation_Pardict[key]
+            row = '\t'.join(str(x) for x in ibi_values)
+            file.write(row + '\n')
 
