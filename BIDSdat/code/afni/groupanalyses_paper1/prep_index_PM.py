@@ -81,21 +81,27 @@ def gen_index_PM():
         # initialize PM index lists
         index_list_PM_ED = []
         index_list_PM_PS = []
+        index_list_PM_office = []
 
         # add subs to PM index lists if they are not listed
-            # 011, 020, 028, 039 -- excluded from both lists due to missing data for at least 1 block
+            # 011, 020, 028, 039 -- excluded from all lists due to missing data for at least 1 block
             # 004, 040, 058 -- excluded from index_list_PM_ED due to lack of variability in at least 1 condition when grouping by ED
-            # 004, 040 -- excluded from index_list_PM_ED due to lack of variability in at least 1 condition when grouping by PS
+            # 004, 040 -- excluded from index_list_PM_PS due to lack of variability in at least 1 condition when grouping by PS
+            # 004, 017, 026, 049, 056, 084, 089, 116 -- excluded from index_list_PM_office due to lack of variability in office conditon
 
         for sub in index_list:
             if sub not in ('011', '020', '028', '039','004', '040', '058'):
                 index_list_PM_ED.append(sub)
             if sub not in ('011', '020', '028', '039','004', '040'):
                 index_list_PM_PS.append(sub)
+            if sub not in ('011', '020', '028', '039','004', '017', '026', '049', '056', '084', '089', '116'):
+                index_list_PM_office.append(sub)
+
 
         # set file names
         file_ED = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-ED.txt')
         file_PS = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-PS.txt')
+        file_office = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-office.txt')
 
         # write ids to file
         with open(file_ED, 'w') as output_file_name:
@@ -104,4 +110,8 @@ def gen_index_PM():
 
         with open(file_PS, 'w') as output_file_name:
             joined_list = "  ".join(index_list_PM_PS)
+            print(joined_list , file = output_file_name)
+
+        with open(file_office, 'w') as output_file_name:
+            joined_list = "  ".join(index_list_PM_office)
             print(joined_list , file = output_file_name)
