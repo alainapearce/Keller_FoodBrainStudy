@@ -40,7 +40,7 @@ foreach sub ($subs)
 			# if level1 parametric analyses folder
 			if ( $folder =~ *PM* ) then
 
-				foreach cond ('ED' 'PS')
+				foreach cond ('ED' 'PS' 'office')
 
 					# if subject has stats file from parametric analyses -- not all will due to behavioral data
 					if ( -f $lev1_shared/$sub/$folder/${cond}_stats.$sub+tlrc.BRIK ) then
