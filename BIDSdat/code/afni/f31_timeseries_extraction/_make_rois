@@ -1,6 +1,6 @@
 #!/bin/tcsh
 #
-#useage: make_rois
+#useage: bash F31_make_rois
 #
 # This script creates 8mm diameter spheres around coordinates
 # Written by Bari Fuchs
