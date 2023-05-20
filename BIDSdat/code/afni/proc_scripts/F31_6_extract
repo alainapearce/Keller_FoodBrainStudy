@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#useage: bash F31_6_extract     $1             
+#		                        ParicipantID
+#
+# This script extracts timeseries data from ROIs
+# Written by Bari Fuchs
+
+###################### set up initial variables  ###########################
+
+#set input argument 1 to variable 'subID' and make sure it has leading zeros
+
+#remove leading zeros if they were included -- trying to add leading zeros to numbers with leading zeros can lead to issues (https://stackoverflow.com/questions/8078167/printf-in-bash-09-and-08-are-invalid-numbers-07-and-06-are-fine)
+ID_nozero=$(echo $1 | sed 's/^0*//')
+
+# add leading zeros back
+ID=`printf %03d $ID_nozero`
+subID="sub-$ID"
+
+###################### setup and check directories  ########################### 

@@ -99,3 +99,16 @@ cd $topdir/code/afni/proc_scripts
 
 # run script
 bash F31_5_check_roi_coverage
+
+######## 6: Extract timeseries from ROIs ########
+
+#insert header for this subsection in output
+echo "######## Extract timeseries from ROIs ########"
+echo ""
+
+# move to script location 
+cd $topdir/code/afni/proc_scripts
+
+# run script
+bash F31_6_extract_ROIs
+
