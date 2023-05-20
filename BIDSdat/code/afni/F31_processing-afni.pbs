@@ -1,0 +1,57 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=10
+#PBS -l pmem=12gb
+#PBS -l walltime=24:00:00
+#PBS -A klk37_b_g_bc_default
+#PBS -j oe
+#
+#Useage: qsub sub-001_session1_09_15_22_wrapper.pbs
+#
+#
+
+######## Set up inital variables ########
+
+#don't log AFNI programs in ~/.afni.log
+AFNI_DONT_LOGFILE="YES"
+
+#dont try version checks
+ANFI_VRSION_CHECK="NO"
+
+##don't auto-compress output files
+AFNI_COMPRESSOR="NONE"
+
+#set number of processors for AFNI to match the number of cores
+# see https://afni.nimh.nih.gov/pub/dist/doc/program_help/3dTfitter.html
+OMP_NUM_THREADS="10"
+
+#date
+today=`date +%m-%d-%y`
+
+#set top/base directory
+topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/"
+
+######## Make ROIs ########
+
+#Load afni singularity and run script to generate ROIs
+echo "## F31_make_rois was run on ${today}"
+cd $topdir/code/afni
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg bash F31_make_rois
+
+
+######## Subject-level processing ########
+
+# make array of subs to process -- find directories in fmriprep/ that start with sub* and extract basename
+subs=($(find $topdir/derivatives/preprocessed/fmriprep/ -type d -name 'sub*' -exec basename {} \;))
+
+# loop through subs for processing
+for sub in ${subs}; do
+
+	#write to output file
+	echo "## sub_${sub}_F31_wrapper was run on ${today}"
+	echo "## Job started: `date`"
+
+	#Load afni singularity and run afniscript
+	cd $topdir/code/afni/sub-${sub}
+	singularity exec /gpfs/group/klk37/default/sw/AFNI.simg bash sub-${sub}_F31_wrapper-afni
+
+done
