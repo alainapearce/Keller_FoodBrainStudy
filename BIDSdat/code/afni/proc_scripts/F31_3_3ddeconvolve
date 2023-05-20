@@ -31,17 +31,17 @@ temp="MNIPediatricAsym_cohort-3"
 
 #go to and set BIDs as main directory
 cd ../../../
-topdir=$(pwd)
+bidsdir=$(pwd)
 
 #set onset file directory
-onsetDir="$topdir/derivatives/preprocessed/f31_onsetfiles"
+onsetDir="$bidsdir/derivatives/preprocessed/f31_onsetfiles"
 
 #set parDir to participants fmriprep ses directory
-parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2"
+parDir="$bidsdir/derivatives/preprocessed/fmriprep/$subID/ses-$2"
 
 #set output directories
-output_dir="$topdir/derivatives/afni-level1/${subID}/f31_${TRcen}"
-output_dir_GSR="$topdir/derivatives/afni-level1/${subID}/f31_${TRcen}_GSR"
+output_dir="$bidsdir/derivatives/afni-level1/${subID}/f31_${TRcen}"
+output_dir_GSR="$bidsdir/derivatives/afni-level1/${subID}/f31_${TRcen}_GSR"
 
 # verify that output (result) directories with output do not yet exist
 for $resdir in ( $output_dir $output_dir_GSR )
