@@ -7,9 +7,7 @@ task-foodcue_bycond-censorsummary_$censorcritera.tsv files (output of 4_create_c
 Index files will list subject IDs that should be included in analyses, based on the desired motion threshold. 
 Index files be generated for the whole group.
 
-Written by Bari Fuchs in Spring 2022
-
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by

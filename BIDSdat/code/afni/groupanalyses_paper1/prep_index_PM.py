@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Written by Bari Fuchs in Fall 2023
 
 Copyright (C) 2023 Bari Fuchs
 

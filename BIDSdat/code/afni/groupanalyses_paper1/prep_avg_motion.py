@@ -3,9 +3,7 @@
 """
 This function was created to calculate the average framewise displacement for a subject
 
-Written by Bari Fuchs in Summer 2022
-
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
