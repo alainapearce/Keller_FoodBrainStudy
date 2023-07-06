@@ -9,9 +9,7 @@ The following steps will occur:
     (4) make new onsetfiles that exclude runs with >threshold % TRs censored -- will be used by AFNI in first-level analyses
     (5) output summary data that indicates % of TRs censored per run
 
-Written by Bari Fuchs in Spring 2022
-
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by

@@ -4,7 +4,7 @@
 This script was created to extract behavioral data
 for the fmri food cue task in Spring 2022 by Bari Fuchs.
 
-Copyright (C) 20120 Bari Fuchs
+Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
