@@ -4,17 +4,9 @@
 #                          participantID    Session#
 #
 #
-#The purpose of this script is to generate full preprocessing scripts that can be run
-#on the ACI cluster. 
-#
-#### PROCESSING NOTE ####
-#Due to the operating system on ACI-ICS, we needed to use a singularity
-#container with a different linux opperating system in order to use the 
-#most recent afni update. Due to this, multiple scripts were generated so
-#that the processing step can be run in the correct order. Part 1 includes
-#the first 2 afni steps, then this script will extract onsets, then Part 2
-#finishes the rest of afni steps, then this script will process the motion
-#information.
+#The purpose of this script is to generate full processing scripts for each subject 
+# that can be run on the ACI cluster. 
+
 
 ###################### set up initial variables  ###########################
 #get date
