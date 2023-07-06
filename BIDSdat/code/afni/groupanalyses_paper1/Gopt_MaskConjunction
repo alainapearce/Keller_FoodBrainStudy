@@ -39,19 +39,10 @@ cd $res_dir
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1361 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p05
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1521 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p05
 
-# p-adjusted <.1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_HighLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 947 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_hED_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LowLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 847 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_lED_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 937 -bisided -3.2905 3.2905 -pref_map Clust_mask-PScon_office_p1
-
 # ED contrast masks: Clust_mask-EDcon_large, Clust_mask-EDcon_small
 # p-adjusted <.05
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1438 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p05
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1541 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p05
-
-# p-adjusted <.1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_LargeHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 864 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_large_p1
-3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_SmallHigh-Low_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 895 -bisided -3.2905 3.2905 -pref_map Clust_mask-EDcon_small_p1
 
 ###################### Make portion size contrast conjunction masks  ###########################
 
@@ -71,14 +62,6 @@ cd $res_dir
 gunzip PScon_conjunctionMask_p05.gz
 3dAFNItoNIFTI PScon_conjunctionMask_p05+tlrc
 
-# p-adjusted <.1
-3dcalc -a Clust_mask-PScon_hED_p1+tlrc -b Clust_mask-PScon_lED_p1+tlrc  \
-   -c Clust_mask-PScon_office_p1+tlrc  \
-   -expr 'step(a)+2*step(b)+4*step(c)' -prefix PScon_conjunctionMask_p1
-
-gunzip PScon_conjunctionMask_p1.gz
-3dAFNItoNIFTI PScon_conjunctionMask_p1+tlrc
-
 ###################### Make ED contrast conjunction masks  ###########################
 
 #1- large only
@@ -91,12 +74,4 @@ gunzip PScon_conjunctionMask_p1.gz
 
 gunzip EDcon_conjunctionMask_p05.gz
 3dAFNItoNIFTI EDcon_conjunctionMask_p05+tlrc
-
-# p-adjusted <.1
-3dcalc -a Clust_mask-EDcon_large_p1+tlrc -b Clust_mask-EDcon_small_p1+tlrc  \
-   -expr 'step(a)+2*step(b)+4*step(c)' -prefix EDcon_conjunctionMask_p1
-
-gunzip EDcon_conjunctionMask_p1.gz
-3dAFNItoNIFTI EDcon_conjunctionMask_p1+tlrc
-
 
