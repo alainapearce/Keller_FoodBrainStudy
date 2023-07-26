@@ -1,12 +1,12 @@
 #!/bin/bash
 #usage: ./4_3dDeconvolve     $1          $2   				$3
-#		    		ParticipantID   	Session 	   TR-Censor-criteria (e.g., fd-1.0)
+#		    		ParticipantID   	Session 	   TR-Censor-criteria (e.g., rmsd_.3_ba)
 #
 #
 ### This script will run 3ddeconvolve ###
 ### AFNI code was derived from https://andysbrainbook.readthedocs.io/en/latest/OpenScience/OS/fMRIPrep_Demo_4_AdditionalPreproc.html
  
-
+## NEED TO FIGURE OUT HOW TO ADD BANDPASS FILTERING
 
 ###################### set up initial variables  ###########################
 
@@ -70,7 +70,7 @@ fi
 cd $onsetDir
 stimfiles=(` ls ${subID}*.txt`)
 
-if [ "${#stimfiles[@]}" = 6 ]
+if [ "${#stimfiles[@]}" = 3 ] # 3 files are onsets for OfficeLarge, OfficeSmall, IBI
 then    
         echo "starting 3ddeconvolve for ${subID} ${session}" 
 else
@@ -91,7 +91,7 @@ cd $output_dir_GSR
 # see https://reproducibility.stanford.edu/slice-timing-correction-in-fmriprep-and-linear-modeling/
 
 3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
-   	-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+   	-censor $parDir/func/${subID}_F31-allruns_censor_${TRcen}.tsv            			\
     	-polort 2                                                               		\
 	-num_stimts 18                                                                         \
 	-stim_times_subtract 1									\
