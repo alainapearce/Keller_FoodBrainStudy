@@ -218,8 +218,8 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
     regress_Pardat = _gen_concatenated_regressor_file(confound_files)
 
     # Export participant regressor file with and without columns names
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
 
     ###########################
     ### Create censor files ###
@@ -255,10 +255,7 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
     # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
     censordata_allruns_df.columns = ['header']
-    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'F31_sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
 
     # return particpant databases for integration testing
     return censordata_allruns_df
-
-#if __name__ == "__main__":
-#    p2_create_censor_files(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
