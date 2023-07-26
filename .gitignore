@@ -8,12 +8,12 @@
 /untouchedRaw
 /WASI
 /zOldProtocol-DoNotUse
-
+Databases/
 
 zBIDSorgStatus.xlsx
 
 *.pklz
-*.pbs
+*.pbs.o*
 *.pptx
 *.Rproj.user
 .Rproj.user
