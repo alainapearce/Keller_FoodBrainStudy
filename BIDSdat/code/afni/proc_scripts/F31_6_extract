@@ -18,3 +18,4 @@ ID=`printf %03d $ID_nozero`
 subID="sub-$ID"
 
 ###################### setup and check directories  ########################### 
+# reminder: have to extract from models with and without GSR
