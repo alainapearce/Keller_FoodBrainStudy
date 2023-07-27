@@ -1,0 +1,90 @@
+
+{
+    "descriptions": [
+        {
+        "dataType": "anat",
+        "modalityLabel": "T1w",
+        "criteria": {
+            "SidecarFilename": "*T1_MPRage_Sagittal*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-rest",
+        "criteria": {
+            "SeriesDescription": "*rest*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-foodcue",
+        "criteria": {
+            "SeriesDescription": "run-1*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-foodcue",
+        "criteria": {
+            "SeriesDescription": "run-2*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-foodcue",
+        "criteria": {
+            "SeriesDescription": "run-3*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-foodcue",
+        "criteria": {
+            "SeriesDescription": "run-4*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-foodcue",
+        "criteria": {
+            "SeriesDescription": "run-5*"
+            }
+            },
+        {
+        "dataType": "fmap",
+        "modalityLabel": "magnitude1",
+        "criteria": {
+            "SeriesDescription": "FieldMap",
+            "EchoNumber": "1",
+            "EchoTime": 0.00519
+            }  
+        },
+        {
+        "dataType": "fmap",
+        "modalityLabel": "magnitude2",
+        "criteria": {
+            "SeriesDescription": "FieldMap",
+            "SidecarFilename": "*e2.json",
+            "EchoNumber": "2",
+            "EchoTime": 0.00765
+            }  
+        },
+        {
+        "dataType": "fmap",
+        "modalityLabel": "phasediff",
+        "criteria": {
+            "SeriesDescription": "FieldMap",
+            "EchoTime": 0.00765,
+            "EchoTime1": 0.00519,
+            "EchoTime2": 0.00765
+            }
+     
+        }
+    ]
+}

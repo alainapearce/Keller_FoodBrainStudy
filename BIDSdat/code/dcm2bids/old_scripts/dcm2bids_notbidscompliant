@@ -1,0 +1,170 @@
+#!/bin/tcsh
+#  
+#Useage: 1_dcm2bids           $1	      
+#                        participantID	
+#
+#
+# The purpose of this script is convert .dcm files to BIDS format using dcm2bids and 
+# add the "IndendedFor" key to the BIDs fmap json files
+# This script was written to be used in the Brain Mechanisms 
+# of Overeating R01 project. Written by Bari Fuchs Fall 2021.
+#
+# NOTE: prior to running this script for each participant, determine whether any extra scans were conducted
+# (e.g., extra MPRAGE or partial resting state) that will not be used in R01 data processing.
+# To prevent conversion of extra scans to BIDS format, cd to source/$parID and append "_extra" to the ser directory of extra scans.
+# For example, if scan 17 was an extra MPRAGE >> mv ser17 ser17_extra
+
+###################### set up initial variables  ###########################   
+#set input argument 1 to variable 'parID' and make sure it has leading zeros
+set parID = "$1"
+
+###################### setup ###########################   
+#go to and set path to project directory
+cd ../../../
+set projDir = "$cwd"
+
+#set path to BIDS directory
+set bidsDir = "$projDir/BIDS"
+
+#set path to untouchRaw/DICOMS directory
+set untouchedDICOMS = "$projDir/untouchedRaw/DICOMS"
+
+#set path to sourcedata directory
+set sourceDir = "$bidsDir/sourcedata"
+
+#set path to participant dicom sourcedata directory
+set parDicom_source = "$sourceDir/sub-${parID}/ses-1/dicom"
+
+#set path to raw_data directory -- this is where files in BIDS format are stored
+set rawDir = "$bidsDir/raw_data"
+
+#set path to parID/ses-1 raw_data directory
+set parRawDir = "$rawDir/sub-${parID}/ses-1"
+
+echo "here"
+
+###################### Check for directories ######################
+
+#check if participant's dicoms have been organized into bids
+#if ( -d "$parRawDir/func" || -d "$parRawDir/anat" || -d "$parRawDir/fmap") then
+
+if ( -f "$parRawDir/func/*nii.gz" || -f "$parRawDir/anat/*nii.gz" ) then
+
+	#exit if participant BIDS directory already exists
+	echo "dcm-to-bids conversion has been run for participant $parID"
+    	echo "Delete .nii.gz and corresponding json files in $parRawDir/func/ /anat and /fmap to rerun dcm2bids"
+	set run_dcm2bids = 0
+#check if dicom sourcedata directory exists for participant
+else
+	#continue with script if dicom sourcedata directory exists
+	if ( -d "$parDicom_source" ) then
+		echo "participant dicom sourcedata directory exists for $parID"
+		set run_dcm2bids = 1
+	#exit script if dicom sourcedata directory does not exist
+	else
+		echo "participant dicom sourcedata directory does not exist for $parID"
+		echo "create $parDicom_source and copy untouchedRaw DICOMS into it:"
+		echo ">> mkdir -p /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/sourcedata/sub-$parID/ses-1/dicom"
+		echo ">> cd /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/sourcedata/sub-$parID/ses-1/dicom"
+		echo ">> cp -a /gpfs/group/klk37/default/R01_Food_Brain_Study/untouchedRaw/DICOMS/R01_$parID/. ."
+		exit
+	endif
+endif
+
+#check if tmp_dcm2bids exists, delete if it exists
+# Note: tmp_dcm2bids/ is created by dcm2bids_helper; dcm2bids_helper will not run if tmp_dcm2bids/helper already exisits
+if ( -d "$parRawDir/tmp_dcm2bids" ) then
+    echo "deleting tmp_dcm2bids"
+    rm -r $parRawDir/tmp_dcm2bids
+endif
+
+###################### Organize into BIDS  ###########################
+
+if ($run_dcm2bids == 1) then
+	echo "Starting dcm to bids conversion for participant $parID"	
+
+	#create temp source dir for participant
+	# NOTE: This step is to prevent dcm2bids conversion for extra scans that will remain unprocessed for R01 data analyses
+	# "extra" should be manually appended to ser* directories in $parDir_source for repeated and unwanted scans prior to running this script
+
+	set parDir_source_temp = "$sourceDir/sub-$parID/ses-1/${parID}_temp"
+
+	# Make a copy of the participant's sourcedata directory
+	cp -r $parDicom_source $parDir_source_temp
+	
+	# Remove ser directories with the suffix "extra"
+	cd $parDir_source_temp
+	set extra_scan_count = `ls -d *extra/ | wc -l`
+
+	if ($extra_scan_count > 0) then
+    		echo "removing $extra_scan_count extra scans from temporary directory"
+    	rm -r $parDir_source_temp/ser*extra
+	else
+    		echo "No extra scans found"
+	endif
+
+	#Run dcm2bids_helper and dcm2bids
+	# Note: dcm2bids_helper will convert DICOMS in $parDir_source_temp to NIFTI and place them in the temporary directory $parRawDir/tmp_dcm2bids/helper
+	# Note: /ser* directories removed from $parDir_source_temp in the previous step will not be placed in $parRawDir/tmp_dcm2bids/helper
+	# Note: dcm2bids will reorganize scans in dcm2bids_helper into BIDS format in $topdir/$parID
+	
+	if (! -d "$parRawDir/" ) then
+		mkdir -p $parRawDir
+	endif
+
+	cd $parRawDir
+	
+	#run dcm2bids_helper
+	echo "running dcm2bids_helper"
+	dcm2bids_helper -d $parDir_source_temp
+
+	# run dcm2bids
+	echo "running dcm2bids"
+	dcm2bids -d $parDir_source_temp -p $parID -c $bidsDir/code/dcm2bids/dcm2bids_config.json
+		
+	#reorganize
+	cp -a sub-$parID/. .
+	rm -r sub-$parID/
+	
+	#copy log file into code/dcm2bids/bids_convert_logs
+	cp $parRawDir/tmp_dcm2bids/log/sub-${parID}*log $bidsDir/code/dcm2bids/bids_convert_logs
+
+	# Remove temporary directories
+	rm -r $parRawDir/tmp_dcm2bids
+	rm -r $parDir_source_temp	
+endif
+
+###################### Add IntendedFor field ######################
+
+# Get array of fieldmap json files to modify
+set fieldmap_jsons=`ls $parRawDir/fmap/*json`
+
+# Get array of functional scans to apply field map to
+cd $rawDir/sub-${parID}
+set func_array=`ls ses-1/func/*nii.gz`
+
+# Loop through fieldmap jsons
+foreach json ($fieldmap_jsons)
+
+	# check if json already has "IndendedFor" key (-e gets exit status: 1 if false, 0 if true)
+	/gpfs/group/klk37/default/sw/jq/jq-linux64 -e 'has("IntendedFor")' $json > /dev/null
+	
+	# if does not have "Indended for key (exit status = 1)
+	if($?) then
+		echo "adding IndendedFor key to $json"
+                # Loop through functional scans
+		foreach func ($func_array)
+			# add functional scan to "IntendedFor"
+			cat $json | /gpfs/group/klk37/default/sw/jq/jq-linux64 --arg v "$func" '.IntendedFor += [$v]' > temp.json
+			mv temp.json $json
+		end
+	# if does have "Indended for key (exit status != 1)
+        else
+		echo "$json already has IntendedFor key"
+	endif
+end
+
+###################### Set permission  ###########################
+# Set permissions
+chgrp -R -f klk37_collab $parRawDir 
+chmod -R 775 $parRawDir

@@ -1,0 +1,82 @@
+#!/bin/tcsh
+#  
+#Useage: add_indendedfor           $1	      
+#                        participantID	
+#
+#
+# The purpose of this script is add the “IntendedFor” field to BIDS fieldmap jsons
+# # This script was written to be used in the Brain Mechanisms 
+# of Overeating R01 project. Written by Bari Fuchs Fall 2021.
+#
+###################### set up initial variables  ###########################   
+#set input argument 1 to variable 'parID' and make sure it has leading zeros
+set parID = "$1"
+
+###################### setup ###########################   
+
+#go to and set path to project directory
+cd ../../../
+set projDir = "$cwd"
+
+#set path to BIDS directory
+set bidsDir = "$projDir/BIDS"
+
+#set path to untouchRaw/DICOMS directory
+set untouchedDICOMS = "$projDir/untouchedRaw/DICOMS"
+
+#set path to sourcedata directory
+set sourceDir = "$bidsDir/sourcedata"
+
+#set path to participant dicom sourcedata directory
+set parDicom_source = "$sourceDir/sub-${parID}/ses-1/dicom"
+
+#set path to raw_data directory -- this is where files in BIDS format are stored
+set rawDir = "$bidsDir/raw_data"
+
+#set path to parID/ses-1 raw_data directory
+set parRawDir = "$rawDir/sub-${parID}/ses-1"
+
+###################### Check for directories ######################
+
+##check if participant's dicoms have been organized into bids
+#if ( -d "$parRawDir/func" || -d "$parRawDir/anat" || -d "$parRawDir/fmap") then
+#	#exit if participant BIDS directory already exists
+#	echo "MRI data for $parID has been organized into BIDS"
+#    	echo "Ready to add IntendedFor field"
+##exit if they are not organized into bids
+#else
+#	echo "MRI data for $parID has not been organized into BIDS"
+#	echo "Run dcm2bids before running this script. Quitting."
+#	exit
+#endif
+
+
+###################### Add intended for field ######################
+# Get array of functional scans to apply field map to
+set func_array=`ls $parRawDir/func/*nii.gz | xargs -n 1 basename`
+#echo "$func_array"
+
+## troubleshooting with json file in code/dcm2bids
+cd $bidsDir/code/dcm2bids
+#/gpfs/group/klk37/default/sw/jq/jq-linux64 '. + {test2: ['$func_array']}' sub-002_magnitude1.json >> sub-002_magnitude1.json
+
+# Get list of fieldmap json files to modify
+set fieldmap_jsons=`ls $parRawDir/fmap/*json`
+set json="sub-002_magnitude1.json"
+
+# add test3 key
+/gpfs/group/klk37/default/sw/jq/jq-linux64  '. + {test3: []}' $json >> $json
+/gpfs/group/klk37/default/sw/jq/jq-linux64 '[test .test3]]' >> $json
+# this adds another object -- not what we want
+#/gpfs/group/klk37/default/sw/jq/jq-linux64 -n --arg v "$parID" '. + {test4: [$v]}' $json >> $json
+
+#echo "$fieldmap_jsons"
+
+# Loop through fieldmap jsons
+foreach json ($fieldmap_jsons) 
+
+end
+
+# Set permissions
+#chgrp -R -f klk37_collab $parRawDir 
+#chmod -R 775 $parRawDir

@@ -1,0 +1,105 @@
+#!/bin/tcsh
+#  
+#Useage: 1_dcm2bids           $1	      
+#                        participantID	
+#
+#
+# The purpose of this script is convert .dcm files to BIDS format using dcm2bids. 
+# This script was written to be used in the Brain Mechanisms 
+# of Overeating R01 project. Written by Bari Fuchs Fall 2021.
+#
+# NOTE: prior to running this script for each participant, determine whether any extra scans were conducted
+# (e.g., extra MPRAGE or partial resting state) that will not be used in R01 data processing.
+# To prevent conversion of extra scans to BIDS format, cd to source/$parID and append "_extra" to the ser directory of extra scans.
+# For example, if scan 17 was an extra MPRAGE >> mv ser17 ser17_extra
+
+###################### set up initial variables  ###########################   
+#set input argument 1 to variable 'parID' and make sure it has leading zeros
+set parID = "$1"
+
+###################### setup ###########################   
+#go to and set path to BIDS directory
+cd ../..
+set bidsDir = "$cwd"
+
+#go to and set path to untouchRaw/DICOMS directory
+cd ..
+set untouchedDICOMS = "$cwd/untouchedRaw/DICOMS"
+
+#set path to sourcedata directory
+set sourceDir = "$bidsDir/sourcedata"
+
+#set path to participant dicom sourcedata directory
+set parDicom_source = "$sourceDir/sub-${parID}/ses-1/dicom"
+
+###################### Check for directories ######################
+
+#check if participant BIDS directory exisits
+if ( -d "$bidsDir/sub-$parID" ) then
+	#exit if participant BIDS directory already exists
+	echo "dcm-to-bids conversion has been run for participant $parID"
+    	echo "Delete $bidsDir/sub-$parID to rerun"
+    	exit
+#check if dicom sourcedata directory exists for participant
+else
+	#continue with script if dicom sourcedata directory exists
+	if ( -d "$parDicom_source" ) then
+		echo "participant dicom sourcedata directory exists for $parID"
+    		echo "Starting dcm to bids conversion for participant $parID"
+	#exit script if dicom sourcedata directory does not exist
+	else
+		echo "participant dicom sourcedata directory does not exist for $parID"
+		echo "create $parDicom_source and copy untouchedRaw DICOMS into it:"
+		echo ">> mkdir -p /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/sourcedata/sub-$parID/ses-1/dicom"
+		echo ">> cd /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/sourcedata/sub-$parID/ses-1/dicom"
+		echo ">> cp -a /gpfs/group/klk37/default/R01_Food_Brain_Study/untouchRaw/DICOMS/R01_$parID/. ."
+		exit
+	endif
+endif
+
+#check if tmp_dcm2bids exists, delete if it exists
+# Note: tmp_dcm2bids/ is created by dcm2bids_helper; dcm2bids_helper will not run if tmp_dcm2bids/helper already exisits
+if ( -d "$bidsDir/tmp_dcm2bids" ) then
+    echo "deleting tmp_dcm2bids"
+    rm -r $bidsDir/tmp_dcm2bids
+endif
+
+###################### Create temp source dir for participant  ###########################
+# NOTE: This step is to prevent dcm2bids conversion for extra scans that will remain unprocessed for R01 data analyses
+# "extra" should be manually appended to ser* directories in $parDir_source for repeated and unwanted scans prior to running this script
+
+set parDir_source_temp = "$sourceDir/sub-$parID/ses-1/${parID}_temp"
+
+# Make a copy of the participant's sourcedata directory
+cp -r $parDicom_source $parDir_source_temp
+
+# Remove ser directories with the suffix "extra"
+cd $parDir_source_temp
+set extra_scan_count = `ls -d *extra/ | wc -l`
+
+if ($extra_scan_count > 0) then
+    echo "removing $extra_scan_count extra scans from temporary directory"
+    rm -r $parDir_source_temp/ser*extra
+else
+    echo "No extra scans found"
+endif
+
+
+###################### Run dcm2bids_helper  ###########################
+# Note: dcm2bids_helper will convert DICOMS in $parDir_source_temp to NIFTI and place them in the temporary directory $topdir/tmp_dcm2bids/helper
+# Note: /ser* directories removed from $parDir_source_temp in the previous step will not be placed in $topdir/tmp_dcm2bids/helper
+
+cd $bidsDir
+dcm2bids_helper -d $parDir_source_temp
+
+###################### Run dcm2bids  ###########################
+# Note: this will reorganize scans in dcm2bids_helper into BIDS format in $bidsDir/$parID
+dcm2bids -d $parDir_source_temp -p $parID -c code/dcm2bids/dcm2bids_config.json
+
+###################### Clean up  ###########################
+# Copy log file into code/bids_convert_logs
+cp $bidsDir/tmp_dcm2bids/log/sub-${parID}*log $bidsDir/code/dcm2bids/bids_convert_logs
+
+# Remove temporary directories
+rm -r $bidsDir/tmp_dcm2bids
+rm -r $parDir_source_temp

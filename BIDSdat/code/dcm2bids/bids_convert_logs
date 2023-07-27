@@ -1,0 +1,28 @@
+INFO:dcm2bids.dcm2bids:--- dcm2bids start ---
+INFO:dcm2bids.dcm2bids:OS:version: Linux-3.10.0-1160.90.1.el7.x86_64-x86_64-with-glibc2.17
+INFO:dcm2bids.dcm2bids:python:version: 3.9.6 | packaged by conda-forge | (default, Jul 11 2021, 03:39:48) [GCC 9.3.0]
+INFO:dcm2bids.dcm2bids:dcm2bids:version: 2.1.6
+INFO:dcm2bids.dcm2bids:dcm2niix:version: v1.0.20210317
+INFO:dcm2bids.dcm2bids:participant: sub-001
+INFO:dcm2bids.dcm2bids:session: ses-1
+INFO:dcm2bids.dcm2bids:config: /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/code/dcm2bids/dcm2bids_config.json
+INFO:dcm2bids.dcm2bids:BIDS directory: /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/raw_data/sub-001
+INFO:dcm2bids.utils:Running dcm2niix -b y -ba y -z y -f '%3s_%f_%p_%t' -o /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/raw_data/sub-001/tmp_dcm2bids/sub-001_ses-1 /gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/sourcedata/sub-001/ses-1/001_temp
+INFO:dcm2bids.dcm2niix:Check log file for dcm2niix output
+INFO:dcm2bids.sidecar:Sidecars pairing:
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20180628161735_i00001
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20180628161735_i00007
+INFO:dcm2bids.sidecar:No Pairing  <-  001_001_temp_localizer_20180628161735_i00004
+INFO:dcm2bids.sidecar:_T1w  <-  002_001_temp_T1_MPRage_Sagittal_20180628161735
+INFO:dcm2bids.sidecar:_task-rest_bold  <-  003_001_temp_resting-physio_20180628161735
+INFO:dcm2bids.sidecar:_task-foodcue_bold  <-  005_001_temp_run-1-physio_20180628161735
+INFO:dcm2bids.sidecar:_task-foodcue_bold  <-  007_001_temp_run-2-physio_20180628161735
+INFO:dcm2bids.sidecar:_task-foodcue_bold  <-  009_001_temp_run-3-physio_20180628161735
+INFO:dcm2bids.sidecar:_task-foodcue_bold  <-  011_001_temp_run-4-physio_20180628161735
+INFO:dcm2bids.sidecar:_task-foodcue_bold  <-  013_001_temp_run-5-physio_20180628161735
+INFO:dcm2bids.sidecar:_magnitude1  <-  015_001_temp_FieldMap_20180628161735_e1
+INFO:dcm2bids.sidecar:_magnitude2  <-  015_001_temp_FieldMap_20180628161735_e2
+INFO:dcm2bids.sidecar:_phasediff  <-  016_001_temp_FieldMap_20180628161735_e2_ph
+INFO:dcm2bids.sidecar:sub-001/ses-1/func/sub-001_ses-1_task-foodcue_bold has 5 runs
+INFO:dcm2bids.sidecar:Adding 'run' information to the acquisition
+INFO:dcm2bids.dcm2bids:moving acquisitions into BIDS folder
