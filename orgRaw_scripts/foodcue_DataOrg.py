@@ -67,6 +67,12 @@ def bidsformat_foodcue_func(foodcue_raw_data):
     # make new variable: "duration" of the event (measured from onset) in seconds
     foodcue_raw_data['duration'] = foodcue_raw_data['stimslide_duration']/1000
 
+    # reorder columns to meet bids specification -- "onset" as the first column and "duration" as the second column
+    foodcue_raw_data = foodcue_raw_data[['onset', 'duration'] + [col for col in foodcue_raw_data.columns if col not in ['onset', 'duration']]]
+
+    # replace empty cells with "n/a" for bids compliance 
+    foodcue_raw_data.fillna("n/a", inplace=True)
+
     # return pandas dataset
     return(foodcue_raw_data)    
 
@@ -314,7 +320,7 @@ for filepath in fmri_raw_files:
             if len(run_dat) > 1:
                 #set bids filename
                 run_str = str(run)
-                bids_filename = Path(func_raw_bids_path).joinpath('sub-' + subname + '_task-foodcue_run-0' + run_str + '_bold_events.tsv')
+                bids_filename = Path(func_raw_bids_path).joinpath('sub-' + subname + '_ses-1_task-foodcue_run-0' + run_str + '_events.tsv')
 
                 if not bids_filename.exists():
 
