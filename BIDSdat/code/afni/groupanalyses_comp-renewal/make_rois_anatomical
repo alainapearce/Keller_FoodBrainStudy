@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+#useage: make_rois
+#
+# This script creates ROIs using atlas in AFNI
+# Written by Bari Fuchs
+
+###################### setup and check directories  ########################### 
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set output directory for ROIs
+set roidir = $bidsdir/derivatives/analyses/comp-renewal/level2/rois
+
+#make output directory for ROIs if it doesnt exist
+if ( ! -d $roidir ) then
+    mkdir -p $roidir
+
+###################### make rois  ########################### 
+
+whereami -mask_atlas_region TT_Daemon:left:amygdala -prefix $roidir/L_amyg
+
+whereami -mask_atlas_region TT_Daemon:right:amygdala -prefix $roidir/R_amyg
+
+whereami -mask_atlas_region TT_Daemon:left:nucleus_accumbens -prefix $roidir/L_nacc
+
+whereami -mask_atlas_region TT_Daemon:right:nucleus_accumbens -prefix $roidir/R_nacc
+
+whereami -mask_atlas_region TT_Daemon:left:insula -prefix $roidir/L_insula # use coordinate for anterior or posterior instead?
+
+whereami -mask_atlas_region TT_Daemon:right:insula -prefix $roidir/R_insula # use coordinate for anterior or posterior instead?
+
+whereami -mask_atlas_region TT_Daemon:left:Inferior_frontal_gyrus -prefix $roidir/L_ifg # very large 
+
+whereami -mask_atlas_region TT_Daemon:right:Inferior_frontal_gyrus -prefix $roidir/R_ifg # very large 
+
+whereami -mask_atlas_region TT_Daemon:left:orbital_gyrus -prefix $roidir/L_ofc
+
+whereami -mask_atlas_region TT_Daemon:right:orbital_gyrus -prefix $roidir/R_ofc
+
+
+
+# combine ROIs into 1 mask -- use step expresion so each ROI has a different value
+cd $roidir
+3dcalc -a L_amyg+tlrc. -b R_amyg+tlrc. -c L_nacc+tlrc. -d R_nacc+tlrc. -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d)' -prefix all_rois
+
+# # issue : the other ROIs overlap -- need to make more specific ROI masks
+# 3dcalc -a L_amyg+tlrc. -b R_amyg+tlrc. -c L_nacc+tlrc. -d R_nacc+tlrc. -e L_ifg+tlrc. \
+#    -f R_ifg+tlrc. -g L_ofc+tlrc. -h R_ofc+tlrc. -i L_insula+tlrc. -j R_insula+tlrc. \
+#    -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j)' \
+#    -prefix all_rois
+
+##Copy pediatric template into directory
+# set path to templates
+set tpath = $bidsdir/derivatives/templates
+set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    if ( ! -f $map_folder/$basedset_name ) then
+        cp ${basedset} $map_folder
+    endif
+endif

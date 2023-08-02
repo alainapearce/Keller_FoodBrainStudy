@@ -1,0 +1,117 @@
+#!/bin/bash
+#
+#useage: make_rois
+#
+# This script creates ROIs using atlas in AFNI
+# Written by Bari Fuchs
+
+###################### setup and check directories  ########################### 
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+echo "you are here"
+
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set output directory for ROIs
+set roidir = $bidsdir/derivatives/analyses/comp-renewal/level2/rois
+
+#make output directory for ROIs if it doesnt exist
+if ( ! -d $roidir ) then
+    mkdir -p $roidir
+endif
+
+#set pediatric cohort-3 template directory and file
+set tempdir = $bidsdir/derivatives/templates/tpl-MNIPediatricAsym/cohort-3
+set ped_temp = $tempdir/tpl-MNIPediatricAsym_cohort-3_res-2_T1w.nii.gz
+
+set bold_temp = $bidsdir/derivatives/analyses/foodcue-paper2/level1/sub-001/ped_fd-0.9_b20_noGSR/stats.sub-001+tlrc
+echo "you are here 2"
+###################### make rois  ########################### 
+
+## NOTE: resolution of mask dataset will equal that of -master. If $ped_temp is master, this will not match BOLD data resolution.
+#### Need to resample ROI, or use BOLD dataset as -master?
+#### resource for resampling: https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/rois_corr_vis/afni11_roi_cmds.html#resampling-regridding-rois 
+
+# L cerebellum (English et al. 2019)
+echo "-46 -54 -39" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_cerebellum_roi+tlrc -xyz -
+
+# R cerebellum (English et al. 2019)
+echo "6 -52 -28" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/r_cerebellum_roi+tlrc -xyz - 
+
+# L middle insula (Van Meer et al. 2015)
+echo "-38 -10 4" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_midinsula_roi+tlrc -xyz - 
+
+# R middle insula (Van Meer et al. 2015)
+echo "40 6 -12" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/r_midinsula_roi+tlrc -xyz - 
+
+# L lateral OFC/IFG (Van Meer et al. 2015)
+echo "-32 34 -12" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_latofc_roi+tlrc -xyz - 
+
+# L caudate (Van Meer et al. 2015)
+echo "-8 10 -8" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_caudate_roi+tlrc -xyz - 
+
+# L dlpfc (Meng et al. 2020)
+echo "-30 22 40" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_dlpfc_roi+tlrc -xyz - 
+
+# R ventral stiatum (van der Laan et al. 2011)
+echo "6 0 -12" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/r_vs_roi+tlrc -xyz - 
+
+## L ventral striatum (Tang et al. 2012)
+#echo "-9 6 -6" | 3dUndump -orient LPI -srad 4 -master $bold_temp -prefix $roidir/l_vs_roi+tlrc -xyz -
+
+# R vmpfc (Hare et al. 2009)
+echo "3 36 -12" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/r_vmpfc_roi+tlrc -xyz -
+
+# L anterior insula (Tang et al. 2012)
+echo "-35 14 10" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_antinsula_roi+tlrc -xyz -
+
+## R anterior insula (Tang et al. 2012)
+#echo "40 6 -10" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/r_antinsula_roi+tlrc -xyz -
+
+## L middle insula 2 (Tang et al. 2012)
+#echo "-37 -5 7" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_midinsula2_roi+tlrc -xyz -
+
+# R middle insula 2 (Tang et al. 2012)
+echo "39 -6 8" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/r_midinsula2_roi+tlrc -xyz -
+
+## L lateral OFC 2 (Tang et al. 2012)
+#echo "-25 31 -17" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_latofc2_roi+tlrc -xyz -
+
+## L lateral OFC 2 (Tang et al. 2012)
+#echo "-25 31 -17" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_latofc2_roi+tlrc -xyz -
+
+## Large > Small PS peak from activation analyses
+echo "-20 -88 -16" | 3dUndump -orient LPI -srad 8 -master $bold_temp -prefix $roidir/l_v3_roi+tlrc -xyz -
+
+
+# combine ROIs into 1 mask -- use step expresion so each ROI has a different value
+cd $roidir
+echo "combining ROIs into 1 mask"
+3dcalc -a l_cerebellum_roi+tlrc. -b r_cerebellum_roi+tlrc. -c l_midinsula_roi+tlrc. -d r_midinsula_roi+tlrc. -e l_latofc_roi+tlrc. \
+    -f l_caudate_roi+tlrc. -g l_dlpfc_roi+tlrc. -h r_vs_roi+tlrc. -i r_vmpfc_roi+tlrc. -j l_antinsula_roi+tlrc. -k r_midinsula2_roi+tlrc. -l l_v3_roi+tlrc. \
+    -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j) + 1024*step(k) + 2048*step(l)' \
+    -prefix all_rois
+
+##Copy pediatric template into directory
+# set path to templates
+set tpath = $bidsdir/derivatives/templates
+set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    cp ${basedset} $roidir
+endif
