@@ -17,6 +17,7 @@ zBIDSorgStatus.xlsx
 .Rproj.user
 .DS_Store
 *__pycache__/
+*.vscode*
 
 /BIDSdat/derivatives/analyses
 /BIDSdat/derivatives/preprocessed
