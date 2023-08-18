@@ -29,7 +29,7 @@ set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper1/level1
 set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2
 
 #set test directory
-set test_dir = $lev2_dir/parametric
+set test_dir = $lev2_dir/parametric_paired
 
 #set output name
 set today = `date +%m-%d-%y`
@@ -81,12 +81,11 @@ endif
 # copy index lists and covariate file into output folder for reference
 cp $lev2_dir/index_${censor_str}_PM-PS.txt $map_folder
 cp $lev2_dir/index_${censor_str}_PM-ED.txt $map_folder
-cp $lev2_dir/index_${censor_str}_PM-office.txt $map_folder
 cp $lev2_dir/ttest-covariates.txt $map_folder
 
 ###################### generate masks  ########################
 
-foreach cond ( 'PS' 'ED' 'office' )
+foreach cond ( 'PS' 'ED' )
 	# set variables
 	if ( $cond == 'PS' ) then
 		set index = `cat $map_folder/index_${censor_str}_PM-PS.txt`
@@ -94,10 +93,6 @@ foreach cond ( 'PS' 'ED' 'office' )
 
 	if ( $cond == 'ED' ) then
 		set index = `cat $map_folder/index_${censor_str}_PM-ED.txt`
-	endif
-
-	if ( $cond == 'office' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-office.txt`
 	endif
 
 	# make mask
@@ -118,6 +113,7 @@ foreach cond ( 'PS' 'ED' 'office' )
 		rm -r $map_folder/temp_mask_${cond}
 	endif 
 end
+
 ###################### generate t-test scripts  ########################
 # gen_group_command.py settings:
 	# add -Clustsim option to run 3dClustSim
@@ -203,45 +199,6 @@ gen_group_command.py -command 3dttest++                                         
 			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"
 
 
-### 1-sample T-test for office conditions with covariates of interest ###
-set index_office = `cat $map_folder/index_${censor_str}_PM-office.txt`
-# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
-gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/office_PM-1sampleT_medimp        \
-		-prefix  office_PM-1sampleT_medimp                          \
-		-dsets $lev1_dir/*/$lev1_results/office_stats.sub-???+tlrc.HEAD               \
-		-dset_sid_list $index_office						   \
-		-set_labels Office                          \
-		-subs_betas 'Office#1_Coef'   \
-		-options								   \
-			-mask $map_folder/office_mask0.8+tlrc \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"                                \
-
-# generate ttest script -- use ff_maximp as covariate (contains maximum imputed value for ID 54)
-gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/office_PM-1sampleT_maximp        \
-		-prefix  office_PM-1sampleT_medimp                          \
-		-dsets $lev1_dir/*/$lev1_results/office_stats.sub-???+tlrc.HEAD               \
-		-dset_sid_list $index_office						   \
-		-set_labels Office                          \
-		-subs_betas 'Office#1_Coef'   \
-		-options								   \
-			-mask $map_folder/office_mask0.8+tlrc \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,4,6]'"                                \
-
-# generate ttest script -- use ff_minimp as covariate (contains minimuim imputed value for ID 54)
-gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/office_PM-1sampleT_minimp        \
-		-prefix  office_PM-1sampleT_medimp                          \
-		-dsets $lev1_dir/*/$lev1_results/office_stats.sub-???+tlrc.HEAD               \
-		-dset_sid_list $index_office						   \
-		-set_labels Office                          \
-		-subs_betas 'Office#1_Coef'   \
-		-options								   \
-			-mask $map_folder/office_mask0.8+tlrc \
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..2,5,6]'"                                \
-
-
 #set permissions of map folder
 chmod 775 -R $map_folder
 
@@ -254,9 +211,6 @@ if ( "$2" == "run" ) then
     #tcsh ED_PM-pairedT_medimp
 	#tcsh ED_PM-pairedT_maximp
 	#tcsh ED_PM-pairedT_minimp
-	tcsh office_PM-1sampleT_medimp
-	tcsh office_PM-1sampleT_maximp
-	tcsh office_PM-1sampleT_minimp
 endif
 
 # Copy base template into results folder 
