@@ -28,8 +28,11 @@ set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper2/level1
 #set test directory
 set test_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2/1sampleT
 
-# set index dir
-set lev2_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2
+# set R dir
+set R_dir = $bidsdir/derivatives/analyses/foodcue-paper2/R
+
+# set R dir
+set mask_dir = $bidsdir/derivatives/analyses/foodcue-paper2/masks
 
 #set output name
 set today = `date +%m-%d-%y`
@@ -77,81 +80,122 @@ else
 endif
 
 
-# set index list -- lists subjects to include in analyses
-set index = `cat $lev2_dir/index_overall_${censor_str}.txt`
-	
 # copy index list and covariate file into output folder for reference
-cp $lev2_dir/index_all_${censor_str}.txt $map_folder
-cp $lev2_dir/ttest-covariates.txt $map_folder
+cp $R_dir/index_lin_analyses.txt $map_folder
+cp $R_dir/index_quad_analyses.txt $map_folder
+cp $R_dir/fmri_covariates.csv $map_folder
 
+# set index lists -- lists subjects to include in analyses
+set index_lin = `cat $map_folder/index_lin_analyses.txt`
+set index_quad = `cat $map_folder/index_quad_analyses.txt`
 
-###################### generate whole group (WG) mask  ########################
-if ( ! -f $map_folder/WG_mask0.8+tlrc) then
-	
-	# make temporary directory with participant masks for subjects included in analyses
-	mkdir $map_folder/temp_mask
-	foreach sub ( $index )
-		cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
-	end
+###################### generate appetitive masks by index list  ########################
 
-	# generate mask with 80% of participants overlapping
-	3dmask_tool -input $map_folder/temp_mask/mask* \
-     				-prefix $map_folder/WG_mask0.8+tlrc              \
-      				-frac 0.8
+foreach analysis ("lin" "quad")
 
-	# remove temporary directory
-	rm -r $map_folder/temp_mask
-endif
+	# set index list
+	if ( $cond == 'lin' ) then
+		set index = $index_lin
+	endif
 
-###################### generate t-test scripts  ########################
-# maps for main effects
+	if ( $cond == 'quad' ) then
+		set index = $index_quad
+	endif
 
-set maps = ( Large-Small_allED_GLT)
+	# generate mask if it doesnt exist
+	if ( ! -f $map_folder/${analysis}_appetitive_mask0.8+tlrc) then
+		
+		# make temporary directory with participant masks for subjects included in analyses
+		mkdir $map_folder/temp_mask
+		foreach sub ( $index )
+			cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+		end
 
-foreach map ( $maps )
-	set output_name = $map
+		# generate mask with 80% of participants overlapping
+		3dmask_tool -input $map_folder/temp_mask/mask* \
+						-prefix $map_folder/temp_mask/${analysis}_mask0.8+tlrc              \
+						-frac 0.8
 
-	# add -Clustsim option to run 3dClustSim
+		# make intersection mask with 80% mask and appetitive mask
+      	3dmask_tool -input $map_folder/temp_mask/${analysis}_mask0.8+tlrc $mask_dir/appetitive_mask.nii 	\
+					-prefix $map_folder/${analysis}_appetitive_mask0.8+tlrc \
+                  	-frac 1.0
 
-    #zskip-skip voxels if more than 20% of dsets have zero value
-	#toz-when using zskip need to convert t to z because voxel 
-	#may have different number of samples
-
-	# kcal model, includes covariates (sex, avg-motion, pre-fullness, body fat%, cams) and kcal variables (intercept, linear slope)
-	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_kcal        \
-		-prefix  WG_1sampleT++_${output_name}_kcal                    \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-    	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-     	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..5,14,15]'"
-
-	# grams model, includes covariates (sex, avg-motion, pre-fullness, body fat%, cams) and grams variables (intercept, linear slope, quad slope)
-	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_grams        \
-		-prefix  WG_1sampleT++_${output_name}_grams           \
-		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-    	-dset_sid_list $index 					\
-	 	-set_labels $map                                                 \
-     	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
-            -mask $map_folder/WG_mask0.8+tlrc.HEAD  -toz	\
-			-covariates $lev2_dir/ttest-covariates.txt"'[0..5,16..18]'"
-
-	# set permissions of map folder
-    chmod 775 -R $map_folder
-
-	# Execute?
-	if ( "$2" == "run" ) then
-    	cd $map_folder
-		tcsh WG_1sampleT++_${output_name}_kcal
-		tcsh WG_1sampleT++_${output_name}_grams 
+		# remove temporary directory
+		rm -r $map_folder/temp_mask
 	endif
 
 end
+
+
+###################### generate t-test scripts  ########################
+
+# Note: all models include following covariates: sex, avg-motion, pre-mri fullness, pre-mri cams
+
+set map = ( Large-Small_allED_GLT )
+
+# add -Clustsim option to run 3dClustSim
+
+# linear grams model
+gen_group_command.py -command 3dttest++                                             \
+	-write_script $map_folder/lin_1sampleT++_${map}_grams        \
+	-prefix  lin_1sampleT++_${map}_grams           \
+	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+	-dset_sid_list $index_lin 					\
+	-set_labels $map                                                 \
+	-subs_betas "${map}"'#'0_Coef                                    \
+	-options                                                       \
+		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+
+# linear kcal model
+gen_group_command.py -command 3dttest++                                             \
+	-write_script $map_folder/lin_1sampleT++_${map}_kcal        \
+	-prefix  lin_1sampleT++_${map}_kcal                    \
+	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+	-dset_sid_list $index_lin 					\
+	-set_labels $map                                                 \
+	-subs_betas "${map}"'#'0_Coef                                    \
+	-options                                                       \
+		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0..5,14,15]'"
+
+# quad grams model
+gen_group_command.py -command 3dttest++                                             \
+	-write_script $map_folder/quad_1sampleT++_${map}_grams        \
+	-prefix  quad_1sampleT++_${map}_grams           \
+	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+	-dset_sid_list $index_quad 					\
+	-set_labels $map                                                 \
+	-subs_betas "${map}"'#'0_Coef                                    \
+	-options                                                       \
+		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+
+# quad kcal model
+gen_group_command.py -command 3dttest++                                             \
+	-write_script $map_folder/quad_1sampleT++_${map}_grams        \
+	-prefix  quad_1sampleT++_${map}_grams           \
+	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
+	-dset_sid_list $index_quad 					\
+	-set_labels $map                                                 \
+	-subs_betas "${map}"'#'0_Coef                                    \
+	-options                                                       \
+		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+
+# set permissions of map folder
+chmod 775 -R $map_folder
+
+# Execute?
+if ( "$2" == "run" ) then
+	cd $map_folder
+	tcsh lin_1sampleT++_${map}_grams 
+	tcsh lin_1sampleT++_${map}_kcal 
+	tcsh quad_1sampleT++_${map}_kcal
+	tcsh quad_1sampleT++_${map}_grams 
+endif
+
 
 
 # Copy base template into results folder 
