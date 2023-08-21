@@ -72,14 +72,6 @@ subs = list(set([item[4:7] for item in confound_subs_clean]))
 
 prep_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
 
-# Calculate average motion variables -- included in covariate table by make_3dttest_covTable()
-for sub in subs:
-
-     try:
-           prep_avg_motion.get_avg_fd(par_id = sub, preproc_path=False, overwrite=False)
-     except:
-            print("Discontinuing calc_avg_motion() for sub_" + sub)
-
 ## Generate covariate table
 prep_3dttest_covTable.gen_dataframe()
 
