@@ -3,8 +3,6 @@
 """
 This function was created to calculate the average framewise displacement during foodcue task for a subject
 
-Written by Bari Fuchs in Summer 2022
-
 Copyright (C) 2023 Bari Fuchs
 
      This program is free software: you can redistribute it and/or modify
@@ -123,16 +121,6 @@ def _compute_avg_fd_allruns(confound_files):
     avg_fd['all'] = round(avg_fd_allruns, 2)
 
     return avg_fd, max_fd
-
-
-def _compute_avg_fd_includedruns(confound_files, runlist):
-     """Function to compute the average framewise displacement across all TRs in runs included in analyses
-    Inputs:
-        confound_files (list) - list of counfound files from fmriprep. 1 confound file per run
-        
-    Outputs:
-        avg_fd (float)
-    """
 
 ##############################################################################
 ####                                                                      ####
