@@ -38,9 +38,8 @@ import p1_getonsets
 import p2_create_censor_files
 import p4a_gen_byrun_onsets
 import p4b_gen_byblock_onsets
-#import p5_calc_avg_motion
 import p5_gen_onsets_PM
-
+import p6_calc_avg_motion
 
 ##############################################################################
 ####                                                                      ####
@@ -128,3 +127,8 @@ for sub in subs:
            p5_gen_onsets_PM.gen_onsets(par_id = sub, onset_folder = 'fd-0.9_b20')
       except:
            print("Discontinuing p5_gen_onsets_PM() for sub_" + sub)
+
+      try:
+           p6_calc_avg_motion.get_avg_fd(par_id = sub)
+      except:
+           print("Discontinuing p6_calc_avg_motion() for sub_" + sub)
