@@ -26,7 +26,7 @@ set bidsdir = "$cwd"
 set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper2/level1
 
 #set test directory
-set test_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2/1sampleT
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2/1sampleT_feis_appetitive
 
 # set R dir
 set R_dir = $bidsdir/derivatives/analyses/foodcue-paper2/R
@@ -94,11 +94,11 @@ set index_quad = `cat $map_folder/index_quad_analyses.txt`
 foreach analysis ("lin" "quad")
 
 	# set index list
-	if ( $cond == 'lin' ) then
+	if ( $analysis == 'lin' ) then
 		set index = $index_lin
 	endif
 
-	if ( $cond == 'quad' ) then
+	if ( $analysis == 'quad' ) then
 		set index = $index_quad
 	endif
 
