@@ -13,6 +13,6 @@ set tempdir = $bidsdir/derivatives/templates/tpl-MNIPediatricAsym/cohort-3
 
 ###################### resample  ########################
 
-3dresample -master $tempdir/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz -prefix $maskdir/app_mask_resamp -input $maskdir/appetitive_mask.nii
+3dresample -master $tempdir/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz -prefix $maskdir/appetitive_mask_resamp -input $maskdir/appetitive_mask.nii
 
-3dresample -master $tempdir/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz -prefix $maskdir/cer_mask_resamp -input $maskdir/cerebellum_aal_mask.nii
+3dresample -master $tempdir/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz -prefix $maskdir/cerebellum_mask_resamp -input $maskdir/cerebellum_aal_mask.nii
