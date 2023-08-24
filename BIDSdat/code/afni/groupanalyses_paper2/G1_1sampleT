@@ -85,10 +85,7 @@ cp $R_dir/index_lin_app.txt $map_folder
 cp $R_dir/index_quad_app.txt $map_folder
 cp $R_dir/fmri_covariates.csv $map_folder
 
-# set index lists -- lists subjects to include in analyses
-#set index_lin = `cat $map_folder/index_lin_app.txt`
-#set index_quad = `cat $map_folder/index_quad_app.txt`
-
+# set infex files
 set index_lin = $map_folder/index_lin_app.txt
 set index_quad = $map_folder/index_quad_app.txt
 
@@ -131,62 +128,66 @@ foreach analysis ("lin" "quad")
 
 end
 
-exit
 ###################### generate t-test scripts  ########################
 
 # Note: all models include following covariates: sex, avg-motion, pre-mri fullness, pre-mri cams
 
+# set index lists -- lists subjects to include in analyses
+set index_lin_list = `cat $index_lin`
+set index_quad_list = `cat $index_quad`
+
+# set map name
 set map = ( Large-Small_allED_GLT )
 
 # add -Clustsim option to run 3dClustSim
 
 # linear grams model
 gen_group_command.py -command 3dttest++                                             \
-	-write_script $map_folder/lin_1sampleT++_${map}_grams        \
-	-prefix  lin_1sampleT++_${map}_grams           \
+	-write_script $map_folder/lin_grams_1sampleT++_${map}       \
+	-prefix  lin_grams_1sampleT++_${map}           \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_lin 					\
+	-dset_sid_list $index_lin_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
-		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
-		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+		-mask $map_folder/lin_appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0,1,2,15,16,19,20]'"
 
 # linear kcal model
 gen_group_command.py -command 3dttest++                                             \
-	-write_script $map_folder/lin_1sampleT++_${map}_kcal        \
-	-prefix  lin_1sampleT++_${map}_kcal                    \
+	-write_script $map_folder/lin_kcal_1sampleT++_${map}        \
+	-prefix  lin_kcal_1sampleT++_${map}               \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_lin 					\
+	-dset_sid_list $index_lin_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
-		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
-		-covariates $map_folder/fmri_covariates.csv"'[0..5,14,15]'"
+		-mask $map_folder/lin_appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0,3,4,15,16,19,20]'"
 
 # quad grams model
 gen_group_command.py -command 3dttest++                                             \
-	-write_script $map_folder/quad_1sampleT++_${map}_grams        \
-	-prefix  quad_1sampleT++_${map}_grams           \
+	-write_script $map_folder/quad_grams_1sampleT++_${map}       \
+	-prefix  quad_grams_1sampleT++_${map}           \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_quad 					\
+	-dset_sid_list $index_quad_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
-		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
-		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+		-mask $map_folder/quad_appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0,5,6,7,15,16,19,20]'"
 
 # quad kcal model
 gen_group_command.py -command 3dttest++                                             \
-	-write_script $map_folder/quad_1sampleT++_${map}_grams        \
-	-prefix  quad_1sampleT++_${map}_grams           \
+	-write_script $map_folder/quad_kcal_1sampleT++_${map}      \
+	-prefix  quad_kcal_1sampleT++_${map}        \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_quad 					\
+	-dset_sid_list $index_quad_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
-		-mask $map_folder/appetitive_mask0.8+tlrc.HEAD  -toz	\
-		-covariates $map_folder/fmri_covariates.csv"'[0..5,16..18]'"
+		-mask $map_folder/quad_appetitive_mask0.8+tlrc.HEAD  -toz	\
+		-covariates $map_folder/fmri_covariates.csv"'[0,9,10,11,15,16,19,20]'"
 
 # set permissions of map folder
 chmod 775 -R $map_folder
@@ -194,10 +195,10 @@ chmod 775 -R $map_folder
 # Execute?
 if ( "$2" == "run" ) then
 	cd $map_folder
-	tcsh lin_1sampleT++_${map}_grams 
-	tcsh lin_1sampleT++_${map}_kcal 
-	tcsh quad_1sampleT++_${map}_kcal
-	tcsh quad_1sampleT++_${map}_grams 
+	tcsh lin_grams_1sampleT++_${map}
+	tcsh lin_kcal_1sampleT++_${map} 
+	tcsh quad_grams_1sampleT++_${map}
+	tcsh quad_kcal_1sampleT++_${map} 
 endif
 
 
