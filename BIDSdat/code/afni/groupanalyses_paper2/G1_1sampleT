@@ -75,19 +75,23 @@ set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
 if ( ! -d $map_folder ) then
     mkdir -p $map_folder
 else
-	echo "$map_folder already exists. delete or rename to re-run"
-	exit
+#	echo "$map_folder already exists. delete or rename to re-run"
+#	exit
 endif
 
 
 # copy index list and covariate file into output folder for reference
-cp $R_dir/index_lin_analyses.txt $map_folder
-cp $R_dir/index_quad_analyses.txt $map_folder
+cp $R_dir/index_lin_app.txt $map_folder
+cp $R_dir/index_quad_app.txt $map_folder
 cp $R_dir/fmri_covariates.csv $map_folder
 
 # set index lists -- lists subjects to include in analyses
-set index_lin = `cat $map_folder/index_lin_analyses.txt`
-set index_quad = `cat $map_folder/index_quad_analyses.txt`
+#set index_lin = `cat $map_folder/index_lin_app.txt`
+#set index_quad = `cat $map_folder/index_quad_app.txt`
+
+set index_lin = $map_folder/index_lin_app.txt
+set index_quad = $map_folder/index_quad_app.txt
+
 
 ###################### generate appetitive masks by index list  ########################
 
@@ -95,11 +99,11 @@ foreach analysis ("lin" "quad")
 
 	# set index list
 	if ( $analysis == 'lin' ) then
-		set index = $index_lin
+		set index = `cat $index_lin`
 	endif
 
 	if ( $analysis == 'quad' ) then
-		set index = $index_quad
+		set index = `cat $index_quad`
 	endif
 
 	# generate mask if it doesnt exist
@@ -117,7 +121,7 @@ foreach analysis ("lin" "quad")
 						-frac 0.8
 
 		# make intersection mask with 80% mask and appetitive mask
-      	3dmask_tool -input $map_folder/temp_mask/${analysis}_mask0.8+tlrc $mask_dir/appetitive_mask.nii 	\
+      	3dmask_tool -input $map_folder/temp_mask/${analysis}_mask0.8+tlrc $mask_dir/app_mask_resamp+tlrc 	\
 					-prefix $map_folder/${analysis}_appetitive_mask0.8+tlrc \
                   	-frac 1.0
 
@@ -127,7 +131,7 @@ foreach analysis ("lin" "quad")
 
 end
 
-
+exit
 ###################### generate t-test scripts  ########################
 
 # Note: all models include following covariates: sex, avg-motion, pre-mri fullness, pre-mri cams
