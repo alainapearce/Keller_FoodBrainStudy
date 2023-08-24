@@ -5,7 +5,7 @@
 #PBS -A klk37_b_g_bc_default
 #PBS -j oe
 #
-#Useage: qsub G1_feis_app.pbs
+#Useage: qsub G1_feis.pbs
 #
 #
 
@@ -32,10 +32,11 @@ topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/"
 
 
 #write to output file
-echo "## G1_feis_app was run on ${today}"
+echo "## G1_feis was run on ${today}"
 echo "## Job started: `date`"
 
 
 #Load afni singularity and run afniscript
 cd $topdir/code/afni/groupanalyses_paper2
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis_app Ped run fd-0.9_b20_3runs_noGSR
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR appetitive
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR cerebellum
