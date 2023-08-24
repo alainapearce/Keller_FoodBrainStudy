@@ -152,7 +152,7 @@ gen_group_command.py -command 3dttest++                                         
 	-write_script $map_folder/fr_1sampleT++_${map}       \
 	-prefix  fr_1sampleT_${map}           \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_fr 					\
+	-dset_sid_list $index_fr_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
@@ -164,7 +164,7 @@ gen_group_command.py -command 3dttest++                                         
 	-write_script $map_folder/sr_1sampleT++_${map}      \
 	-prefix  sr_1sampleT++_${map}        \
 	-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
-	-dset_sid_list $index_sr 					\
+	-dset_sid_list $index_sr_list 					\
 	-set_labels $map                                                 \
 	-subs_betas "${map}"'#'0_Coef                                    \
 	-options                                                       \
