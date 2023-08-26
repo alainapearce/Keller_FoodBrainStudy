@@ -1,5 +1,5 @@
 #!/bin/tcsh
-#usage: ./7_afni_proc2
+#usage: ./1_afni_proc
 
 ### This script will setup up and apply afni_proc.py to each individual 
 ###
@@ -9,51 +9,45 @@
 #go to and set BIDs as main directory
 cd ../../../
 set bidsdir = $cwd
-echo $bidsdir
-set basedset = HaskinsPeds_NL_template1.0+tlrc
-
-#look for path to template
-set tpath = `@FindAfniDsetPath $basedset`
-
-#if no path then exit with warning
-if ( "$tpath" == '' ) then
-    echo "***** @SSwarper -- Failed to find $basedset :("
-    exit 1
-endif
 
 #set input argument 1 to variable 'parID' and make sure it has leading zeros
-set parID = "sub_$1"
+set parID = "sub-$1"
 
+# set onset directory
 set onsetDir = $bidsdir/derivatives/preprocessed/f31_onsetfiles/
+
+# set subject's fmriprep session 1 directory
+set fmriprep_sesDir = $bidsdir/derivatives/preprocessed/fmriprep/${parID}/ses-1/
+
+echo $fmriprep_sesDir
 
 ###################### setup and check directories  ###########################
 
-#set to orig_data directory for session and participant
-set output_name = ${parID}
+# Things to update:
+# input to regress_motion_file -- can this have derivatives, wm, csf?
+# input to regress_censor_extern -- should be for F31 analyses
 
 ###################### AFNI: afni_proc.py  ###########################
-afni_proc.py -subj_id ${parID} -script proc_${output_name} -out_dir $bidsdir/derivatives/f31_afniproc   \
-    -dsets $bidsdir/derivatives/preprocessed/fmriprep/${parID}/ses-1/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
-    -copy_files $onsetDir/${parID}*.txt                  							                   \
-    -blocks blur mask scale regress                            \
-    -tlrc_base $basedset                                                                        \
+cd $bidsdir/derivatives/preprocessed/f31_afniproc
+
+afni_proc.py -subj_id ${parID} -script proc_${parID}   \
+    -blocks mask blur scale regress                            \
+    -dsets ${fmriprep_sesDir}/func/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
+    -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.g                              \
+    -regress_motion_file     ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_confounds-noheader.tsv                       \
     -blur_size 6.0                                                                              \
     -regress_stim_times $onsetDir/${parID}*OfficeLarge*.txt               			\
         $onsetDir/${parID}*OfficeSmall*.txt                          		                \
         $onsetDir/${parID}*IBI*.txt                          		                \
     -regress_stim_labels OfficeLarge OfficeSmall Fixation         				\
     -regress_basis_multi 'BLOCK(18,1)' 'BLOCK(18,1)' 'BLOCK(8,1)'                               \
-    -regress_censor_motion 1                                                                    \
+    -regress_censor_extern ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_censor_fd-0.9.tsv    \
 	-regress_bandpass         0.01 0.1                             				\
-    -regress_apply_mot_types demean deriv                                                       \
     -regress_opts_3dD                                                                           \
-        -bout                                                                                   \
         -jobs 2                                                                                 \
     -regress_reml_exec                                                                          \
     -regress_compute_fitts                                                                      \
     -regress_make_ideal_sum sum_ideal.1D                                                        \
     -regress_est_blur_epits                                                                     \
     -regress_est_blur_errts                                                                     \
-    -regress_run_clustsim no                                                                    
-
-                                                                                                                            1,1           Top
+    -regress_run_clustsim no
