@@ -13,7 +13,7 @@ cd ../../../
 bidsdir="$PWD"
 
 #set output directory for ROIs
-roidir="$bidsdir/derivatives/analyses/foodcue-paper3/rois/"
+roidir="$bidsdir/derivatives/analyses/f31/rois/"
 
 #make output directory for ROIs if it doesnt exist
 if [ ! -d "$roidir" ]; then
@@ -25,7 +25,7 @@ fi
 
 ## NOTE: resolution of mask dataset will equal that of -master
 # set template to use as -master
-bold_temp="$bidsdir/derivatives/analyses/foodcue-paper3/level1/sub-999/f31_GSR/stats.sub-001+tlrc"
+bold_temp="$bidsdir/derivatives/analyses/f31/level1/sub-999/f31_GSR/stats.sub-001+tlrc"
 
 ## Reactive ROIs ##
 
