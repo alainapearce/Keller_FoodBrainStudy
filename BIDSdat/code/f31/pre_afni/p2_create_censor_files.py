@@ -76,7 +76,7 @@ def _gen_concatenated_regressor_file(confound_files):
     for file in confound_files: #loop through runs (each run has its own confoundfile)
 
         #load data
-        confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
+        confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'ascii', engine='python')
 
         # add counfound file (i.e., run-specific) regressor data to overall regressor file
         RegressRun = confound_dat_all[RegressLev1].copy()
@@ -158,7 +158,7 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
         
     """
 
-    # set base_directory
+    # set bids_directory
     if preproc_path is False:
 
         # get script location
@@ -166,11 +166,11 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
 
         # change directory to base directory (BIDSdat) and get path
         os.chdir(script_path)
-        os.chdir('../..')
-        base_directory = Path(os.getcwd())
+        os.chdir('../../..')
+        bids_directory = Path(os.getcwd())
 
         #set specific paths
-        bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
+        bids_fmriprep_path = Path(bids_directory).joinpath('derivatives/preprocessed/fmriprep')
 
 
     elif isinstance(preproc_path, str):
@@ -218,8 +218,8 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
     regress_Pardat = _gen_concatenated_regressor_file(confound_files)
 
     # Export participant regressor file with and without columns names
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-noheader.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=False)
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-header.tsv')), sep = '\t', encoding='utf-8-sig', index = False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-noheader.tsv')), sep = '\t', encoding='ascii', index = False, header=False)
+    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-header.tsv')), sep = '\t', encoding='ascii', index = False)
 
     ###########################
     ### Create censor files ###
@@ -252,10 +252,9 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
         # add run-specific censor data to overall censor file
         censordata_allruns.extend(run_censordata)
         
-    # Export participant censor file (note: afni expects TSV files to have headers -- so export with header=True)
+    # Export 1D file with participant censor info
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
-    censordata_allruns_df.columns = ['header']
-    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_censor_' + str(censor_str) + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_censor_' + str(censor_str) + '.1D')), sep = '\t', encoding='ascii', index = False, header=False)
 
     # return particpant databases for integration testing
     return censordata_allruns_df
