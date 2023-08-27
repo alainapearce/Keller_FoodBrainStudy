@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-#useage: bash _1_check_roi_coverage     $1             
+#useage: bash 2_check_roi_coverage     $1             
 #		                        ParicipantID
 #
-# This script assesses whether a given subject has complete coverage of ROIs based on their food cue mask
+# This script assesses whether a given subject has complete coverage of ROIs based on food cue mask, by run
 # Written by Bari Fuchs
 
 ###################### set up initial variables  ###########################
@@ -23,85 +23,108 @@ subID="sub-$ID"
 cd ../../../
 bidsdir=$(pwd)
 
-#set roi directories
-roidir="$bidsdir/derivatives/analyses/foodcue-paper3/rois/" #directory with ROI spheres
-coveragedir="$roidir/coverage_masks/" #directory to store coverage masks
+#set directories
+subfunc_dir="$bidsdir/derivatives/preprocessed/fmriprep/$subID/ses-1/func" #subject's fmriprep func directory
+f31_dir="$bidsdir/derivatives/analyses/f31"
+roi_dir="$f31dir/rois/" #directory with ROI spheres
+submask_dir="$f31dir/foodcue_masks/$subID" #directory to store subject's food cue and coverage masks
 
-#check if roi directories exists
-if [ ! -d "$roidir" ]; then
+#check for necessary directories/files
+if [ ! -d "$roidir" ]; then 
 	echo "roi dir does not exist"
 	exit
 else
-	if [ ! -d "$coveragedir" ]; then
-        echo "making mask coverage directory"
-		mkdir "$coveragedir"
-	fi
-fi
-
-#set subjects level1 dir
-sub_lev1_dir="$bidsdir/derivatives/analyses/foodcue-paper3/level1/$subID/"
-
-# quit if no subject level 1 directory or food cue mask 
-if [ ! -d "$sub_lev1_dir" ]; then
-	echo "subject level 1 directory does not exist for $subID. quitting"
-	exit
+    if [ ! -d "$subfunc_dir" ]; then
+        echo "$subID does not have fmriprep func dir"
+        exit
+    fi
 else
-    if [ ! -f "$sub_lev1_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii" ]; then
-	    echo "$subID food cue mask not in level 1 directory. quitting"
+    if [ ! -f "$subfunc_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii" ]; then
+	    echo "$subID foodcue masks from fmriprep not found"
 	    exit
     fi
 fi
 
-###################### Generate ROI coverage mask ########################### 
-
-# sum tmp_roi_mask and food cue mask, save output mask in coveragedir
-#	Output mask will have the following values:
-#	-2 = roi mask only
-#	 1 = food cue mask only
-#	-1 = in roi mask and food cue mask
-
-if [ ! -f "$coveragedir/${subID}_roi_coverage_mask+tlrc.BRIK" ]; then
-    echo "generating ROI coverage mask for $subID"
-    3dMean \
-        -sum    \
-        -prefix $coveragedir/${subID}_roi_coverage_mask \
-        $roidir/rois_mask_neg2+tlrc $sub_lev1_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii
-else
-    echo "ROI coverage mask already exists for $subID"
+# make submask_dir if it doesnt exist
+if [ ! -d "$coveragedir" ]; then
+        echo "making mask directory"
+		mkdir -p "$submask_dir"
 fi
 
-# ###################### check ROI coverage ########################### 
+###################### Copy masks from fmriprep  ########################### 
+cp $fmriprep_subdir/${subID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz $submask_dir
 
-echo "checking ROI coverage for $subID"
 
-# extract the minimum value that exists in the roi_coverage mask 
-sum_min=`3dinfo -min $coveragedir/${subID}_roi_coverage_mask+tlrc`
+###################### Check coverage by run  ########################### 
 
-# set coverage_status variable
-if [ "$sum_min" -eq -2 ]; then
-    coverage_status=0 # indicates incomplete coverage of ROIs
-else
-    coverage_status=1 # indicates full coverage of ROIs
-fi
+# get array of run numbers
+run_array=()
 
-# save coverage status to tab delimited txt file
-if [ ! -f "$coveragedir/summary_coverage_status.txt" ]; then
+for file in "$submask_dir"/*brain_mask*; do
+    if [ -f "$file" ]; then
 
-    # write columns names, -e  enables the interpretation of backslash escapes for \t as a tab separator.
-    echo -e "sub\tcoverage_status" > $coveragedir/summary_coverage_status.txt
+        # Extract the digit after "run-" using parameter expansion
+        runnum=$(basename "$file" | sed 's/.*run-\([0-9]\+\).*/\1/')
+        
+        # Append the extracted digit to the array
+        run_array+=("$runnum")
+    fi
+done
 
-    # export subID and coverage status 
-    echo "writing coverage status for $subID"
-    echo -e "$subID\t$coverage_status" >> $coveragedir/summary_coverage_status.txt
 
-else
-    # check if subID already in the summary file
-    if grep -q "^$subID" "$coveragedir/summary_coverage_status.txt"; then
-        # delete the row containing subID
-        sed -i "/^$subID/d" "$coveragedir/summary_coverage_status.txt"
+for run in $run_array
+
+    ###################### Generate ROI coverage mask ########################### 
+
+    # sum tmp_roi_mask and food cue mask, save output mask in coveragedir
+    #	Output mask will have the following values:
+    #	-2 = roi mask only
+    #	 1 = food cue mask only
+    #	-1 = in roi mask and food cue mask
+
+    if [ ! -f "$submask_dir/${subID}_run${run}_roi_coverage_mask+tlrc.BRIK" ]; then
+        echo "generating ROI coverage mask for $subID run $run"
+        3dMean \
+            -sum    \
+            -prefix $submask_dir/${subID}_run${run}_roi_coverage_mask \
+            $roidir/rois_mask_neg2+tlrc $submask_dir/${subID}_ses-1_task-foodcue_run-${run}_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz
+    else
+        echo "ROI coverage mask already exists for $subID run $run"
     fi
 
-    # append subID and coverage status 
-    echo "overwriting coverage status for $subID"
-    echo -e "$subID\t$coverage_status" >> $coveragedir/summary_coverage_status.txt
-fi
+    # ###################### check ROI coverage ########################### 
+
+    echo "checking ROI coverage for $subID run $run"
+
+    # extract the minimum value that exists in the roi_coverage mask 
+    sum_min=`3dinfo -min $submask_dir/${subID}_run${run}_roi_coverage_mask+tlrc`
+
+    # set coverage_status variable
+    if [ "$sum_min" -eq -2 ]; then
+        coverage_status=0 # indicates incomplete coverage of ROIs
+    else
+        coverage_status=1 # indicates full coverage of ROIs
+    fi
+
+    # save coverage status to tab delimited txt file
+    if [ ! -f "$f31dir/foodcue_masks/summary_coverage_status.txt" ]; then
+
+        # write columns names, -e  enables the interpretation of backslash escapes for \t as a tab separator.
+        echo -e "sub\trun\tcoverage_status" > $coveragedir/summary_coverage_status.txt
+
+        # export subID and coverage status 
+        echo "writing coverage status for $subID"
+        echo -e "$subID\t$run\t$coverage_status" >> $f31dir/foodcue_masks/summary_coverage_status.txt
+
+    else
+        # check if subID already in the summary file
+        if grep -q "^$subID" "$f31dir/foodcue_masks/summary_coverage_status.txt"; then
+            # delete the row containing subID
+            sed -i "/^$subID/d" "$f31dir/foodcue_masks/summary_coverage_status.txt"
+        fi
+
+        # append subID and coverage status 
+        echo "overwriting coverage status for $subID run $run"
+        echo -e "$subID\t$run\t$coverage_status" >> $f31dir/foodcue_masks/summary_coverage_status.txt
+    fi
+done
