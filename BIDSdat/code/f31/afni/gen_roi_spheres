@@ -25,7 +25,7 @@ fi
 
 ## NOTE: resolution of mask dataset will equal that of -master
 # set template to use as -master
-bold_temp="$bidsdir/derivatives/analyses/f31/level1/sub-999/f31_GSR/stats.sub-001+tlrc"
+bold_temp="$bidsdir/derivatives/afni-level1/sub-001/ped_fd-0.9_b20_noGSR/stats.sub-001+tlrc"
 
 ## Reactive ROIs ##
 
@@ -56,7 +56,7 @@ echo "52 28 2" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roi
 echo "-4 22 0" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ifg_roi+tlrc" -xyz -
 
 # Right supramarginal gyrus (46, -52, 44) [from Han et al. 2018 Physiology & Behavior]
-echo "46 -52 -44" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/r_smarg_roi+tlrc" -xyz -
+echo "46 -52 44" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/r_smarg_roi+tlrc" -xyz -
 
 # Left angular gyrus (-42, -64, 42) [from Han et al. 2018 Physiology & Behavior]
 echo "-42 -64 42" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ang_roi+tlrc" -xyz -
