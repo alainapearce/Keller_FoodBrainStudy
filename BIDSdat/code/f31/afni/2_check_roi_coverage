@@ -26,11 +26,11 @@ bidsdir=$(pwd)
 #set directories
 subfunc_dir="$bidsdir/derivatives/preprocessed/fmriprep/$subID/ses-1/func" #subject's fmriprep func directory
 f31_dir="$bidsdir/derivatives/analyses/f31"
-roi_dir="$f31dir/rois/" #directory with ROI spheres
-submask_dir="$f31dir/foodcue_masks/$subID" #directory to store subject's food cue and coverage masks
+roi_dir="$f31_dir/rois/" #directory with ROI spheres
+submask_dir="$f31_dir/foodcue_masks/$subID" #directory to store subject's food cue and coverage masks
 
 #check for necessary directories/files
-if [ ! -d "$roidir" ]; then 
+if [ ! -d "$roi_dir" ]; then 
 	echo "roi dir does not exist"
 	exit
 else
@@ -38,28 +38,25 @@ else
         echo "$subID does not have fmriprep func dir"
         exit
     fi
-else
-    if [ ! -f "$subfunc_dir/foodcue_full_mask-MNIPediatricAsym_cohort-3_res-1.nii" ]; then
-	    echo "$subID foodcue masks from fmriprep not found"
-	    exit
-    fi
 fi
 
 # make submask_dir if it doesnt exist
-if [ ! -d "$coveragedir" ]; then
+if [ ! -d "$submask_dir" ]; then
         echo "making mask directory"
 		mkdir -p "$submask_dir"
 fi
 
 ###################### Copy masks from fmriprep  ########################### 
-cp $fmriprep_subdir/${subID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz $submask_dir
+cp $subfunc_dir/${subID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz $submask_dir
 
 
 ###################### Check coverage by run  ########################### 
 
 # get array of run numbers
-run_array=()
 
+run_array=() #initialize array
+
+# loop through files and extract run number
 for file in "$submask_dir"/*brain_mask*; do
     if [ -f "$file" ]; then
 
@@ -71,8 +68,7 @@ for file in "$submask_dir"/*brain_mask*; do
     fi
 done
 
-
-for run in $run_array
+for run in "${run_array[@]}"; do
 
     ###################### Generate ROI coverage mask ########################### 
 
@@ -87,14 +83,14 @@ for run in $run_array
         3dMean \
             -sum    \
             -prefix $submask_dir/${subID}_run${run}_roi_coverage_mask \
-            $roidir/rois_mask_neg2+tlrc $submask_dir/${subID}_ses-1_task-foodcue_run-${run}_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz
+            $roi_dir/rois_mask_neg2+tlrc $submask_dir/${subID}_ses-1_task-foodcue_run-${run}_space-MNIPediatricAsym_cohort-3_res-1_desc-brain_mask.nii.gz
     else
         echo "ROI coverage mask already exists for $subID run $run"
     fi
 
     # ###################### check ROI coverage ########################### 
 
-    echo "checking ROI coverage for $subID run $run"
+#    echo "checking ROI coverage for $subID run $run"
 
     # extract the minimum value that exists in the roi_coverage mask 
     sum_min=`3dinfo -min $submask_dir/${subID}_run${run}_roi_coverage_mask+tlrc`
@@ -106,25 +102,29 @@ for run in $run_array
         coverage_status=1 # indicates full coverage of ROIs
     fi
 
-    # save coverage status to tab delimited txt file
-    if [ ! -f "$f31dir/foodcue_masks/summary_coverage_status.txt" ]; then
+    # if summary file does not exist
+    if [ ! -f "$f31_dir/foodcue_masks/summary_coverage_status.txt" ]; then
 
-        # write columns names, -e  enables the interpretation of backslash escapes for \t as a tab separator.
-        echo -e "sub\trun\tcoverage_status" > $coveragedir/summary_coverage_status.txt
+        # create summary file: write columns names, -e  enables the interpretation of backslash escapes for \t as a tab separator.
+        echo -e "sub\trun\tcoverage_status" > $f31_dir/foodcue_masks/summary_coverage_status.txt
 
-        # export subID and coverage status 
-        echo "writing coverage status for $subID"
-        echo -e "$subID\t$run\t$coverage_status" >> $f31dir/foodcue_masks/summary_coverage_status.txt
-
+        # add subID, run, and coverage status to summary file
+        echo -e "$subID\t$run\t$coverage_status" >> $f31_dir/foodcue_masks/summary_coverage_status.txt
+    
+    # if summary file does exist
     else
-        # check if subID already in the summary file
-        if grep -q "^$subID" "$f31dir/foodcue_masks/summary_coverage_status.txt"; then
-            # delete the row containing subID
-            sed -i "/^$subID/d" "$f31dir/foodcue_masks/summary_coverage_status.txt"
+
+        # check if subID and run already in the summary file
+        if grep -q -P "^$subID\t$run" "$f31_dir/foodcue_masks/summary_coverage_status.txt"; then
+	 
+	    echo "deleting coverage status for $subID run $run"
+
+            # delete the row containing subID and run
+            sed -i "/^$subID\t$run/d" "$f31_dir/foodcue_masks/summary_coverage_status.txt"
+
         fi
 
         # append subID and coverage status 
-        echo "overwriting coverage status for $subID run $run"
-        echo -e "$subID\t$run\t$coverage_status" >> $f31dir/foodcue_masks/summary_coverage_status.txt
+        echo -e "$subID\t$run\t$coverage_status" >> $f31_dir/foodcue_masks/summary_coverage_status.txt
     fi
 done
