@@ -19,7 +19,8 @@ set onsetDir = $bidsdir/derivatives/preprocessed/f31_onsetfiles/
 # set subject's fmriprep session 1 directory
 set fmriprep_sesDir = $bidsdir/derivatives/preprocessed/fmriprep/${parID}/ses-1/
 
-echo $fmriprep_sesDir
+# set output directory
+set outdir = $bidsdir/derivatives/analyses/f31/afniproc
 
 ###################### setup and check directories  ###########################
 
@@ -28,26 +29,24 @@ echo $fmriprep_sesDir
 # input to regress_censor_extern -- should be for F31 analyses
 
 ###################### AFNI: afni_proc.py  ###########################
-cd $bidsdir/derivatives/preprocessed/f31_afniproc
+cd $outdir
 
 afni_proc.py -subj_id ${parID} -script proc_${parID}   \
-    -blocks mask blur scale regress                            \
+    -blocks blur scale regress                            \
     -dsets ${fmriprep_sesDir}/func/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
-    -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.g                              \
-    -regress_motion_file     ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_confounds-noheader.tsv                       \
+    -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.gz                              \
+    -regress_motion_file ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_confounds-noheader.tsv                       \
     -blur_size 6.0                                                                              \
     -regress_stim_times $onsetDir/${parID}*OfficeLarge*.txt               			\
         $onsetDir/${parID}*OfficeSmall*.txt                          		                \
         $onsetDir/${parID}*IBI*.txt                          		                \
     -regress_stim_labels OfficeLarge OfficeSmall Fixation         				\
     -regress_basis_multi 'BLOCK(18,1)' 'BLOCK(18,1)' 'BLOCK(8,1)'                               \
-    -regress_censor_extern ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_censor_fd-0.9.tsv    \
+    -regress_censor_extern ${fmriprep_sesDir}/func/${parID}_f31-allruns_censor_rmsd-0.3.1D    \
 	-regress_bandpass         0.01 0.1                             				\
     -regress_opts_3dD                                                                           \
         -jobs 2                                                                                 \
     -regress_reml_exec                                                                          \
     -regress_compute_fitts                                                                      \
     -regress_make_ideal_sum sum_ideal.1D                                                        \
-    -regress_est_blur_epits                                                                     \
-    -regress_est_blur_errts                                                                     \
     -regress_run_clustsim no
