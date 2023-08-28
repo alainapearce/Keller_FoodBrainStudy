@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# The purpose of this script is to smooth and scale BOLD images, create a mask,
+# and run first-level analyses in AFNI for participant R01_PARNUM
+
+#This script was generated on DATE
+
+######## Set up AFNI Environmental Variables ########
+#don't log AFNI programs in ~/.afni.log
+AFNI_DONT_LOGFILE="YES"
+
+#dont try version checks
+ANFI_VRSION_CHECK="NO"
+
+##don't auto-compress insert files
+AFNI_COMPRESSOR="NONE"
+
+#set number of processors for AFNI. 10 is the number of cores that will be used to run the job
+OMP_NUM_THREADS="10"
+
+######## Set up Script Variables ########
+#date
+today=`date +%m-%d-%y`
+
+#set top/base directory
+topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS"
+
+#insert start of this section
+echo "## AFNI procesing started: `date`"
+
+
+
+######## 1: Scaling and Smoothing of preprocessed functional data  (1_smooth-scale) ########
+#insert header for this subsection in output
+echo "######## Smoothing and scaling (1_smooth-scale) ########"
+echo ""
+
+#be sure script is starting Script directory
+cd $topdir/code/afni/proc_scripts
+
+#run 1_smooth-scale script
+bash 1_smooth-scale PARNUM 1
+
+
+
+######## 2: Create 1 mask by combining separate run masks (2_createmask) ########
+#insert header for this subsection in output
+echo "######## Creating subject mask (2_createmask) ########"
+echo ""
+
+#be sure script is starting Script directory
+cd $topdir/code/afni/proc_scripts
+
+#run 2_createmask script
+bash 2_createmask PARNUM 1
+
+
+######## 3: Run first-level analyses (3_3ddeconvolve) ########
+
+#insert header for this subsection in output
+echo "######## First-level analyses (3_3ddeconvolve) ########"
+echo ""
+
+#be sure script is starting Script directory
+cd $topdir/code/afni/proc_scripts
+
+#run 5_3ddeconvolve script
+
+bash 3_3ddeconvolve PARNUM 1 Ped fd-0.9 b20
+bash 3_3ddeconvolve PARNUM 1 Ped fd-0.9 f20
+
+#insert ending time for this section
+echo "## AFNI processing ended: `date`"
