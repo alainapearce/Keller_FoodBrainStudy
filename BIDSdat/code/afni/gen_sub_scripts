@@ -1,43 +1,31 @@
 #!/bin/bash
 #  
-#Useage: gen_preproc_ACI       $1..$n       $n+1    
-#                          participantID    Session#
+#Useage: gen_preproc_ACI       $1..$n        
+#                          participantID
 #
 #
-#The purpose of this script is to generate full processing scripts for each subject 
-# that can be run on the ACI cluster. 
-
+#The purpose of this script is to generate full preprocessing scripts that can be run
+#on the ACI cluster. 
+#
+#### PROCESSING NOTE ####
+#Due to the operating system on ACI-ICS, we needed to use a singularity
+#container with a different linux opperating system in order to use the 
+#most recent afni update. Due to this, multiple scripts were generated so
+#that the processing step can be run in the correct order. Part 1 includes
+#the first 2 afni steps, then this script will extract onsets, then Part 2
+#finishes the rest of afni steps, then this script will process the motion
+#information.
 
 ###################### set up initial variables  ###########################
 #get date
 today=`date +%m_%d_%y`
-
-#session number--last input argument
-#  "$#" will give the total number of input arguments so this loop
-#  "${@:$#}" wil indicate last input argument
-session_num=${@:$#}
-session=Session${@:$#}
-
-# quit if session_num is not 1
-if [[ $session_num -ne "1" ]]
-then
-	echo "session argument must be 1"
-	exit
-else
-	echo "generating scripts for subjects ${@:1:$#-1} for $session"
-fi
 
 #set topdir--code/afni folder/current working directory
 topdir="$PWD"
 
 ###################### LOOP ######################
 #below the script loops through participant numbers entered as arguments 
-#this works only if the last input argument is the session number--
-#   "$@" will give the full list of input arguments
-#   "$#" will give the total number of input arguments so this loop
-#Therefore "${@:1:$#-1}" means: given the list of argumements, loop
-#from the first to last minus 1 (all but last
-for par in ${@:1:$#-1}
+for par in $@
 do
     ###################### set up participant variables  ###########################
 
@@ -61,12 +49,12 @@ do
     #loop through all needed scripts.
     
     #list of all script names
-    proc_scripts=(wrapper-afni wrapper-afni.pbs )
+    proc_scripts=(paper1_wrapper-afni paper1_wrapper-afni.pbs )
  
     for script in "${proc_scripts[@]}"
     do
 	#set script name
-	parScript=${par_ScriptDir}/sub-${parID_num}_session${session_num}_${today}_$script
+	parScript=${par_ScriptDir}/sub-${parID_num}_${script}
 
 	#replace PARNUM with participant ID number in all scripts
 	#note: sed stands for stream editor--it takes text input
@@ -74,9 +62,7 @@ do
 
 	#replace PARNUM with participant ID number
 	sed "s|PARNUM|${parID_num}|g" $script > $parScript
-	sed -i "s|SESSION|${session}|g" $parScript
 	sed -i "s|DATE|${today}|g" $parScript
-	sed -i "s|SESNUM|${session_num}|g" $parScript
 	
 	#make executable
 	chmod 775 $parScript
