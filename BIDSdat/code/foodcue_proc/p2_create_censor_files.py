@@ -78,8 +78,8 @@ def _get_summary_files(bids_fmriprep_path, censor_str, sub, overwrite):
     # if database does not exist
     else:
         # create new dataframe 
-        CenSum_allPar = pd.DataFrame(np.zeros((0, 8)))
-        CenSum_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_interest', 'n_censor_interest', 'p_censor_interest']
+        CenSum_allPar = pd.DataFrame(np.zeros((0, 11)))
+        CenSum_allPar.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor', 'n_vol_blocks', 'n_censor_blocks', 'p_censor_blocks', 'n_vol_food', 'n_censor_food', 'p_censor_food']
 
     ########################################
     ### Manage byblock-censorsummary file ###
@@ -177,8 +177,7 @@ def _gen_run_int_list(orig_onsetfiles, confound_dat, runnum):
         block_onsets_TR_dict (dictionary)
     """
 
-    ### Identify TRs in food blocks ###
-    # get onset files (note: there is 1 onset file per condition)
+    ### Identify TRs in cue blocks - add to dictionary ###
 
     # make empty list for block onsets
     block_onsets_TR = []
@@ -186,16 +185,12 @@ def _gen_run_int_list(orig_onsetfiles, confound_dat, runnum):
     # make dictionary for block onsets
     block_onsets_TR_dict = {}
 
-    # loop through onset files to get block onset times
+    # loop through onset files to append block onset times to dictionary (for both food and office supply blocks)
     for onsetfile in orig_onsetfiles:
         # get file name
         filename = onsetfile.stem
         # get condition 
         cond = re.split('_|-',filename)[2]
-
-        ## Uncomment this and indent loop if want to only consider food blocks and not office supply blocks
-        # if condition contains High or Low string 
-        #if ('High' in cond) or ('Low' in cond):
 
         #load file
         onsetfile_dat = pd.read_csv(str(onsetfile), sep = '\t', encoding = 'utf-8-sig', engine='python', header=None)
@@ -207,21 +202,30 @@ def _gen_run_int_list(orig_onsetfiles, confound_dat, runnum):
         TR = 2
         onset_TR = int(onset_time / TR)
 
-        # append block onset TR to list
-        block_onsets_TR.append(onset_TR)
-
-        # add condition and onset to dictionary
+        # add 'cond' as key and onset as value to dictionary
         block_onsets_TR_dict[cond] = onset_TR
 
-    # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is of non-interest, 1 = TR of interest
-    r_int_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
+    # make another dictionary that only contains keys for food blocks
+    food_onsets_TR_dict = {key: value for key, value in block_onsets_TR_dict.items() if "Office" not in key}
+
+    # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is not in a cue block (fixation), 1 = TR is in cue block
+    block_onsets_TR = list(block_onsets_TR_dict.values()) # make a list of block onset times 
+    r_block_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
     for onset in block_onsets_TR: #loop through onsets
         offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
-        r_int_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
+        r_block_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
-    return(r_int_list, block_onsets_TR_dict)
+    # Make a list of 1s and 0s equal to the length of a run -- 0 = TR is not in a food block (office block, fixation), 1 = TR is in food block
+    food_onsets_TR = list(food_onsets_TR_dict.values()) # make a list of food block onset times 
+    r_food_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
+    for onset in food_onsets_TR: #loop through onsets
+        offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
+        r_food_list[onset:offset] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1
 
-def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, cen_prev_TR_flag):
+
+    return(r_block_list, r_food_list, block_onsets_TR_dict, food_onsets_TR_dict)
+
+def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_block_list, r_food_list, cen_prev_TR_flag):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on framewise displacement and std_dvars thresholds
     Inputs:
         confound_dat (dataframe) - data from a -desc-confounds_timeseries.tsv file
@@ -289,26 +293,46 @@ def _get_run_censor_info(confound_dat, FD_thresh, std_dvars_thresh, r_int_info, 
     # get percent of censored TRs, rounded to 1 decimals
     p_censored = round((n_censored/nvol)*100,1)
 
-    ### Get censor information for TRs of interest ###
+    ### Get censor information for TRs of in cue blocks ###
 
-    # get indices of r_int_info that are non-zero (i.e., TRs of interest)
-    interest_ind = np.nonzero(r_int_info)[0]
+    # get indices of r_block_list that are non-zero (i.e., TRs in cue blocks)
+    block_ind = np.nonzero(r_block_list)[0]
 
-    # filter censor_info to only include indeces of interest
-    censor_info_int = [censor_info[i] for i in interest_ind]
+    # filter censor_info to only include indeces of blocks
+    censor_info_blocks = [censor_info[i] for i in block_ind]
     
-    censor_info_int_df = pd.DataFrame(censor_info_int)
+    censor_info_blocks_df = pd.DataFrame(censor_info_blocks)
 
     # get number of volumes of interest
-    nvol_int = len(censor_info_int)
+    nvol_blocks = len(censor_info_blocks)
 
     # count number of censored TRs of intrest
-    n_censored_int = (censor_info_int_df[0] == 0).sum()
+    n_censored_blocks = (censor_info_blocks_df[0] == 0).sum()
 
     # get percent of censored TRs of interest, rounded to 1 decimals
-    p_censored_int = round((n_censored_int/nvol_int)*100,1)
+    p_censored_blocks = round((n_censored_blocks/nvol_blocks)*100,1)
 
-    return(censor_info, nvol, n_censored, p_censored, nvol_int, n_censored_int, p_censored_int)
+    ### Get censor information for TRs of in food blocks ###
+
+    # get indices of r_block_list that are non-zero (i.e., TRs in cue blocks)
+    food_ind = np.nonzero(r_food_list)[0]
+
+    # filter censor_info to only include indeces of blocks
+    censor_info_food = [censor_info[i] for i in food_ind]
+    
+    censor_info_food_df = pd.DataFrame(censor_info_food)
+
+    # get number of volumes of interest
+    nvol_food = len(censor_info_food)
+
+    # count number of censored TRs of intrest
+    n_censored_food = (censor_info_food_df[0] == 0).sum()
+
+    # get percent of censored TRs of interest, rounded to 1 decimals
+    p_censored_food = round((n_censored_food/nvol_food)*100,1)
+
+
+    return(censor_info, nvol, n_censored, p_censored, nvol_blocks, n_censored_blocks, p_censored_blocks, nvol_food, n_censored_food, p_censored_food)
 
 def _get_censorsum_byblock(block_onsets_TR_dict, run_censordata, sub, runnum):
 
@@ -452,8 +476,8 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
     ###########################
 
     # create run censor data summary per participant
-    censor_sum_byrun_Pardat = pd.DataFrame(np.zeros((0, 8)))
-    censor_sum_byrun_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_interest', 'n_censor_interest', 'p_censor_interest']
+    censor_sum_byrun_Pardat = pd.DataFrame(np.zeros((0, 11)))
+    censor_sum_byrun_Pardat.columns = ['sub','run', 'n_vol', 'n_censor', 'p_censor','n_vol_blocks', 'n_censor_blocks', 'p_censor_blocks', 'n_vol_food', 'n_censor_food', 'p_censor_food']
 
     censor_sum_byblock_Pardat = pd.DataFrame(np.zeros((0, 8)))
     censor_sum_byblock_Pardat.columns = ['sub','run', 'HighLarge', 'HighSmall', 'LowLarge', 'LowSmall', 'OfficeLarge','OfficeSmall']
@@ -483,10 +507,10 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
         orig_onsetfiles = list(Path(bids_origonset_path).rglob('sub-' + str(sub) + '*AFNIonsets.txt'))
 
         # run function to generate r_int_list and a dictionary of block onset times (block_onsets_TR_dict)
-        r_int_list, block_onsets_TR_dict = _gen_run_int_list(orig_onsetfiles, confound_dat, runnum)
+        r_block_list, r_food_list, block_onsets_TR_dict, food_onsets_TR_dict = _gen_run_int_list(orig_onsetfiles, confound_dat, runnum)
 
         # run function to get censor information by run
-        res = _get_run_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_int_info = r_int_list, cen_prev_TR_flag=cen_prev_tr)
+        res = _get_run_censor_info(confound_dat, FD_thresh = framewise_displacement, std_dvars_thresh = std_vars, r_block_list = r_block_list, r_food_list = r_food_list, cen_prev_TR_flag=cen_prev_tr)
 
         # add run-specific censor data to overall censor file
         run_censordata = res[0]
@@ -494,9 +518,11 @@ def create_censor_files(par_id, framewise_displacement, std_vars=False, cen_prev
         
         # add run-specific summary information to participant summary dataframe (censor_sum_byrun_Pardat)
         # res[1] = number of TRs total; res[2] = number of TRs censored total, res[3] = % of TRs censored total
-        # res[4] = number of TRs of interest; res[5] = number of TRs of interest censored , res[6] = % of TRs of interest censored
+        # res[4] = number of block (non-fixation) TRs; res[5] = number of block TRs censored , res[6] = % of block TRs censored
+        # res[7] = number of food TRs; res[8] = number of food TRs censored , res[9] = % of food TRs censored
+
         df_len = len(censor_sum_byrun_Pardat)
-        runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6]]
+        runsum = [sub, runnum, res[1], res[2], res[3], res[4], res[5], res[6], res[7], res[8], res[9]]
         censor_sum_byrun_Pardat.loc[df_len] = runsum
 
         # get censor information by condition/block
