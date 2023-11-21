@@ -69,6 +69,7 @@ cd $topdir/code/afni/proc_scripts
 #note: 3_3ddeconvolve previously named 3_3ddeconvolve-noGSR
 bash 3_3ddeconvolve PARNUM 1 Ped fd-0.9 b20
 bash 3_3ddeconvolve_PM PARNUM 1 Ped fd-0.9 b20
+bash 3_3ddeconvolve_PM_likefull PARNUM 1 Ped fd-0.9 b20
 
 #insert ending time for this section
 echo "## AFNI processing ended: `date`"
