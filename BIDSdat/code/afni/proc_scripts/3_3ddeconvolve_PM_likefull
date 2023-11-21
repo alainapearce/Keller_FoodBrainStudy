@@ -1,0 +1,283 @@
+#!/bin/bash
+#usage: ./3_3dDeconvolve_PM_likewant     $1          $2   	 $3		$4  						$5
+#		    						ParticipantID   Session Template   TR-Censor-criteria (e.g., fd-1.0)	Run or block censor criteria (e.g.,b20)
+#		    
+#
+### This script will run 3ddeconvolve with parametric modulation ###
+### AFNI code was derived from https://andysbrainbook.readthedocs.io/en/latest/OpenScience/OS/fMRIPrep_Demo_4_AdditionalPreproc.html
+ 
+
+
+###################### set up initial variables  ###########################
+
+#set input argument 1 to variable 'subID' and make sure it has leading zeros
+
+#remove leading zeros if they were included -- trying to add leading zeros to numbers with leading zeros can lead to issues (https://stackoverflow.com/questions/8078167/printf-in-bash-09-and-08-are-invalid-numbers-07-and-06-are-fine)
+ID_nozero=$(echo $1 | sed 's/^0*//')
+
+# add leading zeros back
+ID=`printf %03d $ID_nozero`
+subID="sub-$ID"
+session="Session$2"
+
+# set censor criteria variables
+TRcen="$4"
+runcen="$5"
+
+# set template string
+if [ "$3" == "Ped" ]
+then
+	temp="MNIPediatricAsym_cohort-3"
+	tempst="ped"
+	echo "template for 3ddeconvolve is $temp"
+elif [ "$3" == "MNI" ]
+then
+	temp="MNI152NLin2009cAsym"
+	tempst="MNI"
+	echo "template for 3ddeconvolve is $temp"
+else
+	echo "please specify template as Ped or MNI. Exiting 3_3dDeconvolve_PM_likefull"
+fi
+
+
+
+###################### setup and check directories  ###########################
+# assign output directory name
+
+#go to and set BIDs as main directory
+cd ../../../
+topdir=$(pwd)
+
+#set onset file directory
+onsetDir="$topdir/derivatives/preprocessed/foodcue_onsetfiles/${TRcen}_${runcen}_PM_likefull"
+
+#set parDir to participants fmriprep ses directory
+parDir="$topdir/derivatives/preprocessed/fmriprep/$subID/ses-$2"
+
+#set output directory
+output_dir="$topdir/derivatives/afni-level1/${subID}/${tempst}_${TRcen}_${runcen}_PM_likefull"
+
+# create output directory if it doesnt exist
+if [ ! -d $output_dir ]; then
+	mkdir -p $output_dir
+fi
+
+#check for participant fmriprep directory, exit if doesnt exist
+if [ ! -d $parDir ]; then
+	echo "fmriprep/ses-$2/ directory does not exist for participant $subID. Exiting 3_3dDeconvolve_PM_likefull"
+	exit
+fi
+
+# verify that stimtime files exist
+cd $onsetDir
+stimfiles=(` ls ${subID}*.txt`)
+
+if [ "${#stimfiles[@]}" = 5 ]; then    
+        echo "starting 3ddeconvolve for ${subID} ${session}" 
+else
+        echo "${TRcen}_p${runcen} onset files are missing for $subID. Exiting 3_3dDeconvolve_PM"
+        exit
+fi
+
+
+###################### AFNI: 3dDeconvolve  ###########################
+# run the first-level regression analyses, if no output for that model already exists in $output_dir
+cd $output_dir
+
+# note: stim_times_subtract is set equal to TR/2 to adjust for how fmriprep does slice time correction
+# see https://reproducibility.stanford.edu/slice-timing-correction-in-fmriprep-and-linear-modeling/
+
+## liking ratings with onsets by Portion Size
+if ! ls "$output_dir"/liking_PS* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "liking_PS"
+	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
+		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+			-polort 2                                                               		\
+		-num_stimts 16                                                                          \
+		-stim_times_subtract 1									\
+		-stim_times_AM2 1 $onsetDir/${subID}_liking_LargePSfood*.txt 'BLOCK(18,1)'	\
+		-stim_label 1 LargePSfood                  						\
+		-stim_times_AM2 2 $onsetDir/${subID}_liking_SmallPSfood*.txt 'BLOCK(18,1)'    \
+		-stim_label 2 SmallPSfood     						  								\
+		-stim_file 3 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[0]' -stim_base 3 -stim_label 3 trans_x_01    		\
+		-stim_file 4 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[1]' -stim_base 4 -stim_label 4 trans_y_01   		\
+		-stim_file 5 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[2]' -stim_base 5 -stim_label 5 trans_z_01     	\
+		-stim_file 6 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 6 -stim_label 6 rot_x_01  		\
+		-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 7 -stim_label 7 rot_y_01   		\
+		-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 8 -stim_label 8 rot_z_01   		\
+			-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 9 -stim_label 9 csf             \
+			-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 10 -stim_label 10 white_matter             \
+			-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 11 -stim_label 11 trans_x_02        \
+			-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 12 -stim_label 12 trans_y_02                \
+			-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 13 -stim_label 13 trans_z_02        \
+			-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 14 -stim_label 14 rot_x_02          \
+			-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 15 -stim_label 15 rot_y_02         \
+			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
+			-gltsym 'SYM: LargePSfood[0] -SmallPSfood[0]' -glt_label 1 Large-Small    \
+			-gltsym 'SYM: LargePSfood[1] -SmallPSfood[1]' -glt_label 2 Large-Small_PM    \
+			-jobs 8                                                    				\
+			-fout -tout -x1D liking_PS_X.xmat.1D -xjpeg liking_PS_X.jpg -xsave                                  		\
+			-x1D_uncensored liking_PS_X.nocensor.xmat.1D                                       		\
+			-fitts liking_PS_fitts.$subID                                                       		\
+			-errts liking_PS_errts.$subID                                                     		\
+			-bucket liking_PS_stats.$subID
+else
+	echo "Output files from portion size parametric analyses already exist. Skipping liking_PS model"
+fi
+
+## liking ratings with onsets by Energy Density
+if ! ls "$output_dir"/liking_ED* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "ED"
+	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
+		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+		-polort 2                                                               		\
+		-num_stimts 16                                                                          \
+		-stim_times_subtract 1									\
+		-stim_times_AM2 1 $onsetDir/${subID}_liking_HighED*.txt 'BLOCK(18,1)'	\
+		-stim_label 1 HighED                  						\
+		-stim_times_AM2 2 $onsetDir/${subID}_liking_LowED*.txt 'BLOCK(18,1)'    \
+		-stim_label 2 LowED     						  								\
+		-stim_file 3 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[0]' -stim_base 3 -stim_label 3 trans_x_01    		\
+		-stim_file 4 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[1]' -stim_base 4 -stim_label 4 trans_y_01   		\
+		-stim_file 5 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[2]' -stim_base 5 -stim_label 5 trans_z_01     	\
+		-stim_file 6 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 6 -stim_label 6 rot_x_01  		\
+		-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 7 -stim_label 7 rot_y_01   		\
+		-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 8 -stim_label 8 rot_z_01   		\
+			-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 9 -stim_label 9 csf             \
+			-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 10 -stim_label 10 white_matter             \
+			-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 11 -stim_label 11 trans_x_02        \
+			-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 12 -stim_label 12 trans_y_02                \
+			-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 13 -stim_label 13 trans_z_02        \
+			-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 14 -stim_label 14 rot_x_02          \
+			-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 15 -stim_label 15 rot_y_02         \
+			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
+			-gltsym 'SYM: HighED[0] -LowED[0]' -glt_label 1 High-Low    \
+			-gltsym 'SYM: HighED[1] -LowED[1]' -glt_label 2 High-Low_PM    \
+			-jobs 8                                                    				\
+			-fout -tout -x1D liking_ED_X.xmat.1D -xjpeg liking_ED_X.jpg -xsave                                  		\
+			-x1D_uncensored liking_ED_X.nocensor.xmat.1D                                       		\
+			-fitts liking_ED_fitts.$subID                                                       		\
+			-errts liking_ED_errts.$subID                                                     		\
+			-bucket liking_ED_stats.$subID
+else
+	echo "Output files from ED parametric analyses already exist. Skipping liking_ED model"
+fi
+
+## with onsets for food and office blocks
+if ! ls "$output_dir"/liking_cuetype* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "Office"
+	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
+		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+		-polort 2                                                               		\
+		-num_stimts 15                                                                          \
+		-stim_times_subtract 1									\
+		-stim_times_AM2 1 $onsetDir/${subID}_liking_Office*.txt 'BLOCK(18,1)'	\
+		-stim_label 1 Office                  								\
+		-stim_times_AM2 2 $onsetDir/${subID}_liking_Food*.txt 'BLOCK(18,1)'    \
+		-stim_label 2 Food     						  								\
+		-stim_file 3 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[0]' -stim_base 3 -stim_label 3 trans_x_01    		\
+		-stim_file 4 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[1]' -stim_base 4 -stim_label 4 trans_y_01   		\
+		-stim_file 5 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[2]' -stim_base 5 -stim_label 5 trans_z_01     	\
+		-stim_file 6 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 6 -stim_label 6 rot_x_01  		\
+		-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 7 -stim_label 7 rot_y_01   		\
+		-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 8 -stim_label 8 rot_z_01   		\
+			-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 9 -stim_label 9 csf             \
+			-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 10 -stim_label 10 white_matter             \
+			-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 11 -stim_label 11 trans_x_02        \
+			-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 12 -stim_label 12 trans_y_02                \
+			-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 13 -stim_label 13 trans_z_02        \
+			-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 14 -stim_label 14 rot_x_02          \
+			-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 15 -stim_label 15 rot_y_02         \
+			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
+			-gltsym 'SYM: Food[0] -Office[0]' -glt_label 1 Food-office    \
+			-gltsym 'SYM: Food[1] -Office[1]' -glt_label 2 Food-office_PM    \
+			-jobs 8                                                    				\
+			-fout -tout -x1D liking_cuetype_X.xmat.1D -xjpeg liking_cuetype_X.jpg -xsave                                  		\
+			-x1D_uncensored liking_cuetype_X.nocensor.xmat.1D                                       		\
+			-fitts liking_cuetype_fitts.$subID                                                       		\
+			-errts liking_cuetype_errts.$subID                                                     		\
+			-bucket liking_cuetype_stats.$subID
+else
+	echo "Output files from liking_cuetype parametric analyses already exist. Skipping liking_cuetype model"
+fi
+
+## fullness ratings with onsets by Portion Size
+if ! ls "$output_dir"/fullness_PS* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "fullness_PS"
+	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
+		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+			-polort 2                                                               		\
+		-num_stimts 16                                                                          \
+		-stim_times_subtract 1									\
+		-stim_times_AM2 1 $onsetDir/${subID}_fullness_LargePSfood*.txt 'BLOCK(18,1)'	\
+		-stim_label 1 LargePSfood                  						\
+		-stim_times_AM2 2 $onsetDir/${subID}_fullness_SmallPSfood*.txt 'BLOCK(18,1)'    \
+		-stim_label 2 SmallPSfood     						  								\
+		-stim_file 3 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[0]' -stim_base 3 -stim_label 3 trans_x_01    		\
+		-stim_file 4 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[1]' -stim_base 4 -stim_label 4 trans_y_01   		\
+		-stim_file 5 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[2]' -stim_base 5 -stim_label 5 trans_z_01     	\
+		-stim_file 6 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 6 -stim_label 6 rot_x_01  		\
+		-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 7 -stim_label 7 rot_y_01   		\
+		-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 8 -stim_label 8 rot_z_01   		\
+			-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 9 -stim_label 9 csf             \
+			-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 10 -stim_label 10 white_matter             \
+			-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 11 -stim_label 11 trans_x_02        \
+			-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 12 -stim_label 12 trans_y_02                \
+			-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 13 -stim_label 13 trans_z_02        \
+			-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 14 -stim_label 14 rot_x_02          \
+			-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 15 -stim_label 15 rot_y_02         \
+			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
+			-gltsym 'SYM: LargePSfood[0] -SmallPSfood[0]' -glt_label 1 Large-Small    \
+			-gltsym 'SYM: LargePSfood[1] -SmallPSfood[1]' -glt_label 2 Large-Small_PM    \
+			-jobs 8                                                    				\
+			-fout -tout -x1D fullness_PS_X.xmat.1D -xjpeg fullness_PS_X.jpg -xsave                                  		\
+			-x1D_uncensored fullness_PS_X.nocensor.xmat.1D                                       		\
+			-fitts fullness_PS_fitts.$subID                                                       		\
+			-errts fullness_PS_errts.$subID                                                     		\
+			-bucket fullness_PS_stats.$subID
+else
+	echo "Output files from portion size parametric analyses already exist. Skipping fullness_PS model"
+fi
+
+## fullness ratings with onsets by Energy Density
+if ! ls "$output_dir"/fullness_ED* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "ED"
+	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
+		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
+		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
+		-polort 2                                                               		\
+		-num_stimts 16                                                                          \
+		-stim_times_subtract 1									\
+		-stim_times_AM2 1 $onsetDir/${subID}_fullness_HighED*.txt 'BLOCK(18,1)'	\
+		-stim_label 1 HighED                  						\
+		-stim_times_AM2 2 $onsetDir/${subID}_fullness_LowED*.txt 'BLOCK(18,1)'    \
+		-stim_label 2 LowED     						  								\
+		-stim_file 3 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[0]' -stim_base 3 -stim_label 3 trans_x_01    		\
+		-stim_file 4 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[1]' -stim_base 4 -stim_label 4 trans_y_01   		\
+		-stim_file 5 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[2]' -stim_base 5 -stim_label 5 trans_z_01     	\
+		-stim_file 6 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[3]' -stim_base 6 -stim_label 6 rot_x_01  		\
+		-stim_file 7 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[4]' -stim_base 7 -stim_label 7 rot_y_01   		\
+		-stim_file 8 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[5]' -stim_base 8 -stim_label 8 rot_z_01   		\
+			-stim_file 9 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[6]' -stim_base 9 -stim_label 9 csf             \
+			-stim_file 10 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[7]' -stim_base 10 -stim_label 10 white_matter             \
+			-stim_file 11 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[9]' -stim_base 11 -stim_label 11 trans_x_02        \
+			-stim_file 12 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[10]' -stim_base 12 -stim_label 12 trans_y_02                \
+			-stim_file 13 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[11]' -stim_base 13 -stim_label 13 trans_z_02        \
+			-stim_file 14 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[12]' -stim_base 14 -stim_label 14 rot_x_02          \
+			-stim_file 15 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[13]' -stim_base 15 -stim_label 15 rot_y_02         \
+			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
+			-gltsym 'SYM: HighED[0] -LowED[0]' -glt_label 1 High-Low    \
+			-gltsym 'SYM: HighED[1] -LowED[1]' -glt_label 2 High-Low_PM    \
+			-jobs 8                                                    				\
+			-fout -tout -x1D fullness_ED_X.xmat.1D -xjpeg fullness_ED_X.jpg -xsave                                  		\
+			-x1D_uncensored fullness_ED_X.nocensor.xmat.1D                                       		\
+			-fitts fullness_ED_fitts.$subID                                                       		\
+			-errts fullness_ED_errts.$subID                                                     		\
+			-bucket fullness_ED_stats.$subID
+else
+	echo "Output files from ED parametric analyses already exist. Skipping liking_ED model"
+fi
+
+
+
+# copy mask into level-1 analyses folder
+cp $parDir/func/foodcue_full_mask*${temp}*.nii $output_dir
