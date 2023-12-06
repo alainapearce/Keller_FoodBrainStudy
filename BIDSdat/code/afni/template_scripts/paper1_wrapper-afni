@@ -23,7 +23,7 @@ OMP_NUM_THREADS="10"
 today=`date +%m-%d-%y`
 
 #set top/base directory
-topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS"
+topdir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS"
 
 #insert start of this section
 echo "## AFNI procesing started: `date`"
