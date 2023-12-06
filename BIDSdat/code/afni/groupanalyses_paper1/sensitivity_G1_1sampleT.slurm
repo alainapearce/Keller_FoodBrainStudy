@@ -3,10 +3,9 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mem=12GB
 #SBATCH --time=24:00:00
-#SBATCH --account=klk37_b_g_bc_default
+#SBATCH --account=klk37
 #SBATCH --partition=sla-prio 
-#SBATCH --output=output.log
-#SBATCH --error=error.log
+#SBATCH --output=%x.%j
 #
 #Useage: sbatch sensitivity_G1_1sampleT.slurm
 #
@@ -42,4 +41,4 @@ echo "## Job started: `date`"
 
 #Load afni singularity and run afniscript
 cd $topdir/code/afni/groupanalyses_paper1
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G1_1sampleT Ped run fd-0.9_b20_3runs_noGSR
+singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G1_1sampleT Ped run fd-0.9_b20_3runs_noGSR
