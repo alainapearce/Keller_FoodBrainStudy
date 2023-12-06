@@ -114,6 +114,7 @@ def gen_dataframe():
 
     # encode snack_intake as -1 for no and 1 for yes
     covar_df = covar_df.replace({'snack_intake':{'no':-1, 'yes':1}})
+    covar_df['snack_intake'] = covar_df['snack_intake'].fillna(-999) #replace missing value with -999
 
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
@@ -125,9 +126,6 @@ def gen_dataframe():
     covar_df['dxa_total_fat_mass'] = covar_df['dxa_total_fat_mass'].astype(str).astype(float) #convert to string, then float
     covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
     covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
-
-    # replace all nan with -999
-    covar_df.fillna(-999, inplace=True)
 
     # set column order so that the base covariates come first
     covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom', 'fmi', 'snack_intake']]
