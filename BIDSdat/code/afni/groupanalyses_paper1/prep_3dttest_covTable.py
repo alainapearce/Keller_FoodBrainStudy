@@ -57,7 +57,7 @@ def gen_dataframe():
 
     #set specific paths
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
-    v6covar_path = Path(bids_path).joinpath('derivatives/preprocessed/V6_covariates')
+    v6covar_path = Path(bids_path).joinpath('derivatives/analyses/foodcue-paper1/R')
     database_path = Path(proj_path).joinpath('Databases')
 
     #########################################
@@ -100,7 +100,7 @@ def gen_dataframe():
     covar_df = pd.merge(covar_df,mot_df[['id','fd_avg_allruns']],on='id', how='left')
 
     # Add fullness and pre-mri cams variables from v6 database to covar_df
-    covar_df = pd.merge(covar_df,v6_df[['id','imp_med','imp_max', 'imp_min', 'cams_pre_mri']],on='id', how='left')
+    covar_df = pd.merge(covar_df,v6_df[['id','imp_med','imp_max', 'imp_min', 'cams_pre_mri', 'snack_intake']],on='id', how='left')
 
     ############################
     #### Clean up covariates ###
@@ -111,6 +111,9 @@ def gen_dataframe():
 
     # encode risk as -1 for low and 1 for high so that the main effect will be the average between males and females
     covar_df = covar_df.replace({'risk_status_mom':{'Low Risk':-1, 'High Risk':1}})
+
+    # encode snack_intake as -1 for no and 1 for yes
+    covar_df = covar_df.replace({'snack_intake':{'no':-1, 'yes':1}})
 
     # rename id column to Subj
     covar_df = covar_df.rename(columns={'id': 'Subj'})
@@ -123,8 +126,11 @@ def gen_dataframe():
     covar_df['height_avg'] = covar_df['height_avg'].astype(str).astype(float) #convert to string, then float
     covar_df['fmi'] = (covar_df['dxa_total_fat_mass'].div(1000)) / ((covar_df["height_avg"] * .01)**2)
 
+    # replace all nan with -999
+    covar_df.fillna(-999, inplace=True)
+
     # set column order so that the base covariates come first
-    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom', 'fmi']]
+    covar_df = covar_df[['Subj','sex','fd_avg_allruns','ff_medimp', 'ff_maximp', 'ff_minimp', 'cams_pre_mri', 'risk_status_mom', 'fmi', 'snack_intake']]
 
     #########################
     #### Export dataframe ###
