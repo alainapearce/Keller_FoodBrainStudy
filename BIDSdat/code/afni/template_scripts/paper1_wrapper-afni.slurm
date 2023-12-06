@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=10
-#SBATCH --mem=12GB
+#SBATCH --ntasks-per-node=5
+#SBATCH --mem-per-cpu=10GB
 #SBATCH --time=24:00:00
 #SBATCH --account=klk37
 #SBATCH --partition=sla-prio 
