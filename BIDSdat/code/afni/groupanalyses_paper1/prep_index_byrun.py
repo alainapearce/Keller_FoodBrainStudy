@@ -182,11 +182,19 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     highrisk = [str(sub) for sub in high_risk_df['id']]
     lowrisk = [str(sub) for sub in low_risk_df['id']]
 
+    # create index lists for sensitivity analyses without 054. this subject is missing data for snack_intake covariate
+    sensivitity_all = [value for value in all if value != '054']
+    sensivitity_high_risk = [value for value in all if highrisk != '054']
+    sensivitity_low_risk = [value for value in all if lowrisk != '054']
+
     # add lists to dictionary
     index_dict = {}
     index_dict['all'] = all
     index_dict['highrisk'] = highrisk
     index_dict['lowrisk'] = lowrisk
+    index_dict['sensivitity_all'] = sensivitity_all
+    index_dict['sensivitity_high_risk'] = sensivitity_high_risk
+    index_dict['sensivitity_low_risk'] = sensivitity_low_risk
 
     # define output path
     censor_string = str(onset_dir)
