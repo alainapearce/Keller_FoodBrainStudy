@@ -57,7 +57,7 @@ def gen_dataframe():
 
     #set specific paths
     fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
-    v6covar_path = Path(bids_path).joinpath('derivatives/derivatives/foodcue-paper1/R')
+    v6covar_path = Path(bids_path).joinpath('derivatives/preprocessed/foodcue-paper1/R')
     database_path = Path(proj_path).joinpath('Databases')
 
     #########################################
