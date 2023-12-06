@@ -81,7 +81,7 @@ endif
 set index = `cat $lev2_dir/index_sensitivity_all_${censor_str}.txt`
 	
 # copy index list and covariate file into output folder for reference
-cp $lev2_dir/index_all_${censor_str}.txt $map_folder
+cp $lev2_dir/index_sensitivity_all_${censor_str}.txt $map_folder
 cp $lev2_dir/ttest-covariates.txt $map_folder
 
 
@@ -117,10 +117,10 @@ set maps = ( High-Low_allPS_GLT Large-Small_allED_GLT Food-Office_GLT LargeHigh-
 foreach map ( $maps )
 	set output_name = $map
 
-	# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
+	# generate ttest script
 	gen_group_command.py -command 3dttest++                                             \
-		-write_script $map_folder/WG_1sampleT++_${output_name}_medimp         \
-		-prefix  WG_1sampleT++_${output_name}_medimp                    \
+		-write_script $map_folder/WG_1sampleT++_${output_name}        \
+		-prefix  WG_1sampleT++_${output_name}               \
 		-dsets ${lev1_dir}/*/${lev1_results}/stats.sub-???+tlrc.HEAD       \
     	-dset_sid_list $index 					\
 	 	-set_labels $map                                                 \
@@ -136,7 +136,7 @@ foreach map ( $maps )
 	# Execute?
 	if ( "$2" == "run" ) then
     	cd $map_folder
-    	tcsh WG_1sampleT++_${output_name}_medimp
+    	tcsh WG_1sampleT++_${output_name}
 	endif
 
 end
