@@ -93,6 +93,9 @@ fi
 # create results and stimuli directories
 mkdir -p $output_dir
 
+# copy onsets into output dir
+cp $onsetDir/${subID}*.txt $output_dir
+
 
 ###################### AFNI: 3dDeconvolve  ###########################
 # run the first-level regression analysis
