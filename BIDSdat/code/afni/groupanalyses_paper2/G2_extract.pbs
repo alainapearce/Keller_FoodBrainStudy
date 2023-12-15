@@ -5,7 +5,7 @@
 #PBS -A klk37_b_g_bc_default
 #PBS -j oe
 #
-#Useage: qsub G1_1sampleT.pbs
+#Useage: qsub G2_extract.pbs
 #
 #
 
