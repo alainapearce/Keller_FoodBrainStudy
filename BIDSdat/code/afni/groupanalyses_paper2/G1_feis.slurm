@@ -9,7 +9,7 @@
 #
 #Useage: sbatch G1_feis.slurm
 #
-#
+# The purpose of this script is to call analysis scripts on Roar Collab cluster 
 
 ######## Set up inital variables ########
 
@@ -32,14 +32,12 @@ today=`date +%m-%d-%y`
 #set top/base directory
 topdir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/"
 
-
 #write to output file
-echo "## G1_feis was run on ${today}"
+echo "## G1_feis scripts run on ${today}"
 echo "## Job started: `date`"
-
 
 #Load afni singularity and run afniscript
 cd $topdir/code/afni/groupanalyses_paper2
-#singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR appetitive
-#singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR cerebellum
+singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR appetitive
+singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR cerebellum
 singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh G1_feis_sensitivity Ped run fd-0.9_b20_3runs_noGSR cerebellum

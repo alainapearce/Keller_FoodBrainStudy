@@ -7,7 +7,7 @@
 #
 #Useage: qsub G1_feis.pbs
 #
-#
+# The purpose of this script is to call analysis scripts on ACI cluster 
 
 ######## Set up inital variables ########
 
@@ -40,3 +40,4 @@ echo "## Job started: `date`"
 cd $topdir/code/afni/groupanalyses_paper2
 singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR appetitive
 singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis Ped run fd-0.9_b20_3runs_noGSR cerebellum
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_feis_sensitivity Ped run fd-0.9_b20_3runs_noGSR cerebellum
