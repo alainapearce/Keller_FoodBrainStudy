@@ -184,8 +184,14 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
 
     # create index lists for sensitivity analyses without 054. this subject is missing data for snack_intake covariate
     sensitivity_all = [value for value in all if value != '054']
-    sensitivity_highrisk = [value for value in all if highrisk != '054']
-    sensitivity_lowrisk = [value for value in all if lowrisk != '054']
+    sensitivity_highrisk = [value for value in highrisk if value != '054']
+    sensitivity_lowrisk = [value for value in lowrisk if value != '054']
+
+    # create index lists for risk-based analyses without subjects with parentally-reported maternal height and weight (i.e., only include those with measured maternal height and weight)
+    parentally_reported_ids = ['040', '045', '056', '074', '080', '095', '096', '104', '116']
+    measured_all = [value for value in all if value not in parentally_reported_ids]
+    measured_highrisk = [value for value in highrisk if value not in parentally_reported_ids]
+    measured_lowrisk = [value for value in lowrisk if value not in parentally_reported_ids]
 
     # add lists to dictionary
     index_dict = {}
@@ -195,6 +201,10 @@ def gen_index_byrun(onset_dir, nruns, preproc_path = False):
     index_dict['sensitivity_all'] = sensitivity_all
     index_dict['sensitivity_highrisk'] = sensitivity_highrisk
     index_dict['sensitivity_lowrisk'] = sensitivity_lowrisk
+    index_dict['measured_all'] = measured_all
+    index_dict['measured_highrisk'] = measured_highrisk
+    index_dict['measured_lowrisk'] = measured_lowrisk
+
 
     # define output path
     censor_string = str(onset_dir)
