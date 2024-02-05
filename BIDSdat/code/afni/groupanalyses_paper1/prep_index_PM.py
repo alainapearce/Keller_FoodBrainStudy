@@ -94,10 +94,18 @@ def gen_index_PM():
             if sub not in ('011', '020', '028', '039','004', '017', '026', '049', '056', '084', '089', '116'):
                 index_list_pwant_office.append(sub)
 
+        # create index lists for sensitivity analyses without 054. this subject is missing data for snack_intake covariate                
+        sensitivity_index_list_pwant_ED = [value for value in index_list_pwant_ED if value != '054']
+        sensitivity_index_list_pwant_PS = [value for value in index_list_pwant_PS if value != '054']
+        sensitivity_index_list_pwant_office = [value for value in index_list_pwant_office if value != '054']
+
         # set file names
         file_pwant_ED = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-ED.txt')
         file_pwant_PS = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-PS.txt')
         file_pwant_office = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-office.txt')
+        file_pwant_ED_sensitivity = lev2_path.joinpath('index_sensitivity_fd-0.9_b20_3runs_PM-ED.txt')
+        file_pwant_PS_sensitivity = lev2_path.joinpath('index_sensitivity_fd-0.9_b20_3runs_PM-PS.txt')
+        file_pwant_office_sensitivity = lev2_path.joinpath('index_sensitivity_fd-0.9_b20_3runs_PM-office.txt')
 
         # write ids to file
         with open(file_pwant_ED, 'w') as output_file_name:
@@ -110,4 +118,16 @@ def gen_index_PM():
 
         with open(file_pwant_office, 'w') as output_file_name:
             joined_list = "  ".join(index_list_pwant_office)
+            print(joined_list , file = output_file_name)
+
+        with open(file_pwant_ED_sensitivity, 'w') as output_file_name:
+            joined_list = "  ".join(sensitivity_index_list_pwant_ED)
+            print(joined_list , file = output_file_name)
+
+        with open(file_pwant_PS_sensitivity, 'w') as output_file_name:
+            joined_list = "  ".join(sensitivity_index_list_pwant_PS)
+            print(joined_list , file = output_file_name)
+
+        with open(file_pwant_office_sensitivity, 'w') as output_file_name:
+            joined_list = "  ".join(sensitivity_index_list_pwant_office)
             print(joined_list , file = output_file_name)
