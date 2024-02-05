@@ -89,15 +89,15 @@ cp $lev2_dir/ttest-covariates.txt $map_folder
 foreach cond ( 'PS' 'ED' 'Office' )
 	# set variables
 	if ( $cond == 'PS' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-PS.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-PS.txt`
 	endif
 
 	if ( $cond == 'ED' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-ED.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-ED.txt`
 	endif
 
 	if ( $cond == 'Office' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-office.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-office.txt`
 	endif
 
 	# make mask
@@ -127,15 +127,15 @@ set maps = ( LargePSfood SmallPSfood HighED LowED Office)
 
 foreach map ( $maps )
     if (`expr "$map" : ".*PS.*"`) then
-		set index = `cat $map_folder/index_${censor_str}_PM-PS.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-PS.txt`
 		set mask = $map_folder/PS_mask0.8+tlrc
 		set statsfile = "PS"
     else if (`expr "$map" : ".*ED.*"`) then
-		set index = `cat $map_folder/index_${censor_str}_PM-ED.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-ED.txt`
 		set mask = $map_folder/ED_mask0.8+tlrc
 		set statsfile = "ED"
     else if (`expr "$map" : ".*Office.*"`) then
-		set index = `cat $map_folder/index_${censor_str}_PM-office.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-office.txt`
 		set mask = $map_folder/Office_mask0.8+tlrc
 		set statsfile = "office"
     endif
@@ -148,9 +148,9 @@ foreach map ( $maps )
 			-dset_sid_list $index						   \
 			-set_labels $map                            \
 			-subs_betas "${map}"'#'1_Coef    \
-			-options								   \
-				-mask $mask -Clustsim \
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6]'"                                \
+			-options	-Clustsim							   \
+				-mask $mask  \
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"                                \
 
 
 end

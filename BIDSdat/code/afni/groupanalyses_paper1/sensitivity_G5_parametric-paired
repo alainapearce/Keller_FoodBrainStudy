@@ -88,11 +88,11 @@ cp $lev2_dir/ttest-covariates.txt $map_folder
 foreach cond ( 'PS' 'ED' )
 	# set variables
 	if ( $cond == 'PS' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-PS.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-PS.txt`
 	endif
 
 	if ( $cond == 'ED' ) then
-		set index = `cat $map_folder/index_${censor_str}_PM-ED.txt`
+		set index = `cat $map_folder/index_sensitivity_${censor_str}_PM-ED.txt`
 	endif
 
 	# make mask
@@ -121,12 +121,12 @@ end
 ### Paired T-tests for ED and PS conditions with covariates of interest ###
 
 ### For portion size ###
-set index_ps = `cat $map_folder/index_${censor_str}_PM-PS.txt`
+set index_ps = `cat $map_folder/index_sensitivity_${censor_str}_PM-PS.txt`
 
 # generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/PS_PM-pairedT_medimp        \
-		-prefix  PS_PM-pairedT_medimp                          \
+		-write_script $map_folder/PS_PM-pairedT        \
+		-prefix  PS_PM-pairedT                         \
 		-dsets $lev1_dir/*/$lev1_results/PS_stats.sub-???+tlrc.HEAD               \
 		-dset_sid_list $index_ps						   \
 		-set_labels LargePS SmallPS                          \
@@ -137,11 +137,11 @@ gen_group_command.py -command 3dttest++                                         
 
 
 ### For energy density ###
-set index_ed = `cat $map_folder/index_${censor_str}_PM-ED.txt`
+set index_ed = `cat $map_folder/index_sensitivity_${censor_str}_PM-ED.txt`
 # generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 gen_group_command.py -command 3dttest++                                            \
-		-write_script $map_folder/ED_PM-pairedT_medimp        \
-		-prefix  ED_PM-pairedT_medimp                          \
+		-write_script $map_folder/ED_PM-pairedT       \
+		-prefix  ED_PM-pairedT                      \
 		-dsets $lev1_dir/*/$lev1_results/ED_stats.sub-???+tlrc.HEAD               \
 		-dset_sid_list $index_ed						   \
 		-set_labels HighED LowED                          \
@@ -157,8 +157,8 @@ chmod 775 -R $map_folder
 # Execute?
 if ( "$2" == "run" ) then
 	cd $map_folder
-    tcsh PS_PM-pairedT_medimp
-    tcsh ED_PM-pairedT_medimp
+    tcsh PS_PM-pairedT
+    tcsh ED_PM-pairedT
 
 endif
 
