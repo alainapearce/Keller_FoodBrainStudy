@@ -79,16 +79,12 @@ def gen_index_PM():
         index_list_pwant_ED = []
         index_list_pwant_PS = []
         index_list_pwant_office = []
-        index_list_likefull_EDPS = []
-        index_list_like_cuetype = []
 
         # add subs to PM index lists if they are not listed
             # 011, 020, 028, 039 -- excluded from all lists for %want analyses due to missing data for at least 1 block
             # 004, 040, 058 -- excluded from index_list_PM_ED due to lack of variability in at least 1 condition when grouping by ED
             # 004, 040 -- excluded from index_list_PM_PS due to lack of variability in at least 1 condition when grouping by PS
             # 004, 017, 026, 049, 056, 084, 089, 116 -- excluded from index_list_PM_office due to lack of variability in office conditon
-            # 005, 109 -- excluded from index_list_likefull_EDPS and index_list_likefull_cuetype due to missing liking/fullness ratings
-            # 073 -- excluded from index_list_likefull_cuetype due to no variability in liking ratings for Office supplies 
 
         for sub in index_list:
             if sub not in ('011', '020', '028', '039','004', '040', '058'):
@@ -97,19 +93,11 @@ def gen_index_PM():
                 index_list_pwant_PS.append(sub)
             if sub not in ('011', '020', '028', '039','004', '017', '026', '049', '056', '084', '089', '116'):
                 index_list_pwant_office.append(sub)
-            if sub not in ('005', '109'):
-                index_list_likefull_EDPS.append(sub)
-            if sub not in ('005', '073', '109'):
-                index_list_like_cuetype.append(sub)
-
 
         # set file names
         file_pwant_ED = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-ED.txt')
         file_pwant_PS = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-PS.txt')
         file_pwant_office = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-office.txt')
-        file_likefull_EDPS = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-likefull-EDPS.txt')
-        file_like_cuetype = lev2_path.joinpath('index_fd-0.9_b20_3runs_PM-like-cuetype.txt')
-
 
         # write ids to file
         with open(file_pwant_ED, 'w') as output_file_name:
@@ -122,12 +110,4 @@ def gen_index_PM():
 
         with open(file_pwant_office, 'w') as output_file_name:
             joined_list = "  ".join(index_list_pwant_office)
-            print(joined_list , file = output_file_name)
-
-        with open(file_likefull_EDPS, 'w') as output_file_name:
-            joined_list = "  ".join(index_list_likefull_EDPS)
-            print(joined_list , file = output_file_name)
-
-        with open(file_like_cuetype, 'w') as output_file_name:
-            joined_list = "  ".join(index_list_like_cuetype)
             print(joined_list , file = output_file_name)
