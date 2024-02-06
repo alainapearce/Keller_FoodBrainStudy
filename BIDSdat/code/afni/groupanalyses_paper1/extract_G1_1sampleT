@@ -38,10 +38,14 @@ cd $res_dir
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_High-Low_allPS_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1519 -bisided -3.2905 3.2905 -pref_map clust_mask_1samp_High-Low_allPS
 3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_Large-Small_allED_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1498 -bisided -3.2905 3.2905 -pref_map clust_mask_1samp_Large-Small_allED
 
+3dClusterize -nosum -1Dformat -inset $res_dir/WG_1sampleT++_OfficeLarge-Small_GLT_medimp+tlrc.HEAD -idat 1 -ithr 1 -NN 2 -clust_nvox 1521 -bisided -3.2905 3.2905 -pref_map clust_mask_1samp_OfficeLarge-Small
 
 ###################### extract betas from combined mask ###########################
 
-set contrasts = ( Food-Office High-Low_allPS Large-Small_allED) 
+#set contrasts = ( Food-Office High-Low_allPS Large-Small_allED OfficeLarge-Small) 
+
+set contrasts = ( OfficeLarge-Small ) 
+
 
 foreach contrast ( $contrasts )
 
