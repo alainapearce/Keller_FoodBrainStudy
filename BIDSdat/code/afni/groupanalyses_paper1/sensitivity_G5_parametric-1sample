@@ -79,9 +79,9 @@ endif
 
 
 # copy index lists and covariate file into output folder for reference
-cp $lev2_dir/index_${censor_str}_PM-PS.txt $map_folder
-cp $lev2_dir/index_${censor_str}_PM-ED.txt $map_folder
-cp $lev2_dir/index_${censor_str}_PM-office.txt $map_folder
+cp $lev2_dir/index_sensitivity_${censor_str}_PM-PS.txt $map_folder
+cp $lev2_dir/index_sensitivity_${censor_str}_PM-ED.txt $map_folder
+cp $lev2_dir/index_sensitivity_${censor_str}_PM-office.txt $map_folder
 cp $lev2_dir/ttest-covariates.txt $map_folder
 
 ###################### generate masks  ########################
@@ -143,14 +143,15 @@ foreach map ( $maps )
 	# generate ttest script -- use ff_medimp as covariate (contains median imputed value for ID 54)
 	gen_group_command.py -command 3dttest++                                            \
 			-write_script $map_folder/${map}_PM-1sampleT        \
-			-prefix  ${map}_PM-1sampleT                         \
+			-prefix  ${map}_PM-1sampleT                          \
 			-dsets $lev1_dir/*/$lev1_results/${statsfile}_stats.sub-???+tlrc.HEAD               \
 			-dset_sid_list $index						   \
 			-set_labels $map                            \
 			-subs_betas "${map}"'#'1_Coef    \
-			-options	-Clustsim							   \
+			-options								   \
 				-mask $mask  \
-				-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"                                \
+				-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
+
 
 
 end

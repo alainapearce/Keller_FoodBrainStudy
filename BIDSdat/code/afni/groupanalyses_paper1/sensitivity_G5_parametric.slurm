@@ -40,5 +40,5 @@ echo "## Job started: `date`"
 
 #Load afni singularity and run afniscript
 cd $topdir/code/afni/groupanalyses_paper1
-singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G5_parametric-1sample Ped run fd-0.9_b20_3runs_noGSR
-singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G5_parametric-paired Ped run fd-0.9_b20_3runs_noGSR
+singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G5_parametric-1sample Ped run fd-0.9_b20_3runs_PM
+singularity exec /storage/group/klk37/default/sw/AFNI.simg tcsh sensitivity_G5_parametric-paired Ped run fd-0.9_b20_3runs_PM
