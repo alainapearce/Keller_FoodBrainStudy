@@ -1,7 +1,7 @@
 #!/bin/tcsh
 #
-#useage: G2_2sample-pairedT   $1         $2       		$3
-#		     				template	execute?  	level 1 folder string 
+#useage: sensitivity_G5_parametric-1sample   $1         $2       		$3
+#		     								template	execute?  	level 1 folder string 
 #
 # The purpose of this script is to create and run 1sample t-tests of all conditions of interest
 # $1: ped or MNI
@@ -148,7 +148,7 @@ foreach map ( $maps )
 			-dset_sid_list $index						   \
 			-set_labels $map                            \
 			-subs_betas "${map}"'#'1_Coef    \
-			-options								   \
+			-options -Clustsim								   \
 				-mask $mask  \
 				-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
 

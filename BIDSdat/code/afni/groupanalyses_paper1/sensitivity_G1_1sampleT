@@ -125,7 +125,7 @@ foreach map ( $maps )
     	-dset_sid_list $index 					\
 	 	-set_labels $map                                                 \
      	-subs_betas "${map}"'#'0_Coef                                    \
-		-options                                                       \
+		-options -Clustsim                                                      \
             -mask $map_folder/WG_mask0.8+tlrc.HEAD	\
 			-covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --mem=20GB
-#SBATCH --time=24:00:00
+#SBATCH --mem-per-cpu=20GB
+#SBATCH --time=48:00:00
 #SBATCH --partition=open
 #SBATCH --output=%x.%j
 #

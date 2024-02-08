@@ -1,6 +1,6 @@
 #!/bin/tcsh
 #
-#useage: G2_2sample-pairedT   $1            $2        $3
+#useage: sensitivity_G2_pairedT   $1            $2        $3
 #		     				template	  execute?  level 1 folder string
 #
 # The purpose of this script is to create and run 2 sample paired t-tests on the Portion Size response - including snack intake as covariate
@@ -117,7 +117,7 @@ gen_group_command.py -command 3dttest++                                         
 	    -dset_sid_list $index						   \
 	    -set_labels HighLarge-Small LowLarge-Small                             \
 	    -subs_betas HighLarge-Small_GLT'#'0_Coef LowLarge-Small_GLT'#'0_Coef   \
-	    -options								   \
+	    -options	-Clustsim								   \
 			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
 
 gen_group_command.py -command 3dttest++                                            \
@@ -127,7 +127,7 @@ gen_group_command.py -command 3dttest++                                         
 	    -dset_sid_list $index						   \
 	    -set_labels Large-Small_allED OfficeLarge-Small                             \
 	    -subs_betas Large-Small_allED_GLT'#'0_Coef OfficeLarge-Small_GLT'#'0_Coef   \
-	    -options								   \
+	    -options	-Clustsim							   \
 			-paired -mask $map_folder/WG_mask0.8+tlrc -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
 
 

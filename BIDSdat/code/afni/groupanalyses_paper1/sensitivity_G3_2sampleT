@@ -1,6 +1,6 @@
 #!/bin/tcsh
 #
-#useage: G3_2sampleT   $1           $2        $3
+#useage: sensitivity_G3_2sampleT   $1           $2        $3
 #                    template    execute?  entire censor string 
 #         
 # The purpose of this script is to create and run 2 sample paired t-tests of all conditions of interest
@@ -120,7 +120,7 @@ foreach m ( $models )
             -dset_sid_list $LRindex			                           \
             -set_labels highrisk lowrisk		                        \
             -subs_betas "${m}"'#'0_Coef			                          \
-            -options				                             \
+            -options -Clustsim				                             \
                 -mask $map_folder/WG_mask0.8+tlrc.HEAD -covariates $lev2_dir/ttest-covariates.txt"'[0..3,6,9]'"
 
         if ( "$2" == "run" ) then

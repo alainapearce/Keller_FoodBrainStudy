@@ -1,13 +1,12 @@
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=10
-#SBATCH --mem=12GB
-#SBATCH --time=24:00:00
-#SBATCH --account=klk37
-#SBATCH --partition=sla-prio 
+#SBATCH --mem-per-cpu=20GB
+#SBATCH --time=48:00:00
+#SBATCH --partition=open
 #SBATCH --output=%x.%j
-#
-#Useage: sbatch sensitivity_G1_1sampleT.slurm
+
+#Useage: sbatch sensitivity_G2_pairedT.slurm
 #
 #
 
@@ -35,7 +34,7 @@ topdir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/"
 
 
 #write to output file
-echo "## sensitivity_G1_1sampleT was run on ${today}"
+echo "## sensitivity_G2_pairedT was run on ${today}"
 echo "## Job started: `date`"
 
 
