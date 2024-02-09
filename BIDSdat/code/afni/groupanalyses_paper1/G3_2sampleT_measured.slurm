@@ -1,10 +1,9 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=5
-#SBATCH --mem=12GB
-#SBATCH --time=24:00:00
-#SBATCH --account=klk37
-#SBATCH --partition=sla-prio 
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem-per-cpu=20GB
+#SBATCH --time=48:00:00
+#SBATCH --partition=open
 #SBATCH --output=%x.%j
 #
 #Useage: sbatch G3_2sampleT_measured.slurm
