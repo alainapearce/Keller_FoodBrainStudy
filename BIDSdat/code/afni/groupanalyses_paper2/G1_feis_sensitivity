@@ -3,7 +3,9 @@
 #useage: G1_feis   $1         $2       		$3						$4
 #		     	template	execute?  	level 1 folder string 		mask
 #
-# The purpose of this script is to create and run correlation between amount contrast and feis variables within a given mask
+# The purpose of this script is to repeat analyses associating BOLD response to portion size 
+# and the quadratic portion size slope (from G1_feis) with an additional covariate (BMI percentile)
+
 # $1: ped or MNI
 # $2 run or no
 # $3 e.g., fd-0.9_b20_3runs_noGSR
