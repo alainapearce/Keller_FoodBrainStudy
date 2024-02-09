@@ -3,7 +3,7 @@
 #Usage: extract_G1_1sampleT
 #  	                    
 #
-#The purpose of this script is to extract betas from clusters showing significant responses 
+#The purpose of this script is to extract betas from clusters showing significant responses in 1-sample t-tests (executed via G1_1sampleT)
 
 
 ###################### set up initial variables  ###########################
@@ -21,10 +21,10 @@ cd ../../../
 set bidsdir = "$cwd"
 
 #set test directory
-set pairedt_test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/1sampleT/
+set t_test_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level2/1sampleT/
 
 # set group-level result directory
-set res_dir = $pairedt_test_dir/ped_fd-0.9_b20_3runs_noGSR_03-21-23
+set res_dir = $t_test_dir/ped_fd-0.9_b20_3runs_noGSR_03-21-23
 
 # set level1 directory
 set lev1_dir = $bidsdir/derivatives/analyses/foodcue-paper1/level1
@@ -42,9 +42,7 @@ cd $res_dir
 
 ###################### extract betas from combined mask ###########################
 
-#set contrasts = ( Food-Office High-Low_allPS Large-Small_allED OfficeLarge-Small) 
-
-set contrasts = ( OfficeLarge-Small ) 
+set contrasts = ( Food-Office High-Low_allPS Large-Small_allED OfficeLarge-Small) 
 
 
 foreach contrast ( $contrasts )
