@@ -1,9 +1,9 @@
 #!/bin/tcsh
 #
-#Usage: extract_2sampleT
+#Usage: extract_G2_pairedT
 #  	                    
 #
-#The purpose of this script is to extract betas from clusters showing significant responses in paired-test
+#The purpose of this script is to extract betas from clusters showing significant responses in paired-test (excuted via G2_pairedT)
 
 
 ###################### set up initial variables  ###########################
