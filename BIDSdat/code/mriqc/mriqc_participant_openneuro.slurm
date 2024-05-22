@@ -7,9 +7,12 @@
 #SBATCH --output=slurm_mriqc_openneuro_%a.out
 #SBATCH --array=1-94
 #
-#Useage: sbatch mriqc.sh
-#
-#
+# Useage: 
+### Option A: run mriqc for all subjects in openneuro_dir: sbatch mriqc_participants_openneuro.slurm
+### Option B: use input args to specify subjects to run mriqc for (can be 1 or more)
+###                  e.g., sbatch mriqc_participants_openneuro.slurm 001 002 003 
+###                  e.g., sbatch mriqc_participants_openneuro.slurm 132 
+
 
 #User inputs:
 bids_root_dir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/"
@@ -17,15 +20,27 @@ singularity_dir="/storage/group/klk37/default/sw/"
 openneuro_dir="/storage/group/klk37/default/R01_Food_Brain_Study/openneuro/"
 mriqc_code_dir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/code/mriqc"
 
-# Create an array to store the subs to process
-subs=()
+# Define list of subjects to process
 
-# Loop through subfolders in openneuro_dir with begin with sub-
-for folder in "$openneuro_dir"sub-*; do
-    # Extract the string following "sub-" and add it to the array subs
-    sub=$(basename "$folder" | sed 's/sub-//')
-    subs+=("$sub")
-done
+# no IDs provided as input
+if [ "$#" -eq 0 ]; then
+
+    # Create an array to store the subs to process
+    subs=()
+
+    # Loop through subfolders in openneuro_dir with begin with sub-
+    for folder in "$openneuro_dir"sub-*; do
+
+        # Extract the string following "sub-" and add it to the array subs
+        sub=$(basename "$folder" | sed 's/sub-//')
+        subs+=("$sub")
+
+    done
+
+else
+    # assign input args to subs 
+    subs=("$@")
+fi
 
 # Get the index of the current task
 index=$(($SLURM_ARRAY_TASK_ID - 1))
@@ -40,28 +55,33 @@ echo "--------------------"
 cat "$0"
 echo "--------------------"
 
-# dont run if html output files exist
-files=($bids_root_dir/derivatives/mriqc_openneuro/$sub*.html)
-
-# if there are html files
-if [ ${#files[@]} -gt 0 ]; then
-    echo "MRIQC html files exist. Delete to rerun"
+# Check if subj is blank or out of bounds
+if [ -z "$subj" ]; then
+    echo "Empty participant ID at index $index."
 else
 
-    #Run MRIQC
-    echo ""
-    echo "Running MRIQC on participant ${subj}"
-    echo ""
+    # check if output already exists
+    shopt -s nullglob # Enable nullglob to handle the case where no files match - otherwise, files will contain the non-expanded file sub-${subj}*.html
+    files=($bids_root_dir/derivatives/mriqc_openneuro/sub-${subj}*.html)
 
-    unset PYTHONPATH; singularity run --cleanenv $singularity_dir/mriqc-24.0.0.simg \
-    /storage/group/klk37/default/R01_Food_Brain_Study/openneuro $bids_root_dir/derivatives/mriqc_openneuro \
-    participant \
-    --participant-label ${subj} \
-    --float32 \
-    --mem_gb 20 \
-    --n_procs 10 \
-    --omp-nthreads 10
+    # if number of html files is greater than 0
+    if [ ${#files[@]} -gt 0 ]; then
+        echo "MRIQC html files exist. Delete to rerun"
+    else 
+        #Run MRIQC
+        echo ""
+        echo "Running MRIQC on participant ${subj}"
+        echo ""
 
+        unset PYTHONPATH; singularity run --cleanenv $singularity_dir/mriqc-24.0.0.simg \
+        /storage/group/klk37/default/R01_Food_Brain_Study/openneuro $bids_root_dir/derivatives/mriqc_openneuro \
+        participant \
+        --participant-label ${subj} \
+        --float32 \
+        --mem_gb 20 \
+        --n_procs 10 \
+        --omp-nthreads 10
+    fi
 fi
 
 # Rename the default SLURM output file to custom output file
