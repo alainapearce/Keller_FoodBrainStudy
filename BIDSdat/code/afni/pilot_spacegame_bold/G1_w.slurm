@@ -1,11 +1,12 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=10
-#PBS -l pmem=12gb
-#PBS -l walltime=5:00:00
-#PBS -A klk37_b_g_bc_default
-#PBS -j oe
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem-per-cpu=20GB
+#SBATCH --time=48:00:00
+#SBATCH --partition=open
+#SBATCH --output=%x.%j
 #
-#Useage: qsub G6_parametric-analyses.pbs
+#Useage: sbatch G1_w.slurm
 #
 #
 
@@ -28,15 +29,14 @@ OMP_NUM_THREADS="10"
 today=`date +%m-%d-%y`
 
 #set top/base directory
-topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/"
+topdir="/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/"
 
 
 #write to output file
-echo "## G6_parametric-analyses was run on ${today}"
+echo "## G1_w was run on ${today}"
 echo "## Job started: `date`"
 
 
 #Load afni singularity and run afniscript
-cd $topdir/code/afni/groupanalyses_paper1
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G5_parametric-1sample Ped run fd-0.9_b20_3runs_PM
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G5_parametric-paired Ped run fd-0.9_b20_3runs_PM
+cd $topdir/code/afni/pilot_spacegame_bold
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_w.sh Ped run fd-0.9_b20_3runs_noGSR

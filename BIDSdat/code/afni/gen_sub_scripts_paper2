@@ -1,21 +1,12 @@
 #!/bin/bash
 #  
-#Useage: gen_preproc_ACI       $1..$n        
+#Useage: gen_sub_scripts_paper2      $1..$n        
 #                          participantID
 #
 #
-#The purpose of this script is to generate full preprocessing scripts that can be run
-#on the ACI cluster. 
+# The purpose of this script is to generate a wrapper for preprocessing scripts (found in /afni/proc_scripts)
+# for each participant that can be run on the ACI cluster with PBS
 #
-#### PROCESSING NOTE ####
-#Due to the operating system on ACI-ICS, we needed to use a singularity
-#container with a different linux opperating system in order to use the 
-#most recent afni update. Due to this, multiple scripts were generated so
-#that the processing step can be run in the correct order. Part 1 includes
-#the first 2 afni steps, then this script will extract onsets, then Part 2
-#finishes the rest of afni steps, then this script will process the motion
-#information.
-
 ###################### set up initial variables  ###########################
 #get date
 today=`date +%m_%d_%y`
@@ -49,8 +40,7 @@ do
     #loop through all needed scripts.
     
     #list of all script names
-    proc_scripts=(paper1_wrapper-afni paper1_wrapper-afni.slurm )
-    #proc_scripts=(paper2_wrapper-afni paper2_wrapper-afni.pbs )
+    proc_scripts=(paper2_wrapper-afni paper2_wrapper-afni.pbs )
 
     for script in "${proc_scripts[@]}"
     do

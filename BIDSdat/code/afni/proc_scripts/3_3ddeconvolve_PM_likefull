@@ -1,5 +1,5 @@
 #!/bin/bash
-#usage: ./3_3dDeconvolve_PM_likewant     $1          $2   	 $3		$4  						$5
+#usage: ./3_3dDeconvolve_PM_likefull     $1          $2   	 $3		$4  						$5
 #		    						ParticipantID   Session Template   TR-Censor-criteria (e.g., fd-1.0)	Run or block censor criteria (e.g.,b20)
 #		    
 #
@@ -72,10 +72,10 @@ fi
 cd $onsetDir
 stimfiles=(` ls ${subID}*.txt`)
 
-if [ "${#stimfiles[@]}" = 5 ]; then    
-        echo "starting 3ddeconvolve for ${subID} ${session}" 
+if [ "${#stimfiles[@]}" > 1 ]; then    
+        echo "starting 3ddeconvolve for parametric analyses with liking/fullness: ${subID}" 
 else
-        echo "${TRcen}_p${runcen} onset files are missing for $subID. Exiting 3_3dDeconvolve_PM"
+        echo "${TRcen}_${runcen} onset files are missing for $subID. Exiting 3_3dDeconvolve_PM_likefull"
         exit
 fi
 
@@ -89,6 +89,8 @@ cd $output_dir
 
 ## liking ratings with onsets by Portion Size
 if ! ls "$output_dir"/liking_PS* >/dev/null 2>&1; then # if there are no files in $output_dir that start with "liking_PS"
+
+	echo "starting 3dDeconvolve PM liking by portion size"
 	3dDeconvolve -input $parDir/func/*foodcue*${temp}*blur6-scale.nii                            				\
 		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
 		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
@@ -115,10 +117,9 @@ if ! ls "$output_dir"/liking_PS* >/dev/null 2>&1; then # if there are no files i
 			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
 			-gltsym 'SYM: LargePSfood[0] -SmallPSfood[0]' -glt_label 1 Large-Small    \
 			-gltsym 'SYM: LargePSfood[1] -SmallPSfood[1]' -glt_label 2 Large-Small_PM    \
-			-jobs 8                                                    				\
+			-jobs 5                                                    				\
 			-fout -tout -x1D liking_PS_X.xmat.1D -xjpeg liking_PS_X.jpg -xsave                                  		\
 			-x1D_uncensored liking_PS_X.nocensor.xmat.1D                                       		\
-			-fitts liking_PS_fitts.$subID                                                       		\
 			-errts liking_PS_errts.$subID                                                     		\
 			-bucket liking_PS_stats.$subID
 else
@@ -153,7 +154,7 @@ if ! ls "$output_dir"/liking_ED* >/dev/null 2>&1; then # if there are no files i
 			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
 			-gltsym 'SYM: HighED[0] -LowED[0]' -glt_label 1 High-Low    \
 			-gltsym 'SYM: HighED[1] -LowED[1]' -glt_label 2 High-Low_PM    \
-			-jobs 8                                                    				\
+			-jobs 5                                                    				\
 			-fout -tout -x1D liking_ED_X.xmat.1D -xjpeg liking_ED_X.jpg -xsave                                  		\
 			-x1D_uncensored liking_ED_X.nocensor.xmat.1D                                       		\
 			-fitts liking_ED_fitts.$subID                                                       		\
@@ -169,7 +170,7 @@ if ! ls "$output_dir"/liking_cuetype* >/dev/null 2>&1; then # if there are no fi
 		-censor $parDir/func/${subID}_foodcue-allruns_censor_${TRcen}.tsv            			\
 		-mask $parDir/func/foodcue_full_mask*${temp}*.nii					\
 		-polort 2                                                               		\
-		-num_stimts 15                                                                          \
+		-num_stimts 16                                                                          \
 		-stim_times_subtract 1									\
 		-stim_times_AM2 1 $onsetDir/${subID}_liking_Office*.txt 'BLOCK(18,1)'	\
 		-stim_label 1 Office                  								\
@@ -191,7 +192,7 @@ if ! ls "$output_dir"/liking_cuetype* >/dev/null 2>&1; then # if there are no fi
 			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
 			-gltsym 'SYM: Food[0] -Office[0]' -glt_label 1 Food-office    \
 			-gltsym 'SYM: Food[1] -Office[1]' -glt_label 2 Food-office_PM    \
-			-jobs 8                                                    				\
+			-jobs 5                                                    				\
 			-fout -tout -x1D liking_cuetype_X.xmat.1D -xjpeg liking_cuetype_X.jpg -xsave                                  		\
 			-x1D_uncensored liking_cuetype_X.nocensor.xmat.1D                                       		\
 			-fitts liking_cuetype_fitts.$subID                                                       		\
@@ -229,7 +230,7 @@ if ! ls "$output_dir"/fullness_PS* >/dev/null 2>&1; then # if there are no files
 			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
 			-gltsym 'SYM: LargePSfood[0] -SmallPSfood[0]' -glt_label 1 Large-Small    \
 			-gltsym 'SYM: LargePSfood[1] -SmallPSfood[1]' -glt_label 2 Large-Small_PM    \
-			-jobs 8                                                    				\
+			-jobs 5                                                    				\
 			-fout -tout -x1D fullness_PS_X.xmat.1D -xjpeg fullness_PS_X.jpg -xsave                                  		\
 			-x1D_uncensored fullness_PS_X.nocensor.xmat.1D                                       		\
 			-fitts fullness_PS_fitts.$subID                                                       		\
@@ -267,7 +268,7 @@ if ! ls "$output_dir"/fullness_ED* >/dev/null 2>&1; then # if there are no files
 			-stim_file 16 $parDir/func/${subID}_foodcue-allruns_confounds-header.tsv'[14]' -stim_base 16 -stim_label 16 rot_z_02         \
 			-gltsym 'SYM: HighED[0] -LowED[0]' -glt_label 1 High-Low    \
 			-gltsym 'SYM: HighED[1] -LowED[1]' -glt_label 2 High-Low_PM    \
-			-jobs 8                                                    				\
+			-jobs 5                                                    				\
 			-fout -tout -x1D fullness_ED_X.xmat.1D -xjpeg fullness_ED_X.jpg -xsave                                  		\
 			-x1D_uncensored fullness_ED_X.nocensor.xmat.1D                                       		\
 			-fitts fullness_ED_fitts.$subID                                                       		\

@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+#useage: ./3dcalc_clust_mask
+#
+
+###################### set up initial variables  ###########################   
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2/feis_cerebellum
+
+#set results directory
+set map_dir = $test_dir/ped_fd-0.9_b20_3runs_noGSR_10-02-23
+
+###################### make rois  ########################### 
+cd $map_dir
+echo $map_dir
+
+#idat and ithr = 7 to select subbrick for quadratic slope covariate
+3dClusterize 		\
+	-nosum 			\
+	-1Dformat 		\
+	-inset $map_dir/quad_grams_1sampleT++_Large-Small_allED_GLT+tlrc.HEAD \
+	-idat 7 -ithr 7 -NN 2 -clust_nvox 1300 -bisided -3.2905 3.2905 \
+	-pref_map $map_dir/cerebellum_clust_mask-quad_grams001 \
+
+# combine ROIs into 1 mask -- exclude OFC1 bc it overlaps with OFC2 and is in white matter
+3dcalc -a cerebellum_clust_mask-quad_grams001+tlrc. -b quad_cerebellum_mask0.8+tlrc. \
+    -expr 'step(a) + 2*step(b)' \
+    -prefix cluster_and_mask

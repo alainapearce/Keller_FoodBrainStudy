@@ -139,8 +139,8 @@ def gen_onsets(par_id, onset_folder, preproc_path = False):
         raise Exception()
 
     # set path to rating databases
-    liking_path = Path(base_directory).joinpath('derivatives/analyses/foodcue-paper1/R/liking_ratings_byblock.csv')
-    fullness_path = Path(base_directory).joinpath('derivatives/analyses/foodcue-paper1/R/fullness_ratings_byblock.csv')
+    liking_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue-paper1/R/liking_ratings_byblock.csv')
+    fullness_path = Path(base_directory).joinpath('derivatives/preprocessed/foodcue-paper1/R/fullness_ratings_byblock.csv')
 
     # Import liking data file
     if liking_path.is_file(): # if database exists

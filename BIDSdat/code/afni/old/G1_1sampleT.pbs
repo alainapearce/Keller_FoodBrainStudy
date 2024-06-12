@@ -1,11 +1,11 @@
 #!/bin/bash
 #PBS -l nodes=1:ppn=10
 #PBS -l pmem=12gb
-#PBS -l walltime=5:00:00
+#PBS -l walltime=24:00:00
 #PBS -A klk37_b_g_bc_default
 #PBS -j oe
 #
-#Useage: qsub G6_parametric-analyses.pbs
+#Useage: qsub G1_1sampleT.pbs
 #
 #
 
@@ -32,11 +32,10 @@ topdir="/gpfs/group/klk37/default/R01_Food_Brain_Study/BIDS/"
 
 
 #write to output file
-echo "## G6_parametric-analyses was run on ${today}"
+echo "## G1_1sampleT was run on ${today}"
 echo "## Job started: `date`"
 
 
 #Load afni singularity and run afniscript
-cd $topdir/code/afni/groupanalyses_paper1
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G5_parametric-1sample Ped run fd-0.9_b20_3runs_PM
-singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G5_parametric-paired Ped run fd-0.9_b20_3runs_PM
+cd $topdir/code/afni
+singularity exec /gpfs/group/klk37/default/sw/AFNI.simg tcsh G1_1sampleT Ped 1 run fd-1.0_stddvar-1.8 20

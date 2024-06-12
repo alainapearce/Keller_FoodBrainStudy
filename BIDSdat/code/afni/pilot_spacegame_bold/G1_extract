@@ -1,0 +1,59 @@
+#!/bin/tcsh
+#
+#useage: G1_extract
+
+# The purpose of this script is to extract beta values 
+
+# Written by Bari Fuchs Fall 2022
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+ 
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+ 
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+cd ../../../
+set bidsdir = "$cwd"
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper2/level1
+
+#set level 2
+set lev2_dir = $bidsdir/derivatives/analyses/pilot_spacegame_bold/level2
+
+#set map directory
+set map_dir = $lev2_dir/1sampleT/ped_fd-0.9_b20_3runs_noGSR_05-09-24
+
+if ( ! -d $map_dir ) then
+	echo "failed to find $map_dir"
+	exit
+endif
+
+
+###################### Extract from cluster mask  ###########################   
+
+
+# delete high-low beta text file 
+if ( -f $map_dir/betas_w_high-low.txt ) then
+	rm $map_dir/betas_w_high-low.txt
+endif
+
+# delete food-office beta text file 
+if ( -f $map_dir/betas_w_food-office.txt ) then
+	rm $map_dir/betas_w_food-office.txt
+endif
+
+# for each sub, extract average beta from each mask and write to .txt file
+foreach sub ( `cat $map_dir/index.txt ` )
+
+	# extract from high-low mask
+	3dROIstats -mask $map_dir/mask-high_low_w+tlrc. $lev1_dir/sub-$sub/ped_fd-0.9_b20_noGSR/stats.sub-$sub+tlrc"[High-Low_allPS_GLT#0_Coef]" >> ${map_dir}/betas_w_high-low.txt 
+
+	# extract from food-office mask
+	3dROIstats -mask $map_dir/mask-food_office_w+tlrc. $lev1_dir/sub-$sub/ped_fd-0.9_b20_noGSR/stats.sub-$sub+tlrc"[Food-Office_GLT#0_Coef]" >> ${map_dir}/betas_w_food-office.txt 
+end
+

@@ -1,0 +1,152 @@
+#!/bin/tcsh
+#
+#useage: G1_feis   $1         $2       		$3						$4
+#		     	template	execute?  	level 1 folder string 		mask
+#
+# The purpose of this script is to create and run correlation between amount contrast and feis variables within a given mask
+# $1: ped or MNI
+# $2 run or no
+# $3 e.g., fd-0.9_by-block-7_3blocks_noGSR, fd-0.9_b20_3runs_noGSR
+# $4 appetitive or cerebellum
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+###################### setup and check directories  ###########################   
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set level1 dir
+set lev1_dir =  $bidsdir/derivatives/analyses/foodcue-paper2/level1
+
+# set mask_area
+set mask_area = $4
+
+#set test directory
+set test_dir = $bidsdir/derivatives/analyses/foodcue-paper2/level2/mvm_${mask_area}
+
+# set R dir
+set R_dir = $bidsdir/derivatives/analyses/foodcue-paper2/R
+
+# set R dir
+set mask_dir = $bidsdir/derivatives/analyses/foodcue-paper2/masks
+
+#set output name
+set today = `date +%m-%d-%y`
+
+# set level1 string
+set lev1_str = $3
+
+# set path to templates
+set tpath = $bidsdir/derivatives/templates
+
+
+##Get template specific results folder
+if ( "$1" == "MNI" ) then
+	##Get MNI template impelemented in 1_sswarp_strct
+	set basedset = $tpath/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz
+	set basedset_name = "tpl-MNI152NLin2009cAsym_res-01_T1w.nii.gz"
+	# set string
+    	set temp = "MNI152NLin2009cAsym"
+	set tempst = "MNI"
+else
+	##Get pediatric template used in fmriprep
+	set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+	set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+	# set strings
+	set temp = "MNIPediatricAsym_cohort-3"
+	set tempst = "ped"
+endif
+
+
+# set lev1 results directory name
+set lev1split = ($lev1_str:as/_/ /)
+set lev1_results = ${tempst}_$lev1split[1]_$lev1split[2]_$lev1split[4]
+
+# get censor str for index file
+set censor_str = $lev1split[1]_$lev1split[2]_$lev1split[3]
+
+#set map folder
+set map_folder = $test_dir/${tempst}_${lev1_str}_${today}
+
+#create map folder
+if ( ! -d $map_folder ) then
+    mkdir -p $map_folder
+else
+#	echo "$map_folder already exists. delete or rename to re-run"
+#	exit
+endif
+
+
+# copy index list and table file into map_folder
+cp $R_dir/index_quad_${mask_area}_${censor_str}.txt $map_folder
+cp $R_dir/mvm_dataframe*${mask_area}.txt $map_folder
+
+# set index list
+set index_list = `cat $map_folder/index_quad_${mask_area}_${censor_str}.txt`
+
+###################### generate masks by index list  ########################
+
+# generate mask if it doesnt exist
+if ( ! -f $map_folder/quad_${mask_area}_mask0.8+tlrc) then
+	
+	# make temporary directory with participant masks for subjects included in analyses
+	mkdir $map_folder/temp_mask
+	foreach sub ( $index_list )
+		cp ${bidsdir}/derivatives/preprocessed/fmriprep/sub-${sub}/ses-1/func/foodcue_full_mask-${temp}*.nii $map_folder/temp_mask/mask_sub-${sub}.nii
+	end
+
+	# generate mask with 80% of participants overlapping
+	3dmask_tool -input $map_folder/temp_mask/mask* \
+					-prefix $map_folder/temp_mask/quad_mask0.8+tlrc              \
+					-frac 0.8
+
+	# make intersection mask with 80% mask and functional area mask
+	3dmask_tool -input $map_folder/temp_mask/quad_mask0.8+tlrc $mask_dir/${mask_area}_mask_resamp+tlrc 	\
+				-prefix $map_folder/quad_${mask_area}_mask0.8+tlrc \
+				-frac 1.0
+
+	# remove temporary directory
+	rm -r $map_folder/temp_mask
+endif
+
+# set permissions of map folder
+chmod 775 -R $map_folder
+
+###################### 3dMVM  ########################
+cd $map_folder
+
+# quad_sign*vertex (grams), with covariates
+# 3dMVM  -prefix grams_vertex -jobs 10           \
+#           -bsVars  'g_vertex*quad_sign_gram+q_grams_int+q_grams_ps_lin+pre_mri_ff+fd_avg_allruns+cams_pre_mri+sex'      \
+#           -qVars "g_vertex,q_grams_int,q_grams_ps_lin,pre_mri_ff,fd_avg_allruns+cams_pre_mri"         \
+#           -mask quad_cerebellum_mask0.8+tlrc                   \
+#           -SS_type 2                          \
+# 		  -dataTable @mvm_dataframe_g_${mask_area}.txt
+
+3dMVM  -prefix grams_vertex_nocovar -jobs 2            \
+          -bsVars  "g_vertex*quad_sign_gram"      \
+		  -qVars "g_vertex"				\
+          -SS_type 2                          \
+		  -dataTable @mvm_dataframe_g_${mask_area}.txt
+
+###################### copy template ########################
+
+# Copy base template into results folder 
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    if ( ! -f $map_folder/$basedset_name ) then
+        cp ${basedset} $map_folder
+    endif
+endif
+

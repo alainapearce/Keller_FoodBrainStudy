@@ -1,0 +1,19 @@
+sub-110 has no fmri allProc edat file
+sub-110 has no fmri allProc xml file
+sub-110 has no fmri allProc txt file
+sub-130 has no fmri allProc xml file
+sub-051 has no fmri allProc xml file
+sub-116 has no fmri allProc xml file
+sub-132 has no fmri allProc xml file
+sub-132 has no fmri allProc txt file
+sub-077 has no fmri allProc edat file
+sub-077 has no fmri allProc xml file
+sub-112 has no fmri allProc xml file
+sub-069 has single-run experiments but has no fmri merge file
+sub-035 has no fmri allProc edat file
+sub-035 has no fmri allProc xml file
+sub-070 has no fmri allProc xml file
+sub-026 has no fmri allProc xml file
+sub-106 has no fmri allProc edat file
+sub-106 has no fmri allProc xml file
+sub-106 has no fmri allProc txt file

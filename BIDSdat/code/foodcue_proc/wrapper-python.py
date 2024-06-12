@@ -39,6 +39,7 @@ import p2_create_censor_files
 import p4a_gen_byrun_onsets
 import p4b_gen_byblock_onsets
 import p5_gen_onsets_PM
+import p5_gen_onsets_PM_likefull
 import p6_calc_avg_motion
 
 ##############################################################################
@@ -81,7 +82,7 @@ foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue
 subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
 
 # For testing
-#subs = ['069']
+subs = ['69'] 
 
 ## For testing with test fixtures
 #subs = ['999']
@@ -103,32 +104,40 @@ for sub in subs:
           censorsum_file_byrun = str('task-foodcue_byrun-censorsummary_fd-0.9.tsv')
           censorsum_file_bycond = str('task-foodcue_byblock-censorsummary_fd-0.9.tsv')
 
-      try:
-           p0_getbehavioral.getbehavior(par_id = sub, overwrite=False)
-      except:
-           print("Discontinuing p0_getbehavioral() for sub_" + sub)
+     #  try:
+     #       p0_getbehavioral.getbehavior(par_id = sub, overwrite=False)
+     #  except:
+     #       print("Discontinuing p0_getbehavioral() for sub_" + sub)
+
+     #  try:
+     #       p1_getonsets.getonsets(par_id = sub, overwrite=False)
+     #  except:
+     #       print("Discontinuing p1_getonsets() for sub_" + sub)
+
+     #  try:
+     #        p2_create_censor_files.create_censor_files(par_id = sub, framewise_displacement = .9, std_vars = False, cen_prev_tr=False, overwrite=True, preproc_path=preproc_path)
+     #  except:
+     #        print("Discontinuing p2_create_censor_files() for sub_" + sub)
+
+     #  try:
+     #        p4a_gen_byrun_onsets.gen_byrun_onsets(par_id = sub, censorsum_file = censorsum_file_byrun, p_thresh_run = False, p_thresh_block = False, p_thresh_food = 20, preproc_path=preproc_path)
+     #  except:
+     #        print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
+
+     #  try:
+     #       p5_gen_onsets_PM.gen_onsets(par_id = sub, onset_folder = 'fd-0.9_b20')
+     #  except:
+     #       print("Discontinuing p5_gen_onsets_PM() for sub_" + sub)
 
       try:
-           p1_getonsets.getonsets(par_id = sub, overwrite=False)
+            p5_gen_onsets_PM_likefull.gen_onsets(par_id = sub, onset_folder = 'fd-0.9_b20')
       except:
-           print("Discontinuing p1_getonsets() for sub_" + sub)
+            print("Discontinuing p5_gen_onsets_PM_likefull() for sub_" + sub)
 
-      try:
-            p2_create_censor_files.create_censor_files(par_id = sub, framewise_displacement = .9, std_vars = False, cen_prev_tr=False, overwrite=True, preproc_path=preproc_path)
-      except:
-            print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
-      try:
-            p4a_gen_byrun_onsets.gen_byrun_onsets(par_id = sub, censorsum_file = censorsum_file_byrun, p_thresh_run = False, p_thresh_block = 20, preproc_path=preproc_path)
-      except:
-            print("Discontinuing p4a_gen_byrun_onsets() for sub_" + sub)
+     #  try:
+     #       p6_calc_avg_motion.get_avg_fd(par_id = sub)
+     #  except:
+     #       print("Discontinuing p6_calc_avg_motion() for sub_" + sub)
 
-      try:
-           p5_gen_onsets_PM.gen_onsets(par_id = sub, onset_folder = 'fd-0.9_b20')
-      except:
-           print("Discontinuing p5_gen_onsets_PM() for sub_" + sub)
 
-      try:
-           p6_calc_avg_motion.get_avg_fd(par_id = sub)
-      except:
-           print("Discontinuing p6_calc_avg_motion() for sub_" + sub)

@@ -1,0 +1,130 @@
+#!/bin/bash
+#
+#useage: make_rois
+#
+# This script creates ROIs using coordinates from Keller et al. 2019
+# Coordinates were converted from tlrc to MNI using https://bioimagesuiteweb.github.io/webapp/mni2tal.html
+# Written by Bari Fuchs
+
+###################### setup and check directories  ########################### 
+
+###################### set up initial variables  ###########################   
+#don't log AFNI programs in ~/.afni.log
+setenv AFNI_DONT_LOGFILE YES
+
+#dont try version checks
+setenv ANFI_VRSION_CHECK NO
+
+##don't auto-compress output files
+setenv AFNI_COMPRESSOR NONE
+
+echo "you are here"
+
+#go to and set BIDS main directory
+cd ../../../
+set bidsdir = "$cwd"
+
+#set output directory for ROIs
+set roidir = $bidsdir/derivatives/analyses/foodcue-paper2/keller2019_rois
+
+#make output directory for ROIs if it doesnt exist
+if ( ! -d $roidir ) then
+    mkdir -p $roidir
+endif
+
+#set pediatric cohort-3 template directory and file
+set tempdir = $bidsdir/derivatives/templates/tpl-MNIPediatricAsym/cohort-3
+set ped_temp = $tempdir/tpl-MNIPediatricAsym_cohort-3_res-2_T1w.nii.gz
+
+set bold_temp = $bidsdir/derivatives/analyses/foodcue-paper2/level1/sub-001/ped_fd-0.9_b20_noGSR/stats.sub-001+tlrc
+echo "you are here 2"
+###################### make rois  ########################### 
+
+## NOTE: resolution of mask dataset will equal that of -master. If $ped_temp is master, this will not match BOLD data resolution.
+#### Need to resample ROI, or use BOLD dataset as -master?
+#### resource for resampling: https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/rois_corr_vis/afni11_roi_cmds.html#resampling-regridding-rois 
+
+# R amygdala (tlrc: 22, -10, -10)
+echo "23 -8 -17" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_amygdala_roi+tlrc -xyz -
+
+# L amygdala (tlrc: -22, 10, -10) -- conversion is outside BA areas
+echo "-23 -10 -16" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_amygdala_roi+tlrc -xyz - 
+
+# R striatum (tlrc: 18, 20, -6) -- conversion is in white matter
+echo "19 24 -10" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_striatum_roi+tlrc -xyz - 
+
+# L striatum (tlrc: -18, 20, -6) -- conversion is in white matter
+echo "-18 20 -6" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_striatum_roi+tlrc -xyz - 
+
+# R OFC 1 (tlrc: 32 29 -3)
+echo "34 33 -8" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_ofc1_roi+tlrc -xyz - 
+
+# L OFC 1 (tlrc: -32 29 -3)
+echo "-33 33 -7" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_ofc1_roi+tlrc -xyz - 
+
+# R OFC 2 (tlrc: 36, 28, -10)
+echo "38 33 -15" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_ofc2_roi+tlrc -xyz - 
+
+# L OFC 2 (tlrc: -36, 28, -10)
+echo "-37 33 -14" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_ofc2_roi+tlrc -xyz - 
+
+# R vmpfc 1 (tlrc: 9, 45, 2)
+echo "10 49 3" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_vmpfc1_roi+tlrc -xyz -
+
+# L vmpfc 1 (tlrc: -9, 45, 2)
+echo "-9 50 3" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_vmpfc1_roi+tlrc -xyz -
+
+# R vmpfc 2 (tlrc: 6, 36, -14)
+echo "7 36 -15" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_vmpfc2_roi+tlrc -xyz -
+
+# L vmpfc 2 (tlrc: -6, 36, -14)
+echo "-6 36 -14" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_vmpfc2_roi+tlrc -xyz -
+
+# R IFG (tlrc: 50, 4, 16)
+echo "53 6 14" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_ifg_roi+tlrc -xyz -
+
+# L IFG (tlrc: -50, 4, 16)
+echo "-54 6 15" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_ifg_roi+tlrc -xyz -
+
+# R DLPFC (tlrc: 29, 29, 36)
+echo "29 28 38" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_dlpfc_roi+tlrc -xyz -
+
+# L DLPFC (tlrc: -29, 29, 36)
+echo "-29 29 36" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_dlpfc_roi+tlrc -xyz -
+
+# R caudate (tlrc: 14, 8, 22)
+echo "15 9 22" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/r_caudate_roi+tlrc -xyz -
+
+# L caudate (tlrc: -14, 8, 22)
+echo "-15 9 23" | 3dUndump -orient LPI -srad 5 -master $bold_temp -prefix $roidir/l_caudate_roi+tlrc -xyz -
+
+
+
+# combine ROIs into 1 mask -- use step expresion so each ROI has a different value
+cd $roidir
+# echo "combining ROIs into 1 mask"
+# 3dcalc -a r_amygdala_roi+tlrc. -b l_amygdala_roi+tlrc. -c r_striatum_roi+tlrc. -d l_striatum_roi+tlrc. -e r_ofc1_roi+tlrc. \
+#     -f l_ofc1_roi+tlrc. -g r_ofc2_roi+tlrc. -h l_ofc2_roi+tlrc. -i r_vmpfc1_roi+tlrc. -j l_vmpfc1_roi+tlrc. -k r_vmpfc2_roi+tlrc. -l l_vmpfc2_roi+tlrc. \
+#     -m r_ifg_roi+tlrc. -n l_ifg_roi+tlrc. -o r_dlpfc_roi+tlrc. -p l_dlpfc_roi+tlrc. -q r_caudate_roi+tlrc. -r l_caudate_roi+tlrc. \
+#     -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j) + 1024*step(k) + 2048*step(l) + 4096*step(m) + 8192*step(n) + 16384*step(o) + 32768*step(p) + 65536*step(q) + 131072*step(r)' \
+#     -prefix all_rois
+
+# combine ROIs into 1 mask -- exclude OFC1 bc it overlaps with OFC2 and is in white matter
+3dcalc -a r_amygdala_roi+tlrc. -b l_amygdala_roi+tlrc. -c r_striatum_roi+tlrc. -d l_striatum_roi+tlrc. -e r_ofc2_roi+tlrc. -f l_ofc2_roi+tlrc. \
+    -g r_vmpfc1_roi+tlrc. -h l_vmpfc1_roi+tlrc. -i r_vmpfc2_roi+tlrc. -j l_vmpfc2_roi+tlrc. \
+    -k r_ifg_roi+tlrc. -l l_ifg_roi+tlrc. -m r_dlpfc_roi+tlrc. -n l_dlpfc_roi+tlrc. -o r_caudate_roi+tlrc. -p l_caudate_roi+tlrc. \
+    -expr 'step(a) + 2*step(b) + 4*step(c) + 8*step(d) + 16*step(e) + 32*step(f) + 64*step(g) + 128*step(h) + 256*step(i) + 512*step(j) + 1024*step(k) + 2048*step(l) + 4096*step(m) + 8192*step(n) + 16384*step(o) + 32768*step(p)' \
+    -prefix all_rois_no_ofc1
+
+##Copy pediatric template into directory
+# set path to templates
+set tpath = $bidsdir/derivatives/templates
+set basedset = $tpath/tpl-MNIPediatricAsym/cohort-3/tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz
+set basedset_name = "tpl-MNIPediatricAsym_cohort-3_res-1_T1w.nii.gz"
+
+if ( ! -f $basedset ) then
+    echo "***** Failed to find $basedset :("
+    exit 1
+else
+    cp ${basedset} $roidir
+endif

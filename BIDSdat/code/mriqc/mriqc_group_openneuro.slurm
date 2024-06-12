@@ -28,6 +28,12 @@ unset PYTHONPATH; singularity run --cleanenv $singularity_dir/mriqc-24.0.0.simg 
 /storage/group/klk37/default/R01_Food_Brain_Study/openneuro $bids_root_dir/derivatives/mriqc_openneuro group \
 --float32 \
 --mem_gb 20 \
-    --fd_thresh 0.9 \
+    --n_procs 10 \
+    --omp-nthreads 10
+
+unset PYTHONPATH; singularity run --cleanenv $singularity_dir/mriqc-24.0.0.simg \
+/storage/group/klk37/default/R01_Food_Brain_Study/openneuro $bids_root_dir/derivatives/mriqc_openneuro/FD.9 group \
+--float32 \
+--mem_gb 20 \
     --n_procs 10 \
     --omp-nthreads 10

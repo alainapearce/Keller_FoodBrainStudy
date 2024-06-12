@@ -33,7 +33,6 @@ import os
 
 # import functions
 import prep_index_byrun
-import prep_index_byblock
 import prep_avg_motion
 import prep_3dttest_covTable
 import prep_index_PM
@@ -73,8 +72,8 @@ subs = list(set([item[4:7] for item in confound_subs_clean]))
 prep_index_byrun.gen_index_byrun(onset_dir = 'fd-0.9_b20', nruns = 3, preproc_path = False)
 
 ## Generate covariate table
-prep_3dttest_covTable.gen_dataframe()
+#prep_3dttest_covTable.gen_dataframe()
 
 # Generate index file for PM analyses
-prep_index_PM.gen_index_PM()
+#prep_index_PM.gen_index_PM()
 
