@@ -57,37 +57,6 @@ def _get_censorstr(rmsd_thresh, cen_add_tr):
 
     return(censor_str)
 
-def _gen_concatenated_regressor_file(confound_files):
-    """Function to generate 1 regressor file 
-    Inputs:
-        confound_files (list) - list of counfound files from fmriprep. 1 confound file per run
-        
-    Outputs:
-        RegressPardat (pandas dataframe) - will contain 1 column per regressor variable and (number confound files * length of 1 confound file) rows
-    """
-    # Make list of variables to regress in Level 1 analyses
-    RegressLev1=['trans_x', 'trans_y', 'trans_z', 'rot_x', 'rot_y', 'rot_z', 'csf', 'white_matter', 'global_signal', 'trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
-    
-    # create overall regressor dataframe for participant
-    RegressPardat = pd.DataFrame(np.zeros((0, len(RegressLev1))))
-    RegressPardat.columns = RegressLev1
-
-    confound_files.sort()
-    for file in confound_files: #loop through runs (each run has its own confoundfile)
-
-        #load data
-        confound_dat_all = pd.read_csv(str(file), sep = '\t', encoding = 'ascii', engine='python')
-
-        # add counfound file (i.e., run-specific) regressor data to overall regressor file
-        RegressRun = confound_dat_all[RegressLev1].copy()
-        RegressPardat = pd.concat([RegressPardat, RegressRun ])
-
-    # for first row [0] of motion derivative variables in regress_Pardat, replace NA with 0. This will allow deriv variables to be entered into AFNI's 3ddeconvolve
-    deriv_vars = ['trans_x_derivative1', 'trans_y_derivative1', 'trans_z_derivative1', 'rot_x_derivative1', 'rot_y_derivative1', 'rot_z_derivative1']
-    RegressPardat.loc[0, deriv_vars] = RegressPardat.loc[0, deriv_vars].fillna(value=0)
-
-    return(RegressPardat)
-
 def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
     """Function to determine what TRs (i.e., volumes) need to be censored in first-level analyses based on rmsd threshold and cen_add_TR (censor additional TR) criteria
     Inputs:
@@ -209,17 +178,6 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
 
     # set censor string 
     censor_str = _get_censorstr(rmsd_thresh, cen_add_tr)
-
-    ##############################
-    ### Create regressor files ###
-    ##############################
-
-    # run function to generate concatenated level-1-regressor dataframe
-    regress_Pardat = _gen_concatenated_regressor_file(confound_files)
-
-    # Export participant regressor file with and without columns names
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-noheader.tsv')), sep = '\t', encoding='ascii', index = False, header=False)
-    #regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-header.tsv')), sep = '\t', encoding='ascii', index = False)
 
     ###########################
     ### Create censor files ###
