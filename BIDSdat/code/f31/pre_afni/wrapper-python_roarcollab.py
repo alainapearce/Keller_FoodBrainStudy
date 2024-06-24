@@ -49,7 +49,7 @@ import p3_create_nuiregressor_files
 ##############
 
 # set paths
-bids_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/')
+bids_path = str('/storage/group/klk37/default/R01_Food_Brain_Study/BIDS')
 bids_raw_path = Path(bids_path).joinpath('raw_data')
 
 ###############################
@@ -76,22 +76,22 @@ subs = list(set([item[4:7] for item in foodcue_raw_subs]))
 ###################################
 
 fmriprep_path = str('/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/preprocessed/fmriprep')
-output_onset_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc/onsets')
-output_reg_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc')
+output_onset_path = str('/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/preprocessed/f31_python_proc/onsets')
+output_reg_path = str('/storage/group/klk37/default/R01_Food_Brain_Study/BIDS/derivatives/preprocessed/f31_python_proc')
 
 for sub in subs:
-
+    
       try:
           p1_getonsets.getonsets(par_id = sub, bids_path = bids_path, output_path=output_onset_path, overwrite=False)
       except:
           print("Discontinuing p1_getonsets() for sub_" + sub)
 
       try:
-          p2_create_censor_files.create_censor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=True)
+          p2_create_censor_files.create_censor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=False)
       except:
          print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
       try:
-          p3_create_nuiregressor_files.create_nuiregressor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=True)
+          p3_create_nuiregressor_files.create_nuiregressor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=False)
       except:
          print("Discontinuing p3_create_nuiregressor_files() for sub_" + sub)
