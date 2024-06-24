@@ -62,8 +62,8 @@ if [ -z "$subj" ]; then
 else
 
 	#Load afni singularity and run processing scripts
-	singularity exec $singularity_dir/AFNI.simg bash $wrapper_code_dir/proc1_afniproc.sh "$subj"
-    singularity exec $singularity_dir/AFNI.simg bash $wrapper_code_dir/proc2_check_roi_coverage.sh "$subj"
+	singularity exec $singularity_dir/AFNI.simg tcsh $wrapper_code_dir/proc1_afniproc.sh "$subj"
+    #singularity exec $singularity_dir/AFNI.simg bash $wrapper_code_dir/proc2_check_roi_coverage.sh "$subj"
 	#singularity exec $singularity_dir/AFNI.simg bash $wrapper_code_dir/proc3_extract.sh "$subj"
 
 fi
