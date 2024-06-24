@@ -109,7 +109,7 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
 ####                                                                      ####
 ##############################################################################
 
-def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = False, preproc_path = False):
+def create_censor_files(par_id, fmriprep_path, output_path, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = False):
     """
     This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
     The following steps will occur:
@@ -122,43 +122,55 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
         rmsd_thresh (int or float): threshold for rmsd. Default set to .3 according to pre-registration
         cen_add_tr (str or FALSE): option for censoring TRs before or after TR exceeding movement threshold. Default set to 'ba' according to pre-registration
              'ba' = censor 1 before and 1 after, 'b' = censor 1 before, FALSE = do not censor additional TRs
-        overwrite (bool)
-        Path (str) - path to direcory that contains fmriprep/ directory.
+        fmriprep_path (str) - path to fmriprep/ directory.
+        output_path (str) - path to output directory
+        overwrite (boolean) - specify if output files should be overwritten (default = False)
         
     """
+    # set sub with leading zeros
+    if not par_id:
+        print("sub is not defined")
+        raise Exception()
+    else:
+        sub = str(par_id).zfill(3)
 
-    # set bids_directory
-    if preproc_path is False:
+    # set fmriprep_path
+    if not fmriprep_path:
 
-        # get script location
-        script_path = Path(__file__).parent.resolve()
+        print("fmriprep_path must be string")
+        raise Exception()
 
-        # change directory to base directory (BIDSdat) and get path
-        os.chdir(script_path)
-        os.chdir('../../..')
-        bids_directory = Path(os.getcwd())
+    elif isinstance(fmriprep_path, str):
 
-        #set specific paths
-        bids_fmriprep_path = Path(bids_directory).joinpath('derivatives/preprocessed/fmriprep')
-
-
-    elif isinstance(preproc_path, str):
         # make input string a path
-        preprocessed_directory = Path(preproc_path)
-
-        #set specific paths
-        bids_fmriprep_path = Path(preprocessed_directory).joinpath('fmriprep')
+        fmriprep_path = Path(fmriprep_path)
 
     else: 
         print("preproc_path must be string")
         raise Exception()
 
+    # set output_path
+    if not output_path:
 
-    # set sub with leading zeros
-    sub = str(par_id).zfill(3)
+        print("output_path must be string")
+        raise Exception()
+
+    elif isinstance(output_path, str):
+
+        # make input string a path
+        output_path = Path(output_path)
+
+    else: 
+        print("output_path must be string")
+        raise Exception()
+   
+    # check overwrite
+    if not isinstance(overwrite, bool):
+        print("overwrite must be boolean (True or False)")
+        raise Exception()
    
     # get participant confound files
-    confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
+    confound_files = list(Path(fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
 
     # exit if no participant confound files
     if len(confound_files) > 5:
@@ -210,9 +222,16 @@ def create_censor_files(par_id, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = Fa
         # add run-specific censor data to overall censor file
         censordata_allruns.extend(run_censordata)
         
-    # Export 1D file with participant censor info
+    # make dataframe
     censordata_allruns_df = pd.DataFrame(censordata_allruns)
-    censordata_allruns_df.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_censor_' + str(censor_str) + '.1D')), sep = '\t', encoding='ascii', index = False, header=False)
+
+    # Make directory for export 
+    Path(output_path).mkdir(parents=True, exist_ok=True)
+    
+    # check if output file already exists 
+    filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31censor_' + str(censor_str) + '.1D'))
+    if not filepath.exists() or overwrite is True:
+        censordata_allruns_df.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=False)
 
     # return particpant databases for integration testing
     return censordata_allruns_df
