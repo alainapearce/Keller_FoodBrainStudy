@@ -1,5 +1,6 @@
 #!/bin/tcsh
-#usage: ./1_afni_proc
+#usage: ./proc1_afni_proc $1
+#                    subject ID (e.g., 001)
 
 ### This script will setup up and apply afni_proc.py to each individual 
 ###
@@ -19,34 +20,49 @@ set onsetDir = $bidsdir/derivatives/preprocessed/f31_onsetfiles/
 # set subject's fmriprep session 1 directory
 set fmriprep_sesDir = $bidsdir/derivatives/preprocessed/fmriprep/${parID}/ses-1/
 
-# set output directory
-set outdir = $bidsdir/derivatives/analyses/f31/afniproc
+# set path to censor and regressor files
+set pythonproc_dir = $bidsdir/derivatives/preprocessed/f31_python_proc/
 
-###################### setup and check directories  ###########################
-
-# Things to update:
-# input to regress_motion_file -- can this have derivatives, wm, csf?
-# input to regress_censor_extern -- should be for F31 analyses
 
 ###################### AFNI: afni_proc.py  ###########################
-cd $outdir
 
-afni_proc.py -subj_id ${parID} -script proc_${parID}   \
-    -blocks blur scale regress                            \
-    -dsets ${fmriprep_sesDir}/func/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
-    -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.gz                              \
-    -regress_motion_file ${fmriprep_sesDir}/func/${parID}_foodcue-allruns_confounds-noheader.tsv                       \
-    -blur_size 6.0                                                                              \
-    -regress_stim_times $onsetDir/${parID}*OfficeLarge*.txt               			\
-        $onsetDir/${parID}*OfficeSmall*.txt                          		                \
-        $onsetDir/${parID}*IBI*.txt                          		                \
-    -regress_stim_labels OfficeLarge OfficeSmall Fixation         				\
-    -regress_basis_multi 'BLOCK(18,1)' 'BLOCK(18,1)' 'BLOCK(8,1)'                               \
-    -regress_censor_extern ${fmriprep_sesDir}/func/${parID}_f31-allruns_censor_rmsd-0.3.1D    \
-	-regress_bandpass         0.01 0.1                             				\
-    -regress_opts_3dD                                                                           \
-        -jobs 2                                                                                 \
-    -regress_reml_exec                                                                          \
-    -regress_compute_fitts                                                                      \
-    -regress_make_ideal_sum sum_ideal.1D                                                        \
-    -regress_run_clustsim no
+# run afni proc with and without global_signal regressor (gsr)
+
+foreach str ("gsr" "nogsr")
+
+    if ("$str" == "gsr") then
+        set reg_fil = ${pythonproc_dir}/${parID}_f31nuireg-gsr-noheader.tsv
+        set outdir = $bidsdir/derivatives/analyses/f31/afniproc_gsr
+    else
+        set reg_fil = ${pythonproc_dir}/${parID}_f31nuireg-nogsr-noheader.tsv
+        set outdir = $bidsdir/derivatives/analyses/f31/afniproc_nogsr
+    endif
+
+    # make outdir if it doesnt exist
+    if (! -d "$outdir") then
+        mkdir -p "$outdir"
+    endif
+
+    # move to output directory
+    cd $outdir
+
+    afni_proc.py -subj_id ${parID} -script proc_${parID}   \
+        -blocks blur scale regress                            \
+        -dsets ${fmriprep_sesDir}/func/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
+        -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.gz                              \
+        -regress_motion_file ${reg_fil}            \
+        -blur_size 6.0                                                                              \
+        -regress_stim_times $onsetDir/${parID}*OfficeLarge*.txt               			\
+            $onsetDir/${parID}*OfficeSmall*.txt                          		                \
+            $onsetDir/${parID}*IBI*.txt                          		                \
+        -regress_stim_labels OfficeLarge OfficeSmall Fixation         				\
+        -regress_basis_multi 'BLOCK(18,1)' 'BLOCK(18,1)' 'BLOCK(8,1)'                               \
+        -regress_censor_extern ${pythonproc_dir}/${parID}_f31censor_rmsd-0.3_c-ba.1D    \
+        -regress_bandpass         0.01 0.1                             				\
+        -regress_opts_3dD                                                                           \
+            -jobs 2                                                                                 \                                                                   \
+        -regress_no_fitts                                                                      \
+        -regress_make_ideal_sum sum_ideal.1D                                                        \
+        -regress_run_clustsim no
+
+    
