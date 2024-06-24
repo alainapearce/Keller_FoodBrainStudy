@@ -90,26 +90,27 @@ subs = list(set([item[4:7] for item in foodcue_raw_subs]))
 for sub in subs:
 
      # set inputs
-      if sub == '999':
-          preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
-          censorsum_file_byrun = str('fixture_task_byrun-foodcue_censorsummary_fd-1.0.tsv')
-          censorsum_file_bycond = str('fixture_task-foodcue_byblock-censorsummary_fd-1.0.tsv')
+      if sub == '999': 
+          print("testing not available since p1 p2 and p3 input args were changed")
+          #preproc_path = str('/Users/baf44/Keller_FoodBrainStudy/BIDSdat/code/foodcue_proc/fixtures/preprocessed')
 
       else:
+          bids_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/')
           fmriprep_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/fmriprep')
-          output_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc')
-
-    #   try:
-    #       p1_getonsets.getonsets(par_id = sub, overwrite=False)
-    #   except:
-    #       print("Discontinuing p1_getonsets() for sub_" + sub)
+          output_onset_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc/onsets')
+          output_reg_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc')
 
       try:
-          p2_create_censor_files.create_censor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_path, overwrite=True)
+          p1_getonsets.getonsets(par_id = sub, bids_path = bids_path, output_path=output_onset_path, overwrite=False)
+      except:
+          print("Discontinuing p1_getonsets() for sub_" + sub)
+
+      try:
+          p2_create_censor_files.create_censor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=True)
       except:
          print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
       try:
-          p3_create_nuiregressor_files.create_nuiregressor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_path, overwrite=True)
+          p3_create_nuiregressor_files.create_nuiregressor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_reg_path, overwrite=True)
       except:
          print("Discontinuing p3_create_nuiregressor_files() for sub_" + sub)

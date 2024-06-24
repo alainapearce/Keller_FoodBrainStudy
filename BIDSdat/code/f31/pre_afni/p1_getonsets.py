@@ -104,23 +104,14 @@ def _get_fixOnsets(foodcue_RunDat, fixation_Pardict):
 ####                                                                      ####
 ##############################################################################
 
-def getonsets(par_id, overwrite = False):
-
-    # get script location
-    script_path = Path(__file__).parent.resolve()
-
-    # change directory to base directory (BIDSdat) and get path
-    os.chdir(script_path)
-    os.chdir('../..')
-    base_directory = Path(os.getcwd())
+def getonsets(par_id, bids_path, output_path, overwrite = False):
 
     #set specific paths
-    bids_raw_path = Path(base_directory).joinpath('raw_data')
-    bids_deriv_onsetfiles = Path(base_directory).joinpath('derivatives/preprocessed/f31_onsetfiles') #path to onset files for F31 analyses
+    bids_raw_path = Path(bids_path).joinpath('raw_data')
+    bids_deriv_onsetfiles = Path(output_path) #path to onset files for F31 analyses
 
     # make onset directory if it doesnt exist
-    if os.path.exists(bids_deriv_onsetfiles) is False:
-        os.makedirs(bids_deriv_onsetfiles)
+    Path(bids_deriv_onsetfiles).mkdir(parents=True, exist_ok=True)
 
     #############################
     ### Get participant files ###
