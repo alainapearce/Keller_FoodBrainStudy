@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#useage: bash F31_6_extract     $1             
+#useage: bash proc3_extract.sh     $1             
 #		                        ParicipantID
 #
 # This script extracts timeseries data from ROIs
@@ -18,4 +18,29 @@ ID=`printf %03d $ID_nozero`
 subID="sub-$ID"
 
 ###################### setup and check directories  ########################### 
-# reminder: have to extract from models with and without GSR
+
+## extract timeseries from models with and without GSR
+## update for loop for bash, not tsch
+# foreach str (gsr nogsr)
+
+#     if ("$str" == "gsr") then
+#         set procdir = $bidsdir/derivatives/analyses/f31/afniproc_gsr
+#         outdir = $bidsdir/derivatives/analyses/f31/timeseries_gsr
+#     else
+#         set procdir = $bidsdir/derivatives/analyses/f31/afniproc_nogsr
+#         outdir = $bidsdir/derivatives/analyses/f31/timeseries_nogsr
+#     endif
+
+    # mask with ROIs with unique value each are stored in derivatives/analyses/f31/rois/rois_mask_diffvalues+tlrc
+    # https://www.andysbrainblog.com/andysbrainblog/2017/5/5/extracting-timecourses-with-3dmaskdump
+
+    # https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/tutorials/rois_corr_vis/afni11_roi_cmds.html#calculating-stats-from-separate-rois
+    # see Averaging quantities within a mask 
+
+    # need to resample ROIs so they match resolution of func data??
+
+    # use mrange option to extract from each ROI
+    # need to output to 1D or txt file ok?
+    # https://www.youtube.com/watch?v=H1ZsN88iV6A&t=5s see 4:40
+    # https://afni.nimh.nih.gov/afni/community/board/read.php?1,65523,65557#msg-65557 ## input needs to be timeseries dataset (errts)
+    3dmaskave -quiet -mask $bidsdir/derivatives/analyses/f31/rois/rois_mask_diffvalues+tlrc. $TIMESERIES_DATA > output.txt 
