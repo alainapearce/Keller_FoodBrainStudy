@@ -58,8 +58,6 @@ bids_directory = Path(os.getcwd())
 
 #set specific paths
 bids_raw_path = Path(bids_directory).joinpath('raw_data')
-bids_deriv_onsetfiles = Path(bids_directory).joinpath('derivatives/preprocessed/foodcue_onsetfiles/orig')
-
 
 ###############################
 ### Get list of subject IDs ###
