@@ -79,51 +79,72 @@ def _gen_concatenated_regressor_file(confound_files):
 ####                                                                      ####
 ##############################################################################
 
-def create_nuiregressor_files(par_id, overwrite = False, preproc_path = False):
+def create_nuiregressor_files(par_id, fmriprep_path, output_path, overwrite = False):
     """
-    This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
-    The following steps will occur:
-        (1) output a regressor file containing regressor information for all runs -- will be used by AFNI in first-level analyses
+    This function will import -desc-confounds_timeseries.tsv files (output from fmriprep) for a given participant (par_id) and generate 4 files (2 with headers, 2 without) with the following first-level nuisance regressors:
+        (1) trans_x, trans_y, trans_z, rot_x, rot_y, rot_z, csf, white_matter, global_signal, trans_x_derivative1, trans_y_derivative1, trans_z_derivative1, rot_x_derivative1, rot_y_derivative1, rot_z_derivative1
+        (2) The same as (1), without global_signal
 
     Inputs:
         par_id 
-        overwrite (bool)
-        Path (str) - path to direcory that contains fmriprep/ directory.
+        fmriprep_path (str) - path to fmriprep/ directory.
+        overwrite (boolean) - specify if output files should be overwritten (default = False)
         
     """
 
-    # set bids_directory
-    if preproc_path is False:
+    ##############################
+    ### Check/setup input args ###
+    ##############################
 
-        # get script location
-        script_path = Path(__file__).parent.resolve()
+    # set sub with leading zeros
+    if not par_id:
+        print("sub is not defined")
+        raise Exception()
+    else:
+        sub = str(par_id).zfill(3)
 
-        # change directory to base directory (BIDSdat) and get path
-        os.chdir(script_path)
-        os.chdir('../../..')
-        bids_directory = Path(os.getcwd())
+    # set fmriprep_path
+    if not fmriprep_path:
 
-        #set specific paths
-        bids_fmriprep_path = Path(bids_directory).joinpath('derivatives/preprocessed/fmriprep')
+        print("fmriprep_path must be string")
+        raise Exception()
 
+    elif isinstance(fmriprep_path, str):
 
-    elif isinstance(preproc_path, str):
         # make input string a path
-        preprocessed_directory = Path(preproc_path)
-
-        #set specific paths
-        bids_fmriprep_path = Path(preprocessed_directory).joinpath('fmriprep')
+        fmriprep_path = Path(fmriprep_path)
 
     else: 
         print("preproc_path must be string")
         raise Exception()
 
+    # set output_path
+    if not output_path:
 
-    # set sub with leading zeros
-    sub = str(par_id).zfill(3)
+        print("output_path must be string")
+        raise Exception()
+
+    elif isinstance(output_path, str):
+
+        # make input string a path
+        output_path = Path(output_path)
+
+    else: 
+        print("output_path must be string")
+        raise Exception()
    
+    # check overwrite
+    if not isinstance(overwrite, bool):
+        print("overwrite must be boolean (True or False)")
+        raise Exception()
+
+
+    #############################
+    ### Import confound files ###
+    #############################
+
     # get participant confound files
-    confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
+    confound_files = list(Path(fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
 
     # exit if no participant confound files
     if len(confound_files) > 5:
@@ -131,7 +152,7 @@ def create_nuiregressor_files(par_id, overwrite = False, preproc_path = False):
         raise Exception()
 
     if len(confound_files) < 1:
-        print("No confound files found for sub-" + str(sub) + ". Unable to generate regressor and censor files")
+        print("No confound files found for sub-" + str(sub) + ". Unable to generate regressor files")
         raise Exception()
 
 
@@ -140,8 +161,39 @@ def create_nuiregressor_files(par_id, overwrite = False, preproc_path = False):
     ##############################
 
     # run function to generate dataframe with all nuisance regressors
-    regress_Pardat = _gen_concatenated_regressor_file(confound_files)
+    all_nuireg_dat = _gen_concatenated_regressor_file(confound_files)
 
-    # Export participant regressor file with and without columns names
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-noheader.tsv')), sep = '\t', encoding='ascii', index = False, header=False)
-    regress_Pardat.to_csv(str(Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31-allruns_confounds-header.tsv')), sep = '\t', encoding='ascii', index = False)
+    # create version without global_signal
+    nuireg_nogsr_dat = all_nuireg_dat.drop(['global_signal'], axis=1)
+
+    # Make directory for export 
+    Path(output_path).mkdir(parents=True, exist_ok=True)
+
+    # Define paths for regressor files with and without columns names (header)
+    noheader_gsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-gsr-noheader.tsv'))
+    header_gsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-gsr-header.tsv'))
+    noheader_nogsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-nogsr-noheader.tsv'))
+    header_nogsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-nogsr-header.tsv'))
+
+    # noheader_gsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-gsr-noheader.tsv')
+    # header_gsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-gsr-header.tsv')
+    # noheader_nogsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-nogsr-noheader.tsv')
+    # header_nogsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-nogsr-header.tsv')
+
+    for filepath in [noheader_gsr_filepath, header_gsr_filepath, noheader_nogsr_filepath, header_nogsr_filepath]:
+
+        # check if file already exists 
+        if not filepath.exists() or overwrite is True:
+
+            filename = str(filepath)
+            
+            if "nogsr" in filename:
+                if "noheader" in filename:
+                   nuireg_nogsr_dat.to_csv(filename, sep = '\t', encoding='ascii', index = False, header=False)
+                else:
+                   nuireg_nogsr_dat.to_csv(filename, sep = '\t', encoding='ascii', index = False)
+            else:
+                if "noheader" in filename:
+                    all_nuireg_dat.to_csv(filename, sep = '\t', encoding='ascii', index = False, header=False)
+                else:
+                    all_nuireg_dat.to_csv(filename, sep = '\t', encoding='ascii', index = False)
