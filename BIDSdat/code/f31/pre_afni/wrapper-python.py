@@ -35,7 +35,7 @@ import os
 # import data processing functions
 import p1_getonsets
 import p2_create_censor_files
-import p3_censor_summary
+import p3_create_nuiregressor_files
 
 
 ##############################################################################
@@ -78,7 +78,7 @@ foodcue_raw_subs = [item.relative_to(bids_raw_path).parts[0] for item in foodcue
 subs = list(set([item[4:7] for item in foodcue_raw_subs]))   
 
 # For testing
-subs = ['001']
+#subs = ['001']
 
 ## For testing with test fixtures
 #subs = ['999']
@@ -96,9 +96,8 @@ for sub in subs:
           censorsum_file_bycond = str('fixture_task-foodcue_byblock-censorsummary_fd-1.0.tsv')
 
       else:
-          preproc_path = False
-          censorsum_file_byrun = str('task-foodcue_byrun-censorsummary_fd-0.9.tsv')
-          censorsum_file_bycond = str('task-foodcue_byblock-censorsummary_fd-0.9.tsv')
+          fmriprep_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/fmriprep')
+          output_path = str('/Users/baf44/projects/Keller_FoodBrainStudy/BIDSdat/derivatives/preprocessed/f31_python_proc')
 
     #   try:
     #       p1_getonsets.getonsets(par_id = sub, overwrite=False)
@@ -106,11 +105,11 @@ for sub in subs:
     #       print("Discontinuing p1_getonsets() for sub_" + sub)
 
       try:
-           p2_create_censor_files.create_censor_files(par_id = sub, overwrite=True, cen_add_tr=False ,preproc_path=preproc_path)
+          p2_create_censor_files.create_censor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_path, overwrite=True)
       except:
          print("Discontinuing p2_create_censor_files() for sub_" + sub)
 
-     #  try:
-     #      p3_censor_summary.censor_sum(par_id = sub, overwrite=True, preproc_path=preproc_path)
-     #  except:
-     #      print("Discontinuing p3_censor_summary for sub_" + sub)
+      try:
+          p3_create_nuiregressor_files.create_nuiregressor_files(par_id = sub, fmriprep_path = fmriprep_path, output_path= output_path, overwrite=True)
+      except:
+         print("Discontinuing p3_create_nuiregressor_files() for sub_" + sub)
