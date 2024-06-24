@@ -88,6 +88,7 @@ def create_nuiregressor_files(par_id, fmriprep_path, output_path, overwrite = Fa
     Inputs:
         par_id 
         fmriprep_path (str) - path to fmriprep/ directory.
+        output_path (str) - path to output directory
         overwrite (boolean) - specify if output files should be overwritten (default = False)
         
     """
@@ -174,11 +175,6 @@ def create_nuiregressor_files(par_id, fmriprep_path, output_path, overwrite = Fa
     header_gsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-gsr-header.tsv'))
     noheader_nogsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-nogsr-noheader.tsv'))
     header_nogsr_filepath = Path(os.path.join(output_path, 'sub-' + sub + '_f31nuireg-nogsr-header.tsv'))
-
-    # noheader_gsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-gsr-noheader.tsv')
-    # header_gsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-gsr-header.tsv')
-    # noheader_nogsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-nogsr-noheader.tsv')
-    # header_nogsr_filepath = Path(output_path).joinpath('sub-' + sub + '/ses-1/func/' + 'sub-' + sub + '_f31nuireg-nogsr-header.tsv')
 
     for filepath in [noheader_gsr_filepath, header_gsr_filepath, noheader_nogsr_filepath, header_nogsr_filepath]:
 
