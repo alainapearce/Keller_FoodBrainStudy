@@ -151,7 +151,7 @@ def getonsets(par_id, bids_path, output_path, overwrite = False):
     ##########################
 
     # get events files -- Note: each events fils corresponds to 1 foodcue run
-    eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
+    eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*ses-1_task-foodcue*events.tsv'))
 
     # get number of runs -- Note: each events fils corresponds to 1 foodcue run
     nruns = len(eventsfiles)
