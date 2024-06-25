@@ -30,7 +30,7 @@ bold_temp="$bidsdir/derivatives/afni-level1/sub-001/ped_fd-0.9_b20_noGSR/stats.s
 ## Reactive ROIs ##
 
 # Left lateral orbitofrontal cortex (-32, 34, -12) [from Van Meer et al. 2015 NeuroImage]
-echo "-32 -34 -12" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ofc_roi+tlrc" -xyz -
+echo "-32 34 -12" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ofc_roi+tlrc" -xyz -
 
 # Right amygdala (24, -4, -16) [from Van Meer et al. 2015 NeuroImage]
 echo "24 -4 -16" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/r_amyg_roi+tlrc" -xyz -
