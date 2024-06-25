@@ -52,8 +52,8 @@ echo "-8 10 -8" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$ro
 # Right inferior frontal gyrus (52, 28, 2) [from Han et al. 2018 Physiology & Behavior]
 echo "52 28 2" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/r_ifg_roi+tlrc" -xyz -
 
-# Left inferior frontal gyrus (-4, 22, 0) [from Han et al. 2018 Physiology & Behavior]
-echo "-4 22 0" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ifg_roi+tlrc" -xyz -
+# Left inferior frontal gyrus (-44, 22, 0) [from Han et al. 2018 Physiology & Behavior]
+echo "-44 22 0" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/l_ifg_roi+tlrc" -xyz -
 
 # Right supramarginal gyrus (46, -52, 44) [from Han et al. 2018 Physiology & Behavior]
 echo "46 -52 44" | 3dUndump -orient LPI -srad 4 -master "$bold_temp" -prefix "$roidir/r_smarg_roi+tlrc" -xyz -
