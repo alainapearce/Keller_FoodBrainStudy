@@ -62,7 +62,7 @@ foreach str (gsr)
         -regress_censor_extern ${pythonproc_dir}/${parID}_f31censor_rmsd-0.3_c-ba.1D    \
         -regress_bandpass         0.01 0.1                             				\
         -regress_opts_3dD                                                                           \
-            -jobs 2                                                                                 \
+            -jobs 10                                                                                 \
         -regress_no_fitts                                                                      \
         -regress_make_ideal_sum sum_ideal.1D                                                        \
         -regress_run_clustsim no
