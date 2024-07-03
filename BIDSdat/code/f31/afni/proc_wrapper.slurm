@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=10
-#SBATCH --mem-per-cpu=10GB
-#SBATCH --time=4:00:00
+#SBATCH --ntasks-per-node=20
+#SBATCH --mem-per-cpu=5GB
+#SBATCH --time=10:00:00
 #SBATCH --partition=open
 #SBATCH --output=slurm_wrapper_%a.out
 #SBATCH --array=1-94
