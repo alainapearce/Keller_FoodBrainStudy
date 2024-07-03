@@ -41,7 +41,7 @@ import re
 ##############################################################################
 
 
-def _get_summary_file(bids_fmriprep_path, censor_str, sub, overwrite):
+def _get_summary_file(censor_file_dir, censor_str, sub, overwrite):
     """Function to import or generate task-foodcue_censorsummary_* file. 
         Files will be imported if censorsummary file with specified CensorStr exists, otherwise they will be generated. 
         If subject is already in censorsummary database and Overwrite = False, exception will be raised. 
@@ -58,7 +58,7 @@ def _get_summary_file(bids_fmriprep_path, censor_str, sub, overwrite):
     """
 
     # Set path to summary file
-    censor_summary_path = Path(bids_fmriprep_path).joinpath('task-foodcue_F31-censorsummary.tsv')
+    censor_summary_path = Path(censor_file_dir).joinpath('summary_f31censor_' + censor_str + '.tsv')
 
     ### Manage censor_summary_path ###
     if censor_summary_path.is_file(): # if database exists
@@ -67,13 +67,13 @@ def _get_summary_file(bids_fmriprep_path, censor_str, sub, overwrite):
         CenSum_allPar = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
 
         # check to see if subject already in database for given censor_str
-        if CenSum_allPar[(CenSum_allPar['sub'] == sub) & (CenSum_allPar['censor_str'] == censor_str)].shape[0] > 0:
+        if CenSum_allPar[(CenSum_allPar['sub'] == sub)].shape[0] > 0:
             if overwrite is False:
-                print("sub_" + sub + " already in task-foodcue_F31-censorsummary.tsv for given censor_str. Use overwrite = True to rerun")
+                print("sub_" + sub + " already in summary_f31censor_" + censor_str + ".tsv. Use overwrite = True to rerun")
                 raise Exception()
             else: #overwrite is true
                 # remove row from censor_summary_path
-                CenSum_allPar = CenSum_allPar.drop(CenSum_allPar[(CenSum_allPar['sub'] == sub) & (CenSum_allPar['censor_str'] == censor_str)].index)
+                CenSum_allPar = CenSum_allPar.drop(CenSum_allPar[(CenSum_allPar['sub'] == sub)].index)
 
     # if database does not exist
     else:
@@ -179,19 +179,26 @@ def _gen_sub_cen_sum(food_TR_list, sub_censor_list):
     return n_total, n_uncensored, n_food_uncensored
 
 
-def censor_sum(par_id, censor_str='rmsd-0.3_c-ba', overwrite = False, preproc_path = False):
+def censor_sum(par_id, bids_path, censor_file_dir, censor_str='rmsd-0.3_c-ba', overwrite = False):
 
-    # get script location
-    script_path = Path(__file__).parent.resolve()
+    # check bids_path
+    if not bids_path:
 
-    # change directory to base directory (BIDSdat) and get path
-    os.chdir(script_path)
-    os.chdir('../..')
-    base_directory = Path(os.getcwd())
+        print("bids_path must be string")
+        raise Exception()
+
+    elif isinstance(bids_path, str):
+
+        # make input string a path
+        bids_path = Path(bids_path)
+
+    else: 
+        print("bids_path must be string")
+        raise Exception()
 
     #set specific paths
-    bids_fmriprep_path = Path(base_directory).joinpath('derivatives/preprocessed/fmriprep')
-    bids_raw_path = Path(base_directory).joinpath('raw_data')
+    bids_fmriprep_path = Path(bids_path).joinpath('derivatives/preprocessed/fmriprep')
+    bids_raw_path = Path(bids_path).joinpath('raw_data')
 
     # set sub with leading zeros
     sub = str(par_id).zfill(3)
@@ -199,7 +206,7 @@ def censor_sum(par_id, censor_str='rmsd-0.3_c-ba', overwrite = False, preproc_pa
     # get participant files
     confound_files = list(Path(bids_fmriprep_path).rglob('sub-' + str(sub) + '/ses-1/func/*task-foodcue_run*confounds_timeseries.tsv'))
     eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
-    sub_censor_file = Path(bids_fmriprep_path).joinpath('sub-' + sub + '/ses-1/func/F31_sub-' + sub + '_foodcue-allruns_censor_' + str(censor_str) + '.tsv')
+    sub_censor_file = Path(censor_file_dir).joinpath('sub-' + sub + '_f31censor_' + censor_str + '.1D')
 
     # import sub_censor_file or raise exception
     if  sub_censor_file.is_file():
@@ -229,4 +236,4 @@ def censor_sum(par_id, censor_str='rmsd-0.3_c-ba', overwrite = False, preproc_pa
     censor_summary = pd.concat([censor_summary, row])
 
     # export censor summary database
-    censor_summary.to_csv(str(Path(bids_fmriprep_path).joinpath('task-foodcue_F31-censorsummary.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+    censor_summary.to_csv(str(Path(censor_file_dir).joinpath('summary_f31censor_' + censor_str + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
