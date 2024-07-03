@@ -49,23 +49,24 @@ foreach str (gsr)
 
     # generate afniproc script
     afni_proc.py -subj_id ${parID} -script proc_${parID}   \
-        -blocks blur scale regress                            \
+        -blocks mask blur scale regress                            \
         -dsets ${fmriprep_sesDir}/func/${parID}_ses-1_task-foodcue_run-?_space-MNIPediatricAsym_cohort-3_res-1_desc-preproc_bold.nii.gz                                              \
         -copy_anat ${fmriprep_sesDir}/anat/${parID}_ses-1_desc-preproc_T1w.nii.gz                              \
         -regress_motion_file ${reg_fil}            \
         -blur_size 6.0                                                                              \
+        -mask_apply epi \
         -regress_stim_times $onsetDir/${parID}*OfficeLarge*.txt               			\
             $onsetDir/${parID}*OfficeSmall*.txt                          		                \
             $onsetDir/${parID}*IBI*.txt                          		                \
         -regress_stim_labels OfficeLarge OfficeSmall Fixation         				\
         -regress_basis_multi 'BLOCK(18,1)' 'BLOCK(18,1)' 'BLOCK(8,1)'                               \
         -regress_censor_extern ${pythonproc_dir}/${parID}_f31censor_rmsd-0.3_c-ba.1D    \
-        -regress_bandpass         0.01 0.1                             				\
+        -regress_bandpass         0.01 0.15                             				\
         -regress_opts_3dD                                                                           \
-            -jobs 10                                                                                 \
+            -jobs 20                                                                                 \
         -regress_no_fitts                                                                      \
         -regress_make_ideal_sum sum_ideal.1D                                                        \
         -regress_run_clustsim no
 
     # execute script
-    tcsh -xef proc_sub-001 |& tee output.proc_sub-001
+    tcsh -xef proc_$parID |& tee output.proc_$parID
