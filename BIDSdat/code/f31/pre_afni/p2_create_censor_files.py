@@ -30,12 +30,9 @@ import numpy as np
 import pandas as pd
 import os
 from pathlib import Path
-import re
 
 #########################################################
-####                                                 ####
 ####                  Subfunctions                   ####
-####                                                 ####
 #########################################################
 
 def _get_censorstr(rmsd_thresh, cen_add_tr):
@@ -101,7 +98,143 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
 
     return(censor_info)
 
- 
+def _get_summary_file(output_path, censor_str, sub, overwrite):
+    """Function to import or generate summary censor file for given censor_str
+        File will be imported as a pandas dataframe if censorsummary file exists, otherwise it will be generated. 
+        If subject is already in censorsummary dataframe and Overwrite = False, exception will be raised. 
+        If subject is already in censorsummary dataframe and Overwrite != False, subject will be removed from summary dataframe.
+
+    Inputs:
+        output_path (list) - path where censor files are exported
+        censor_str (str) - string that defines TR censor criteria 
+        sub (str) - subject ID
+        overwrite (bool) - True or False for overwriting subject data in censor summary files
+        
+    Outputs:
+        censor_summary_df (pandas dataframe) - dataframe to add subjects censor summary data to; can be empty or contain summary data for other subjects
+    """
+
+    # Set path to summary file
+    censor_summary_path = Path(output_path).joinpath('summary_f31censor_' + censor_str + '.tsv')
+
+    ### Manage censor_summary_path ###
+    if censor_summary_path.is_file(): # if file exists
+
+        # import database --- converting 'sub' to string will maintain leading zeros
+        censor_summary_df = pd.read_csv(str(censor_summary_path), sep = '\t', converters={'sub': lambda x: str(x)})
+
+        # check to see if subject already in dataframe
+        if censor_summary_df[(censor_summary_df['sub'] == sub)].shape[0] > 0:
+            if overwrite is False:
+                print("sub_" + sub + " already in summary_f31censor_" + censor_str + ".tsv. Use overwrite = True to rerun")
+                raise Exception()
+            else: #overwrite is true
+                # remove subject row from censor_summary_df
+                censor_summary_df = censor_summary_df.drop(censor_summary_df[(censor_summary_df['sub'] == sub)].index)
+
+    # if database does not exist
+    else:
+        # create new dataframe 
+        censor_summary_df = pd.DataFrame(np.zeros((0, 5)))
+        censor_summary_df.columns = ['sub','censor_str', 'n_total_trs', 'n_total_trs_uncensored', 'n_food_trs_uncensored']
+
+    return(censor_summary_df)
+
+def _get_food_onsetTRs(eventsfiles):
+
+    # set length of TR
+    TR = 2
+    
+    # initialize onsets dictionary
+    par_food_onset_TRs_dict = {}
+
+    for file in eventsfiles:
+
+        #load data
+        foodcue_RunDat = pd.read_csv(str(file), sep = '\t', encoding = 'utf-8-sig', engine='python')
+
+        # select only variables interested in using for processed data
+        foodcue_RunDat = foodcue_RunDat[['sub', 'ses', 'experiment_name' ,'block', 'trial', 'condition', 'stimslide_onsettime', 'stimslide_onsettoonsettime', 'onset', 'duration']]
+    
+        # rename columns (note: block becomes run, trial becomes block)
+        foodcue_RunDat.columns = ['sub', 'ses', 'experiment_name', 'run', 'block', 'condition', 'stim_onset', 'stim_onset2onset', 'onset', 'duration']
+
+        ## Get run number   
+        run_num = foodcue_RunDat['run'].iloc[0]
+
+        #get all non-duplicate blocks in run
+        blocks = foodcue_RunDat['block'].unique()
+
+        #loop through blocks
+        for b in blocks:
+
+            #subset block data from foodcue_data
+            block_dat = foodcue_RunDat[foodcue_RunDat['block'] == b]
+
+            # Add food block onset TR to dictionary -- TR will be onset time / TR 
+            b_condition = block_dat['condition'].iloc[0]
+            if "High" in b_condition or "Low" in b_condition:
+                if run_num in par_food_onset_TRs_dict:
+                    par_food_onset_TRs_dict[run_num].append(block_dat['onset'].iloc[0]/TR)
+                else:
+                    par_food_onset_TRs_dict[run_num] = [block_dat['onset'].iloc[0]/TR]
+
+    return(par_food_onset_TRs_dict)
+
+def _gen_food_TR_list(par_food_onset_TRs_dict, confound_files):
+
+    """Function to generate r_int_list based on food block onsets (defined in par_food_onset_TRs_dict)
+    Inputs:
+        par_food_onset_TRs_dict_dict (dictionary): keys are run numbers, values are food block onsets
+        confound_files (list) 
+    Outputs:
+        food_TR_list (list) - a list of 1s and 0s equal to the length all TRs collected; 0 = TR is not in food block, 1 = TR is in food block
+    """
+
+    # initialize empty list where 
+    food_TR_list = []
+
+    # sort confound_files
+    confound_files.sort()
+    
+    # loop though confound_files
+    for i in range(len(confound_files)):
+
+        #load data
+        confound_dat = pd.read_csv(str(confound_files[i]), sep = '\t', encoding = 'utf-8-sig', engine='python')
+
+        # Make a list 0s equal to the length of a run
+        run_food_TR_list = [0] * len(confound_dat) # Make a list of 0s equal to the length of confound_dat
+
+        # set run number
+        run_num = i + 1
+
+        # loop through onsets for run_num
+        for onset in par_food_onset_TRs_dict[run_num]:
+            offset = onset + 9  #Get block offset -- note: this will be the first TR after the block of interest
+            run_food_TR_list[int(onset):int(offset)] = [1, 1, 1, 1, 1, 1, 1, 1, 1]  #At indices onset to offset-1 in r_int_list, set value to 1 (indicatine TR is in food block)
+
+        # add run data to food_TR_list
+        food_TR_list.extend(run_food_TR_list)
+
+    return(food_TR_list)
+
+def _gen_sub_censor_summary(food_TR_list, sub_censor_list):
+
+    if len(food_TR_list) != len(sub_censor_list):
+        print("lengths of food_TR_list and sub_censor_list do not match")
+        raise Exception()
+
+    n_total = len(sub_censor_list)
+    n_uncensored = sub_censor_list.count(1)
+
+    n_food_uncensored = 0
+    for i in range(len(sub_censor_list)):
+        if food_TR_list[i] == 1:
+            if sub_censor_list[i] == 1:
+               n_food_uncensored = n_food_uncensored + 1 
+
+    return n_total, n_uncensored, n_food_uncensored
 
 ##############################################################################
 ####                                                                      ####
@@ -109,7 +242,7 @@ def _gen_run_censorfile(confound_dat, rmsd_thresh, cen_add_tr):
 ####                                                                      ####
 ##############################################################################
 
-def create_censor_files(par_id, fmriprep_path, output_path, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = False):
+def create_censor_files(par_id, bids_raw_path, fmriprep_path, output_path, rmsd_thresh=0.3, cen_add_tr='ba', overwrite = False):
     """
     This function will process -desc-confounds_timeseries.tsv files (output from fmriprep) for 1 participant in preparation for first-level analyses in AFNI. 
     The following steps will occur:
@@ -233,5 +366,35 @@ def create_censor_files(par_id, fmriprep_path, output_path, rmsd_thresh=0.3, cen
     if not filepath.exists() or overwrite is True:
         censordata_allruns_df.to_csv(str(filepath), sep = '\t', encoding='ascii', index = False, header=False)
 
-    # return particpant databases for integration testing
-    return censordata_allruns_df
+    ##################################
+    ### Update censor summary file ###
+    ##################################
+
+    eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*ses-1_task-foodcue*events.tsv'))
+
+    # load or generate censory summary dataframe
+    censor_summary_df = _get_summary_file(output_path, censor_str, sub, overwrite)
+
+    # get food block TR onsets
+    par_food_onset_TRs_dict = _get_food_onsetTRs(eventsfiles)
+
+    # generate list that indexes which TRs are food (1) and non-food (0)
+    food_TR_list = _gen_food_TR_list(par_food_onset_TRs_dict, confound_files)
+
+    # get subject censor summary information
+    sub_censor_list = censordata_allruns_df[0].tolist() # convert dataframe to list
+    n_total, n_uncensored, n_food_uncensored = _gen_sub_censor_summary(food_TR_list, sub_censor_list)
+
+    # add subject censor summary information to summary database
+    sub_censor_summary = pd.DataFrame([[sub, censor_str, n_total, n_uncensored, n_food_uncensored]], columns=['sub','censor_str', 'n_total_trs', 'n_total_trs_uncensored', 'n_food_trs_uncensored'])
+    censor_summary_df = pd.concat([censor_summary_df, sub_censor_summary])
+
+    # export censor summary database
+    censor_summary_df.to_csv(str(Path(output_path).joinpath('summary_f31censor_' + censor_str + '.tsv')), sep = '\t', encoding='utf-8-sig', index = False, header=True)
+
+    ######################################
+    ### Return for integration testing ###
+    ######################################
+
+    # return particpant databases with censor info
+    return censordata_allruns_df, sub_censor_summary
