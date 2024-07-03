@@ -40,74 +40,91 @@ from pathlib import Path
 ####                                                  ####
 ##########################################################
 
-# Function to get block onsets from foodcue_run_data --- this will be a run-specific events dataset (i.e., sub-XXX_task-foodcue_run-0X_bold_events.tsv)
-def _get_officeOnsets(foodcue_RunDat, onsets_Pardat):
+def _get_office_onsets(foodcue_RunDat, onsets_Pardat):
 
-        ## Get run number   
-        run_num = foodcue_RunDat['run'].iloc[0]
+    """
+    Function to get block onsets from foodcue_run_data --- this will be a run-specific events dataset (i.e., sub-XXX_task-foodcue_run-0X_bold_events.tsv)
+    
+    Inputs:
+        foodcue_RunDat:
+        onsets_Pardat:
+    Outputs:
+        onsets_Pardat
+    """
+    ## Get run number   
+    run_num = foodcue_RunDat['run'].iloc[0]
 
-        #get all non-duplicate blocks in run
-        blocks = foodcue_RunDat['block'].unique()
+    #get all non-duplicate blocks in run
+    blocks = foodcue_RunDat['block'].unique()
 
-        #loop through blocks
-        for b in blocks:
+    #loop through blocks
+    for b in blocks:
 
-            #subset block data from foodcue_data
-            block_dat = foodcue_RunDat[foodcue_RunDat['block'] == b]
+        #subset block data from foodcue_data
+        block_dat = foodcue_RunDat[foodcue_RunDat['block'] == b]
 
-            # Add block onsets for Office blocks to onsets_dat
-            ## Note: 'onset' is the onset time (in seconds) of the event, measured from the beginning of the acquisition of 
-            ## the first data point stored in the corresponding task data file. Because this variable is required in the events.tsv file,
-            ## it was computed in foodcue_DataOrg.py
-            b_condition = block_dat['condition'].iloc[0]
-            
-            if "Office" in b_condition: 
-                onsets_Pardat.at[run_num-1, b_condition] = block_dat['onset'].iloc[0]
+        # Add block onsets for Office blocks to onsets_dat
+        ## Note: 'onset' is the onset time (in seconds) of the event, measured from the beginning of the acquisition of 
+        ## the first data point stored in the corresponding task data file. Because this variable is required in the events.tsv file,
+        ## it was computed in foodcue_DataOrg.py
+        b_condition = block_dat['condition'].iloc[0]
         
-        return(onsets_Pardat)
+        if "Office" in b_condition: 
+            onsets_Pardat.at[run_num-1, b_condition] = block_dat['onset'].iloc[0]
+    
+    return(onsets_Pardat)
 
-def _get_fixOnsets(foodcue_RunDat, fixation_Pardict):
+def _get_fixation_onsets(foodcue_RunDat, fixation_Pardict):
 
-        # ## make variable for IBI onset relative to run start
+    """
+    Function to XX
+    
+    Inputs:
+        foodcue_RunDat:
+        fixation_Pardict:
+    Outputs:
+        fixation_Pardict
+    """
+    # ## make variable for IBI onset relative to run start
 
-        # # make new variable: "ibi_onset_adjusted" (in seconds) of the event, measured from the beginning of the acquisition of the
-        # # first data point stored in the corresponding task data file. Runs started with a 4s fixation, so the onset time of first ibi fixation
-        # # should be equal to 4 + 18 (i.e., the block duration) = 22.
+    # # make new variable: "ibi_onset_adjusted" (in seconds) of the event, measured from the beginning of the acquisition of the
+    # # first data point stored in the corresponding task data file. Runs started with a 4s fixation, so the onset time of first ibi fixation
+    # # should be equal to 4 + 18 (i.e., the block duration) = 22.
 
-        stim1_onset = foodcue_RunDat['stim_onset'].iloc[0]
+    stim1_onset = foodcue_RunDat['stim_onset'].iloc[0]
 
-        # make array of ibi_onsets
-        onsets_unadjusted_array = foodcue_RunDat['ibi_onset'].unique()
+    # make array of ibi_onsets
+    onsets_unadjusted_array = foodcue_RunDat['ibi_onset'].unique()
 
-        # remove nans from array
-        value_mask = ~np.isnan(onsets_unadjusted_array) # create a boolean mask where True corresponds to non-NaN values
-        onsets_unadjusted_array = onsets_unadjusted_array[value_mask] # index the array using the mask to remove the NaN values
+    # remove nans from array
+    value_mask = ~np.isnan(onsets_unadjusted_array) # create a boolean mask where True corresponds to non-NaN values
+    onsets_unadjusted_array = onsets_unadjusted_array[value_mask] # index the array using the mask to remove the NaN values
 
-        # define a function to subtract stim1_onset, divide by 1000 (convert to seconds), and add 4 (adjust for 2 TRs)
-        def adjust_onset(x):
-            return round(((x - stim1_onset) / 1000) + 4)
+    # define a function to subtract stim1_onset, divide by 1000 (convert to seconds), and add 4 (adjust for 2 TRs)
+    def adjust_onset(x):
+        return round(((x - stim1_onset) / 1000) + 4)
 
-        # adjust onsets 
-        onsets_array = np.vectorize(adjust_onset)(onsets_unadjusted_array)
+    # adjust onsets 
+    onsets_array = np.vectorize(adjust_onset)(onsets_unadjusted_array)
 
-        ## Get run number   
-        run_num = foodcue_RunDat['run'].iloc[0]
+    ## Get run number   
+    run_num = foodcue_RunDat['run'].iloc[0]
 
-        # assign array to fixation_Pardict at key run_num
-        fixation_Pardict[run_num] = onsets_array
+    # assign array to fixation_Pardict at key run_num
+    fixation_Pardict[run_num] = onsets_array
 
-        return(fixation_Pardict)
+    return(fixation_Pardict)
 
 ##############################################################################
 ####                                                                      ####
-####                             Core Script                              ####
+####                             Main function                            ####
 ####                                                                      ####
 ##############################################################################
 
-def getonsets(par_id, bids_path, output_path, overwrite = False):
+def getonsets(par_id, bids_raw_path, output_path, overwrite = False):
 
     #set specific paths
-    bids_raw_path = Path(bids_path).joinpath('raw_data')
+    bids_raw_path = Path(bids_raw_path)
     bids_deriv_onsetfiles = Path(output_path) #path to onset files for F31 analyses
 
     # make onset directory if it doesnt exist
@@ -120,9 +137,10 @@ def getonsets(par_id, bids_path, output_path, overwrite = False):
     # set sub with leading zeros
     sub = str(par_id).zfill(3)
 
-    raw_files = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*foodcue*events.tsv'))
+    # get events files -- Note: each events fils corresponds to 1 foodcue run
+    eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*ses-1_task-foodcue*events.tsv'))
 
-    if len(raw_files) < 1:
+    if len(eventsfiles) < 1:
         print('No *events.tsv files found for sub ' + str(sub))
         raise Exception()
         
@@ -149,9 +167,6 @@ def getonsets(par_id, bids_path, output_path, overwrite = False):
     ##########################
     ### Create onset files ###
     ##########################
-
-    # get events files -- Note: each events fils corresponds to 1 foodcue run
-    eventsfiles = list(Path(bids_raw_path).rglob('sub-' + str(sub) + '/ses-1/func/*ses-1_task-foodcue*events.tsv'))
 
     # get number of runs -- Note: each events fils corresponds to 1 foodcue run
     nruns = len(eventsfiles)
@@ -180,8 +195,8 @@ def getonsets(par_id, bids_path, output_path, overwrite = False):
         foodcue_RunDat.columns = ['sub', 'ses', 'experiment_name', 'run', 'block', 'condition', 'stim_onset', 'stim_onset2onset', 'onset', 'duration', 'ibi_onset', 'ibi_duration']
 
         #extract timing info
-        onsets_Pardat = _get_officeOnsets(foodcue_RunDat, onsets_Pardat)
-        fixation_Pardict = _get_fixOnsets(foodcue_RunDat, fixation_Pardict)
+        onsets_Pardat = _get_office_onsets(foodcue_RunDat, onsets_Pardat)
+        fixation_Pardict = _get_fixation_onsets(foodcue_RunDat, fixation_Pardict)
 
     #output Office block onsets
     for c in onsets_Pardat.columns:
